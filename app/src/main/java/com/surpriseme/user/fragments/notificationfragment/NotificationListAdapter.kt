@@ -21,6 +21,9 @@ val notificationDetail:NotificationDetail) : RecyclerView.Adapter<NotificationLi
         val notiTitle = itemView.findViewById<MaterialTextView>(R.id.notiTitleMtv)
         val notiBody = itemView.findViewById<MaterialTextView>(R.id.notiBodyMtv)
         val dateTime = itemView.findViewById<MaterialTextView>(R.id.dateTimeMtv)
+
+
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {
@@ -32,6 +35,9 @@ val notificationDetail:NotificationDetail) : RecyclerView.Adapter<NotificationLi
     override fun onBindViewHolder(holder: NotificationViewHolder, position: Int) {
 
         val model = notiList[position]
+
+
+        
 
         if (notiList[position].is_read == "0") {
             holder.notiActiveIcon.visibility = View.VISIBLE
