@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/_20sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/notiActiveIcon"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:src="@color/blue_signup"
+        android:layout_marginStart="@dimen/_5sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <ImageView
+        android:id="@+id/notiIcon"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/noti_booking_icon"
+        android:layout_marginStart="@dimen/_20sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/dottedView"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/notiTitleMtv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:text="Booking Confirmed"
+        android:singleLine="true"
+        app:layout_constraintEnd_toStartOf="@id/dateTimeMtv"
+        app:layout_constraintStart_toEndOf="@id/notiIcon"
+        android:layout_marginStart="@dimen/_10sdp"
+        app:layout_constraintTop_toTopOf="@id/notiIcon"
+        android:textSize="@dimen/_10sdp"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/notiBodyMtv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="You have successfully booked the artist."
+        android:maxLines="2"
+        app:layout_constraintStart_toStartOf="@id/notiTitleMtv"
+        app:layout_constraintTop_toBottomOf="@id/notiTitleMtv"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:textSize="@dimen/_8sdp"
+        app:layout_constraintEnd_toStartOf="@+id/dateTimeMtv"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/dateTimeMtv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="15-Oct, 10-10"
+        android:textSize="@dimen/_8sdp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="@dimen/_10sdp"/>
+
+    <ImageView
+        android:id="@+id/dottedView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_5sdp"
+        android:src="@drawable/dotted_view_line_grey"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

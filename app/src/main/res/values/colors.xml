@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#D4145A</color>
+    <color name="colorPrimaryDark">#D4145A</color>
+    <color name="colorAccent">#D4145A</color>
+    <color name="blue_signup">#0C76E1</color>
+    <color name="term_condition_color">#FD8C00</color>
+
+    <color name="logoutBg">#3F3480</color>
+    <color name="logoutBtmBg">#0F0C29</color>
+    <color name="loginBtnBg">#800F0C29</color>
+    <color name="userPassBg">#AAA6D6</color>
+    <color name="fixtureBg">#A09ADC</color>
+    <color name="redBtnBg">#E20002</color>
+    <color name="rgstrBtnBg">#302B63</color>
+    <color name="bottomNavLight">#5b39c6</color>
+    <color name="bottomNavDark">#492e9e</color>
+
+    <color name="white">#ffffff</color>
+    <color name="offwhite">#65ffffff</color>
+    <color name="offwhiteContrast">#99ffffff</color>
+    <color name="greyFadeout">#0FBFC2C6</color>
+    <color name="greyLighter">#f1f1f1</color>
+    <color name="transparent">#19D7D7D7</color>
+    <color name="transparentPopup">#BFD7D7D7</color>
+    <color name="black">#000000</color>
+    <color name="grey_color">#BFC2C6</color>
+    <color name="grey_Dark_color">#878787</color>
+    <color name="drawerBg">#EAEBEC</color>
+    <color name="recChatbg">#0F0C29</color>
+    <color name="deviderColor">#857EC2</color>
+    <color name="logoutRoundBg">#7c73a9</color>
+    <color name="purple">#645caa</color>
+    <color name="voilet">#897bd9</color>
+    <color name="edt_Border">#5048a2</color>
+    <color name="greenColor">#AB00CC00</color>
+    <color name="topMenuColor">#0F0C29</color>
+    <color name="dashBoardCardBg">#352B9A</color>
+    <color name="yellowChat">#F8DF4D</color>
+    <color name="loaderBg">#60D7D7D7</color>
+    <color name="lightPink">#FFF5F9</color>
+
+
+</resources>

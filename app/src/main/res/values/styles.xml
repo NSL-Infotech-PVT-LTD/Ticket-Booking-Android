@@ -1,0 +1,22 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/grey_color</item>
+        <item name="colorControlActivated">@color/yellowChat</item>
+    </style>
+<!--    <style name="homeActionbar" parent="Theme.MaterialComponents.Light.NoActionBar">-->
+<!--        <item name="colorPrimaryDark">@color/white</item>-->
+<!--        <item name="colorPrimary">@color/colorPrimary</item>-->
+<!--    </style>-->
+
+
+</resources>

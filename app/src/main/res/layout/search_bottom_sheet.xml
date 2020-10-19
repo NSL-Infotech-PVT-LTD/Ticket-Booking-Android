@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/boottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#70ffffff"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/_10sdp"
+        app:cardElevation="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/filterTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:text="@string/filter"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_16sdp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/closeBtn"
+                        android:layout_width="@dimen/_70sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:text="@string/close"
+                        android:textAllCaps="false"
+                        app:cornerRadius="@dimen/_20sdp"
+                        app:layout_constraintBottom_toBottomOf="@id/filterTxt"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/filterTxt" />
+
+                    <ImageView
+                        android:id="@+id/dottedView"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:src="@drawable/dotted_view_line"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/filterTxt"
+                        app:layout_constraintTop_toBottomOf="@+id/filterTxt" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/chooseCategoryTxt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:text="@string/click_to_choose_category"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/filterTxt"
+                        app:layout_constraintTop_toBottomOf="@+id/dottedView" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/pickDateTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:text="@string/pick_date"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_16sdp"
+                        app:layout_constraintStart_toStartOf="@id/filterTxt"
+                        app:layout_constraintTop_toBottomOf="@+id/chooseCategoryTxt" />
+
+                    <ImageView
+                        android:id="@+id/dottedView1"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:src="@drawable/dotted_view_line"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/filterTxt"
+                        app:layout_constraintTop_toBottomOf="@+id/pickDateTxt" />
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/fromTxt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:background="@drawable/search_bg"
+                        android:drawableEnd="@drawable/ic_arrow_down_24"
+                        android:minWidth="@dimen/_100sdp"
+                        android:paddingHorizontal="@dimen/_10sdp"
+                        android:paddingVertical="@dimen/_10sdp"
+                        android:paddingStart="@dimen/_20sdp"
+                        android:text="@string/from"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintEnd_toStartOf="@+id/calenderIcon"
+                        app:layout_constraintStart_toStartOf="@id/filterTxt"
+                        app:layout_constraintTop_toBottomOf="@id/dottedView1" />
+
+                    <ImageView
+                        android:id="@+id/calenderIcon"
+                        android:layout_width="50dp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:src="@drawable/calender_icon"
+                        app:layout_constraintBottom_toBottomOf="@+id/fromTxt"
+                        app:layout_constraintEnd_toStartOf="@+id/toTxt"
+                        app:layout_constraintStart_toEndOf="@id/fromTxt"
+                        app:layout_constraintTop_toTopOf="@id/fromTxt" />
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/toTxt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:background="@drawable/search_bg"
+                        android:drawableEnd="@drawable/ic_arrow_down_24"
+                        android:minWidth="@dimen/_100sdp"
+                        android:paddingHorizontal="@dimen/_10sdp"
+                        android:paddingVertical="@dimen/_10sdp"
+                        android:paddingStart="@dimen/_20sdp"
+                        android:text="@string/to"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/calenderIcon"
+                        app:layout_constraintTop_toTopOf="@id/fromTxt" />
+
+                    <ImageView
+                        android:id="@+id/dottedView2"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:src="@drawable/dotted_view_line"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/filterTxt"
+                        app:layout_constraintTop_toBottomOf="@+id/fromTxt" />
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/sortByTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:text="@string/sort_by"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_16sdp"
+                        app:layout_constraintStart_toStartOf="@id/filterTxt"
+                        app:layout_constraintTop_toBottomOf="@+id/dottedView2" />
+
+                    <ImageView
+                        android:id="@+id/dollarIcon1"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:src="@drawable/dollar_arrow_icon"
+                        app:layout_constraintStart_toStartOf="@id/sortByTxt"
+                        app:layout_constraintTop_toBottomOf="@id/sortByTxt" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/priceLowToHighTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:text="@string/price_low_to_high"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintBottom_toBottomOf="@id/dollarIcon1"
+                        app:layout_constraintStart_toEndOf="@+id/dollarIcon1"
+                        app:layout_constraintTop_toTopOf="@+id/dollarIcon1" />
+
+                    <CheckBox
+                        android:id="@+id/checkboxLowToHigh"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="@id/dollarIcon1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/dollarIcon1" />
+
+                    <ImageView
+                        android:id="@+id/dollarIcon2"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:src="@drawable/dollar_arrow_icon"
+                        app:layout_constraintStart_toStartOf="@id/sortByTxt"
+                        app:layout_constraintTop_toBottomOf="@id/dollarIcon1" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/priceHighToLowTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:text="@string/price_high_to_low"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintBottom_toBottomOf="@id/dollarIcon2"
+                        app:layout_constraintStart_toEndOf="@+id/dollarIcon2"
+                        app:layout_constraintTop_toTopOf="@+id/dollarIcon2" />
+
+                    <CheckBox
+                        android:id="@+id/checkboxHighToLow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="@id/dollarIcon2"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/dollarIcon2" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/applySearchBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/apply_search"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/priceHighToLowTxt"
+                        android:layout_marginTop="@dimen/_30sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:paddingHorizontal="@dimen/_40sdp"
+                        android:paddingVertical="@dimen/_10sdp"
+                        app:cornerRadius="@dimen/_20sdp"
+                        android:textAllCaps="false"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </ScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

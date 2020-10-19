@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/timeTxt"
+        android:layout_width="@dimen/_120sdp"
+        android:layout_height="wrap_content"
+        android:text="06:00 to 08:50 PM"
+        android:padding="@dimen/_10sdp"
+        android:layout_margin="@dimen/_5sdp"
+        android:gravity="center"
+        android:textSize="@dimen/_10sdp"
+        android:textColor="@color/black"
+        android:singleLine="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/boxcardview"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

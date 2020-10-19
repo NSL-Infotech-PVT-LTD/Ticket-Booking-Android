@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/sign_up_type_bg"
+        tools:context=".activity.signuptype.SignUpTypeActivity">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <ImageView
+                    android:id="@+id/img_sign"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_80sdp"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:src="@drawable/login_logo"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/registerWithUsTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:gravity="center"
+                    android:text="@string/register_with_us"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/img_sign" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    app:cardCornerRadius="@dimen/_5sdp"
+                    app:layout_constraintBottom_toTopOf="@+id/bySignUpAgreeTxt"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/registerWithUsTxt">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/areYouNewTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_30sdp"
+                            android:gravity="center"
+                            android:text="@string/are_you_new"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_20sdp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/signUpEmailBtn"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_50sdp"
+                            android:layout_marginHorizontal="@dimen/_20sdp"
+                            android:layout_marginTop="@dimen/_30sdp"
+                            android:background="@drawable/signup_with_email"
+                            android:gravity="center"
+                            android:text="@string/signup_with_email"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="12sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/areYouNewTxt" />
+
+                        <ImageView
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_marginStart="@dimen/_40sdp"
+                            android:src="@drawable/email_drawable"
+                            app:layout_constraintBottom_toBottomOf="@+id/signUpEmailBtn"
+                            app:layout_constraintStart_toStartOf="@id/signUpEmailBtn"
+                            app:layout_constraintTop_toTopOf="@id/signUpEmailBtn" />
+
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/orTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:gravity="center"
+                            android:text="@string/or"
+                            android:textColor="@color/grey_color"
+                            android:textSize="@dimen/_15sdp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/signUpEmailBtn" />
+
+                        <com.facebook.login.widget.LoginButton
+                            android:id="@+id/signUpFbBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginBottom="30dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/orTxt" />
+
+                        <ImageView
+                            android:id="@+id/fbImage"
+                            android:layout_width="@dimen/_50sdp"
+                            android:layout_height="@dimen/_50sdp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/signUpFbBtn" />
+
+                        <TextView
+                            android:id="@+id/fbname"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:text="fdlkfja;l"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/fbImage" />
+
+                        <!--            <com.google.android.material.button.MaterialButton-->
+                        <!--                android:id="@+id/signUpFbBtn"-->
+                        <!--                style="@style/Widget.MaterialComponents.Button.Icon"-->
+                        <!--                android:layout_width="match_parent"-->
+                        <!--                android:layout_height="@dimen/_50sdp"-->
+                        <!--                android:layout_marginHorizontal="@dimen/_20sdp"-->
+                        <!--                android:layout_marginTop="@dimen/_10sdp"-->
+                        <!--                android:backgroundTint="@color/blue_signup"-->
+                        <!--                android:drawableStart="@drawable/fb_logo"-->
+                        <!--                android:drawablePadding="@dimen/_10sdp"-->
+                        <!--                android:paddingHorizontal="@dimen/_40sdp"-->
+                        <!--                android:text="@string/sigup_with_facebook"-->
+                        <!--                android:textAllCaps="false"-->
+                        <!--                android:textColor="@color/white"-->
+                        <!--                android:textSize="12sp"-->
+                        <!--                app:cornerRadius="@dimen/_15sdp"-->
+                        <!--                app:icon="@drawable/fb_logo"-->
+                        <!--                app:iconSize="@dimen/_30sdp"-->
+                        <!--                app:layout_constraintEnd_toEndOf="parent"-->
+                        <!--                app:layout_constraintStart_toStartOf="parent"-->
+                        <!--                app:layout_constraintTop_toBottomOf="@id/orTxt" />-->
+
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/backToLoginBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_50sdp"
+                            android:layout_marginTop="@dimen/_50sdp"
+                            android:layout_marginBottom="@dimen/_20sdp"
+                            android:backgroundTint="@color/white"
+                            android:paddingHorizontal="@dimen/_30sdp"
+                            android:text="@string/back_to_login"
+                            android:textAllCaps="false"
+                            android:textColor="@color/grey_color"
+                            android:textSize="@dimen/_12sdp"
+                            app:cornerRadius="@dimen/_15sdp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/signUpFbBtn"
+                            app:layout_constraintVertical_bias="1"
+                            app:strokeColor="@color/grey_color"
+                            app:strokeWidth="@dimen/_1sdp" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/bySignUpAgreeTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:gravity="center"
+                    android:text="@string/by_signing_up_text"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

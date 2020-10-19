@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <FrameLayout
+
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragments.googlemapfragment.MapFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/toolbarCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <include layout="@layout/toolbar_layout" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <fragment xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_150sdp"
+                app:layout_constraintTop_toBottomOf="@id/toolbarCard"
+                tools:context=".MapsActivity" />
+
+            <ImageView
+                android:id="@+id/pinDropIcon"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/pin_drop_icon"
+                app:layout_constraintBottom_toBottomOf="@id/map"
+                app:layout_constraintEnd_toEndOf="@id/map"
+                app:layout_constraintStart_toStartOf="@id/map"
+                app:layout_constraintTop_toTopOf="@id/map" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:fillViewport="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/map">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/mapAddressTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:background="@drawable/boxcardview"
+                        android:gravity="center_vertical"
+                        android:hint="@string/your_location"
+                        android:imeOptions="actionDone"
+                        android:paddingHorizontal="@dimen/_10sdp"
+                        android:textSize="@dimen/_10sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/flatEdt"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:background="@drawable/boxcardview"
+                        android:gravity="center_vertical"
+                        android:hint="@string/house_number_flat"
+                        android:imeOptions="actionDone"
+                        android:paddingHorizontal="@dimen/_10sdp"
+                        android:singleLine="true"
+                        android:textSize="@dimen/_10sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/mapAddressTxt" />
+
+                    <EditText
+                        android:id="@+id/landmarkEdt"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:background="@drawable/boxcardview"
+                        android:gravity="center_vertical"
+                        android:hint="@string/landmark"
+                        android:imeOptions="actionDone"
+                        android:paddingHorizontal="@dimen/_10sdp"
+                        android:singleLine="true"
+                        android:textSize="@dimen/_10sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/flatEdt" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/typeLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        app:layout_constraintTop_toBottomOf="@id/landmarkEdt">
+
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/homeBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/home"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_10sdp"
+                            app:backgroundTint="@color/grey_color"
+                            app:cornerRadius="@dimen/_20sdp"
+                            app:layout_constraintEnd_toStartOf="@+id/workBtn"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/workBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/work"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_10sdp"
+                            app:backgroundTint="@color/grey_color"
+                            app:cornerRadius="@dimen/_20sdp"
+                            app:layout_constraintEnd_toStartOf="@id/otherBtn"
+                            app:layout_constraintStart_toEndOf="@+id/homeBtn"
+                            app:layout_constraintTop_toTopOf="@+id/homeBtn" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/otherBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/other"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_10sdp"
+                            app:backgroundTint="@color/grey_color"
+                            app:cornerRadius="@dimen/_20sdp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/workBtn"
+                            app:layout_constraintTop_toTopOf="@+id/homeBtn" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <EditText
+                        android:id="@+id/otherTypeEdt"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:background="@drawable/boxcardview"
+                        android:gravity="center_vertical"
+                        android:hint="@string/other"
+                        android:imeOptions="actionDone"
+                        android:paddingHorizontal="@dimen/_10sdp"
+                        android:singleLine="true"
+                        android:textSize="@dimen/_10sdp"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/landmarkEdt" />
+
+                    <ImageView
+                        android:id="@+id/closeIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_close"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toTopOf="@id/otherTypeEdt"
+                        app:layout_constraintEnd_toEndOf="@id/otherTypeEdt"
+                        app:layout_constraintStart_toEndOf="@id/otherTypeEdt"
+                        app:layout_constraintTop_toTopOf="@id/otherTypeEdt" />
+
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/saveAddressBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_50sdp"
+                        android:layout_marginHorizontal="@dimen/_30sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:text="@string/save_address"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sdp"
+                        app:cornerRadius="@dimen/_20sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/typeLayout"
+                        app:layout_constraintVertical_bias="0.9" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </ScrollView>
+
+            <FrameLayout
+                android:id="@+id/loaderLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/loaderBg"
+                android:visibility="gone">
+
+                <com.wang.avi.AVLoadingIndicatorView
+                    android:id="@+id/progressBar"
+                    style="@style/AVLoadingIndicatorView"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    app:indicatorColor="@color/colorPrimary"
+                    app:indicatorName="LineScaleIndicator"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+
+                    />
+            </FrameLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+</layout>

@@ -1,0 +1,170 @@
+package com.surpriseme.user.retrofit
+
+
+import com.surpriseme.user.activity.login.Loginmodel
+import com.surpriseme.user.activity.signup.RegisterModel
+import com.surpriseme.user.activity.forgotpassword.ResetPasswordModel
+import com.surpriseme.user.data.model.UpdateProfileModel
+import com.surpriseme.user.fragments.artistbookingdetail.ArtistDetailModel
+import com.surpriseme.user.fragments.bookingdetailfragment.BookingDetailModel
+import com.surpriseme.user.fragments.bookingfragment.CustomerBookingListModel
+import com.surpriseme.user.fragments.bookingslotfragment.BookingCreateModel
+import com.surpriseme.user.fragments.changepasswordfragment.ChangePasswordModel
+import com.surpriseme.user.fragments.homefragment.ArtistModel
+import com.surpriseme.user.fragments.googlemapfragment.CreateLocationModel
+import com.surpriseme.user.fragments.locationfragment.DeleteAddressModel
+import com.surpriseme.user.fragments.locationfragment.LocationListModel
+import com.surpriseme.user.fragments.locationfragment.UpdateAddressModel
+import com.surpriseme.user.fragments.viewprofile.ViewProfileModel
+import com.surpriseme.user.fragments.notificationfragment.NotificationListModel
+import com.surpriseme.user.fragments.notificationfragment.NotificationStatusModel
+import com.surpriseme.user.activity.searchactivity.CategoryModel
+import com.surpriseme.user.fragments.notificationfragment.NotificationReadModel
+import com.surpriseme.user.util.Constants
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.Call
+import retrofit2.http.*
+
+interface RetrofitInterface {
+
+    @POST(Constants.LOGIN)
+    fun loginApi(
+        @Query(Constants.ApiKey.EMAIL) email: String,
+        @Query(Constants.ApiKey.PASSWORD) password: String,
+        @Query(Constants.ApiKey.DEVICE_TOKEN) device_Token: String,
+        @Query(Constants.ApiKey.DEVICE_TYPE) device_Type: String
+    ): Call<Loginmodel>
+
+    @POST(Constants.REGISTER)
+    fun registerApi(
+        @Query(Constants.ApiKey.NAME) name: String,
+        @Query(Constants.ApiKey.EMAIL) email: String,
+        @Query(Constants.ApiKey.PASSWORD) password: String,
+        @Query(Constants.ApiKey.DEVICE_TYPE) device_Type: String,
+        @Query(Constants.ApiKey.DEVICE_TOKEN) device_Token: String
+    ): Call<RegisterModel>
+
+    @POST(Constants.RESET_PASSWORD)
+    fun resetPasswordApi(@Query(Constants.ApiKey.EMAIL) email: String): Call<ResetPasswordModel>
+
+    @POST(Constants.GET_PROFILE)
+    fun getProfileApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String): Call<ViewProfileModel>
+
+    @Multipart
+    @POST(Constants.UPDATE_PROFILE)
+    fun updateProfileApi(
+        @Header(Constants.ApiKey.AUTHORIZATION) auth: String,
+        @PartMap fields: HashMap<String, RequestBody>,
+        @Part files: MultipartBody.Part?
+    ): Call<UpdateProfileModel>
+
+    @POST(Constants.CUSTOMER_ARTIST_LIST)
+    fun artistListApi(
+        @Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+        @Header(Constants.ApiKey.CONTENT_TYPE) content_type: String,
+        @Query(Constants.ApiKey.LIMIT) limit: String,
+        @Query(Constants.ApiKey.LATITUDE) latitude: String,
+        @Query(Constants.ApiKey.LONGITUDE) longitude: String,
+        @Query(Constants.ApiKey.SEARCH) search:String
+    ): Call<ArtistModel>
+
+    @POST(Constants.CUSTOMER_ARTIST_LIST)
+    fun artistListApi(
+        @Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+        @Header(Constants.ApiKey.CONTENT_TYPE) content_type: String,
+        @Query(Constants.ApiKey.LIMIT) limit: String,
+        @Query(Constants.ApiKey.LATITUDE) latitude: String,
+        @Query(Constants.ApiKey.LONGITUDE) longitude: String,
+        @Query(Constants.ApiKey.SEARCH) search:String,
+        @Query(Constants.ApiKey.CATEGORY_IDS) categoryList:ArrayList<Int>
+    ): Call<ArtistModel>
+
+    //Customer Booking List...
+    @POST(Constants.CUSTOMER_BOOKING_LIST)
+    fun customerBookingListApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+    @Header(Constants.ApiKey.CONTENT_TYPE) content_type: String,
+    @Query(Constants.ApiKey.LIMIT) limit: String) : Call<CustomerBookingListModel>
+
+
+    // Booking Detail Api....
+    @POST(Constants.BOOKING_DETAIL)
+    fun bookingDetailApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+    @Header(Constants.ApiKey.CONTENT_TYPE) content_type: String,
+    @Query(Constants.ApiKey.ID) bookingID:String) :Call<BookingDetailModel>
+
+
+    //Create Address
+    @POST(Constants.CUSTOMER_ADDRESS_STORE)
+    fun createAddress(
+        @Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+        @Header(Constants.ApiKey.CONTENT_TYPE) content_type: String,
+        @Query(Constants.ApiKey.NAME) name: String,
+        @Query(Constants.ApiKey.STREET_ADDRESS) street_address: String,
+        @Query(Constants.ApiKey.CITY) city: String,
+        @Query(Constants.ApiKey.STATE) state: String,
+        @Query(Constants.ApiKey.ZIP) zip: String,
+        @Query(Constants.ApiKey.COUNTRY) country: String,
+        @Query(Constants.ApiKey.LATITUDE) latitude: String,
+        @Query(Constants.ApiKey.LONGITUDE) longitude: String
+    ): Call<CreateLocationModel> // Create Location model Use to While create address....
+
+    @GET(Constants.CUSTOMER_ADDRESS_LIST)
+    fun addressListApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String) :Call<LocationListModel>
+
+    @POST(Constants.DELETE_ADDRESS)
+    fun addressDeleteApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+    @Header(Constants.ApiKey.CONTENT_TYPE) content_type: String,
+    @Query(Constants.ApiKey.ID) id:String) :Call<DeleteAddressModel>
+
+    @POST(Constants.UPDATE_ADDRESS)
+    fun updateAddressApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+                         @Header(Constants.ApiKey.CONTENT_TYPE) content_type: String,
+                         @Query(Constants.ApiKey.ID) id: String,
+                         @Query(Constants.ApiKey.NAME) name: String,
+                         @Query(Constants.ApiKey.STREET_ADDRESS) street_address: String,
+                         @Query(Constants.ApiKey.CITY) city: String,
+                         @Query(Constants.ApiKey.STATE) state: String,
+                         @Query(Constants.ApiKey.ZIP) zip: String,
+                         @Query(Constants.ApiKey.COUNTRY) country: String,
+                         @Query(Constants.ApiKey.LATITUDE) latitude: String,
+                         @Query(Constants.ApiKey.LONGITUDE) longitude: String) :Call<UpdateAddressModel>
+
+
+    @POST(Constants.ARTIST_DETAIL)
+    fun artistDetailApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+    @Header(Constants.ApiKey.CONTENT_TYPE) content_type: String,
+    @Query(Constants.ApiKey.ID) id: String) :Call<ArtistDetailModel>
+
+    @POST(Constants.BOOKING_CREATE)
+    fun bookingCreateApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+    @Header(Constants.ApiKey.CONTENT_TYPE) content_type: String,
+    @Query(Constants.ApiKey.TYPE) type:String,
+    @Query(Constants.ApiKey.DATE) date:String,
+    @Query(Constants.ApiKey.FROM_TIME) fromTime:String,
+    @Query(Constants.ApiKey.TO_TIME) toTIME:String,
+    @Query(Constants.ApiKey.ARTIST_ID) artistID:String,
+    @Query(Constants.ApiKey.ADDRESS) address:String) :Call<BookingCreateModel>
+
+    @POST(Constants.CHANGE_PASSWORD)
+    fun changePasswordApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+    @Query(Constants.ApiKey.OLD_PASSWORD) oldPassword:String,
+    @Query(Constants.ApiKey.PASSWORD) password: String,
+    @Query(Constants.ApiKey.CONFIRM_PASSWORD) confirm_Password:String) :Call<ChangePasswordModel>
+
+    @POST(Constants.CATEGORY_LIST)
+    fun categoryListApi(@Header(Constants.ApiKey.CONTENT_TYPE) content_type: String) : Call<CategoryModel>
+
+    @POST(Constants.NOTIFICATION_STATUS)
+    fun notificationStatusApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+    @Query(Constants.ApiKey.IS_NOTIFY) is_notify:String) : Call<NotificationStatusModel>
+
+    @POST(Constants.NOTIFICATION_LIST)
+    fun notificationListApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+    @Query(Constants.ApiKey.LIMIT) limit:String) :Call<NotificationListModel>
+
+    @POST(Constants.NOTIFICATION_READ)
+    fun notificationReadApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+    @Query(Constants.ApiKey.ID) notificationID:String): Call<NotificationReadModel>
+
+}
