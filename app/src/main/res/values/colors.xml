@@ -39,6 +39,7 @@
     <color name="yellowChat">#F8DF4D</color>
     <color name="loaderBg">#60D7D7D7</color>
     <color name="lightPink">#FFF5F9</color>
+    <color name="chatPurple">#36396E</color>
 
 
 </resources>

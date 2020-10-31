@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -17,7 +18,6 @@ import com.surpriseme.user.activity.forgotpassword.ForgotPasswordActivity
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.CheckValidEmail
 import com.surpriseme.user.util.Constants
-import com.surpriseme.user.util.LoaderLayout
 import com.surpriseme.user.util.PrefrenceShared
 import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONException
@@ -32,8 +32,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     private var password = ""
     private lateinit var checkValidEmail: CheckValidEmail
     private lateinit var shared: PrefrenceShared
-    private lateinit var loaderLayout:LoaderLayout
     private var fbtoken: String = ""
+    private var loaderLayout:ConstraintLayout?=null
 
 
     override fun onStart() {
@@ -60,7 +60,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         loginButton.setOnClickListener(this)
         forgetTxt.setOnClickListener(this)
         accountYetTxt.setOnClickListener(this)
-        loaderLayout = LoaderLayout()
+
+        loaderLayout = findViewById(R.id.loaderLayout)
 
     }
 
@@ -94,6 +95,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         } else if (password.isEmpty()) {
             passwordEdt.error = getString(R.string.please_fill_require_field)
             passwordEdt.requestFocus()
+        } else if (password.length <8) {
+            passwordEdt.error = getString(R.string.password_should_atleast_eight_character)
+            passwordEdt.requestFocus()
         } else {
             // Hit login api here....
             loginApi()
@@ -102,7 +106,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun loginApi() {
 
-        loaderLayout.loaderPopup(this@LoginActivity)
+        loaderLayout?.visibility = View.VISIBLE
         RetrofitClient.api.loginApi(
             email,
             password,
@@ -111,7 +115,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         )
             .enqueue(object : Callback<Loginmodel> {
                 override fun onResponse(call: Call<Loginmodel>, response: Response<Loginmodel>) {
-                    loaderLayout.loaderWindow?.dismiss()
+                    loaderLayout?.visibility = View.GONE
                     if (response.body() != null) {
                         if (response.isSuccessful) {
 
@@ -146,7 +150,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 }
 
                 override fun onFailure(call: Call<Loginmodel>, t: Throwable) {
-                    loaderLayout.loaderWindow?.dismiss()
+                    loaderLayout?.visibility = View.GONE
                     Toast.makeText(
                         this@LoginActivity,
                         "" + t.message.toString(),

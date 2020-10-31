@@ -13,6 +13,11 @@
         <item name="colorControlNormal">@color/grey_color</item>
         <item name="colorControlActivated">@color/yellowChat</item>
     </style>
+
+    <style name="chatScreen" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/yellowChat</item>
+        <item name="colorControlActivated">@color/redBtnBg</item>
+    </style>
 <!--    <style name="homeActionbar" parent="Theme.MaterialComponents.Light.NoActionBar">-->
 <!--        <item name="colorPrimaryDark">@color/white</item>-->
 <!--        <item name="colorPrimary">@color/colorPrimary</item>-->

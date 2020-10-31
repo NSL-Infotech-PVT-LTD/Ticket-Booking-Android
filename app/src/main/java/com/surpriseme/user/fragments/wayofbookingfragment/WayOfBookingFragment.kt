@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.surpriseme.user.R
@@ -14,6 +15,7 @@ import com.surpriseme.user.databinding.FragmentWayOfBookingBinding
 import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.fragments.selectdateofbookingfragment.SelectDateFragment
 import com.surpriseme.user.util.Constants
+import kotlinx.android.synthetic.main.fragment_map.*
 
 
 class WayOfBookingFragment : Fragment(), View.OnClickListener {
@@ -53,6 +55,7 @@ class WayOfBookingFragment : Fragment(), View.OnClickListener {
         binding.proceedBtn.setOnClickListener(this)
         binding.radioLive.setOnClickListener(this)
         binding.radioDigital.setOnClickListener(this)
+        binding.backArrow.setOnClickListener(this)
 
         binding.radioGroup.setOnCheckedChangeListener(object :RadioGroup.OnCheckedChangeListener{
             override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
@@ -72,12 +75,20 @@ class WayOfBookingFragment : Fragment(), View.OnClickListener {
         when (v?.id) {
             R.id.proceedBtn -> {
 
-                val fragment = SelectDateFragment()
-                val transaction = fragmentManager?.beginTransaction()
-                transaction?.replace(R.id.frameContainer,fragment)
-                transaction?.addToBackStack("wayOfBooking")
-                transaction?.commit()
+                if (Constants.BOOKING_TYPE =="") {
+                    Toast.makeText(ctx,"" + ctx.resources.getString(R.string.please_choose_type_of_booking),Toast.LENGTH_SHORT).show()
 
+                }else {
+                    val fragment = SelectDateFragment()
+                    val transaction = fragmentManager?.beginTransaction()
+                    transaction?.replace(R.id.frameContainer,fragment)
+                    transaction?.addToBackStack("wayOfBooking")
+                    transaction?.commit()
+                }
+
+            }
+            R.id.backArrow -> {
+                fragmentManager?.popBackStack()
             }
 
         }

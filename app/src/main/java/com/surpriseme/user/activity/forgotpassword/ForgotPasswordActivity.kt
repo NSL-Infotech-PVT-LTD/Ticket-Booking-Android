@@ -34,7 +34,7 @@ class ForgotPasswordActivity : AppCompatActivity(), View.OnClickListener {
     private fun inIt() {
 
         continueButton.setOnClickListener(this)
-        tbackpress.setOnClickListener(this)
+        backpress.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -51,7 +51,7 @@ class ForgotPasswordActivity : AppCompatActivity(), View.OnClickListener {
                     registerApi()
                 }
             }
-            R.id.tbackpress -> {
+            R.id.backpress -> {
                 finish()
             }
         }

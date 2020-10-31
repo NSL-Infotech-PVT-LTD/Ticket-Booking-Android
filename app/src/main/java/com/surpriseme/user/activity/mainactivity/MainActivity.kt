@@ -6,14 +6,17 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.surpriseme.user.R
 import com.surpriseme.user.fragments.artistbookingdetail.ArtistBookingFragment
 import com.surpriseme.user.fragments.bookingdetailfragment.BookingDetailFragment
 import com.surpriseme.user.fragments.bookingfragment.BookingFragment
-import com.surpriseme.user.fragments.chatfragment.ChatFragment
+import com.surpriseme.user.fragments.chatFragment.ChatFragment
+import com.surpriseme.user.fragments.chatListfragment.ChatListFragment
 import com.surpriseme.user.fragments.homefragment.HomeFragment
 import com.surpriseme.user.fragments.viewprofile.ProfileFragment
+import com.surpriseme.user.fragments.wayofbookingfragment.WayOfBookingFragment
 import com.surpriseme.user.util.Constants
 import kotlinx.android.synthetic.main.activity_main.*
 import net.alhazmy13.mediapicker.Image.ImagePicker
@@ -28,6 +31,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+        bottomNav.menu.findItem(R.id.navHome).setTitle("")
+        bottomNav.menu.findItem(R.id.navHome).icon = ContextCompat.getDrawable(this@MainActivity,R.drawable.home_icon)
+        bottomNav.menu.findItem(R.id.navBooking).setTitle(R.string.booking)
+        bottomNav.menu.findItem(R.id.navBooking).icon = null
+        bottomNav.menu.findItem(R.id.navChat).setTitle(R.string.chat)
+        bottomNav.menu.findItem(R.id.navChat).icon = null
+
         if (intent.hasExtra("bookingModel")) {
             val model = intent.getSerializableExtra("bookingModel")
             val bundle = Bundle()
@@ -37,34 +48,100 @@ class MainActivity : AppCompatActivity() {
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.frameContainer,fragment)
             transaction.commit()
+        } else if (intent.hasExtra("bookingId")) {
+            val bookingID = intent.getStringExtra("bookingId")
+            if (bookingID != null) {
+                val bundle = Bundle()
+                bundle.putString("bookingId", bookingID)
+                val fragment = BookingDetailFragment()
+                fragment.arguments = bundle
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.frameContainer, fragment)
+                transaction.commit()
+            }
+        }else if (intent.hasExtra("chatId")) {
+            val chatID = intent.getStringExtra("chatId")
+            if (chatID !=null) {
+                val bundle = Bundle()
+                bundle.putString("chatId", chatID)
+                val fragment = ChatFragment()
+                fragment.arguments = bundle
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.frameContainer, fragment)
+                transaction.commit()
+            }
+
+        } else if (intent.hasExtra("artistID")) {
+            val artistID = intent.getStringExtra("artistID")
+            val fragment = ArtistBookingFragment()
+            val bundle = Bundle()
+            bundle.putString("artistID", artistID)
+            fragment.arguments = bundle
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.frameContainer, fragment)
+            transaction.commit()
+        } else if (intent.hasExtra("artistBook")) {
+            val fragment = WayOfBookingFragment()
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.frameContainer, fragment)
+            transaction.commit()
+        } else {
+            loadFragment(HomeFragment())
         }
-        loadFragment(HomeFragment())
         bottomNav.setOnNavigationItemSelectedListener {
             when(it.itemId) {
 
                 R.id.navHome -> {
                     Constants.SAVED_LOCATION = false
                     loadFragment(HomeFragment())
+                    bottomNav.menu.findItem(R.id.navHome).setTitle("")
+                    bottomNav.menu.findItem(R.id.navHome).icon = ContextCompat.getDrawable(this@MainActivity,R.drawable.home_icon)
+
+                    bottomNav.menu.findItem(R.id.navBooking).setTitle(R.string.booking)
+                    bottomNav.menu.findItem(R.id.navBooking).icon = null
+
+                    bottomNav.menu.findItem(R.id.navChat).setTitle(R.string.chat)
+                    bottomNav.menu.findItem(R.id.navChat).icon = null
+
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.navBooking -> {
                     loadFragment(BookingFragment())
+                    bottomNav.menu.findItem(R.id.navBooking).setTitle("")
+                    bottomNav.menu.findItem(R.id.navBooking).icon = ContextCompat.getDrawable(this@MainActivity, R.drawable.calender_icon)
+
+                    bottomNav.menu.findItem(R.id.navHome).setTitle(R.string.home)
+                    bottomNav.menu.findItem(R.id.navHome).icon = null
+
+                    bottomNav.menu.findItem(R.id.navChat).setTitle(R.string.chat)
+                    bottomNav.menu.findItem(R.id.navChat).icon = null
+
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.navChat -> {
-                    loadFragment(ChatFragment())
+                    loadFragment(ChatListFragment())
+                    bottomNav.menu.findItem(R.id.navChat).setTitle("")
+                    bottomNav.menu.findItem(R.id.navChat).icon = ContextCompat.getDrawable(this@MainActivity,R.drawable.chat_icon)
+
+                    bottomNav.menu.findItem(R.id.navHome).setTitle(R.string.home)
+                    bottomNav.menu.findItem(R.id.navHome).icon = null
+
+                    bottomNav.menu.findItem(R.id.navBooking).setTitle(R.string.booking)
+                    bottomNav.menu.findItem(R.id.navBooking).icon = null
                     return@setOnNavigationItemSelectedListener true
                 }
                 else -> false
             }
 
         }
+
+
+
     }
 
     private fun loadFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.frameContainer, fragment)
-        transaction.addToBackStack("main")
         transaction.commit()
 
     }

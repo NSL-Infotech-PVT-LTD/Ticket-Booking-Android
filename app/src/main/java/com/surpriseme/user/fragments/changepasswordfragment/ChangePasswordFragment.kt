@@ -51,7 +51,7 @@ class ChangePasswordFragment : Fragment(), View.OnClickListener {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_change_password,container,false)
         val view = binding.root
         shared = PrefrenceShared(ctx)
-        tbackpress = view.findViewById(R.id.tbackpress)
+        tbackpress = view.findViewById(R.id.backpress)
 
         init()
 
@@ -96,8 +96,8 @@ class ChangePasswordFragment : Fragment(), View.OnClickListener {
                     }
                 }
             }
-            R.id.tbackpress -> {
-                replaceFragment(ProfileFragment())
+            R.id.backpress -> {
+                fragmentManager?.popBackStack()
             }
         }
     }

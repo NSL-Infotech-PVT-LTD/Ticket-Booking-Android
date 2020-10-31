@@ -21,25 +21,24 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <ImageView
-                    android:id="@+id/backArrow"
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/backpress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:src="@drawable/ic_baseline_keyboard_arrow_left_24"/>
-                <TextView
-                    android:id="@+id/txt_back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toEndOf="@id/backArrow"
+                    android:singleLine="true"
                     android:text="@string/back"
+                    android:textAllCaps="true"
                     android:textColor="@color/black"
-                    app:layout_constraintTop_toTopOf="@id/backArrow"
-                    app:layout_constraintBottom_toBottomOf="@id/backArrow"
-                    android:textSize="@dimen/_15sdp"/>
+                    android:textSize="@dimen/_12sdp"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+
+                    android:drawableStart="@drawable/ic_baseline_keyboard_arrow_left_24"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

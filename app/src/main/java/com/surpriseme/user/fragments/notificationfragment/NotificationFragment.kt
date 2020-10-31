@@ -9,14 +9,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import com.android.volley.toolbox.JsonObjectRequest
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.surpriseme.user.R
 import com.surpriseme.user.databinding.FragmentNotificationBinding
 import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.fragments.bookingdetailfragment.BookingDetailFragment
-import com.surpriseme.user.fragments.chatfragment.ChatFragment
+import com.surpriseme.user.fragments.chatListfragment.ChatListFragment
 import com.surpriseme.user.fragments.homefragment.HomeFragment
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
@@ -66,7 +65,7 @@ class NotificationFragment : Fragment(),NotificationListAdapter.NotificationDeta
         notificationListApi()
         binding?.backpress?.setOnClickListener {
             // backpress code....
-            loadFragment(HomeFragment())
+            fragmentManager?.popBackStack()
         }
 
         // checking Switch is on or off....
@@ -226,7 +225,7 @@ class NotificationFragment : Fragment(),NotificationListAdapter.NotificationDeta
         Constants.BOOKING = false
         if (targetModel == Constants.TARGET_MODEL_MESSAGE) {
             val bundle = Bundle()
-            val fragment = ChatFragment()
+            val fragment = ChatListFragment()
             bundle.putString("chatId",id)
             fragment.arguments = bundle
             val transaction = fragmentManager?.beginTransaction()
@@ -267,7 +266,7 @@ class NotificationFragment : Fragment(),NotificationListAdapter.NotificationDeta
                     if (response.body() !=null) {
                         if (response.isSuccessful){
 //                            Snackbar.make(binding?.notificationContainer!!,response.body()?.data?.message!!,BaseTransientBottomBar.LENGTH_SHORT).show()
-                            Toast.makeText(ctx,"" + response.body()?.data?.message,Toast.LENGTH_SHORT).show()
+
                         }
                     } else {
                         val jsonObject:JSONObject

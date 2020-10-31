@@ -30,7 +30,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/searchLayout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="@color/greyLighter"
@@ -55,6 +54,15 @@
                     android:textSize="@dimen/_10sdp"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/searchLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:visibility="visible"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    app:layout_constraintTop_toBottomOf="@id/searchEdt"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/searchRecycler"
                     android:layout_width="match_parent"
@@ -65,18 +73,20 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/searchEdt"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
                 <ImageView
                     android:id="@+id/filterIcon"
-                    android:layout_width="@dimen/_70sdp"
-                    android:layout_height="@dimen/_70sdp"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
                     android:layout_marginEnd="@dimen/_30sdp"
                     android:layout_marginBottom="@dimen/_50sdp"
                     android:src="@drawable/filter_icon"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                 <com.google.android.material.textview.MaterialTextView

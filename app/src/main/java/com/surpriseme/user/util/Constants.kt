@@ -24,6 +24,10 @@ object Constants {
     const val NOTIFICATION_STATUS = "notification/status"
     const val NOTIFICATION_LIST = "notification/list"
     const val NOTIFICATION_READ = "notification/read"
+    const val CHAT_LIST = "chat/getItemByReceiverId"
+    const val CHAT = "chat/getItemsByReceiverId"
+    const val BOOKING_STATUS = "customer/change-booking-status"
+    const val BOOKING_SLOT_LIST = "customer/bookslot/list"
 
 
     const val PLEASE_CLICK_BACK_AGAIN_To_EXIT = "Please click BACK again to exit"
@@ -53,6 +57,23 @@ object Constants {
     var BOOKING = false
     const val TARGET_MODEL_MESSAGE = "Message"
     const val TARGET_MODEL_BOOKING = "Booking"
+    const val ACCEPTED = "accepted"
+    const val PENDING = "pending"
+    const val REJECTED = "rejected"
+    const val CONFIRMED = "confirmed"
+    const val PROCESSING = "processing"
+    const val CANCEL = "cancel"
+    var CHAT_ID =""
+    var OTP = 0
+    const val SELECT_REASON =  "Select Reason"
+    const val ARTIST_DENIED_DUTY =  "Artist Denied Duty"
+    const val ARTIST_IS_UNREACHABLE =  "Artist is unreachable"
+    const val ARTIST_NOT_PICKING_CALL =  "Artist not picking call"
+    const val ASENDING ="asc"
+    const val DESENDING ="dsc"
+    var FROM_TIME = ""
+    var TO_TIME = ""
+
 
     object ApiKey {
         const val AUTHORIZATION = "Authorization"
@@ -83,6 +104,14 @@ object Constants {
         const val ADDRESS = "address"
         const val CATEGORY_IDS = "category_ids"
         const val IS_NOTIFY = "is_notify"
+        const val RECEIVER_ID = "receiver_id"
+        const val BOOKING_ID = "booking_id"
+        const val STATUS = "status"
+        const val REPORT = "report"
+        const val FROM_DATE = "from_date"
+        const val TO_DATE = "to_date"
+        const val SORT_BY = "sort_by"
+        const val SHOW_TYPE = "show_type"
 
 
 

@@ -47,7 +47,10 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
     private var username = ""
     lateinit var thumbnail: Bitmap
     private lateinit var file: File
-    var userImage: MultipartBody.Part? = null
+    private var userImage: MultipartBody.Part? = null
+    private var toolProfileTxt:MaterialTextView?=null
+    private var toolBackpress:MaterialTextView?=null
+
 
 
     //    private var loaderLayout: FrameLayout? = null
@@ -73,21 +76,24 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
         ((ctx as MainActivity)).hideBottomNavigation()
 
         getProfileApi()
-        inIt()
+        inIt(view)
 
         return view
     }
 
-    private fun inIt() {
+    private fun inIt(view:View) {
 
 //        loaderLayout = view.findViewById(R.id.loaderLayoutprofile)
-        binding.backArrowIcon.setOnClickListener(this)
+        toolBackpress = view.findViewById(R.id.backpress)
+        toolProfileTxt = view.findViewById(R.id.toolProfileTxt)
+        toolProfileTxt?.visibility =View.VISIBLE
         binding.logoutTxt.setOnClickListener(this)
         binding.editProfileBtn.setOnClickListener(this)
         binding.updateprofilebtn.setOnClickListener(this)
         binding.cameraIcon.setOnClickListener(this)
         binding.changePasswordText.setOnClickListener(this)
         binding.settingsTxt.setOnClickListener(this)
+        toolBackpress?.setOnClickListener(this)
 
         binding.usernameEdt.isEnabled = false
         binding.emailEdt.isEnabled = false
@@ -98,12 +104,12 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
     override fun onClick(v: View?) {
         when (v?.id) {
 
-            R.id.backArrowIcon -> {
-                loadFragment(HomeFragment())
+            R.id.backpress -> {
+                fragmentManager?.popBackStack()
             }
             R.id.logoutTxt -> {
 
-                alertPopUp()
+                logoutPop()
             }
             R.id.editProfileBtn -> {
                 binding.editProfileBtn.visibility = View.GONE
@@ -196,7 +202,7 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
 
         val transaction = fragmentManager?.beginTransaction()
         transaction?.replace(R.id.frameContainer, fragment)
-        transaction?.addToBackStack(null)
+        transaction?.addToBackStack("profileFragment")
         transaction?.commit()
 
     }
@@ -255,12 +261,12 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
 
     }
 
-    private fun alertPopUp() {
+    private fun logoutPop() {
 
         val layoutInflater: LayoutInflater =
             ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        val popUp: View = layoutInflater.inflate(R.layout.lopout_popup, null)
+        val popUp: View = layoutInflater.inflate(R.layout.item_custom_logout, null)
         val popUpWindowReport = PopupWindow(
             popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
             ConstraintLayout.LayoutParams.MATCH_PARENT, true
@@ -274,10 +280,10 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
         popUpWindowReport.isTouchable = false
         popUpWindowReport.isOutsideTouchable = false
 
-        val ok: MaterialTextView = popUp.findViewById(R.id.okTv)
-        val cancelTv: MaterialTextView = popUp.findViewById(R.id.cancelTv)
+        val yes: MaterialTextView = popUp.findViewById(R.id.yes)
+        val cancelTv: MaterialTextView = popUp.findViewById(R.id.cancel)
 
-        ok.setOnClickListener {
+        yes.setOnClickListener {
             shared.clearShared()
             val loginActivity = Intent(ctx, LoginActivity ::class.java)
             startActivity(loginActivity)

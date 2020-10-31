@@ -38,7 +38,7 @@
                             <ImageView
                                 android:id="@+id/image"
                                 android:layout_width="match_parent"
-                                android:layout_height="@dimen/_100sdp"
+                                android:layout_height="@dimen/_140sdp"
                                 android:adjustViewBounds="true"
                                 android:scaleType="centerCrop"
                                 android:src="@drawable/diljit"
@@ -49,6 +49,15 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </androidx.cardview.widget.CardView>
 
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/categoryTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/imgCard"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textSize="@dimen/_10sdp"
+                android:textColor="@color/black"/>
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/name"
@@ -61,7 +70,7 @@
                         android:textSize="@dimen/_14sdp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/imgCard" />
+                        app:layout_constraintTop_toBottomOf="@id/categoryTxt" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/description"
@@ -117,9 +126,6 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/seeArtistProfile" />
-
-
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

@@ -45,19 +45,53 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/dateDispText"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/dateLayout"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_100sdp"
+                android:layout_height="@dimen/_80sdp"
                 android:background="@color/colorPrimary"
                 app:layout_constraintTop_toBottomOf="@id/toolbarLayout"
                 app:layout_constraintStart_toStartOf="parent"
-                android:text="24 September, 2020\n Thursday"
                 android:gravity="center_vertical"
                 android:paddingStart="@dimen/_20sdp"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_16sdp"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/dateDispText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textSize="@dimen/_14sdp"
+                    android:textColor="@color/white"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/weekDayText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/dateDispText"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:textSize="@dimen/_12sdp"
+                    android:inputType="textCapSentences"
+                    android:textColor="@color/white"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/slotDetailLayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@+id/dateLayout"
+                app:layout_constraintBottom_toBottomOf="parent">
+
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/clearAllBtn"
@@ -65,12 +99,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/clear_all"
                 android:textColor="@color/white"
-                app:layout_constraintTop_toBottomOf="@+id/dateDispText"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
-                app:cornerRadius="@dimen/_10sdp"
-                android:textSize="@dimen/_8sdp"
+                android:paddingHorizontal="@dimen/_20sdp"
+                app:cornerRadius="@dimen/_5sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textAllCaps="false"/>
 
             <com.google.android.material.textview.MaterialTextView
@@ -79,31 +114,30 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_20sdp"
                 android:text="@string/select_time_of_booking"
-                app:layout_constraintTop_toBottomOf="@id/clearAllBtn"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:textSize="@dimen/_16sdp"
+                android:textSize="@dimen/_14sdp"
                 android:gravity="center"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:textColor="@color/black"
-                android:textStyle="bold"/>
+                android:layout_marginTop="@dimen/_20sdp"
+                android:textColor="@color/black" />
 
             <ImageView
                 android:id="@+id/dottedLine"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="@dimen/_5sdp"
                 android:background="@drawable/dotted_view_line"
                 app:layout_constraintTop_toBottomOf="@id/selectDateTxt"
-                android:layout_marginHorizontal="@dimen/_20sdp"
+                app:layout_constraintStart_toStartOf="@+id/selectDateTxt"
+                app:layout_constraintEnd_toEndOf="@id/selectDateTxt"
                 android:layout_marginTop="@dimen/_5sdp"/>
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/checkAvailableTxt"
+                android:id="@+id/youMaySelectTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/check_availablity"
+                android:text="@string/you_may_select_multiple_slot"
                 app:layout_constraintTop_toBottomOf="@id/dottedLine"
                 android:layout_marginHorizontal="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_10sdp"
                 android:textSize="@dimen/_12sdp"
                 android:textColor="@color/black"/>
 
@@ -111,13 +145,13 @@
                 android:id="@+id/timeSlotRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintTop_toBottomOf="@id/checkAvailableTxt"
+                app:layout_constraintTop_toBottomOf="@id/youMaySelectTxt"
                 android:layout_marginBottom="@dimen/_10sdp"
                 app:layout_constraintBottom_toTopOf="@+id/proceedToCheckoutBtn"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginHorizontal="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_10sdp"/>
+                android:layout_marginTop="@dimen/_20sdp"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/proceedToCheckoutBtn"
@@ -126,35 +160,34 @@
                 android:text="@string/proceed_to_checkout"
                 android:textColor="@color/white"
                 android:textAllCaps="false"
+                android:backgroundTint="@color/grey_Dark_color"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginBottom="@dimen/_20sdp"
                 android:layout_marginHorizontal="@dimen/_30sdp"
                 app:cornerRadius="@dimen/_20sdp"
                 android:textSize="@dimen/_10sdp"/>
 
-            <FrameLayout
-                android:id="@+id/loaderLayout"
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/noArtistFound"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/artist_not_available_on_this_date"
+                android:gravity="center"
+                android:layout_marginHorizontal="@dimen/_30sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp"
                 android:visibility="gone"
-                android:clickable="true"
-                android:background="@color/loaderBg">
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <com.wang.avi.AVLoadingIndicatorView
-                    android:id="@+id/progressBar"
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="@dimen/_50sdp"
-                    app:indicatorName="LineScaleIndicator"
-                    style="@style/AVLoadingIndicatorView"
-                    android:layout_gravity="center_horizontal|center_vertical"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:indicatorColor="@color/colorPrimary"
-
-                    />
-            </FrameLayout>
+            <include layout="@layout/loader_layout"
+                android:id="@+id/loaderLayout"
+                android:visibility="gone"/>
 
 
 

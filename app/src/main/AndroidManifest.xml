@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".util.App"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@drawable/app_icon"
@@ -17,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.SettingsActivity"></activity>
+        <activity android:name=".activity.SettingsActivity"/>
         <activity
             android:name=".activity.searchactivity.SearchActivity"
             android:screenOrientation="portrait" /> <!-- testing.netscapelabs@gmail.com -->
@@ -81,7 +82,8 @@
             android:windowSoftInputMode="stateHidden|adjustPan" /> <!-- testing.netscape@gmail.com account is used for firebase -->
         <service
             android:name=".util.MyFirebaseMessagingService"
-            android:exported="false">
+            android:exported="true"
+            android:enabled="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

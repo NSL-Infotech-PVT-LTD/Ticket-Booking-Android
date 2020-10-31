@@ -1,91 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout>
+
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:weightSum="2"
-    android:orientation="vertical"
-    tools:context=".fragments.chatfragment.ChatFragment">
+    tools:context=".fragments.chatFragment.ChatFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1.5"
-        android:background="@color/colorPrimary">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/messageTxt"
-            android:layout_width="wrap_content"
+        <include
+            android:id="@+id/toolbarLayout"
+            layout="@layout/chat_toolbar_layout" />
+
+        <ListView
+            android:id="@+id/listchat"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:divider="@null"
+            android:stackFromBottom="true"
+            android:transcriptMode="normal"
+            android:dividerHeight="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarLayout"
+            app:layout_constraintBottom_toTopOf="@+id/msgEdt"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <EditText
+            android:id="@+id/msgEdt"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/messages"
-            android:textColor="@color/white"
-            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/msg_bg"
+            android:minHeight="@dimen/_40sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:maxLines="8"
+            android:textSize="@dimen/_10sdp"
+            android:hint="@string/type_your_message"
+            android:textColorHint="@color/black"
+            android:padding="@dimen/_10sdp"
             app:layout_constraintStart_toStartOf="parent"
-            android:textSize="@dimen/_16sdp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginStart="@dimen/_20sdp"/>
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:inputType="textCapSentences|textMultiLine"
+            app:layout_constraintEnd_toStartOf="@id/sendBtnCard"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <ImageView
+        <androidx.cardview.widget.CardView
+            android:id="@+id/sendBtnCard"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_40sdp"
-            android:src="@drawable/chat_icon_white"
+            app:layout_constraintBottom_toBottomOf="@+id/msgEdt"
+            app:layout_constraintTop_toTopOf="@+id/msgEdt"
+            android:layout_marginEnd="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/messageTxt"
-            android:layout_marginEnd="@dimen/_20sdp"/>
+            app:cardCornerRadius="@dimen/_50sdp">
 
         <ImageView
-            android:id="@+id/dottedView"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:background="@drawable/dotted_view_line_white"
-            app:layout_constraintTop_toBottomOf="@id/messageTxt"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/messageTxt"/>
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/messageDemoTxt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/you_may_edit_booking"
-            android:textColor="@color/white"
-            app:layout_constraintTop_toBottomOf="@+id/dottedView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:textSize="@dimen/_12sdp"
-            android:layout_marginEnd="@dimen/_30sdp"
-            android:layout_marginStart="@dimen/_20sdp"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.5">
-
-        <ImageView
-            android:id="@+id/noArtistIcon"
+            android:id="@+id/sendBtn"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_150sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:src="@drawable/no_artist_icon"/>
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_send_icon_24"
+            android:padding="@dimen/_10sdp"
+            android:background="@color/colorPrimary"
+            />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/no_artists_found"
-            app:layout_constraintTop_toBottomOf="@id/noArtistIcon"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:textSize="@dimen/_14sdp"
-            android:gravity="center"
-            android:textColor="@color/black"/>
+        </androidx.cardview.widget.CardView>
+
+
+        <include layout="@layout/loader_layout"
+            android:id="@+id/loaderLayout"
+            android:visibility="gone"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-</LinearLayout>
+</FrameLayout>
+</layout>

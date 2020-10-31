@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/mprogressBar"
+        style="@style/AVLoadingIndicatorView"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_70sdp"
+        android:layout_gravity="center_horizontal|center_vertical"
+        app:indicatorColor="@color/colorPrimary"
+        app:indicatorName="LineSpinFadeLoaderIndicator"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/pls"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pleasewait"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_16sdp"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/_20sdp"
+        app:layout_constraintStart_toStartOf="@id/mprogressBar"
+        app:layout_constraintEnd_toEndOf="@id/mprogressBar"
+        app:layout_constraintTop_toBottomOf="@+id/mprogressBar"/>
+
+    <TextView
+        android:id="@+id/updatingTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/pls"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="@string/updating_your_profile"
+        android:textSize="@dimen/_14sdp"
+        android:textColor="@color/grey_Dark_color"
+        android:layout_marginVertical="@dimen/_20sdp"
+        android:layout_marginHorizontal="@dimen/_20sdp"/>
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_10sdp"
+        android:textColor="@color/grey_Dark_color"
+        android:text="@string/splash_dummy_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"
+        android:layout_marginHorizontal="@dimen/_30sdp"
+        app:layout_constraintTop_toBottomOf="@id/updatingTxt"
+        android:layout_marginTop="@dimen/_10sdp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/do_not_press_or_go_back"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="@dimen/_20sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

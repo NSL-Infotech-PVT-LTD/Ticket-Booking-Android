@@ -22,7 +22,6 @@
         app:layout_constraintBottom_toBottomOf="@id/addressIcon"
         app:layout_constraintEnd_toStartOf="@id/addressDeleteIcon"
         android:layout_marginEnd="@dimen/_10sdp"
-        android:text="@string/home"
         android:textColor="@color/black"
         android:textStyle="bold"
         android:textSize="@dimen/_12sdp"
@@ -57,7 +56,6 @@
         app:layout_constraintStart_toStartOf="@+id/addressTypeTxt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/addressIcon"
-        android:text="@string/home"
         android:paddingVertical="@dimen/_5sdp"
         android:textSize="@dimen/_10sdp" />
 

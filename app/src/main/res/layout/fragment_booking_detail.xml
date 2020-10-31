@@ -8,8 +8,10 @@
         tools:context=".fragments.bookingdetailfragment.BookingDetailFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bookingDetailContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="visible">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/toolbarLayout"
@@ -62,7 +64,7 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/imageCard"
-                android:layout_width="@dimen/_120sdp"
+                android:layout_width="@dimen/_150sdp"
                 android:layout_height="@dimen/_100sdp"
                 app:cardElevation="5dp"
                 app:cardCornerRadius="@dimen/_10sdp"
@@ -104,11 +106,9 @@
                 android:id="@+id/profileName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_20sdp"
+                android:textSize="@dimen/_14sdp"
                 android:textStyle="bold"
-
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:singleLine="true"
@@ -172,7 +172,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10sdp"
-                android:drawablePadding="@dimen/_5sdp"
+                android:textStyle="bold"
+                android:drawablePadding="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 app:drawableStartCompat="@drawable/ic_calendar_today_24" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -185,7 +187,8 @@
                 app:layout_constraintHorizontal_bias="0"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10sdp"
-                android:drawablePadding="@dimen/_5sdp"
+                android:textStyle="bold"
+                android:drawablePadding="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 app:drawableStartCompat="@drawable/ic_time_24" />
 
@@ -195,17 +198,36 @@
                 android:layout_height="@dimen/_10sdp"
                 android:src="@drawable/dotted_view_line"
                 app:layout_constraintTop_toBottomOf="@+id/timeTxt"
+                app:layout_constraintBottom_toTopOf="@+id/chatBtn"
+                app:layout_constraintVertical_bias="0"
+                android:layout_marginBottom="@dimen/_20sdp"
                 android:layout_marginHorizontal="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_5sdp"/>
+                android:layout_marginTop="@dimen/_10sdp"/>
+
+            <RatingBar
+                android:id="@+id/ratingbar"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:rating="3"
+                android:stepSize="1"
+                android:visibility="gone"
+                android:theme="@style/RatingBar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dottedLine2" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/chatBtn"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_50sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="@dimen/_30sdp"
+                app:layout_constraintBottom_toTopOf="@+id/statusBtn"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:text="@string/chat"
+                android:visibility="gone"
                 android:textAllCaps="false"
                 android:textSize="@dimen/_12sdp"
                 android:layout_marginHorizontal="@dimen/_30sdp"
@@ -213,6 +235,21 @@
                 app:icon="@drawable/chat_icon"
                 app:iconGravity="textStart"
                 app:iconSize="@dimen/_25sdp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/statusBtn"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:text="@string/cancel"
+                android:textAllCaps="false"
+                android:visibility="gone"
+                android:textSize="@dimen/_12sdp"
+                android:layout_marginHorizontal="@dimen/_30sdp"
+                app:cornerRadius="@dimen/_16sdp" />
 
             <FrameLayout
                 android:id="@+id/loaderLayout"

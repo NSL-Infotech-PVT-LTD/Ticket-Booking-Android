@@ -10,6 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.R
 import de.hdodenhof.circleimageview.CircleImageView
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class NotificationListAdapter(val context: Context, val notiList:ArrayList<NotificationListDataModel>,
 val notificationDetail:NotificationDetail) : RecyclerView.Adapter<NotificationListAdapter.NotificationViewHolder>() {
@@ -22,8 +26,6 @@ val notificationDetail:NotificationDetail) : RecyclerView.Adapter<NotificationLi
         val notiBody = itemView.findViewById<MaterialTextView>(R.id.notiBodyMtv)
         val dateTime = itemView.findViewById<MaterialTextView>(R.id.dateTimeMtv)
 
-
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {
@@ -35,10 +37,6 @@ val notificationDetail:NotificationDetail) : RecyclerView.Adapter<NotificationLi
     override fun onBindViewHolder(holder: NotificationViewHolder, position: Int) {
 
         val model = notiList[position]
-
-
-        
-
         if (notiList[position].is_read == "0") {
             holder.notiActiveIcon.visibility = View.VISIBLE
             holder.itemView.background = ContextCompat.getDrawable(context,R.drawable.notification_bg_grey)
@@ -49,6 +47,10 @@ val notificationDetail:NotificationDetail) : RecyclerView.Adapter<NotificationLi
 
         holder.notiTitle.text = model.title
         holder.notiBody.text = model.body
+        val myDate = model.created_at
+        holder.dateTime.text = uTCToLocal("yyyy-MM-dd hh:mm:ss", "dd-MMM, HH:mm", myDate)
+
+
 
         holder.itemView.setOnClickListener {
             notificationDetail.detail(model.booking_detail.target_id.toString(),model.id.toString(),model.booking_detail.target_model)
@@ -61,5 +63,27 @@ val notificationDetail:NotificationDetail) : RecyclerView.Adapter<NotificationLi
 
     interface NotificationDetail{
         fun detail(id:String,notificationId:String, targetModel:String)
+    }
+
+    //Converting Utc Time to Local time
+    fun uTCToLocal(
+        dateFormatInPut: String?,
+        dateFomratOutPut: String?,
+        datesToConvert: String?
+    ): String? {
+        var dateToReturn = datesToConvert
+        val sdf = SimpleDateFormat(dateFormatInPut)
+        sdf.timeZone = TimeZone.getTimeZone("UTC")
+        var gmt: Date? = null
+        val sdfOutPutToSend =
+            SimpleDateFormat(dateFomratOutPut)
+        sdfOutPutToSend.timeZone = TimeZone.getDefault()
+        try {
+            gmt = sdf.parse(datesToConvert)
+            dateToReturn = sdfOutPutToSend.format(gmt)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        return dateToReturn
     }
 }

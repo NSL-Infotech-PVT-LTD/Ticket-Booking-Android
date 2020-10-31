@@ -99,7 +99,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener,
         if (isServicesOk()) {
             init()
         }
-        tbackpress = view.findViewById(R.id.tbackpress)
+        tbackpress = view.findViewById(R.id.backpress)
         tbackpress.setOnClickListener(this)
 
         if (Constants.WantToUpdateAddress) {
@@ -261,7 +261,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener,
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.tbackpress -> {
+            R.id.backpress -> {
 
                 val fragment = LocationFragment()
                 val transaction = fragmentManager?.beginTransaction()

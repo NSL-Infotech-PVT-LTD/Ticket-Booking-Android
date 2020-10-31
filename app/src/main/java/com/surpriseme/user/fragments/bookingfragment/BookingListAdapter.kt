@@ -65,7 +65,7 @@ class BookingListAdapter(val context: Context, val bookingList: ArrayList<Bookin
         }
 
         holder.type.text = bookingModel.type        // Display type of booking
-        holder.status.text = bookingModel.status    // Display Status of booking
+        holder.status.text = holder.itemView.resources.getString(R.string.status) +" "+ bookingModel.status    // Display Status of booking
 
         // Display date at top of card....
         var date = bookingModel.date
@@ -85,7 +85,7 @@ class BookingListAdapter(val context: Context, val bookingList: ArrayList<Bookin
         holder.name.text = bookingModel.artist_detail.name
 
         // Display date inside card....
-        val outSdf = SimpleDateFormat("dd-MMMM-yyyy")
+        val outSdf = SimpleDateFormat("dd MMMM, yyyy")
         val cardDate = outSdf.format(newDate)
         holder.dateTxt.text = cardDate.toString()
 

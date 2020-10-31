@@ -14,29 +14,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/tbackpress"
-            android:layout_width="@dimen/_30sdp"
-            android:layout_height="@dimen/_30sdp"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/back"
+            android:id="@+id/backpress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:text="@string/back"
+            android:padding="@dimen/_5sdp"
             android:textAllCaps="true"
             android:textColor="@color/black"
-            android:textSize="@dimen/_14sdp"
-            app:layout_constraintBottom_toBottomOf="@+id/tbackpress"
-            app:layout_constraintStart_toEndOf="@+id/tbackpress"
-            app:layout_constraintTop_toTopOf="@+id/tbackpress" />
+            android:textSize="@dimen/_12sdp"
+            android:gravity="center"
+            android:drawableStart="@drawable/ic_baseline_keyboard_arrow_left_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/toolProfileTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/profile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textColor="@color/black"
+            android:visibility="gone"
+            android:textStyle="bold"
+            android:textSize="@dimen/_14sdp"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

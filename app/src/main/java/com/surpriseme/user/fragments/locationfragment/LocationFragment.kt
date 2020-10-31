@@ -59,7 +59,7 @@ class LocationFragment : Fragment(), View.OnClickListener,
         val view = binding.root
         shared = PrefrenceShared(ctx)
 
-        tbackpress = view.findViewById(R.id.tbackpress) // Toolbar back arrow click listner....
+        tbackpress = view.findViewById(R.id.backpress) // Toolbar back arrow click listner....
         tbackpress.setOnClickListener(this) //  Initializing the Toolbar
         binding.addAddressBtn.setOnClickListener(this) //  Initializing the Add Address Button click
 
@@ -87,7 +87,7 @@ class LocationFragment : Fragment(), View.OnClickListener,
     override fun onClick(v: View?) {
         when (v?.id) {
 
-            R.id.tbackpress -> {
+            R.id.backpress -> {
 
                 replaceFragment(HomeFragment())
             }

@@ -37,7 +37,7 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun init() {
         headerTv = findViewById(R.id.headerTxt)
-        tbackpress = findViewById(R.id.tbackpress)
+        tbackpress = findViewById(R.id.backpress)
         binding?.termConditionTxt?.setOnClickListener(this)
         binding?.privacyPolicyTxt?.setOnClickListener(this)
         binding?.aboutUsTxt?.setOnClickListener(this)
@@ -85,7 +85,7 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener {
                 mSettings = false
                 mSettingsLayout = true
             }
-            R.id.tbackpress -> {
+            R.id.backpress -> {
                 if (mSettings) {
                     finish()
                 }else {

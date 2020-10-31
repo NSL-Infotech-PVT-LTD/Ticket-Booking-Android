@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.R
+import com.surpriseme.user.util.Constants
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -15,14 +16,13 @@ import kotlin.collections.ArrayList
 
 class BookSlotAdapter(
     private val context: Context,
-    private val list: Array<String>,
+    private val list: ArrayList<SlotDataModel>,
     private val selectDate: SelectDate,
     private val bookSlot: BookSlot
 ) :
     RecyclerView.Adapter<BookSlotAdapter.BookSlotViewHolder>() {
 
     private var rowPosition: Int = -1
-    private var time = ""
     private var fromTime = ""
     private var toTime = ""
     var setFromTime: String? = null
@@ -32,11 +32,12 @@ class BookSlotAdapter(
     var isClear = false
     private var selectedSlot: ArrayList<Int> = ArrayList()
 
-    inner class BookSlotViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class BookSlotViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val timeTxt = itemView.findViewById<MaterialTextView>(R.id.timeTxt)!!
 
     }
+
 
     override fun getItemViewType(position: Int): Int {
         return position
@@ -61,52 +62,85 @@ class BookSlotAdapter(
 
     override fun onBindViewHolder(holder: BookSlotViewHolder, position: Int) {
 
-        holder.timeTxt.text = list[position]
-        if (isClear) {
-            slotPosition = null
-            holder.timeTxt.background = ContextCompat.getDrawable(context, R.drawable.boxcardview)
-        } else if (slotPosition != null && position in lowPosition!!..slotPosition!!) {
-            holder.timeTxt.background = ContextCompat.getDrawable(context, R.drawable.time_slot_bg)
+        holder.timeTxt.text = list[position].hour
+        if (list[position].booked == "1") {
+            holder.itemView.background = ContextCompat.getDrawable(context, R.drawable.slot_grey)
+        } else if (list[position].date.isEmpty()) {
+            holder.itemView.background = ContextCompat.getDrawable(context, R.drawable.slot_grey)
         }
+
+        holder.itemView.isEnabled = !(list[position].booked == "1" || list[position].date.isEmpty())
         holder.itemView.setOnClickListener {
+
             bookSlot.slotPosition(position)
             rowPosition = position
             selectedSlot.add(rowPosition)
+//            list[position].isBooked = true
+//
+//            if (list[position].isBooked) {
+//                list.add(list[position])
+//                fromTime = list[0].hour
+//                toTime = list[list.size - 1].hour
+//                time = list[position].hour // gettimg time from List
+//                fromTime = time.split(" - ")[0]   // gettimg fromTime from List
+//                toTime = time.split(" - ")[1]     // // gettimg toTime from List
+//
+//                Constants.FROM_TIME = fromTime
+//                Constants.TO_TIME = toTime
+                selectDate.date(fromTime, toTime, list)
+//            }
+
+
 
             if (slotPosition == null) {
                 isClear = false
                 holder.timeTxt.background =
-                    ContextCompat.getDrawable(context, R.drawable.time_slot_bg)
+                    ContextCompat.getDrawable(context, R.drawable.slot_green)
             }
-            time = list[position]           // gettimg time from List
-            fromTime = time.split("-")[0]   // gettimg fromTime from List
-            toTime = time.split("-")[1]     // // gettimg toTime from List
-
-            val fromDateFormat = SimpleDateFormat("hh:mm aa")
-
-            val fromConvert = SimpleDateFormat("HH:mm")
-            try {
-                val getDate: Date = fromDateFormat.parse(fromTime)
-                if (getDate != null) {
-                    setFromTime = fromConvert.format(getDate)
-                }
-            } catch (e: ParseException) {
-                e.printStackTrace()
-            }
-
-            val toDateFormat = SimpleDateFormat("hh:mm aa")
-
-            val toConvert = SimpleDateFormat("HH:mm")
-            try {
-                val getDate: Date = toDateFormat.parse(toTime)
-                if (getDate != null) {
-                    setToTime = toConvert.format(getDate)
-                }
-            } catch (e: ParseException) {
-                e.printStackTrace()
-            }
-            selectDate.date(setFromTime!!, setToTime!!)
         }
+
+        val fromDateFormat = SimpleDateFormat("hh:mm aa")
+
+        val fromConvert = SimpleDateFormat("HH:mm")
+        try {
+            val getDate: Date = fromDateFormat.parse(fromTime)
+            if (getDate != null) {
+                setFromTime = fromConvert.format(getDate)
+            }
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+
+        val toDateFormat = SimpleDateFormat("hh:mm aa")
+
+        val toConvert = SimpleDateFormat("HH:mm")
+        try {
+            val getDate: Date = toDateFormat.parse(toTime)
+            if (getDate != null) {
+                setToTime = toConvert.format(getDate)
+            }
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+
+//        if (setFromTime != null && setToTime != null)
+//            selectDate.date(setFromTime!!, setToTime!!)
+//
+
+
+        if (isClear) {
+            slotPosition = null
+            if (list[position].booked == "1" || list[position].date.isEmpty()) {
+                holder.timeTxt.background = ContextCompat.getDrawable(context, R.drawable.slot_grey)
+            } else {
+                holder.timeTxt.background =
+                    ContextCompat.getDrawable(context, R.drawable.boxcardview)
+            }
+        } else if (slotPosition != null && position in lowPosition!!..slotPosition!! && list[position].date.isNotEmpty() && list[position].booked == "0") {
+            list[position].isBooked = true
+            holder.timeTxt.background = ContextCompat.getDrawable(context, R.drawable.slot_green)
+        }
+
     }
 
 
@@ -115,7 +149,7 @@ class BookSlotAdapter(
     }
 
     interface SelectDate {
-        fun date(fromTime: String, toTime: String)
+        fun date(fromTime: String, toTime: String,slotList:ArrayList<SlotDataModel>)
     }
 
     interface BookSlot {

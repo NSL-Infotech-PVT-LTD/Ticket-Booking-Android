@@ -1,11 +1,9 @@
 package com.surpriseme.user.fragments.bookingslotfragment
 
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,11 +11,12 @@ import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.R
 import com.surpriseme.user.databinding.FragmentBookSlotBinding
-import com.surpriseme.user.activity.mainactivity.MainActivity
+import com.surpriseme.user.fragments.bookingfragment.BookingFragment
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
@@ -26,6 +25,7 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
 
 class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.SelectDate,
     BookSlotAdapter.BookSlot {
@@ -33,13 +33,17 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
     private lateinit var binding: FragmentBookSlotBinding
     private lateinit var ctx: Context
     private var date = ""
+    private var dispDate = ""
+    private var weekday = ""
     private lateinit var shared: PrefrenceShared
     private var mFromTime = ""
     private var mToTime = ""
     private var artistID = ""
     private var adapter: BookSlotAdapter? = null
     private val list = ArrayList<Int>()
-
+    private var slotList: ArrayList<SlotDataModel> = ArrayList()
+    val fakeList: ArrayList<SlotDataModel> = ArrayList()
+    private var selectedSlotList: ArrayList<SlotDataModel> = ArrayList()
     override fun onAttach(context: Context) {
         super.onAttach(context)
         ctx = context
@@ -56,7 +60,6 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
 
         init()
 
-
         return view
     }
 
@@ -66,10 +69,22 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
 
         binding.proceedToCheckoutBtn.setOnClickListener(this)
         binding.clearAllBtn.setOnClickListener(this)
+        binding.backArrow.setOnClickListener(this)
 
+        // getting date for api parameter....
         if (arguments?.getString("selectedDate") != null) {
             date = arguments?.getString("selectedDate")!!
-            binding.dateDispText.text = date
+//            binding.dateDispText.text = date
+        }
+        // getting full date to display....
+        if (arguments?.getString("displayDate") != null) {
+            dispDate = arguments?.getString("displayDate")!!
+            binding.dateDispText.text = dispDate
+        }
+        // getting weekday ....
+        if (arguments?.getString("weekday") != null) {
+            weekday = arguments?.getString("weekday")!!
+            binding.weekDayText.text = weekday
         }
         initializeRecycler()
     }
@@ -81,20 +96,43 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
             R.id.proceedToCheckoutBtn -> {
 
                 // calling Booking Create Api....
-                if (shared.getString(Constants.DataKey.USER_ID) == artistID){
+                if (shared.getString(Constants.DataKey.USER_ID) == artistID) {
 
-                    Toast.makeText(ctx, "" + Constants.DataKey.USER_ID,Toast.LENGTH_LONG).show()
-                }else {
+                    Toast.makeText(ctx, "" + Constants.DataKey.USER_ID, Toast.LENGTH_LONG).show()
+                } else {
+                    val list: ArrayList<SlotDataModel> = ArrayList()
+                    for (i in 0 until selectedSlotList.size) {
+                        if (selectedSlotList[i].isBooked) {
+
+
+                            list.add(selectedSlotList[i])
+                            list[0].hour
+
+                            val fromTime = list[0].hour
+                            val toTime = list[list.size - 1].hour
+                            mFromTime = fromTime.split("-")[0]   // gettimg fromTime from List
+                            mToTime = toTime.split("-")[1]     // // gettimg toTime from List
+
+                            if (mFromTime.contains("am")) {
+                                mFromTime = mFromTime.split("am")[0]
+                                mToTime = mToTime.split("am")[0]
+                            } else {
+                                mFromTime = mFromTime.split("pm")[0]
+                                mToTime = mToTime.split("pm")[0]
+                            }
+
+                        }
+                    }
+
                     bookingCreateApi()
                 }
-
-
             }
             R.id.clearAllBtn -> {
-
                 adapter?.settSlotClear(true)
                 list.clear()
-
+            }
+            R.id.backArrow -> {
+                fragmentManager?.popBackStack()
             }
         }
     }
@@ -103,9 +141,36 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
 
         val layoutManager = GridLayoutManager(ctx, 2)
         binding.timeSlotRecycler.layoutManager = layoutManager
-        val timeArray = SelectTimeModel()
-        adapter = BookSlotAdapter(ctx, timeArray.aarayTime, this@BookSlotFragment, this)
-        binding.timeSlotRecycler.adapter = adapter
+//        val timeArray:ArrayList<SelectTimeModel> = ArrayList()
+
+        fakeList.add(SlotDataModel("0", "", "00:00 am - 01:00 am", 0, false))
+        fakeList.add(SlotDataModel("0", "", "01:00 am - 02:00 am", 0, false))
+        fakeList.add(SlotDataModel("0", "", "02:00 am - 03:00 am", 0, false))
+        fakeList.add(SlotDataModel("0", "", "03:00 am - 04:00 am", 0, false))
+        fakeList.add(SlotDataModel("0", "", "04:00 am - 05:00 am", 0, false))
+        fakeList.add(SlotDataModel("0", "", "05:00 am - 06:00 am", 0, false))
+        fakeList.add(SlotDataModel("0", "", "06:00 am - 07:00 am", 0, false))
+        fakeList.add(SlotDataModel("0", "", "07:00 am - 08:00 am", 0, false))
+        fakeList.add(SlotDataModel("0", "", "08:00 am - 09:00 am", 0, false))
+        fakeList.add(SlotDataModel("0", "", "09:00 am - 10:00 am", 0, false))
+        fakeList.add(SlotDataModel("0", "", "10:00 am - 11:00 am", 0, false))
+        fakeList.add(SlotDataModel("0", "", "11:00 am - 12:00 pm", 0, false))
+        fakeList.add(SlotDataModel("0", "", "12:00 pm - 01:00 pm", 0, false))
+        fakeList.add(SlotDataModel("0", "", "01:00 pm - 02:00 pm", 0, false))
+        fakeList.add(SlotDataModel("0", "", "02:00 pm - 03:00 pm", 0, false))
+        fakeList.add(SlotDataModel("0", "", "03:00 pm - 04:00 pm", 0, false))
+        fakeList.add(SlotDataModel("0", "", "04:00 pm - 05:00 pm", 0, false))
+        fakeList.add(SlotDataModel("0", "", "05:00 pm - 06:00 pm", 0, false))
+        fakeList.add(SlotDataModel("0", "", "06:00 pm - 07:00 pm", 0, false))
+        fakeList.add(SlotDataModel("0", "", "07:00 pm - 08:00 pm", 0, false))
+        fakeList.add(SlotDataModel("0", "", "08:00 pm - 09:00 pm", 0, false))
+        fakeList.add(SlotDataModel("0", "", "09:00 pm - 10:00 pm", 0, false))
+        fakeList.add(SlotDataModel("0", "", "10:00 pm - 11:00 pm", 0, false))
+        fakeList.add(SlotDataModel("0", "", "11:00 pm - 00:00 am", 0, false))
+
+        bookingSlotApi()
+
+
     }
 
     // Booking Create Api....
@@ -138,7 +203,8 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
                         if (response.errorBody() != null) {
                             try {
                                 jsonObject = JSONObject(response.errorBody()?.string()!!)
-                                val errorMessage = jsonObject.getString(Constants.ERRORS)
+                                val errorObject = jsonObject.getJSONObject(Constants.ERROR)
+                                val errorMessage = errorObject.getString("message")
                                 Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT).show()
                             } catch (e: JSONException) {
                                 Toast.makeText(ctx, "" + e.message.toString(), Toast.LENGTH_SHORT)
@@ -155,9 +221,10 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
             })
     }
 
-    override fun date(fromTime: String, toTime: String) {
-        mFromTime = fromTime
-        mToTime = toTime
+    override fun date(fromTime: String, toTime: String, slotList: ArrayList<SlotDataModel>) {
+
+        selectedSlotList = slotList
+
     }
 
     private fun alertPopUp(message: String) {
@@ -185,8 +252,10 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
 
         done.setOnClickListener {
             popUpWindowReport.dismiss()
-            val intent = Intent(ctx, MainActivity::class.java)
-            startActivity(intent)
+            val fragment = BookingFragment()
+            val transaction = fragmentManager?.beginTransaction()
+            transaction?.replace(R.id.frameContainer, fragment)
+            transaction?.commit()
 
         }
     }
@@ -197,8 +266,85 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
         if (list.size > 1) {
             val maxValue = list.maxBy { it }
             val minValue = list.minBy { it }
-            adapter?.getHighestSlot(minValue!!,maxValue!!)
+            adapter?.getHighestSlot(minValue!!, maxValue!!)
         }
+    }
+
+    // booking Slot Api....
+    private fun bookingSlotApi() {
+
+        binding.loaderLayout.visibility = View.VISIBLE
+
+        RetrofitClient.api.bookingSlotApi(
+            shared.getString(Constants.DataKey.AUTH_VALUE),
+            date,
+            artistID
+        )
+            .enqueue(object : Callback<SlotModel> {
+                override fun onResponse(call: Call<SlotModel>, response: Response<SlotModel>) {
+                    binding.loaderLayout.visibility = View.GONE
+                    if (response.body() != null) {
+                        if (response.isSuccessful) {
+
+                            slotList.clear()
+                            slotList = response.body()?.data!!
+
+                            if (slotList.isNotEmpty()) {
+                                for (element in response.body()?.data!!) {
+                                    val sdf = SimpleDateFormat("hh:mm:ss")
+                                    val fromSdf = SimpleDateFormat("hh:mm aa")
+                                    val fromConvert = sdf.parse(element.hour)
+                                    val fromTime = fromSdf.format(fromConvert!!)
+
+                                    for (i in 0 until fakeList.size) {
+                                        val split = fakeList[i].hour.split(" - ")
+                                        if (split[0] == fromTime || (split[0] == "00:00 am" && fromTime == "12:00 am")) {
+                                            fakeList[i].booked = element.booked
+                                            fakeList[i].date = element.date
+                                            fakeList[i].hour = fakeList[i].hour
+                                            fakeList[i].id = element.id
+                                        }
+                                    }
+
+                                }
+                                adapter = BookSlotAdapter(
+                                    ctx,
+                                    fakeList,
+                                    this@BookSlotFragment,
+                                    this@BookSlotFragment
+                                )
+                                binding.timeSlotRecycler.adapter = adapter
+
+                                binding.slotDetailLayout.visibility = View.VISIBLE
+                                binding.noArtistFound.visibility = View.GONE
+                            } else {
+                                binding.slotDetailLayout.visibility = View.GONE
+                                binding.noArtistFound.visibility = View.VISIBLE
+
+
+                            }
+                        }
+                    } else {
+                        val jsonObject: JSONObject
+                        if (response.errorBody() != null) {
+                            try {
+                                jsonObject = JSONObject(response.errorBody()?.string()!!)
+                                val errorMessage = jsonObject.getString(Constants.ERROR)
+                                Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT).show()
+                            } catch (e: JSONException) {
+                                Toast.makeText(ctx, "" + e.message.toString(), Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<SlotModel>, t: Throwable) {
+                    binding.loaderLayout.visibility = View.GONE
+                    Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
+                }
+            })
+
     }
 
 

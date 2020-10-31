@@ -19,7 +19,11 @@ import com.surpriseme.user.fragments.viewprofile.ViewProfileModel
 import com.surpriseme.user.fragments.notificationfragment.NotificationListModel
 import com.surpriseme.user.fragments.notificationfragment.NotificationStatusModel
 import com.surpriseme.user.activity.searchactivity.CategoryModel
+import com.surpriseme.user.fragments.bookingslotfragment.SlotModel
+import com.surpriseme.user.fragments.chatFragment.ChatByIdModel
+import com.surpriseme.user.fragments.chatListfragment.ChatListModel
 import com.surpriseme.user.fragments.notificationfragment.NotificationReadModel
+import com.surpriseme.user.fragments.paymentfragment.BookingStatusModel
 import com.surpriseme.user.util.Constants
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -77,8 +81,11 @@ interface RetrofitInterface {
         @Query(Constants.ApiKey.LATITUDE) latitude: String,
         @Query(Constants.ApiKey.LONGITUDE) longitude: String,
         @Query(Constants.ApiKey.SEARCH) search:String,
-        @Query(Constants.ApiKey.CATEGORY_IDS) categoryList:ArrayList<Int>
-    ): Call<ArtistModel>
+        @Query(Constants.ApiKey.CATEGORY_IDS) categoryList:ArrayList<Int>,
+    @Query(Constants.ApiKey.FROM_DATE) from_date:String,
+    @Query(Constants.ApiKey.TO_DATE) to_date:String,
+    @Query(Constants.ApiKey.SORT_BY) sort_by:String,
+    @Query(Constants.ApiKey.SHOW_TYPE) show_type:String): Call<ArtistModel>
 
     //Customer Booking List...
     @POST(Constants.CUSTOMER_BOOKING_LIST)
@@ -166,5 +173,33 @@ interface RetrofitInterface {
     @POST(Constants.NOTIFICATION_READ)
     fun notificationReadApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
     @Query(Constants.ApiKey.ID) notificationID:String): Call<NotificationReadModel>
+
+    @POST(Constants.CHAT_LIST)
+    fun chatListApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+    @Query(Constants.ApiKey.LIMIT) limit: String) : Call<ChatListModel>
+
+    @POST(Constants.CHAT)
+    fun chatApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+    @Query(Constants.ApiKey.RECEIVER_ID) receiver_id:String) :Call<ChatByIdModel>
+
+    @POST(Constants.BOOKING_STATUS)
+    fun bookingStatusApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+    @Query(Constants.ApiKey.BOOKING_ID) booking_id:String,
+    @Query(Constants.ApiKey.STATUS) status:String) : Call<BookingStatusModel>
+
+    @POST(Constants.BOOKING_STATUS)
+    fun bookingStatusApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+    @Query(Constants.ApiKey.BOOKING_ID) booking_id:String,
+    @Query(Constants.ApiKey.STATUS) status:String,
+    @Query(Constants.ApiKey.REPORT) report:String) : Call<BookingStatusModel>
+
+
+    @POST(Constants.BOOKING_SLOT_LIST)
+    fun bookingSlotApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+    @Query(Constants.ApiKey.DATE) date: String,
+    @Query(Constants.ApiKey.ARTIST_ID) artistID: String) :Call<SlotModel>
+
+
+
 
 }

@@ -1,24 +1,36 @@
 package com.surpriseme.user.fragments.bookingdetailfragment
 
 import android.content.Context
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.textview.MaterialTextView
 import com.squareup.picasso.Picasso
 import com.surpriseme.user.R
+import com.surpriseme.user.activity.login.LoginActivity
+import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.databinding.FragmentBookingDetailBinding
+import com.surpriseme.user.fragments.paymentfragment.PaymentFragment
 import com.surpriseme.user.fragments.bookingfragment.BookingFragment
+import com.surpriseme.user.fragments.chatFragment.ChatFragment
 import com.surpriseme.user.fragments.notificationfragment.NotificationFragment
+import com.surpriseme.user.fragments.paymentfragment.BookingStatusModel
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
+import kotlinx.android.synthetic.main.fragment_booking_detail.*
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -26,9 +38,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
-class BookingDetailFragment : Fragment(), View.OnClickListener {
+class BookingDetailFragment : Fragment(), View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private lateinit var binding: FragmentBookingDetailBinding
     private lateinit var ctx: Context
@@ -36,7 +49,12 @@ class BookingDetailFragment : Fragment(), View.OnClickListener {
     private var fromTime = ""
     private var toTime = ""
     private var bookingId = ""
+    private var artistId = ""
     private var bookingModel: BookingDataModel? = null
+    private var spinnerValue = ""
+    private var reasonList: ArrayList<String> = ArrayList()
+    var descriptionTv: EditText?=null
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -52,21 +70,24 @@ class BookingDetailFragment : Fragment(), View.OnClickListener {
             DataBindingUtil.inflate(inflater, R.layout.fragment_booking_detail, container, false)
         val view = binding.root
         shared = PrefrenceShared(ctx)
+        init(view)
 
 
-
-
-
-        init()
 
         return view
     }
 
-    private fun init() {
+    private fun init(view: View) {
+
+        // Hide Bottom navigation view....
+        ((ctx as MainActivity)).hideBottomNavigation()
+
+        // Views initialization....
+        binding.backArrow.setOnClickListener(this)
+        binding.chatBtn.setOnClickListener(this)
+        binding.statusBtn.setOnClickListener(this)
         bookingId = arguments?.getString("bookingId")!!
         bookingDetailApi()
-        binding.backArrow.setOnClickListener(this)
-
 
     }
 
@@ -85,8 +106,43 @@ class BookingDetailFragment : Fragment(), View.OnClickListener {
                     transaction?.commit()
                 }
             }
+            R.id.chatBtn -> {
+                Constants.CHAT_ID = artistId
+                val bundle = Bundle()
+                val fragment = ChatFragment()
+                bundle.putString("chatId", artistId)
+                fragment.arguments = bundle
+                val transaction = fragmentManager?.beginTransaction()
+                transaction?.replace(R.id.frameContainer, fragment)
+                transaction?.addToBackStack("bookingDetailFragment")
+                transaction?.commit()
+
+            }
+            R.id.statusBtn -> {
+                // If status button text is Pay Now then redirect to payment screen.
+                if (statusBtn.text == ctx.resources.getString(R.string.pay_now)) {
+                    val bundle = Bundle()
+                    bundle.putString("bookingId", bookingId)
+                    val fragment = PaymentFragment()
+                    fragment.arguments = bundle
+                    val transaction = fragmentManager?.beginTransaction()
+                    transaction?.replace(R.id.frameContainer, fragment)
+                    transaction?.addToBackStack("paymentFragment")
+                    transaction?.commit()
+                } else if (statusBtn.text == ctx.resources.getString(R.string.cancel_booking)) {
+                    // If Booing status cancel....
+                    bookingStatusApi()
+
+                } else if (statusBtn.text == ctx.resources.getString(R.string.did_artist_reach_at_yout_location)) {
+                    // display pop up..
+                    artistReachPopup()
+                } else if (statusBtn.text == ctx.resources.getString(R.string.go_to_Home)) {
+                    fragmentManager?.popBackStack()
+                }
+            }
 
         }
+
     }
 
     private fun bookingDetailApi() {
@@ -106,11 +162,31 @@ class BookingDetailFragment : Fragment(), View.OnClickListener {
                         if (response.isSuccessful) {
 
                             bookingModel = response.body()?.data
+                            artistId = bookingModel?.artist_detail?.id.toString()
+
                             if (bookingModel != null) {
+                                binding.bookingDetailContainer.visibility = View.VISIBLE
+                                Constants.OTP = bookingModel?.otp!!
                                 displayDetail(bookingModel!!)
                             } else {
-                                Toast.makeText(ctx, "Something went wrong", Toast.LENGTH_SHORT)
+
+                                Toast.makeText(
+                                    ctx,
+                                    "" + Constants.SOMETHING_WENT_WRONG,
+                                    Toast.LENGTH_SHORT
+                                )
                                     .show()
+                                if (Constants.NOTIFICATION) {
+                                    val fragment = NotificationFragment()
+                                    val transaction = fragmentManager?.beginTransaction()
+                                    transaction?.replace(R.id.frameContainer, fragment)
+                                    transaction?.commit()
+                                } else {
+                                    val fragment = BookingFragment()
+                                    val transaction = fragmentManager?.beginTransaction()
+                                    transaction?.replace(R.id.frameContainer, fragment)
+                                    transaction?.commit()
+                                }
                             }
                         }
                     } else {
@@ -142,20 +218,20 @@ class BookingDetailFragment : Fragment(), View.OnClickListener {
             })
     }
 
-    private fun addChip(pItem: String, pChipGroup: ChipGroup) {
-        val lChip = Chip(context)
-        lChip.text = pItem
-        lChip.isClickable = false
-        lChip.textSize = 13F
-// lChip.chipStrokeColor = resources.getColorStateList(R.color.colorAccent)
-// lChip.chipStrokeWidth = 1F
-        lChip.setEnsureMinTouchTargetSize(false)
-        lChip.setTextColor(ContextCompat.getColor(ctx, R.color.white))
-        lChip.chipBackgroundColor = ContextCompat.getColorStateList(ctx, R.color.grey_color)
-// following lines are for the demo
-        pChipGroup.addView(lChip as View)
-
-    }
+//    private fun addChip(pItem: String, pChipGroup: ChipGroup) {
+//        val lChip = Chip(context)
+//        lChip.text = pItem
+//        lChip.isClickable = false
+//        lChip.textSize = 13F
+//// lChip.chipStrokeColor = resources.getColorStateList(R.color.colorAccent)
+//// lChip.chipStrokeWidth = 1F
+//        lChip.setEnsureMinTouchTargetSize(false)
+//        lChip.setTextColor(ContextCompat.getColor(ctx, R.color.white))
+//        lChip.chipBackgroundColor = ContextCompat.getColorStateList(ctx, R.color.grey_color)
+//// following lines are for the demo
+//        pChipGroup.addView(lChip as View)
+//
+//    }
 
     private fun displayDetail(bookingModel: BookingDataModel) {
 
@@ -176,19 +252,50 @@ class BookingDetailFragment : Fragment(), View.OnClickListener {
                 }
                 binding.statusMtv.text = "Status:- ${bookingModel.status}"
                 binding.showTypeMtv.text = "Show type:- ${bookingModel?.type}"
-                binding.addressMtv.text = bookingModel?.address
-                if (bookingModel.rate_detail != null) {
 
-                    // Display date at top of card....
-                    var date = bookingModel.date
-                    var spf = SimpleDateFormat("yyyy-MM-dd")
-                    val newDate: Date = spf.parse(date)
-                    spf = SimpleDateFormat("dd-MMM-yyyy")
-                    date = spf.format(newDate)
-
-
+                //change satatus of button...
+                if (bookingModel.status == Constants.PENDING) {
+                    binding.chatBtn.visibility = View.VISIBLE
+                    binding.statusBtn.visibility = View.VISIBLE
+                    binding.statusBtn.text = ctx.resources.getString(R.string.cancel_booking)
+                } else if (bookingModel.status == Constants.CANCEL) {
+                    binding.chatBtn.visibility = View.GONE
+                    binding.statusBtn.visibility = View.GONE
+                } else if (bookingModel.status == Constants.ACCEPTED) {
+                    binding.chatBtn.visibility = View.VISIBLE
+                    binding.statusBtn.visibility = View.VISIBLE
+                    binding.statusBtn.text = ctx.resources.getString(R.string.pay_now)
+                } else if (bookingModel.status == Constants.REJECTED) {
+                    binding.statusBtn.visibility = View.VISIBLE
+                    binding.statusBtn.text = ctx.resources.getString(R.string.go_to_Home)
+                } else if (bookingModel.status == Constants.CONFIRMED) {
+                    binding.chatBtn.visibility = View.VISIBLE
+                    binding.statusBtn.visibility = View.VISIBLE
+                    binding.statusBtn.text =
+                        ctx.resources.getString(R.string.did_artist_reach_at_yout_location)
+                } else if (bookingModel.status == Constants.PROCESSING) {
+                    binding.chatBtn.visibility = View.GONE
+                    binding.statusBtn.visibility = View.VISIBLE
+                    binding.statusBtn.text =
+                        ctx.resources.getString(R.string.your_artist_start_to_perform)
+                } else if (bookingModel.status == Constants.COMPLETE_REVIEW) {
+                    binding.chatBtn.visibility = View.GONE
+                    binding.statusBtn.visibility = View.VISIBLE
+                    binding.ratingbar.visibility = View.VISIBLE
+                    binding.statusBtn.text =
+                        ctx.resources.getString(R.string.your_artist_complete_his_performance)
                 }
-                binding.dateTxt.text = bookingModel.date
+
+                binding.addressMtv.text = bookingModel.address
+
+                // Display date at top of card....
+                var date = bookingModel.date
+                var spf = SimpleDateFormat("yyyy-MM-dd")
+                val newDate: Date = spf.parse(date)
+                spf = SimpleDateFormat("dd MMMM, yyyy")
+                date = spf.format(newDate)
+
+                binding.dateTxt.text = date
 
                 // converting time to display in card....
                 fromTime = bookingModel.from_time
@@ -203,14 +310,259 @@ class BookingDetailFragment : Fragment(), View.OnClickListener {
                 binding.timeTxt.text = "${fromTime} to ${toTime}"
 
             } else {
-                Toast.makeText(ctx, Constants.SOMETHING_WENT_WRONG,Toast.LENGTH_SHORT).show()
+                Toast.makeText(ctx, Constants.SOMETHING_WENT_WRONG, Toast.LENGTH_SHORT).show()
                 val fragment = NotificationFragment()
                 val transaction = fragmentManager?.beginTransaction()
-                transaction?.replace(R.id.frameContainer,fragment)
+                transaction?.replace(R.id.frameContainer, fragment)
                 transaction?.commit()
             }
         }
 
     }
+
+    // Booking Status Api when status cancel....
+    private fun bookingStatusApi() {
+        val status = "cancel"
+        binding.loaderLayout.visibility = View.VISIBLE
+        RetrofitClient.api.bookingStatusApi(
+            shared.getString(Constants.DataKey.AUTH_VALUE),
+            bookingId,
+            status
+        )
+            .enqueue(object : Callback<BookingStatusModel> {
+                override fun onResponse(
+                    call: Call<BookingStatusModel>,
+                    response: Response<BookingStatusModel>
+                ) {
+                    binding.loaderLayout.visibility = View.GONE
+                    if (response.body() != null) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(
+                                ctx,
+                                "" + response.body()?.data?.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            val fragment = BookingFragment()
+                            val transaction = fragmentManager?.beginTransaction()
+                            transaction?.replace(R.id.frameContainer, fragment)
+                            transaction?.commit()
+                        }
+                    } else {
+                        val jsonObject: JSONObject
+                        if (response.errorBody() != null) {
+                            try {
+                                jsonObject = JSONObject(response.errorBody()?.string()!!)
+                                val errorMessage = jsonObject.getString(Constants.ERROR)
+                                Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT).show()
+                            } catch (e: JSONException) {
+                                Toast.makeText(ctx, "" + e.message.toString(), Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<BookingStatusModel>, t: Throwable) {
+                    binding.loaderLayout.visibility = View.GONE
+                    Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
+                }
+
+            })
+    }
+
+
+    private fun reportStatusApi(reason:String) {
+        val report = "report"
+        binding.loaderLayout.visibility = View.VISIBLE
+        RetrofitClient.api.bookingStatusApi(
+            shared.getString(Constants.DataKey.AUTH_VALUE),
+            bookingId,
+            report,
+            reason
+        )
+            .enqueue(object : Callback<BookingStatusModel> {
+                override fun onResponse(
+                    call: Call<BookingStatusModel>,
+                    response: Response<BookingStatusModel>
+                ) {
+                    binding.loaderLayout.visibility = View.GONE
+                    if (response.body() != null) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(
+                                ctx,
+                                "" + response.body()?.data?.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            val fragment = BookingFragment()
+                            val transaction = fragmentManager?.beginTransaction()
+                            transaction?.replace(R.id.frameContainer, fragment)
+                            transaction?.commit()
+                        }
+                    } else {
+                        val jsonObject: JSONObject
+                        if (response.errorBody() != null) {
+                            try {
+                                jsonObject = JSONObject(response.errorBody()?.string()!!)
+                                val errorMessage = jsonObject.getString(Constants.ERROR)
+                                Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT).show()
+                            } catch (e: JSONException) {
+                                Toast.makeText(ctx, "" + e.message.toString(), Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<BookingStatusModel>, t: Throwable) {
+                    binding.loaderLayout.visibility = View.GONE
+                    Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
+                }
+
+            })
+    }
+
+    private fun artistReachPopup() {
+
+        val layoutInflater: LayoutInflater =
+            ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+        val popUp: View = layoutInflater.inflate(R.layout.artist_reach_popup, null)
+        val popupWindow = PopupWindow(
+            popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
+            ConstraintLayout.LayoutParams.MATCH_PARENT, true
+        )
+        popupWindow.showAtLocation(popUp, Gravity.CENTER, 0, 0)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            popupWindow.elevation = 10f
+        }
+        popupWindow.isTouchable = false
+        popupWindow.isOutsideTouchable = false
+
+        val no: MaterialTextView = popUp.findViewById(R.id.no)
+        val yes: MaterialTextView = popUp.findViewById(R.id.yes)
+
+        yes.setOnClickListener {
+            // dispaly otp popup
+            popupWindow.dismiss()
+            otpPopup()
+        }
+
+        no.setOnClickListener {
+            popupWindow.dismiss()
+            reportPopup()
+
+        }
+    }
+
+    private fun otpPopup() {
+
+        val layoutInflater: LayoutInflater =
+            ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+        val popUp: View = layoutInflater.inflate(R.layout.otp_popup_layout, null)
+        val otpWindow = PopupWindow(
+            popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
+            ConstraintLayout.LayoutParams.MATCH_PARENT, true
+        )
+        otpWindow.showAtLocation(popUp, Gravity.CENTER, 0, 0)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            otpWindow.elevation = 10f
+        }
+        otpWindow.isTouchable = false
+        otpWindow.isOutsideTouchable = false
+        val messageDispTxt: MaterialTextView = popUp.findViewById(R.id.messageDispTxt)
+        val cross: ImageView = popUp.findViewById(R.id.crossIcon)
+        messageDispTxt.text =
+            ctx.resources.getString(R.string.your_otp_is) + " " + Constants.OTP + " " + ctx.getString(
+                R.string.share_yout_opt_with
+            )
+        cross.setOnClickListener {
+            otpWindow.dismiss()
+        }
+    }
+
+    private fun reportPopup() {
+        var reportSpinner: Spinner? = null
+
+        val layoutInflater: LayoutInflater =
+            ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+        val popUp: View = layoutInflater.inflate(R.layout.report_popup_layout, null)
+        val reportPopupWindow = PopupWindow(
+            popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
+            ConstraintLayout.LayoutParams.MATCH_PARENT, true
+        )
+        reportPopupWindow.showAtLocation(popUp, Gravity.CENTER, 0, 0)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            reportPopupWindow.elevation = 10f
+        }
+        reportPopupWindow.isTouchable = false
+        reportPopupWindow.isOutsideTouchable = false
+        val cross: ImageView = popUp.findViewById(R.id.crossIcon)
+        val submit: MaterialButton = popUp.findViewById(R.id.submitBtn)
+        descriptionTv = popUp.findViewById(R.id.descriptionTxt)
+        reportSpinner = popUp.findViewById(R.id.reportSpinner)
+        reportSpinner?.onItemSelectedListener = this
+
+        reasonList.clear()
+        reasonList.add(Constants.SELECT_REASON)
+        reasonList.add(Constants.ARTIST_DENIED_DUTY)
+        reasonList.add(Constants.ARTIST_IS_UNREACHABLE)
+        reasonList.add(Constants.ARTIST_NOT_PICKING_CALL)
+        reasonList.add(Constants.OTHER)
+
+        val reasonAdapter = ReasonSpinnerAdapter(ctx,reasonList)
+        reportSpinner?.adapter = reasonAdapter
+
+
+        cross.setOnClickListener {
+            if (descriptionTv?.visibility == View.VISIBLE) {
+                descriptionTv?.visibility = View.GONE
+                spinnerValue = Constants.SELECT_REASON
+            }else {
+                reportPopupWindow.dismiss()
+            }
+
+        }
+        submit.setOnClickListener {
+
+            val description = descriptionTv?.text.toString()
+
+
+            if (spinnerValue == Constants.SELECT_REASON) {
+                Toast.makeText(ctx, "Please choose reason", Toast.LENGTH_SHORT).show()
+            } else if (spinnerValue == Constants.OTHER) {
+                if (description.isEmpty()) {
+                    Toast.makeText(ctx, "Please write reason for other", Toast.LENGTH_SHORT).show()
+                } else {
+                    reportStatusApi(description)
+                    reportPopupWindow.dismiss()
+                }
+            } else {
+                reportStatusApi(spinnerValue)
+                reportPopupWindow.dismiss()
+            }
+        }
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        spinnerValue = parent?.getItemAtPosition(position).toString()
+        if (spinnerValue == Constants.OTHER) {
+            descriptionTv?.visibility = View.VISIBLE
+        } else {
+            descriptionTv?.visibility = View.GONE
+        }
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+
+    }
+
 
 }

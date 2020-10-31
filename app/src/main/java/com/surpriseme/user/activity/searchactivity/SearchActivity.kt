@@ -1,8 +1,13 @@
 package com.surpriseme.user.activity.searchactivity
 
+import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.ImageView
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +18,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.R
+import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.databinding.ActivitySearchBinding
 import com.surpriseme.user.fragments.homefragment.ArtistListAdapter
 import com.surpriseme.user.fragments.homefragment.ArtistModel
@@ -27,6 +33,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.StringBuilder
+import java.text.SimpleDateFormat
+import java.util.*
+import javax.xml.datatype.DatatypeConstants.MONTHS
+import kotlin.collections.ArrayList
 
 
 class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
@@ -45,16 +55,27 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
     private lateinit var bottomSheet: View
     private var closeBtn: MaterialButton? = null
     private var chooseCategory: MaterialTextView? = null
-    private var applySearch:MaterialButton?=null
+    private var applySearch: MaterialButton? = null
+    private var fromDateTxt: MaterialTextView? = null
+    private var toDateTxt: MaterialTextView? = null
+    private var datepickerdialog: DatePickerDialog? = null
+    private var from_Date = ""
+    private var to_Date = ""
+    private var radioGroup: RadioGroup? = null
+    private var sortBy = ""
+    private var showType = "live"
+    private var isCategoryClicked = false
+
 
     // var for category bottom sheet....
     private lateinit var bottomSheetBehaviorCategory: BottomSheetBehavior<View>
     private lateinit var bottomSheetCategory: View
     private var categoryList: ArrayList<CategoryDataList> = ArrayList()
     private var categoryRecycler: RecyclerView? = null
-    private var doneButton:MaterialButton?=null
+    private var doneButton: MaterialButton? = null
     private var categoryNameList: ArrayList<CategoryDataList> = ArrayList()
     private var categoryIdList: ArrayList<Int> = ArrayList()
+    private var arrow:ImageView?=null
 
     private var categoryIdLst: ArrayList<Int> = ArrayList()
 
@@ -84,6 +105,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
             }
+
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
             }
         })
@@ -91,9 +113,30 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
         closeBtn = findViewById(R.id.closeBtn)
         chooseCategory = findViewById(R.id.chooseCategoryTxt)
         applySearch = findViewById(R.id.applySearchBtn)
+        fromDateTxt = findViewById(R.id.fromDateTxt)
+        fromDateTxt?.setOnClickListener(this)
+        toDateTxt = findViewById(R.id.toDateTxt)
+        toDateTxt?.setOnClickListener(this)
+        radioGroup = findViewById(R.id.radioGroup)
+
+        // Getting value from radio buttons....
+        radioGroup?.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
+            override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
+
+                val radioId = group?.findViewById<RadioButton>(checkedId)
+                sortBy = radioId?.text.toString()
+                if (sortBy == getString(R.string.price_low_to_high)) {
+                    sortBy = Constants.ASENDING
+                } else {
+                    sortBy = Constants.ASENDING
+                }
+            }
+        })
         //Category Bottom Sheet View Initialization....
         categoryRecycler = findViewById(R.id.categoryRecycler)
         doneButton = findViewById(R.id.doneButton)
+        arrow = findViewById(R.id.arrow)
+        arrow?.setOnClickListener(this)
 
 
         hideKeyboard = HideKeyBoard()
@@ -110,6 +153,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
             }
+
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
             }
         })
@@ -121,7 +165,9 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 search = binding?.searchEdt?.text.toString().trim()
                 hideKeyboard?.hideKeyboard(this@SearchActivity)
                 categoryIdList.clear()
-                artistListApi(latitude, longitude, search)
+                latitude = shared?.getString(Constants.LATITUDE)!!
+                longitude = shared?.getString(Constants.LONGITUDE)!!
+                artistListApi(latitude, longitude, search, "", "")
                 //do here your stuff f
                 true
             } else false
@@ -132,6 +178,8 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
     private fun bottomSheetUpDownCategory() {
         if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED)
+                categoryListApi()
+
         } else {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED)
         }
@@ -141,6 +189,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
     private fun bottomSheetUpDownCategoryForCategory() {
         if (bottomSheetBehaviorCategory.state != BottomSheetBehavior.STATE_EXPANDED) {
             bottomSheetBehaviorCategory.setState(BottomSheetBehavior.STATE_EXPANDED)
+
         } else {
             bottomSheetBehaviorCategory.setState(BottomSheetBehavior.STATE_COLLAPSED)
         }
@@ -153,7 +202,9 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 hideKeyboard?.hideKeyboard(this@SearchActivity)
                 search = ""
                 categoryIdList.clear()
-                artistListApi(latitude, longitude, search)
+                latitude = shared?.getString(Constants.LATITUDE)!!
+                longitude = shared?.getString(Constants.LONGITUDE)!!
+                artistListApi(latitude, longitude, search, "", "")
                 binding?.noDataFound?.visibility = View.GONE
                 binding?.refresh?.visibility = View.GONE
             }
@@ -167,13 +218,13 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 binding?.noDataFound?.visibility = View.GONE
             }
             R.id.chooseCategoryTxt -> {
-
-                categoryListApi()
+                isCategoryClicked = true
                 bottomSheetUpDownCategoryForCategory()
+
             }
             R.id.doneButton -> {
 
-                if (categoryNameList.size >0) {
+                if (categoryNameList.size > 0) {
                     val builder = StringBuilder()
                     for (details in categoryNameList) {
                         builder.append(details.name)
@@ -186,19 +237,89 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
             }
             R.id.applySearchBtn -> {
                 bottomSheetUpDownCategory()
-                artistListApi(latitude,longitude,search)
+                latitude = shared?.getString(Constants.LATITUDE)!!
+                longitude = shared?.getString(Constants.LONGITUDE)!!
+                from_Date = fromDateTxt?.text.toString().trim()
+                to_Date = toDateTxt?.text.toString().trim()
+                if (from_Date == "From" && to_Date == "To") {
+                    from_Date = ""
+                    to_Date = ""
+                }
+                artistListApi(latitude, longitude, search, from_Date, to_Date)
             }
-            R.id.backpress -> {finish()}
+            R.id.backpress -> {
+                finish()
+            }
+            R.id.fromDateTxt -> {
+                openCalendar(fromDateTxt!!)
+            }
+            R.id.toDateTxt -> {
+                openCalendar(toDateTxt!!)
+            }
+            R.id.arrow -> {
+                bottomSheetUpDownCategoryForCategory()
+            }
         }
     }
 
+    // open Date Picker Dialog with minumum date of one day after from today....
+    private fun openCalendar(textView: MaterialTextView) {
+        val cal = Calendar.getInstance()
 
-    private fun artistListApi(lat: String, lng: String, search: String) {
+        val y = cal.get(Calendar.YEAR)
+        val m = cal.get(Calendar.MONTH)
+        val d = cal.get(Calendar.DAY_OF_MONTH)
+
+        datepickerdialog = DatePickerDialog(
+            this,
+            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+
+                // Display Selected date in textbox
+                val month = monthOfYear + 1
+                val date = "" + year + "-" + month + "-" + dayOfMonth
+
+                val sdf = SimpleDateFormat("yyyy-MM-dd")
+                val dateToFormat = sdf.parse(date)
+                val finalDate = sdf.format(dateToFormat)
+                textView.textSize = 10f
+//                    fromDateTxt?.setText("" + dayOfMonth + " " + month + ", " + year)
+                textView.text = finalDate
+
+            },
+            y,
+            m,
+            d
+        )
+        datepickerdialog?.show()
+        // display calender minimum date as tomorrow date....
+        val oneDayAfter = cal.clone() as Calendar
+        oneDayAfter.add(Calendar.DATE, 1)
+        datepickerdialog?.datePicker?.minDate = oneDayAfter.timeInMillis
+        // display calender minimum date as today date...
+//        datepickerdialog?.getDatePicker()?.setMinDate(System.currentTimeMillis())
+
+    }
+    private fun artistListApi(
+        lat: String,
+        lng: String,
+        search: String,
+        from_Date: String,
+        to_Date: String
+    ) {
 
         binding?.loaderLayout?.visibility = View.VISIBLE
         RetrofitClient.api.artistListApi(
             shared?.getString(Constants.DataKey.AUTH_VALUE)!!,
-            Constants.DataKey.CONTENT_TYPE_VALUE, "", lat, lng, search,categoryIdList
+            Constants.DataKey.CONTENT_TYPE_VALUE,
+            "",
+            lat,
+            lng,
+            search,
+            categoryIdList,
+            from_Date,
+            to_Date,
+            sortBy,
+            showType
         )
             .enqueue(object : Callback<ArtistModel> {
                 override fun onResponse(call: Call<ArtistModel>, response: Response<ArtistModel>) {
@@ -218,9 +339,11 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                                     this@SearchActivity
                                 )
                                 binding?.searchRecycler?.adapter = adapter
+                                binding?.searchLayout?.visibility = View.VISIBLE
                             } else {
                                 binding?.noDataFound?.visibility = View.VISIBLE
                                 binding?.refresh?.visibility = View.VISIBLE
+                                binding?.searchLayout?.visibility = View.GONE
                             }
                         }
                     } else {
@@ -237,14 +360,13 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                             } catch (e: JSONException) {
                                 Toast.makeText(
                                     this@SearchActivity,
-                                    "" + Constants.SOMETHING_WENT_WRONG,
+                                    "" + e.message.toString(),
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
                         }
                     }
                 }
-
                 override fun onFailure(call: Call<ArtistModel>, t: Throwable) {
                     binding?.loaderLayout?.visibility = View.GONE
                     Toast.makeText(
@@ -255,30 +377,19 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 }
             })
     }
-
     override fun artistDetailLink(artistID: String) {
 // Calling interface from Artist List adapter to send data from home fragment to ArtistDetail fragment with list.
         shared?.setString(Constants.ARTIST_ID, artistID)
-//        val fragment = ArtistBookingFragment()
-//        val bundle = Bundle()
-//        bundle.putString("artistID", artistID)
-//        fragment.arguments = bundle
-//        val transaction = fragmentManager?.beginTransaction()
-//        transaction?.replace(R.id.frameContainer, fragment)
-//        transaction?.addToBackStack("homeFragment")
-//        transaction?.commit()
+        val mainActIntent = Intent(this@SearchActivity, MainActivity::class.java)
+        mainActIntent.putExtra("artistID", artistID)
+        startActivity(mainActIntent)
     }
-
     override fun btnClick(artistID: String) {
         shared?.setString(Constants.ARTIST_ID, artistID)
-//        val fragment = WayOfBookingFragment()
-//        val transaction = fragmentManager?.beginTransaction()
-//        transaction?.replace(R.id.frameContainer, fragment)
-//        transaction?.addToBackStack("homeFragment")
-//        transaction?.commit()
-
+        val mainActIntent = Intent(this@SearchActivity, MainActivity::class.java)
+        mainActIntent.putExtra("artistBook", artistID)
+        startActivity(mainActIntent)
     }
-
     private fun categoryListApi() {
 
         RetrofitClient.api.categoryListApi(Constants.DataKey.CONTENT_TYPE_VALUE)
@@ -291,7 +402,11 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                         if (response.isSuccessful) {
                             categoryList.clear()
                             categoryList = response.body()?.data!!
-                            val categoryAdapter = CategoryAdapter(this@SearchActivity, categoryList,this@SearchActivity)
+                            val categoryAdapter = CategoryAdapter(
+                                this@SearchActivity,
+                                categoryList,
+                                this@SearchActivity
+                            )
                             categoryRecycler?.adapter = categoryAdapter
                         }
                     } else {
@@ -326,11 +441,23 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
 
             })
     }
-
     // override method from Category Adapter to get category from category bottom sheet and display in search bottom sheet.
-    override fun getCheckList(categoryName: ArrayList<CategoryDataList>, professionId: ArrayList<Int>) {
+    override fun getCheckList(
+        categoryName: ArrayList<CategoryDataList>,
+        professionId: ArrayList<Int>
+    ) {
         categoryNameList = categoryName
         categoryIdList = professionId
+    }
+
+    override fun onBackPressed() {
+        if (bottomSheetBehaviorCategory.state == BottomSheetBehavior.STATE_EXPANDED) {
+            bottomSheetBehaviorCategory.state = BottomSheetBehavior.STATE_COLLAPSED
+        }else if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        } else {
+            finish()
+        }
     }
 
 }

@@ -1,6 +1,5 @@
 package com.surpriseme.user.fragments.selectdateofbookingfragment
 
-import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +12,7 @@ import androidx.fragment.app.Fragment
 import com.surpriseme.user.R
 import com.surpriseme.user.databinding.FragmentSelectDateBinding
 import com.surpriseme.user.fragments.bookingslotfragment.BookSlotFragment
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -46,8 +46,18 @@ class SelectDateFragment : Fragment(), View.OnClickListener {
 
     private fun init() {
 
+        // initializing views here....
+        binding.backpress.setOnClickListener(this)
+        // Open calender with tomorrow as minimum date
+        openCalendar()
+    }
+
+    private fun openCalendar() {
         val calendar = Calendar.getInstance()
-        binding.calenderView.minDate = calendar.getTimeInMillis()
+
+        val twoDaysAgo = calendar.clone() as Calendar
+        twoDaysAgo.add(Calendar.DATE, 1)
+        binding.calenderView.minDate = twoDaysAgo.timeInMillis
         binding.calenderView.setOnDateChangeListener(object : CalendarView.OnDateChangeListener {
             override fun onSelectedDayChange(
                 view: CalendarView,
@@ -56,18 +66,36 @@ class SelectDateFragment : Fragment(), View.OnClickListener {
                 dayOfMonth: Int
             ) {
 
-                val checkMonth = month+1
-                val sDate = "$year-$checkMonth-$dayOfMonth"
-                val sdf = SimpleDateFormat("yyyy-mm-DD")
-                val date = sdf.parse(sDate)
-                val finalDate = sdf.format(date)
+                val checkMonth = month + 1
+                val day = dayOfMonth
+                val sDate = "$year-$checkMonth-$day"
+                var newDateStr = ""
+                var weekDay = ""
 
+                val sdf = SimpleDateFormat("yyyy-mm-dd")
+                val dateToFormat = sdf.parse(sDate)
+                val finalDate = sdf.format(dateToFormat)
+
+                try {
+                    val dateStr = sDate
+
+                    val curFormater = SimpleDateFormat("yyyy-MM-dd")
+                    val dateObj = curFormater.parse(dateStr)
+                    val postFormater = SimpleDateFormat("dd MMMM , yyyy")
+                    newDateStr = postFormater.format(dateObj)
+                    weekDay = SimpleDateFormat("EEEE", Locale.ENGLISH).format(dateObj)
+
+                } catch (e: ParseException) {
+                    Toast.makeText(ctx, "" + e.message.toString(), Toast.LENGTH_SHORT).show()
+                }
 
                 if (finalDate.isEmpty()) {
 
                 } else {
                     val bundle = Bundle()
                     bundle.putString("selectedDate", finalDate)
+                    bundle.putString("displayDate", newDateStr)
+                    bundle.putString("weekday", weekDay)
                     val fragment = BookSlotFragment()
                     fragment.arguments = bundle
                     val transaction = fragmentManager?.beginTransaction()
@@ -77,49 +105,14 @@ class SelectDateFragment : Fragment(), View.OnClickListener {
                 }
             }
         })
-
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.backpress -> {
+                fragmentManager?.popBackStack()
+            }
 
         }
-    }
-
-    private fun openCalender() {
-
-        sdate = ""
-        // open date picker code below....
-        val cldr = Calendar.getInstance()
-        val day = cldr[Calendar.DAY_OF_MONTH]
-        val month = cldr[Calendar.MONTH]
-        val year = cldr[Calendar.YEAR]
-        val picker = DatePickerDialog(
-            activity!!,
-            { view, year, month, dayOfMonth -> //                        binding.dob.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
-                sdate = year.toString() + "/" + (month + 1) + "/" + dayOfMonth
-
-                val sdf = SimpleDateFormat("yyyy-MM-dd")
-                date = sdf.parse(sdate)
-                var cDate = sdf.format(date)
-
-                if (sdate.isEmpty()) {
-
-                } else {
-                    val bundle = Bundle()
-                    bundle.putString("selectedDate", cDate.toString())
-                    val fragment = BookSlotFragment()
-                    fragment.arguments = bundle
-                    val transaction = fragmentManager?.beginTransaction()
-                    transaction?.replace(R.id.frameContainer, fragment)
-                    transaction?.addToBackStack("selectDateFragmement")
-                    transaction?.commit()
-                }
-                Toast.makeText(ctx, "" + cDate, Toast.LENGTH_SHORT).show()
-            }, year, month, day
-        )
-        picker.getDatePicker().minDate = System.currentTimeMillis()
-        picker.show()
-
     }
 }

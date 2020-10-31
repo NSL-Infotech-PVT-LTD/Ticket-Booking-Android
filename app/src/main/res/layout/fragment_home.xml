@@ -117,7 +117,6 @@
                 android:id="@+id/searchCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardElevation="@dimen/_5sdp"
                 app:layout_constraintTop_toBottomOf="@+id/headerCard"
                 android:layout_marginTop="@dimen/_5sdp"
                 app:layout_constraintStart_toStartOf="parent"

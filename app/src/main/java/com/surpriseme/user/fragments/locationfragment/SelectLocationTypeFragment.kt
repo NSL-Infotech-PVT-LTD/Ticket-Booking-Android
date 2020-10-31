@@ -50,7 +50,7 @@ class SelectLocationTypeFragment : Fragment(), View.OnClickListener {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_select_location_type, container, false)
         val view = binding.root
 
-        tbackpress = view.findViewById(R.id.tbackpress)
+        tbackpress = view.findViewById(R.id.backpress)
         tbackpress.setOnClickListener(this)
         init()
 
@@ -95,7 +95,7 @@ class SelectLocationTypeFragment : Fragment(), View.OnClickListener {
                     .build(ctx)
                 startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
             }
-            R.id.tbackpress -> {
+            R.id.backpress -> {
                 val fragment = LocationFragment()
                 val transaction = fragmentManager?.beginTransaction()
                 transaction?.replace(R.id.frameContainer,fragment)

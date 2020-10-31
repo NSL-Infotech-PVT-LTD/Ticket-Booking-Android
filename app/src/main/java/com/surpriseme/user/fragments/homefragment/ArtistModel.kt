@@ -22,8 +22,8 @@ data class DataArtistList(
 )
 
 data class DataUserArtistList(
-    val category_id: List<Any>,
-    val category_id_details: List<String>,
+    val category_id: ArrayList<Any>,
+    val category_id_details: ArrayList<String>,
     val created_at: String,
     val currency: String,
     val description: String,
@@ -49,7 +49,7 @@ data class DataUserArtistList(
     val social_link_youtube: String,
     val status: String,
     val updated_at: String,
-    val rating:Int
+    val rating:Float
 )
 
 data class RoleArtistList(

@@ -19,7 +19,6 @@
         android:layout_height="@dimen/_20sdp"
         app:ci_orientation="horizontal"
         app:ci_drawable="@drawable/splash_indicator_selected"
-
         app:ci_drawable_unselected="@drawable/splash_indicator_unselected"
         app:layout_constraintBottom_toTopOf="@+id/getStarted"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +32,7 @@
         android:layout_marginBottom="@dimen/_20sdp"
         android:text="@string/get_started"
         android:textAllCaps="false"
-        android:textSize="12dp"
+        android:textSize="@dimen/_12sdp"
         app:cornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
