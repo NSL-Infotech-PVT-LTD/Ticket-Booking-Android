@@ -22,7 +22,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/dialogtext11"
+                android:id="@+id/messageTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/are_yout_sure"
@@ -45,7 +45,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:background="@color/grey_color"
                 android:alpha="0.3"
-                app:layout_constraintTop_toBottomOf="@id/dialogtext11"/>
+                app:layout_constraintTop_toBottomOf="@id/messageTv"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

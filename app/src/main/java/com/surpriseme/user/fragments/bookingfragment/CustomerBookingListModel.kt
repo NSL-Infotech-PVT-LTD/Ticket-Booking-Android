@@ -23,22 +23,22 @@ data class BookingListPagination(
     val total: Int
 )
 
-data class BookingArtistDetailModel(
-    val artist_detail: ArtistDetailBooking,
-    val artist_id: Int,
-    val created_at: String,
-    val date: String,
-    val from_time: String,
-    val id: Int,
-    val payment_mode: Any,
-    val payment_params: Any,
-    val rate_detail: RateArtistDetail,
-    val rate_artist: Any,
-    val to_time: String,
-    val type: String,
-    val address: String,
-    val status: String,
-) : Serializable
+ class BookingArtistDetailModel: Serializable {
+    val artist_detail: ArtistDetailBooking? = null
+    val artist_id: Int = 0
+    val created_at: String = ""
+    val date: String = ""
+    val from_time: String = ""
+    val id: Int=0
+    val payment_mode: Any?=null
+    val payment_params: Any?=null
+    val rate_detail: RateArtistDetail?=null
+    val rate_artist: Any?=null
+    val to_time: String=""
+    val type: String=""
+    val address: String=""
+    val status: String=""
+}
 
 data class RateArtistDetail(
     val artist_id: Int,

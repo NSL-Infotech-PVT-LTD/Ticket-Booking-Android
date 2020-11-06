@@ -1,33 +1,42 @@
 package com.surpriseme.user.fragments.artistbookingdetail
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.PopupWindow
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.textview.MaterialTextView
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerSupportFragment
 import com.squareup.picasso.Picasso
 import com.surpriseme.user.R
-import com.surpriseme.user.databinding.FragmentArtistBookingBinding
 import com.surpriseme.user.activity.mainactivity.MainActivity
+import com.surpriseme.user.databinding.FragmentArtistBookingBinding
+import com.surpriseme.user.fragments.reviewfragment.ReviewFragment
 import com.surpriseme.user.fragments.wayofbookingfragment.WayOfBookingFragment
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
+import kotlinx.android.synthetic.main.chat_list_layout.*
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import uk.co.senab.photoview.PhotoViewAttacher
 
 
 class ArtistBookingFragment : Fragment(), View.OnClickListener,
@@ -38,6 +47,7 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
     private lateinit var shared: PrefrenceShared
     private lateinit var ctx: Context
     private lateinit var artistModel: ArtistDataModel
+    var imagePath = ""
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -50,9 +60,15 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_artist_booking, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_artist_booking,
+            container,
+            false
+        )
         val view = binding.root
         shared = PrefrenceShared(ctx)
+        ((ctx as MainActivity)).hideBottomNavigation()
         init()
 
         val videoKey = "bSMZknDI6bg"
@@ -68,6 +84,8 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
 
         binding.bookBtn.setOnClickListener(this)
         binding.youtubePlayIcon.setOnClickListener(this)
+        binding.profileImg.setOnClickListener(this)
+        binding.seeReviewTxt.setOnClickListener(this)
 //        binding.youtubeView.initialize(resources.getString(R.string.youtube_api_key), this)
 
         artistID = arguments?.getString("artistID")!!
@@ -90,13 +108,64 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
 
                 // initializing youtube play video.....
                 binding.youtubePlayIcon.visibility = View.GONE
-                binding.thumbnail.visibility =View.GONE
-                val youTubePlayerFragment = childFragmentManager.findFragmentById(R.id.youtubeView) as YouTubePlayerSupportFragment?
-                youTubePlayerFragment?.initialize(ctx.resources.getString(R.string.youtube_api_key),this)
+                binding.thumbnail.visibility = View.GONE
+                val youTubePlayerFragment =
+                    childFragmentManager.findFragmentById(R.id.youtubeView) as YouTubePlayerSupportFragment?
+                youTubePlayerFragment?.initialize(
+                    ctx.resources.getString(R.string.youtube_api_key),
+                    this
+                )
 
 
             }
+            R.id.profileImg -> {
+                // open popup window for image zoom....
+                imageZoomPopup(imagePath)
+            }
+             R.id.seeReviewTxt -> {
+                 val fragment = ReviewFragment()
+                 val transaction = fragmentManager?.beginTransaction()
+                 transaction?.replace(R.id.frameContainer,fragment)
+                 transaction?.addToBackStack("artistFragment")
+                 transaction?.commit()
+             }
         }
+    }
+
+    private fun imageZoomPopup(imgPath: String) {
+
+        val layoutInflater: LayoutInflater =
+            ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+        val popUp: View = layoutInflater.inflate(R.layout.image_zoom_layout, null)
+        val popUpWindowReport = PopupWindow(
+            popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
+            ConstraintLayout.LayoutParams.MATCH_PARENT, true
+        )
+        popUpWindowReport.showAtLocation(popUp, Gravity.CENTER, 0, 0)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            popUpWindowReport.elevation = 10f
+        }
+        popUpWindowReport.isTouchable = true
+        popUpWindowReport.isOutsideTouchable = true
+
+        val imageView: ImageView = popUp.findViewById(R.id.zoomImageView)
+        Picasso.get()
+            .load(imagePath)
+            .resize(4000, 1500)
+            .onlyScaleDown()
+            .into(imageView)
+
+        // apply zoom in zoom out function here to image view....
+//        imageView.setOnClickListener {
+//            val pAttacher: PhotoViewAttacher
+//            pAttacher = PhotoViewAttacher(imageView)
+//            pAttacher.update()
+//        }
+
+
     }
 
     private fun getArtistByIdApi() {
@@ -121,9 +190,16 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
 
                                 if (artistModel.category_id_details != null) {
                                     for (i in 0 until artistModel.category_id_details.size)
-                                        addChip(artistModel.category_id_details[i], binding.chipGroup)
+                                        addChip(
+                                            artistModel.category_id_details[i],
+                                            binding.chipGroup
+                                        )
                                 }
-                                Picasso.get().load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.image)
+
+                                imagePath =
+                                    Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.image
+                                Picasso.get()
+                                    .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.image)
                                     .resize(4000, 1500)
                                     .onlyScaleDown()
                                     .into(binding.profileImg)
@@ -215,8 +291,8 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
         player: YouTubePlayer?,
         wasRestored: Boolean
     ) {
-        if(player == null) return
-        if(wasRestored) {
+        if (player == null) return
+        if (wasRestored) {
             player.play()
         } else {
             player.cueVideo("W4hTJybfU7s")

@@ -36,7 +36,7 @@ class LocationFragment : Fragment(), View.OnClickListener,
     LocationListAdapter.EditAddress {
 
     private lateinit var binding: FragmentLocationBinding
-    private lateinit var tbackpress: ImageView
+    private lateinit var tbackpress: MaterialTextView
     private lateinit var ctx: Context
     private lateinit var shared: PrefrenceShared
     private var locationList: ArrayList<LocationDataList> = ArrayList()

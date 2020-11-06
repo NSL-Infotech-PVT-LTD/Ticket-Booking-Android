@@ -19,8 +19,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginStart="@dimen/_20sdp"
+                android:drawablePadding="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:drawableStart="@drawable/back"
+                android:drawableStart="@drawable/ic_back_black"
                 android:gravity="center"
                 android:text="@string/back"
                 android:textColor="@color/black"
@@ -33,6 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="@color/greyLighter"
+                android:layout_marginTop="@dimen/_10sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +42,7 @@
 
                 <EditText
                     android:id="@+id/searchEdt"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginHorizontal="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_20sdp"
@@ -52,7 +54,20 @@
                     android:paddingVertical="@dimen/_10sdp"
                     android:singleLine="true"
                     android:textSize="@dimen/_10sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/filterIcon"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/filterIcon"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:src="@drawable/filter_icon"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:layout_constraintTop_toTopOf="@+id/searchEdt"
+                    app:layout_constraintBottom_toBottomOf="@+id/searchEdt"
+                    app:layout_constraintStart_toEndOf="@id/searchEdt"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/searchLayout"
@@ -76,15 +91,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
-                <ImageView
-                    android:id="@+id/filterIcon"
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="@dimen/_50sdp"
-                    android:layout_marginEnd="@dimen/_30sdp"
-                    android:layout_marginBottom="@dimen/_50sdp"
-                    android:src="@drawable/filter_icon"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -123,7 +130,12 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/whiteBgLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:background="@color/white"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

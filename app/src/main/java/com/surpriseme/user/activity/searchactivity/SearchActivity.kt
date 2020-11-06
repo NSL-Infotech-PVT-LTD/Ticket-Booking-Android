@@ -27,6 +27,7 @@ import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.HideKeyBoard
 import com.surpriseme.user.util.PrefrenceShared
+import kotlinx.android.synthetic.main.fragment_booking_detail.*
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -104,6 +105,15 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
         bottomSheetBehavior.setBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when(newState) {
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        binding?.whiteBgLayout?.visibility = View.GONE
+                    }
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        binding?.whiteBgLayout?.visibility = View.VISIBLE
+                    }
+
+                }
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
@@ -209,10 +219,12 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 binding?.refresh?.visibility = View.GONE
             }
             R.id.filterIcon -> {
+                binding?.whiteBgLayout?.visibility = View.VISIBLE
                 bottomSheetUpDownCategory()
             }
             R.id.closeBtn -> {
                 //bottomSheetUpDownCategory()
+                binding?.whiteBgLayout?.visibility = View.GONE
                 bottomSheetUpDownCategory()
                 binding?.refresh?.visibility = View.GONE
                 binding?.noDataFound?.visibility = View.GONE

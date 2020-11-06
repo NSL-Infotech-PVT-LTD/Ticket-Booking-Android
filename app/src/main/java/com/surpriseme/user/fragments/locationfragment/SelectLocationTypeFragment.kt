@@ -17,6 +17,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.R
 import com.surpriseme.user.databinding.FragmentSelectLocationTypeBinding
 import com.surpriseme.user.fragments.googlemapfragment.MapFragment
@@ -26,7 +27,7 @@ import com.surpriseme.user.util.Constants
 class SelectLocationTypeFragment : Fragment(), View.OnClickListener {
 
     private lateinit var binding: FragmentSelectLocationTypeBinding
-    private lateinit var tbackpress:ImageView
+    private lateinit var tbackpress:MaterialTextView
     private lateinit var ctx:Context
 
     // var for Place autopicker....

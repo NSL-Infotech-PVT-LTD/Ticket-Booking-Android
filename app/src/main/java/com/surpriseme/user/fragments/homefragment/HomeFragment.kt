@@ -10,13 +10,17 @@ import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.PopupWindow
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -27,8 +31,10 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.PendingResult
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.*
+import com.google.android.material.textview.MaterialTextView
 import com.squareup.picasso.Picasso
 import com.surpriseme.user.R
+import com.surpriseme.user.activity.login.LoginActivity
 import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.activity.searchactivity.SearchActivity
 import com.surpriseme.user.databinding.FragmentHomeBinding
@@ -39,6 +45,7 @@ import com.surpriseme.user.fragments.viewprofile.ProfileFragment
 import com.surpriseme.user.fragments.wayofbookingfragment.WayOfBookingFragment
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
+import com.surpriseme.user.util.PaginationScrollListener
 import com.surpriseme.user.util.PrefrenceShared
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.json.JSONException
@@ -68,17 +75,24 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
     private  var longitude = 0.0
     private var search = ""
     private var isFirstTime = true
+    private var isInvalidAuth = false
+    private var artistListAdapter: ArtistListAdapter? = null
+    private lateinit var layoutManager:LinearLayoutManager
+    private var isLastPage = false
+    private var isLoading = false
+    private var currentPage: Int = 1
+    private var totalPage = 0
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         ctx = context
     }
 
-    override fun onStart() {
-        super.onStart()
-        binding.yourLocationInfo.text = shared.getString(Constants.ADDRESS)
-        artistListApi(latitude.toString(),longitude.toString(),search)
-    }
+//    override fun onStart() {
+//        super.onStart()
+//        binding.yourLocationInfo.text = shared.getString(Constants.ADDRESS)
+//        artistListApi(latitude.toString(),longitude.toString(),search)
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -90,6 +104,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         val view = binding.root
         shared = PrefrenceShared(ctx)
         setUpGClient()
+
         if (shared.getString(Constants.DataKey.USER_IMAGE) !="") {
             Picasso.get().load(shared.getString(Constants.DataKey.USER_IMAGE)).placeholder(R.drawable.profile_pholder)
                 .resize(4000, 1500).into(binding.dashUserImg)
@@ -107,7 +122,29 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         binding.searchEdt.setOnClickListener(this)
         binding.notiIcon.setOnClickListener(this)
         ((ctx as MainActivity)).showBottomNavigation()
-        initializeArtistRecycler()
+
+        layoutManager = LinearLayoutManager(ctx)
+        binding.artistRecycler.layoutManager = layoutManager
+        binding.artistRecycler.setHasFixedSize(true)
+
+        artistListAdapter = ArtistListAdapter(ctx, ArrayList(), this@HomeFragment, this@HomeFragment)
+        binding.artistRecycler.adapter = artistListAdapter
+
+        binding.artistRecycler.addOnScrollListener(object : PaginationScrollListener(layoutManager) {
+            override fun loadMoreItems() {
+                isLoading = true
+                currentPage++
+                artistListApi(latitude.toString(),longitude.toString(),search)
+            }
+
+            override fun isLastPage(): Boolean {
+                return isLastPage
+            }
+
+            override fun isLoading(): Boolean {
+                return isLoading
+            }
+        })
         Handler().postDelayed({
             if (Constants.SAVED_LOCATION) {
                 binding.yourLocationInfo.text = shared.getString(Constants.ADDRESS)
@@ -118,13 +155,6 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 )
             }
 
-            binding.searchEdt.setOnEditorActionListener { v, actionId, event ->
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    search = searchEdt.text.toString().trim()
-                    // artistListApi(latitude, longitude, search)
-                }
-                false
-            }
         }, 2000)
 
 
@@ -137,10 +167,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        val permissionLocation = ContextCompat.checkSelfPermission(
-            activity!!,
-            ACCESS_FINE_LOCATION
-        )
+        val permissionLocation = ContextCompat.checkSelfPermission(activity!!, ACCESS_FINE_LOCATION)
         if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
             getMyLocation()
         }
@@ -149,7 +176,8 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK) {    if (requestCode == REQUEST_CHECK_SETTINGS_GPS) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CHECK_SETTINGS_GPS) {
             getMyLocation()
         }
     }
@@ -187,47 +215,62 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         transaction?.commit()
     }
 
-    private fun initializeArtistRecycler() {
-        val layoutManager = LinearLayoutManager(ctx)
-        binding.artistRecycler.layoutManager = layoutManager
-    }
-
     private fun artistListApi(lat: String, lng: String, search: String) {
 
+        if (currentPage == 1)
         binding.loaderLayout.visibility = View.VISIBLE
+
         RetrofitClient.api.artistListApi(
             shared.getString(Constants.DataKey.AUTH_VALUE),
-            Constants.DataKey.CONTENT_TYPE_VALUE, "", lat, lng, search
+            Constants.DataKey.CONTENT_TYPE_VALUE, "", lat, lng, search,currentPage.toString()
         )
             .enqueue(object : Callback<ArtistModel> {
                 override fun onResponse(call: Call<ArtistModel>, response: Response<ArtistModel>) {
                     binding.loaderLayout.visibility = View.GONE
                     if (response.body() != null) {
                         if (response.isSuccessful) {
+
                             // after api successfull do your stuff....
+                            artistList.clear()
                             artistList = response.body()?.data?.data!!
-                            if (artistList.isNotEmpty()) {
+                            totalPage = response.body()?.data?.last_page!!
+                            if (artistList.size > 0) {
+
+                                Handler().postDelayed({
+                                    run {
+                                        /**
+                                         * manage progress view
+                                         */
+                                        /**
+                                         * manage progress view
+                                         */
+                                        if (currentPage != PaginationScrollListener.PAGE_START)
+                                            artistListAdapter?.removeLoading()
+                                        artistListAdapter?.addItems(artistList)
+                                        if (currentPage < totalPage) {
+                                            artistListAdapter?.addLoading()
+                                        } else {
+                                            isLastPage = true
+                                        }
+                                        isLoading = false
+                                    }
+                                }, 1500)
+
                                 binding.noDataFound.visibility = View.GONE
-                                binding.refresh.visibility = View.GONE
-                                val adapter = ArtistListAdapter(
-                                    ctx,
-                                    artistList,
-                                    this@HomeFragment,
-                                    this@HomeFragment
-                                )
-                                binding.artistRecycler.adapter = adapter
+
                             } else {
                                 binding.noDataFound.visibility = View.VISIBLE
-                                binding.refresh.visibility = View.VISIBLE
                             }
                         }
-                    } else {
+                    } else if (response.code() == 401) {
+                        isInvalidAuth = true
                         val jsonObject: JSONObject
                         if (response.errorBody() != null) {
                             try {
                                 jsonObject = JSONObject(response.errorBody()?.string()!!)
                                 val errorMessage = jsonObject.getString(Constants.ERRORS)
-                                Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT).show()
+//                                Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT).show()
+                                invalidAuthPopUp()
                             } catch (e: JSONException) {
                                 Toast.makeText(
                                     ctx,
@@ -404,11 +447,9 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         return if (permissionLocation != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(ACCESS_FINE_LOCATION)
             if (!listPermissionsNeeded.isEmpty()) {
-                ActivityCompat.requestPermissions(
-                    activity!!,
-                    listPermissionsNeeded.toArray(arrayOfNulls<String>(listPermissionsNeeded.size)),
-                    REQUEST_ID_MULTIPLE_PERMISSIONS
-                )
+                ActivityCompat.requestPermissions(activity!!,
+                    listPermissionsNeeded.toArray(arrayOfNulls<String>(listPermissionsNeeded.size)), REQUEST_ID_MULTIPLE_PERMISSIONS)
+
             }
             false
         } else {
@@ -419,6 +460,42 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
 
     override fun onConnectionFailed(p0: ConnectionResult) {
 
+    }
+
+    private  fun  invalidAuthPopUp() {
+
+        val layoutInflater: LayoutInflater =
+            ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+        val popUp: View = layoutInflater.inflate(R.layout.alert_popup_layout, null)
+        val popUpWindowReport = PopupWindow(
+            popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
+            ConstraintLayout.LayoutParams.MATCH_PARENT, true
+        )
+        popUpWindowReport.showAtLocation(popUp, Gravity.CENTER, 0, 0)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            popUpWindowReport.elevation = 10f
+        }
+        popUpWindowReport.isTouchable = false
+        popUpWindowReport.isOutsideTouchable = false
+
+        val ok: MaterialTextView = popUp.findViewById(R.id.okTv)
+        val congratsMsgTv: MaterialTextView = popUp.findViewById(R.id.congratsMsgTv)
+        congratsMsgTv.text = Constants.SOMETHING_WENT_WRONG
+
+        ok.setOnClickListener {
+            if (isInvalidAuth) {
+                popUpWindowReport.dismiss()
+                val intent = Intent(ctx,LoginActivity::class.java)
+                startActivity(intent)
+                activity!!.finishAffinity()
+            } else {
+                popUpWindowReport.dismiss()
+            }
+
+        }
     }
 
 }

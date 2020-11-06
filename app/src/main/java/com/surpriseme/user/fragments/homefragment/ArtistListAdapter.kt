@@ -6,85 +6,94 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RatingBar
-import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 import com.google.android.material.textview.MaterialTextView
 import com.squareup.picasso.Picasso
 import com.surpriseme.user.R
+import com.surpriseme.user.util.BaseViewHolder
 import com.surpriseme.user.util.Constants
 import java.lang.StringBuilder
 
-class ArtistListAdapter(val context: Context, val artistList: ArrayList<DataUserArtistList>,
-val artistListFace: ArtistListFace,val bookBtnClick: BookBtnClick) : RecyclerView.Adapter<ArtistListAdapter.ArtistViewHolder>() {
+class ArtistListAdapter(
+    val context: Context,
+    val artistList: ArrayList<DataUserArtistList>,
+    val artistListFace: ArtistListFace,
+    val bookBtnClick: BookBtnClick
+) : RecyclerView.Adapter<BaseViewHolder>() {
 
-    private var categoryList:ArrayList<String> = ArrayList()
+    private var categoryList: ArrayList<String> = ArrayList()
 
-
-    inner class ArtistViewHolder(itemView:View) :RecyclerView.ViewHolder(itemView) {
-
-        val image = itemView.findViewById<ImageView>(R.id.image)
-
-        val name = itemView.findViewById<MaterialTextView>(R.id.name)
-        val description = itemView.findViewById<MaterialTextView>(R.id.description)
-        val bookBtn = itemView.findViewById<MaterialButton>(R.id.bookBtn)
-        val ratingbar = itemView.findViewById<RatingBar>(R.id.ratingbar)
-        val seeArtistProfile = itemView.findViewById<MaterialTextView>(R.id.seeArtistProfile)
-        val categories = itemView.findViewById<MaterialTextView>(R.id.categoryTxt)
-
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArtistViewHolder {
-
-        val view = LayoutInflater.from(context).inflate(R.layout.artist_recycler_layout,parent,false)
-        return ArtistViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: ArtistViewHolder, position: Int) {
-
-        val artistModel = artistList[position]
-        categoryList = artistList[position].category_id_details
+    private val VIEW_TYPE_LOADING = 0
+    private val VIEW_TYPE_NORMAL = 1
+    private var isLoaderVisible = false
 
 
-        Picasso.get().load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.image)
-            .placeholder(R.drawable.app_logo)
-            .resize(4000,1500)
-            .onlyScaleDown()
-            .into(holder.image)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
 
-        holder.name.text = artistModel.name
-        holder.description.text = artistModel.description
+//        val view = LayoutInflater.from(context).inflate(R.layout.artist_recycler_layout,parent,false)
+//        return ArtistViewHolder(view)
+        return when (viewType) {
+            VIEW_TYPE_NORMAL -> ViewHolder(
 
-        if (artistModel.rating == null) {
-            holder.ratingbar.visibility = View.GONE
-        }else
-        holder.ratingbar.rating = artistModel.rating
-
-
-
-                var builder = StringBuilder()
-                for (i in 0 until  categoryList.size){
-                    builder.append(categoryList[i]+ ",")
-                }
-                holder.categories.text = builder.toString()
-
-
-//            if (categoryList.size >0) {
-//                for (i in 0 until categoryList.size)
-//                    addChip(categoryList[i].toString(),holder.categories)
-//            }
-
-        holder.itemView.setOnClickListener {
-            artistListFace.artistDetailLink(artistModel.id.toString())
-        }
-        holder.bookBtn.setOnClickListener{
-            bookBtnClick.btnClick(artistModel.id.toString())
+                LayoutInflater.from(context).inflate(R.layout.artist_recycler_layout, parent, false)
+            )
+            VIEW_TYPE_LOADING -> ProgressHolder(
+                LayoutInflater.from(parent.context).inflate(R.layout.item_progress, parent, false)
+            )
+            else -> null!!
         }
 
     }
+
+    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+
+        holder.onBind(position)
+    }
+    override fun getItemViewType(position: Int): Int {
+        if (artistList.size == 1) {
+            return VIEW_TYPE_NORMAL
+        }
+        return if (isLoaderVisible) {
+            if (position == artistList.size - 1) VIEW_TYPE_LOADING else VIEW_TYPE_NORMAL
+        } else {
+            VIEW_TYPE_NORMAL
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return artistList.size ?: 0
+    }
+    fun addItems(postItems: ArrayList<DataUserArtistList>?) {
+        artistList.addAll(postItems!!)
+        notifyDataSetChanged()
+    }
+
+    fun addLoading() {
+        isLoaderVisible = true
+        artistList.add(DataUserArtistList())
+        notifyItemInserted(artistList.size - 1)
+    }
+
+    fun removeLoading() {
+        isLoaderVisible = false
+        val position = artistList.size - 1
+        val item: DataUserArtistList = getItem(position)
+        if (item != null) {
+            artistList.removeAt(position)
+            notifyItemRemoved(position)
+        }
+    }
+    fun clear() {
+        artistList.clear()
+        notifyDataSetChanged()
+    }
+
+    private fun getItem(position: Int): DataUserArtistList {
+        return artistList[position]
+    }
+
+
 
 //    private fun addChip(pItem: String, textView: TextView: MaterialTextView) {
 //        val lChip = Chip(context)
@@ -101,15 +110,69 @@ val artistListFace: ArtistListFace,val bookBtnClick: BookBtnClick) : RecyclerVie
 //
 //    }
 
-    override fun getItemCount(): Int {
-        return artistList.size
+    inner class ViewHolder(itemView: View) : BaseViewHolder(itemView) {
+
+        val image = itemView.findViewById<ImageView>(R.id.image)
+
+        val name = itemView.findViewById<MaterialTextView>(R.id.name)
+        val description = itemView.findViewById<MaterialTextView>(R.id.description)
+        val bookBtn = itemView.findViewById<MaterialButton>(R.id.bookBtn)
+        val ratingbar = itemView.findViewById<RatingBar>(R.id.ratingbar)
+        val seeArtistProfile = itemView.findViewById<MaterialTextView>(R.id.seeArtistProfile)
+        val categories = itemView.findViewById<MaterialTextView>(R.id.categoryTxt)
+
+        override fun clear() {}
+
+        override fun onBind(position: Int) {
+            super.onBind(position)
+
+            val artistModel = artistList[position]
+//            if (artistList[position].category_id_details !=null || artistList[position].category_id_details?.isNotEmpty()!!)
+//            categoryList = artistList[position].category_id_details!!
+
+            Picasso.get()
+                .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.image)
+                .placeholder(R.drawable.artist_pholder)
+                .resize(4000, 1500)
+                .onlyScaleDown()
+                .into(image)
+
+            name.text = artistModel.name
+            description.text = artistModel.description
+
+            if (artistModel.rating == null) {
+                ratingbar.visibility = View.GONE
+            } else
+                ratingbar.rating = artistModel.rating
+
+
+            var builder = StringBuilder()
+            for (i in 0 until categoryList.size) {
+                builder.append(categoryList[i] + ",")
+            }
+            categories.text = builder.toString()
+
+            itemView.setOnClickListener {
+                artistListFace.artistDetailLink(artistModel.id.toString())
+            }
+            bookBtn.setOnClickListener{
+                bookBtnClick.btnClick(artistModel.id.toString())
+            }
+        }
     }
 
-    interface ArtistListFace{
+    class ProgressHolder internal constructor(itemView: View?) :
+        BaseViewHolder(itemView) {
+        override fun clear() {}
+    }
+
+    interface ArtistListFace {
         fun artistDetailLink(artistID: String)
     }
-    interface BookBtnClick{
+
+    interface BookBtnClick {
         fun btnClick(artistID: String)
     }
+
 
 }

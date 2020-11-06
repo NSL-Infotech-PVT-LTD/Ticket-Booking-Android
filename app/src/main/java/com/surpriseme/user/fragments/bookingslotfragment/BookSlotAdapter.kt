@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textview.MaterialTextView
@@ -22,7 +23,7 @@ class BookSlotAdapter(
 ) :
     RecyclerView.Adapter<BookSlotAdapter.BookSlotViewHolder>() {
 
-    private var rowPosition: Int = -1
+
     private var fromTime = ""
     private var toTime = ""
     var setFromTime: String? = null
@@ -30,14 +31,12 @@ class BookSlotAdapter(
     var slotPosition: Int? = null
     var lowPosition: Int? = null
     var isClear = false
-    private var selectedSlot: ArrayList<Int> = ArrayList()
+    val addToList: ArrayList<SlotDataModel> = ArrayList()
 
     class BookSlotViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val timeTxt = itemView.findViewById<MaterialTextView>(R.id.timeTxt)!!
-
     }
-
 
     override fun getItemViewType(position: Int): Int {
         return position
@@ -70,33 +69,64 @@ class BookSlotAdapter(
         }
 
         holder.itemView.isEnabled = !(list[position].booked == "1" || list[position].date.isEmpty())
+
         holder.itemView.setOnClickListener {
 
-            bookSlot.slotPosition(position)
-            rowPosition = position
-            selectedSlot.add(rowPosition)
-//            list[position].isBooked = true
+            if (!list[position].isBooked) {
+                addToList.add(list[position])
+                if (addToList.size < 2) {
+                    holder.itemView.background =
+                        ContextCompat.getDrawable(context, R.drawable.slot_green)
+                    list[position].isBooked = true
+                    selectDate.date(addToList)
+
+                } else if (addToList.size > 1) {
+                    if (list[position - 1].isBooked == false && list[position + 1].isBooked == false) {
+                        addToList.remove(list[position])
+                        Toast.makeText(context, "You cant select this slot", Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        holder.itemView.background =
+                            ContextCompat.getDrawable(context, R.drawable.slot_green)
+                        list[position].isBooked = true
+                        selectDate.date(addToList)
+                    }
+                }
+
+            } else if (list[position].isBooked) {
+                holder.itemView.background = ContextCompat.getDrawable(context, R.drawable.slot_bg)
+                list[position].isBooked = false
+                addToList.remove(list[position])
+                selectDate.date(addToList)
+            }
+//            bookSlot.slotPosition(position)
+//            rowPosition = position
+//            selectedSlot.add(rowPosition)
 //
-//            if (list[position].isBooked) {
-//                list.add(list[position])
-//                fromTime = list[0].hour
-//                toTime = list[list.size - 1].hour
-//                time = list[position].hour // gettimg time from List
-//                fromTime = time.split(" - ")[0]   // gettimg fromTime from List
-//                toTime = time.split(" - ")[1]     // // gettimg toTime from List
-//
-//                Constants.FROM_TIME = fromTime
-//                Constants.TO_TIME = toTime
-                selectDate.date(fromTime, toTime, list)
+//            addToList.add(list[position])
+//            Toast.makeText(context,"" + list[position].toString(),Toast.LENGTH_SHORT).show()
+//            if (addToList.size <2) {
+//                addToList[position].isBooked =true
+//                holder.timeTxt.background =
+//                    ContextCompat.getDrawable(context, R.drawable.slot_green)
+//            } else {
+//                if (list[position -1].booked =="0" || list[position -1].date.isEmpty()
+//                    || list[position +1].booked =="0" || list[position +1].date.isEmpty() ) {
+//                    Toast.makeText(context, "You Cant select this time slot",Toast.LENGTH_SHORT).show()
+//                } else {
+//                    addToList[position].isBooked = true
+//                    holder.timeTxt.background =
+//                        ContextCompat.getDrawable(context, R.drawable.slot_green)
+//                }
 //            }
 
 
+//            if (slotPosition == null) {
+//                isClear = false
+//                holder.timeTxt.background =
+//                    ContextCompat.getDrawable(context, R.drawable.slot_green)
+//            }
 
-            if (slotPosition == null) {
-                isClear = false
-                holder.timeTxt.background =
-                    ContextCompat.getDrawable(context, R.drawable.slot_green)
-            }
         }
 
         val fromDateFormat = SimpleDateFormat("hh:mm aa")
@@ -131,14 +161,24 @@ class BookSlotAdapter(
         if (isClear) {
             slotPosition = null
             if (list[position].booked == "1" || list[position].date.isEmpty()) {
-                holder.timeTxt.background = ContextCompat.getDrawable(context, R.drawable.slot_grey)
+                holder.itemView.background =
+                    ContextCompat.getDrawable(context, R.drawable.slot_grey)
             } else {
-                holder.timeTxt.background =
+                holder.itemView.background =
                     ContextCompat.getDrawable(context, R.drawable.boxcardview)
+                addToList.clear()
+                for (i in 0 until list.size) {
+                    list[i].isBooked = false
+                }
+
+//
+
+
             }
         } else if (slotPosition != null && position in lowPosition!!..slotPosition!! && list[position].date.isNotEmpty() && list[position].booked == "0") {
             list[position].isBooked = true
-            holder.timeTxt.background = ContextCompat.getDrawable(context, R.drawable.slot_green)
+            holder.itemView.background = ContextCompat.getDrawable(context, R.drawable.slot_green)
+
         }
 
     }
@@ -149,7 +189,7 @@ class BookSlotAdapter(
     }
 
     interface SelectDate {
-        fun date(fromTime: String, toTime: String,slotList:ArrayList<SlotDataModel>)
+        fun date(slotList: ArrayList<SlotDataModel>)
     }
 
     interface BookSlot {

@@ -1,5 +1,7 @@
 package com.surpriseme.user.util
 
+import com.surpriseme.user.fragments.bookingfragment.BookingArtistDetailModel
+
 object Constants {
     const val LOGIN = "customer/login"
     const val BEARER = "Bearer "
@@ -28,6 +30,7 @@ object Constants {
     const val CHAT = "chat/getItemsByReceiverId"
     const val BOOKING_STATUS = "customer/change-booking-status"
     const val BOOKING_SLOT_LIST = "customer/bookslot/list"
+    const val CUSTOMER_REVIEW = "customer/getartistrating"
 
 
     const val PLEASE_CLICK_BACK_AGAIN_To_EXIT = "Please click BACK again to exit"
@@ -73,6 +76,9 @@ object Constants {
     const val DESENDING ="dsc"
     var FROM_TIME = ""
     var TO_TIME = ""
+    var REPORT = "report"
+    var COMING_FROM_DETAIL = false
+    var SAVE_BOOKING_LIST:ArrayList<BookingArtistDetailModel> = ArrayList()
 
 
     object ApiKey {
@@ -112,6 +118,8 @@ object Constants {
         const val TO_DATE = "to_date"
         const val SORT_BY = "sort_by"
         const val SHOW_TYPE = "show_type"
+        const val PAGE = "page"
+
 
 
 

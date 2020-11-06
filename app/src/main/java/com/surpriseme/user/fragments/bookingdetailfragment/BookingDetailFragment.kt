@@ -16,6 +16,8 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
 import com.squareup.picasso.Picasso
 import com.surpriseme.user.R
@@ -53,7 +55,13 @@ class BookingDetailFragment : Fragment(), View.OnClickListener, AdapterView.OnIt
     private var bookingModel: BookingDataModel? = null
     private var spinnerValue = ""
     private var reasonList: ArrayList<String> = ArrayList()
-    var descriptionTv: EditText?=null
+    var descriptionTv: EditText? = null
+
+    // boolean vars to take action according to status....
+    private var wantToCancelBooking = false
+    private var isArtistReach = false
+    private var messageToDisplay = ""
+    private var status = ""
 
 
     override fun onAttach(context: Context) {
@@ -69,6 +77,7 @@ class BookingDetailFragment : Fragment(), View.OnClickListener, AdapterView.OnIt
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_booking_detail, container, false)
         val view = binding.root
+        activity!!.window.statusBarColor = ContextCompat.getColor(activity!!, R.color.colorPrimary)
         shared = PrefrenceShared(ctx)
         init(view)
 
@@ -83,9 +92,9 @@ class BookingDetailFragment : Fragment(), View.OnClickListener, AdapterView.OnIt
         ((ctx as MainActivity)).hideBottomNavigation()
 
         // Views initialization....
-        binding.backArrow.setOnClickListener(this)
+        binding.backpress.setOnClickListener(this)
         binding.chatBtn.setOnClickListener(this)
-        binding.statusBtn.setOnClickListener(this)
+        binding.actionBtn.setOnClickListener(this)
         bookingId = arguments?.getString("bookingId")!!
         bookingDetailApi()
 
@@ -93,17 +102,21 @@ class BookingDetailFragment : Fragment(), View.OnClickListener, AdapterView.OnIt
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.backArrow -> {
+            R.id.backpress -> {
                 if (Constants.NOTIFICATION) {
-                    val fragment = NotificationFragment()
-                    val transaction = fragmentManager?.beginTransaction()
-                    transaction?.replace(R.id.frameContainer, fragment)
-                    transaction?.commit()
+                    Constants.COMING_FROM_DETAIL = false
+//                    val fragment = NotificationFragment()
+//                    val transaction = fragmentManager?.beginTransaction()
+//                    transaction?.replace(R.id.frameContainer, fragment)
+//                    transaction?.commit()
+                    fragmentManager?.popBackStack()
                 } else {
-                    val fragment = BookingFragment()
-                    val transaction = fragmentManager?.beginTransaction()
-                    transaction?.replace(R.id.frameContainer, fragment)
-                    transaction?.commit()
+                    Constants.COMING_FROM_DETAIL = true
+                    fragmentManager?.popBackStack()
+//                    val fragment = BookingFragment()
+//                    val transaction = fragmentManager?.beginTransaction()
+//                    transaction?.replace(R.id.frameContainer, fragment)
+//                    transaction?.commit()
                 }
             }
             R.id.chatBtn -> {
@@ -116,11 +129,21 @@ class BookingDetailFragment : Fragment(), View.OnClickListener, AdapterView.OnIt
                 transaction?.replace(R.id.frameContainer, fragment)
                 transaction?.addToBackStack("bookingDetailFragment")
                 transaction?.commit()
-
+//
             }
-            R.id.statusBtn -> {
-                // If status button text is Pay Now then redirect to payment screen.
-                if (statusBtn.text == ctx.resources.getString(R.string.pay_now)) {
+            R.id.actionBtn -> {
+//                // If status button text is Pay Now then redirect to payment screen.
+
+                if (actionBtn.text == ctx.resources.getString(R.string.cancel_booking)) {
+
+                    // display popup , Are you sure want to cancel booking....
+                    if (wantToCancelBooking)
+                        messageToDisplay =
+                            ctx.resources.getString(R.string.are_you_sure_want_to_cancel)
+                    statusPopUp(messageToDisplay)
+                    // If Booing status cancel....
+
+                } else if (actionBtn.text == ctx.resources.getString(R.string.pay_now)) {
                     val bundle = Bundle()
                     bundle.putString("bookingId", bookingId)
                     val fragment = PaymentFragment()
@@ -129,19 +152,19 @@ class BookingDetailFragment : Fragment(), View.OnClickListener, AdapterView.OnIt
                     transaction?.replace(R.id.frameContainer, fragment)
                     transaction?.addToBackStack("paymentFragment")
                     transaction?.commit()
-                } else if (statusBtn.text == ctx.resources.getString(R.string.cancel_booking)) {
-                    // If Booing status cancel....
-                    bookingStatusApi()
-
-                } else if (statusBtn.text == ctx.resources.getString(R.string.did_artist_reach_at_yout_location)) {
+                } else if (actionBtn.text == ctx.resources.getString(R.string.did_artist_reach_at_yout_location)) {
                     // display pop up..
-                    artistReachPopup()
-                } else if (statusBtn.text == ctx.resources.getString(R.string.go_to_Home)) {
+
+                    if (isArtistReach)
+                        messageToDisplay = ctx.resources.getString(R.string.are_yout_sure)
+                    statusPopUp(messageToDisplay)
+                } else if (actionBtn.text == ctx.resources.getString(R.string.go_to_Home)) {
+                    Constants.COMING_FROM_DETAIL = true
                     fragmentManager?.popBackStack()
                 }
             }
-
         }
+
 
     }
 
@@ -165,17 +188,13 @@ class BookingDetailFragment : Fragment(), View.OnClickListener, AdapterView.OnIt
                             artistId = bookingModel?.artist_detail?.id.toString()
 
                             if (bookingModel != null) {
-                                binding.bookingDetailContainer.visibility = View.VISIBLE
+                                binding.cardLayout.visibility = View.VISIBLE
                                 Constants.OTP = bookingModel?.otp!!
                                 displayDetail(bookingModel!!)
                             } else {
 
-                                Toast.makeText(
-                                    ctx,
-                                    "" + Constants.SOMETHING_WENT_WRONG,
-                                    Toast.LENGTH_SHORT
-                                )
-                                    .show()
+                                binding.cardLayout.visibility = View.GONE
+                                Snackbar.make(binding.bookingDetailContainer, "" + Constants.SOMETHING_WENT_WRONG,BaseTransientBottomBar.LENGTH_INDEFINITE).show()
                                 if (Constants.NOTIFICATION) {
                                     val fragment = NotificationFragment()
                                     val transaction = fragmentManager?.beginTransaction()
@@ -250,43 +269,103 @@ class BookingDetailFragment : Fragment(), View.OnClickListener, AdapterView.OnIt
 
                     binding.profileName.text = bookingModel.artist_detail.name
                 }
-                binding.statusMtv.text = "Status:- ${bookingModel.status}"
-                binding.showTypeMtv.text = "Show type:- ${bookingModel?.type}"
+
+                binding.statusTv.text = "${bookingModel.status}"
+                if (bookingModel.status == Constants.PENDING)
+                    wantToCancelBooking = true
+                if (bookingModel.status == Constants.CONFIRMED)
+                    isArtistReach = true
+                binding.liveDigitalTv.text = "${bookingModel?.type}"
 
                 //change satatus of button...
                 if (bookingModel.status == Constants.PENDING) {
                     binding.chatBtn.visibility = View.VISIBLE
-                    binding.statusBtn.visibility = View.VISIBLE
-                    binding.statusBtn.text = ctx.resources.getString(R.string.cancel_booking)
+                    binding.actionBtn.visibility = View.VISIBLE
+                    binding.statusTv.background =
+                        ContextCompat.getDrawable(ctx, R.drawable.status_orange_bg)
+                    binding.paymentTv.background =
+                        ContextCompat.getDrawable(ctx, R.drawable.status_grey_bg)
+                    binding.statusTv.text = ctx.resources.getString(R.string.pending)
+                    binding.paymentTv.text = ctx.resources.getString(R.string.not_paid)
+                    binding.actionBtn.text = ctx.resources.getString(R.string.cancel_booking)
                 } else if (bookingModel.status == Constants.CANCEL) {
-                    binding.chatBtn.visibility = View.GONE
-                    binding.statusBtn.visibility = View.GONE
+                    binding.statusTv.background =
+                        ContextCompat.getDrawable(ctx, R.drawable.status_red_bg)
+                    binding.paymentTv.background =
+                        ContextCompat.getDrawable(ctx, R.drawable.status_grey_bg)
+                    binding.statusTv.text = ctx.resources.getString(R.string.cancel)
+                    binding.paymentTv.text = ctx.resources.getString(R.string.not_paid)
+                    binding.actionBtn.visibility = View.VISIBLE
+                    binding.actionBtn.text = ctx.resources.getString(R.string.go_to_Home)
+
                 } else if (bookingModel.status == Constants.ACCEPTED) {
+                    binding.statusTv.background =
+                        ContextCompat.getDrawable(ctx, R.drawable.status_green_bg)
+                    binding.paymentTv.background =
+                        ContextCompat.getDrawable(ctx, R.drawable.status_grey_bg)
+                    binding.statusTv.text = ctx.resources.getString(R.string.accepted)
+                    binding.paymentTv.text = ctx.resources.getString(R.string.not_paid)
                     binding.chatBtn.visibility = View.VISIBLE
-                    binding.statusBtn.visibility = View.VISIBLE
-                    binding.statusBtn.text = ctx.resources.getString(R.string.pay_now)
+                    binding.actionBtn.visibility = View.VISIBLE
+                    binding.actionBtn.text = ctx.resources.getString(R.string.pay_now)
                 } else if (bookingModel.status == Constants.REJECTED) {
-                    binding.statusBtn.visibility = View.VISIBLE
-                    binding.statusBtn.text = ctx.resources.getString(R.string.go_to_Home)
+                    binding.statusTv.background =
+                        ContextCompat.getDrawable(ctx, R.drawable.status_red_bg)
+                    binding.paymentTv.background =
+                        ContextCompat.getDrawable(ctx, R.drawable.status_grey_bg)
+                    binding.statusTv.text = ctx.resources.getString(R.string.rejected)
+                    binding.paymentTv.text = ctx.resources.getString(R.string.not_paid)
+                    binding.actionBtn.visibility = View.VISIBLE
+                    binding.actionBtn.text = ctx.resources.getString(R.string.go_to_Home)
+
                 } else if (bookingModel.status == Constants.CONFIRMED) {
+                    binding.statusTv.background =
+                        ContextCompat.getDrawable(ctx, R.drawable.status_green_bg)
+                    binding.paymentTv.background =
+                        ContextCompat.getDrawable(ctx, R.drawable.status_green_bg)
+                    binding.statusTv.text = ctx.resources.getString(R.string.confirm)
+                    binding.paymentTv.text = ctx.resources.getString(R.string.paid)
                     binding.chatBtn.visibility = View.VISIBLE
-                    binding.statusBtn.visibility = View.VISIBLE
-                    binding.statusBtn.text =
+                    binding.actionBtn.visibility = View.VISIBLE
+                    binding.actionBtn.text =
                         ctx.resources.getString(R.string.did_artist_reach_at_yout_location)
                 } else if (bookingModel.status == Constants.PROCESSING) {
+                    binding.statusTv.background =
+                        ContextCompat.getDrawable(ctx, R.drawable.status_orange_bg)
+                    binding.paymentTv.background =
+                        ContextCompat.getDrawable(ctx, R.drawable.status_green_bg)
+                    binding.statusTv.text = ctx.resources.getString(R.string.processing)
+                    binding.paymentTv.text = ctx.resources.getString(R.string.paid)
                     binding.chatBtn.visibility = View.GONE
-                    binding.statusBtn.visibility = View.VISIBLE
-                    binding.statusBtn.text =
+                    binding.actionBtn.visibility = View.VISIBLE
+                    binding.actionBtn.text =
                         ctx.resources.getString(R.string.your_artist_start_to_perform)
                 } else if (bookingModel.status == Constants.COMPLETE_REVIEW) {
+                    binding.statusTv.background =
+                        ContextCompat.getDrawable(ctx, R.drawable.status_green_bg)
+                    binding.paymentTv.background =
+                        ContextCompat.getDrawable(ctx, R.drawable.status_green_bg)
+                    binding.statusTv.text = ctx.resources.getString(R.string.complete)
+                    binding.paymentTv.background =
+                        ContextCompat.getDrawable(ctx, R.drawable.status_green_bg)
+                    binding.paymentTv.text = ctx.resources.getString(R.string.paid)
                     binding.chatBtn.visibility = View.GONE
-                    binding.statusBtn.visibility = View.VISIBLE
-                    binding.ratingbar.visibility = View.VISIBLE
-                    binding.statusBtn.text =
+                    binding.actionBtn.visibility = View.VISIBLE
+                    binding.actionBtn.text =
                         ctx.resources.getString(R.string.your_artist_complete_his_performance)
+                } else if (bookingModel.status == Constants.REPORT) {
+                    binding.statusTv.background =
+                        ContextCompat.getDrawable(ctx, R.drawable.status_red_bg)
+                    binding.paymentTv.background =
+                        ContextCompat.getDrawable(ctx, R.drawable.status_green_bg)
+                    binding.statusTv.text = ctx.resources.getString(R.string.report)
+                    binding.paymentTv.text = ctx.resources.getString(R.string.paid)
+                    binding.reasonTv.visibility = View.VISIBLE
+                    if (bookingModel.params != null)
+                        binding.reasonTv.text = bookingModel.params.report
                 }
 
-                binding.addressMtv.text = bookingModel.address
+                binding.locationTv.text = bookingModel.address
 
                 // Display date at top of card....
                 var date = bookingModel.date
@@ -371,7 +450,7 @@ class BookingDetailFragment : Fragment(), View.OnClickListener, AdapterView.OnIt
     }
 
 
-    private fun reportStatusApi(reason:String) {
+    private fun reportStatusApi(reason: String) {
         val report = "report"
         binding.loaderLayout.visibility = View.VISIBLE
         RetrofitClient.api.bookingStatusApi(
@@ -421,7 +500,8 @@ class BookingDetailFragment : Fragment(), View.OnClickListener, AdapterView.OnIt
             })
     }
 
-    private fun artistReachPopup() {
+    // when artist reach then popup will display
+    private fun statusPopUp(message: String) {
 
         val layoutInflater: LayoutInflater =
             ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -442,19 +522,31 @@ class BookingDetailFragment : Fragment(), View.OnClickListener, AdapterView.OnIt
 
         val no: MaterialTextView = popUp.findViewById(R.id.no)
         val yes: MaterialTextView = popUp.findViewById(R.id.yes)
+        val messageTv: MaterialTextView = popUp.findViewById(R.id.messageTv)
+        messageTv.text = message
 
         yes.setOnClickListener {
             // dispaly otp popup
-            popupWindow.dismiss()
-            otpPopup()
+            if (wantToCancelBooking) {
+                bookingStatusApi()
+                popupWindow.dismiss()
+            }
+            if (isArtistReach) {
+                otpPopup()
+            }
         }
 
         no.setOnClickListener {
-            popupWindow.dismiss()
-            reportPopup()
+            if (wantToCancelBooking) {
+                popupWindow.dismiss()
+            } else if (isArtistReach) {
+                popupWindow.dismiss()
+                reportPopup()
+            }
 
         }
     }
+
 
     private fun otpPopup() {
 
@@ -517,7 +609,7 @@ class BookingDetailFragment : Fragment(), View.OnClickListener, AdapterView.OnIt
         reasonList.add(Constants.ARTIST_NOT_PICKING_CALL)
         reasonList.add(Constants.OTHER)
 
-        val reasonAdapter = ReasonSpinnerAdapter(ctx,reasonList)
+        val reasonAdapter = ReasonSpinnerAdapter(ctx, reasonList)
         reportSpinner?.adapter = reasonAdapter
 
 
@@ -525,7 +617,7 @@ class BookingDetailFragment : Fragment(), View.OnClickListener, AdapterView.OnIt
             if (descriptionTv?.visibility == View.VISIBLE) {
                 descriptionTv?.visibility = View.GONE
                 spinnerValue = Constants.SELECT_REASON
-            }else {
+            } else {
                 reportPopupWindow.dismiss()
             }
 

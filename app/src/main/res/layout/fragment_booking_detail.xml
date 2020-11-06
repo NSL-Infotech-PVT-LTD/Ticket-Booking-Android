@@ -1,281 +1,400 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <FrameLayout
+        android:id="@+id/bookingDetailContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".fragments.bookingdetailfragment.BookingDetailFragment">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/bookingDetailContainer"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible">
+            android:fillViewport="true">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/toolbarLayout"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_50sdp"
-                android:elevation="@dimen/_10sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_height="wrap_content">
+
+
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/grey_color">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/headerLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="@dimen/_200sdp"
+                    android:background="@color/colorPrimary"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
 
                     <ImageView
-                        android:id="@+id/backArrow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_15sdp"
-                        android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
+                        android:id="@+id/backpress"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:padding="@dimen/_5sdp"
+                        android:src="@drawable/ic_white_back"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/txt_back"
+                    <ImageView
+                        android:id="@+id/ticketIcon"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:src="@drawable/ic_ticket"
+                        app:layout_constraintTop_toBottomOf="@id/backpress"
+                        app:layout_constraintStart_toEndOf="@id/backpress"
+                        android:layout_marginTop="@dimen/_10sdp"/>
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/bookingDetailTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/back"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_15sdp"
-                        app:layout_constraintBottom_toBottomOf="@id/backArrow"
-                        app:layout_constraintStart_toEndOf="@id/backArrow"
-                        app:layout_constraintTop_toTopOf="@id/backArrow" />
+                        android:text="@string/booking_detail"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_20sdp"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        app:layout_constraintStart_toEndOf="@id/ticketIcon"
+                        app:layout_constraintTop_toTopOf="@id/ticketIcon"
+                        app:layout_constraintBottom_toBottomOf="@id/ticketIcon"/>
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-            </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/bookingDetailTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:text="@string/booking_detail"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_20sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbarLayout" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/imageCard"
-                android:layout_width="@dimen/_150sdp"
-                android:layout_height="@dimen/_100sdp"
-                app:cardElevation="5dp"
-                app:cardCornerRadius="@dimen/_10sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="@dimen/_30sdp"
-                app:layout_constraintTop_toBottomOf="@+id/bookingDetailTxt">
-
-            <ImageView
-                android:id="@+id/profileImg"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bookingDetailTxt" />
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chipGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:backgroundTint="@color/grey_color"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_5sdp"
-                app:chipSpacingVertical="@dimen/_3sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageCard"
-                app:layout_goneMarginTop="@dimen/_20sdp"
-                />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/profileName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_14sdp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:singleLine="true"
-                app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/statusMtv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:singleLine="true"
-                app:layout_constraintTop_toBottomOf="@+id/profileName" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/showTypeMtv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:singleLine="true"
-                app:layout_constraintTop_toBottomOf="@+id/statusMtv" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/addressMtv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_30sdp"
-                android:gravity="center"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:maxLines="3"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/showTypeMtv" />
-
-
-            <ImageView
-                android:id="@+id/dottedLine1"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_10sdp"
-                android:src="@drawable/dotted_view_line"
-                app:layout_constraintTop_toBottomOf="@+id/addressMtv"
-                android:layout_marginHorizontal="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_5sdp"/>
-
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/dateTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/dottedLine1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_10sdp"
-                android:textStyle="bold"
-                android:drawablePadding="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                app:drawableStartCompat="@drawable/ic_calendar_today_24" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/timeTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/dateTxt"
-                app:layout_constraintStart_toStartOf="@+id/dateTxt"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_10sdp"
-                android:textStyle="bold"
-                android:drawablePadding="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                app:drawableStartCompat="@drawable/ic_time_24" />
-
-            <ImageView
-                android:id="@+id/dottedLine2"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_10sdp"
-                android:src="@drawable/dotted_view_line"
-                app:layout_constraintTop_toBottomOf="@+id/timeTxt"
-                app:layout_constraintBottom_toTopOf="@+id/chatBtn"
-                app:layout_constraintVertical_bias="0"
-                android:layout_marginBottom="@dimen/_20sdp"
-                android:layout_marginHorizontal="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_10sdp"/>
-
-            <RatingBar
-                android:id="@+id/ratingbar"
-                style="@style/Widget.AppCompat.RatingBar.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:rating="3"
-                android:stepSize="1"
-                android:visibility="gone"
-                android:theme="@style/RatingBar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dottedLine2" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/chatBtn"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_50sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/statusBtn"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:text="@string/chat"
-                android:visibility="gone"
-                android:textAllCaps="false"
-                android:textSize="@dimen/_12sdp"
-                android:layout_marginHorizontal="@dimen/_30sdp"
-                app:cornerRadius="@dimen/_16sdp"
-                app:icon="@drawable/chat_icon"
-                app:iconGravity="textStart"
-                app:iconSize="@dimen/_25sdp"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/statusBtn"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_50sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:text="@string/cancel"
-                android:textAllCaps="false"
-                android:visibility="gone"
-                android:textSize="@dimen/_12sdp"
-                android:layout_marginHorizontal="@dimen/_30sdp"
-                app:cornerRadius="@dimen/_16sdp" />
-
-            <FrameLayout
-                android:id="@+id/loaderLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                android:background="@color/loaderBg">
-
-                <com.wang.avi.AVLoadingIndicatorView
-                    android:id="@+id/progressBar"
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="@dimen/_50sdp"
-                    app:indicatorName="LineScaleIndicator"
-                    style="@style/AVLoadingIndicatorView"
-                    android:layout_gravity="center_horizontal|center_vertical"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cardLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:background="@drawable/detail_screen_bg"
+                    android:layout_marginTop="@dimen/_80sdp"
                     app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/footerLayout"
+                    android:layout_marginBottom="@dimen/_20sdp">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/imageCard"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_120sdp"
+                        app:cardElevation="5dp"
+                        app:cardCornerRadius="@dimen/_10sdp"
+                        android:layout_marginHorizontal="@dimen/_16sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="@dimen/_14sdp">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+
+                        <ImageView
+                            android:id="@+id/profileImg"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/liveDigitalTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/live"
+                            android:textAllCaps="true"
+                            android:drawableStart="@drawable/grey_round"
+                            android:drawablePadding="@dimen/_5sdp"
+                            android:background="@drawable/live_digital_bg"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:textColor="@color/white"
+                            android:paddingHorizontal="@dimen/_5sdp"
+                            android:textSize="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:paddingVertical="@dimen/_1sdp"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/profileName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_14sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:singleLine="true"
+                        android:text="Ravi"
+                        android:layout_marginHorizontal="@dimen/_30sdp"
+                        app:layout_constraintTop_toBottomOf="@+id/imageCard"
+                        android:layout_marginTop="@dimen/_10sdp"/>
+
+
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintTop_toBottomOf="@id/profileName"
+                        android:gravity="center"
+                        android:layout_marginHorizontal="@dimen/_20sdp">
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/ratingDispTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4.5"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@color/yellowChat"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        app:layout_constraintTop_toBottomOf="@id/profileName"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:paddingHorizontal="@dimen/_10sdp"
+                        app:layout_constraintEnd_toStartOf="@id/ratingbar"
+                        android:paddingVertical="@dimen/_2sdp"/>
+
+                    <RatingBar
+                        android:id="@+id/ratingbar"
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:rating="3"
+                        android:stepSize="1"
+                        android:visibility="visible"
+                        android:theme="@style/RatingBar"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        app:layout_constraintStart_toEndOf="@id/ratingDispTxt"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        app:layout_constraintTop_toTopOf="@+id/ratingDispTxt"
+                        app:layout_constraintBottom_toBottomOf="@id/ratingDispTxt"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/dottedView"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_10sdp"
+                        android:src="@drawable/dotted_view_line"
+                        app:layout_constraintTop_toBottomOf="@id/linearLayout"
+                        android:layout_marginHorizontal="@dimen/_50sdp"
+                        android:layout_marginTop="@dimen/_10sdp"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/dateTv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/booking_date"
+                        app:layout_constraintTop_toBottomOf="@id/dottedView"
+                        app:layout_constraintStart_toStartOf="@id/dottedView"
+                        app:layout_constraintEnd_toStartOf="@id/timeTv"
+                        android:layout_marginTop="@dimen/_20sdp"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/dateTxt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@+id/dateTv"
+                        app:layout_constraintStart_toStartOf="@id/dateTv"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@id/timeTxt"
+                        android:drawablePadding="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        app:drawableStartCompat="@drawable/ic_calendar_today_24" />
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/timeTv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/booking_date"
+                        app:layout_constraintTop_toBottomOf="@id/dottedView"
+                        app:layout_constraintEnd_toEndOf="@id/dottedView"
+                        app:layout_constraintStart_toEndOf="@+id/dateTv"
+                        android:layout_marginTop="@dimen/_20sdp"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/timeTxt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@+id/timeTv"
+                        app:layout_constraintStart_toStartOf="@+id/timeTv"
+                        app:layout_constraintEnd_toEndOf="@id/timeTv"
+                        app:layout_constraintHorizontal_bias="0"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="bold"
+                        android:drawablePadding="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        app:drawableStartCompat="@drawable/ic_time_24" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/locationTxt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/location"
+                        app:layout_constraintTop_toBottomOf="@id/dateTxt"
+                        app:layout_constraintStart_toStartOf="@id/dottedView"
+                        android:layout_marginTop="@dimen/_20sdp"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/locationTv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/location"
+                        app:layout_constraintTop_toBottomOf="@id/locationTxt"
+                        app:layout_constraintStart_toStartOf="@id/dottedView"
+                        app:layout_constraintEnd_toEndOf="@id/dottedView"
+                        android:layout_marginTop="@dimen/_5sdp"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/statusTxt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/status"
+                        app:layout_constraintTop_toBottomOf="@id/locationTv"
+                        app:layout_constraintStart_toStartOf="@id/dottedView"
+                        app:layout_constraintEnd_toStartOf="@id/timeTv"
+                        android:layout_marginTop="@dimen/_10sdp"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/statusTv"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/statusTxt"
+                        app:layout_constraintStart_toStartOf="@id/statusTxt"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        app:cornerRadius="@dimen/_10sdp"
+                        android:gravity="center"
+                        android:textSize="@dimen/_10sdp"
+                        android:textColor="@color/white"
+                        android:paddingHorizontal="@dimen/_20sdp"
+                        android:paddingVertical="@dimen/_5sdp"
+                        android:textAllCaps="false"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/paymentTxt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/payment"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        app:layout_constraintTop_toTopOf="@id/statusTxt"
+                        app:layout_constraintStart_toEndOf="@id/statusTxt"
+                        app:layout_constraintEnd_toEndOf="@id/dottedView"/>
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/paymentTv"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/statusTxt"
+                        app:layout_constraintStart_toStartOf="@id/paymentTxt"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        app:cornerRadius="@dimen/_10sdp"
+                        android:paddingHorizontal="@dimen/_20sdp"
+                        android:paddingVertical="@dimen/_5sdp"
+                        android:textSize="@dimen/_10sdp"
+                        android:gravity="center"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginBottom="@dimen/_50sdp"
+                        android:textAllCaps="false"/>
+
+
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/footerLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@id/cardLayout"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:indicatorColor="@color/colorPrimary"
+                    app:layout_constraintVertical_bias="1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
 
-                    />
-            </FrameLayout>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/chatBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_50sdp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:text="@string/chat"
+                        app:icon="@drawable/chat_icon"
+                        app:iconSize="@dimen/_20sdp"
+                        app:iconGravity="textStart"
+                        android:textAllCaps="false"
+                        android:visibility="gone"
+                        android:textSize="@dimen/_12sdp"
+                        android:layout_marginHorizontal="@dimen/_30sdp"
+                        app:cornerRadius="@dimen/_16sdp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/actionBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_50sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/chatBtn"
+                        android:text="@string/cancel"
+                        android:textAllCaps="false"
+                        android:visibility="gone"
+                        android:textSize="@dimen/_12sdp"
+                        android:layout_marginHorizontal="@dimen/_30sdp"
+                        app:cornerRadius="@dimen/_16sdp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/reasonTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:padding="@dimen/_10sdp"
+                        android:textColor="@color/black"
+                        android:background="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:visibility="gone"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <include layout="@layout/loader_layout"
+                    android:id="@+id/loaderLayout"
+                    android:visibility="gone"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
     </FrameLayout>
 </layout>

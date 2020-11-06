@@ -95,8 +95,13 @@ class ChatFragment : Fragment(), View.OnClickListener, IOnMessageReceived {
                 .onlyScaleDown()
                 .into(mReceiverImageView)
         }
-        if (mReceiverName != "" || mReceiverName != "null") {
+        if ((mReceiverName != "") || (mReceiverName != "null")) {
+            if (mReceiverName == "null")
+                mReceiverNameMtv?.text = ""
+            else
             mReceiverNameMtv?.text = mReceiverName
+        } else {
+            mReceiverNameMtv?.text = ""
         }
         messageList?.adapter = adapter
         adapter?.notifyDataSetChanged()

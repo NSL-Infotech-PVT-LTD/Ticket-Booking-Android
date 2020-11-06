@@ -112,14 +112,17 @@
                         app:layout_constraintStart_toEndOf="@id/profileImg"
                         app:layout_constraintTop_toTopOf="@id/profileImg" />
 
+
                     <RatingBar
                         android:id="@+id/ratingbar"
                         style="@style/Widget.AppCompat.RatingBar.Small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:rating="3"
                         android:stepSize="1"
+                        android:theme="@style/RatingBar"
                         app:layout_constraintStart_toStartOf="@+id/profileName"
                         app:layout_constraintTop_toBottomOf="@id/profileName" />
 
@@ -129,6 +132,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:text="@string/see_review"
+                        android:padding="@dimen/_5sdp"
                         android:textColor="@color/blue_signup"
                         android:textSize="@dimen/_8sdp"
                         app:layout_constraintBottom_toBottomOf="@id/ratingbar"
@@ -569,35 +573,17 @@
                         android:textColor="@color/black"
                         android:gravity="center_vertical"/>
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/chatDemoTxt"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/chat_demo_text"
-                        app:layout_constraintTop_toBottomOf="@+id/aboutText"
-                        android:textSize="@dimen/_14sdp"
-                        android:layout_marginHorizontal="@dimen/_20sdp"
-                        android:paddingEnd="@dimen/_30sdp"
-                        android:textColor="@color/black"
-                        android:singleLine="true"/>
+
 
                     <ImageView
                         android:id="@+id/chatStartIcon"
                         android:layout_width="@dimen/_70sdp"
                         android:layout_height="@dimen/_70sdp"
                         android:src="@drawable/chat_start_icon"
-                        app:layout_constraintTop_toTopOf="@+id/chatDemoTxt"
+                        app:layout_constraintTop_toBottomOf="@+id/aboutText"
                         app:layout_constraintEnd_toEndOf="parent"/>
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="@id/chatDemoTxt"
-                        app:layout_constraintEnd_toStartOf="@+id/chatStartIcon"
-                        app:layout_constraintTop_toBottomOf="@+id/chatDemoTxt"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_10sdp"/>
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>

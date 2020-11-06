@@ -4,22 +4,18 @@
     android:id="@+id/boottomSheet"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#70ffffff"
     app:behavior_hideable="true"
+    android:background="@color/greyLighter"
     app:behavior_peekHeight="0dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="@dimen/_10sdp"
-        app:cardElevation="@dimen/_10sdp"
-        app:layout_constraintBottom_toBottomOf="parent">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:background="@drawable/corner_round_white_5"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            >
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -125,7 +121,7 @@
                         android:layout_width="50dp"
                         android:layout_height="@dimen/_50sdp"
                         android:layout_marginStart="@dimen/_10sdp"
-                        android:src="@drawable/calender_icon"
+                        android:src="@drawable/cal_icon"
                         app:layout_constraintBottom_toBottomOf="@+id/fromDateTxt"
                         app:layout_constraintEnd_toStartOf="@+id/toDateTxt"
                         app:layout_constraintStart_toEndOf="@id/fromDateTxt"
@@ -233,5 +229,5 @@
             </ScrollView>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

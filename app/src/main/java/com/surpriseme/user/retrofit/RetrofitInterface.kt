@@ -24,6 +24,7 @@ import com.surpriseme.user.fragments.chatFragment.ChatByIdModel
 import com.surpriseme.user.fragments.chatListfragment.ChatListModel
 import com.surpriseme.user.fragments.notificationfragment.NotificationReadModel
 import com.surpriseme.user.fragments.paymentfragment.BookingStatusModel
+import com.surpriseme.user.fragments.reviewfragment.ReviewModel
 import com.surpriseme.user.util.Constants
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -70,7 +71,8 @@ interface RetrofitInterface {
         @Query(Constants.ApiKey.LIMIT) limit: String,
         @Query(Constants.ApiKey.LATITUDE) latitude: String,
         @Query(Constants.ApiKey.LONGITUDE) longitude: String,
-        @Query(Constants.ApiKey.SEARCH) search:String
+        @Query(Constants.ApiKey.SEARCH) search:String,
+        @Query(Constants.ApiKey.PAGE) page:String
     ): Call<ArtistModel>
 
     @POST(Constants.CUSTOMER_ARTIST_LIST)
@@ -91,7 +93,8 @@ interface RetrofitInterface {
     @POST(Constants.CUSTOMER_BOOKING_LIST)
     fun customerBookingListApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
     @Header(Constants.ApiKey.CONTENT_TYPE) content_type: String,
-    @Query(Constants.ApiKey.LIMIT) limit: String) : Call<CustomerBookingListModel>
+    @Query(Constants.ApiKey.LIMIT) limit: String,
+    @Query(Constants.ApiKey.PAGE) page: String) : Call<CustomerBookingListModel>
 
 
     // Booking Detail Api....
@@ -198,6 +201,10 @@ interface RetrofitInterface {
     fun bookingSlotApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
     @Query(Constants.ApiKey.DATE) date: String,
     @Query(Constants.ApiKey.ARTIST_ID) artistID: String) :Call<SlotModel>
+
+    @POST(Constants.CUSTOMER_REVIEW)
+    fun customerReviewApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+    @Query(Constants.ApiKey.ARTIST_ID) artistID: String) :Call<ReviewModel>
 
 
 

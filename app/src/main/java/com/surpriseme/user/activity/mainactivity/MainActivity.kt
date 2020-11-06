@@ -1,7 +1,9 @@
 package com.surpriseme.user.activity.mainactivity
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -106,6 +108,8 @@ class MainActivity : AppCompatActivity() {
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.navBooking -> {
+                    Constants.SAVE_BOOKING_LIST.clear()
+                    Constants.COMING_FROM_DETAIL = false
                     loadFragment(BookingFragment())
                     bottomNav.menu.findItem(R.id.navBooking).setTitle("")
                     bottomNav.menu.findItem(R.id.navBooking).icon = ContextCompat.getDrawable(this@MainActivity, R.drawable.calender_icon)
@@ -171,6 +175,19 @@ class MainActivity : AppCompatActivity() {
         bottomNav.visibility = View.VISIBLE
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        val permissionLocation = ContextCompat.checkSelfPermission(this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
+        if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
+            loadFragment(HomeFragment())
+        }
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == ImagePicker.IMAGE_PICKER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {

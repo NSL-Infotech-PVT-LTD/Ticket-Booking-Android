@@ -28,6 +28,7 @@
     <color name="grey_Dark_color">#878787</color>
     <color name="drawerBg">#EAEBEC</color>
     <color name="recChatbg">#0F0C29</color>
+    <color name="orange">#F3AD33</color>
     <color name="deviderColor">#857EC2</color>
     <color name="logoutRoundBg">#7c73a9</color>
     <color name="purple">#645caa</color>

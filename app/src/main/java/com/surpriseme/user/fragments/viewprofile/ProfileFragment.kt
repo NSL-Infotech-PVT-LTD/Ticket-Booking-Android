@@ -105,7 +105,8 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
         when (v?.id) {
 
             R.id.backpress -> {
-                fragmentManager?.popBackStack()
+
+                updateProfilePopup()
             }
             R.id.logoutTxt -> {
 
@@ -260,7 +261,39 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
             })
 
     }
+    private fun updateProfilePopup() {
 
+        val layoutInflater: LayoutInflater =
+            ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+        val popUp: View = layoutInflater.inflate(R.layout.update_profile_popup_layout, null)
+        val popUpWindowReport = PopupWindow(
+            popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
+            ConstraintLayout.LayoutParams.MATCH_PARENT, true
+        )
+        popUpWindowReport.showAtLocation(popUp, Gravity.CENTER, 0, 0)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            popUpWindowReport.elevation = 10f
+        }
+        popUpWindowReport.isTouchable = false
+        popUpWindowReport.isOutsideTouchable = false
+
+        val yes: MaterialTextView = popUp.findViewById(R.id.yes)
+        val no: MaterialTextView = popUp.findViewById(R.id.no)
+        val displayMessage: TextView = popUp.findViewById(R.id.dialogtext11)
+        displayMessage.text = ctx.getString(R.string.do_you_want_to_save_your_profile)
+
+        yes.setOnClickListener {
+            popUpWindowReport.dismiss()
+        }
+
+        no.setOnClickListener {
+            popUpWindowReport.dismiss()
+            fragmentManager?.popBackStack()
+        }
+    }
     private fun logoutPop() {
 
         val layoutInflater: LayoutInflater =

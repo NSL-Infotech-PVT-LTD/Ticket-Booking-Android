@@ -29,8 +29,7 @@
             <ImageView
                 android:layout_width="@dimen/_200sdp"
                 android:layout_height="@dimen/_200sdp"
-                android:src="@drawable/logo_shadow"
-                android:scaleType="centerCrop"
+                android:src="@drawable/splash_logo_updated"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

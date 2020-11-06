@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -101,7 +102,11 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
                     Toast.makeText(ctx, "" + Constants.DataKey.USER_ID, Toast.LENGTH_LONG).show()
                 } else {
                     val list: ArrayList<SlotDataModel> = ArrayList()
+
                     for (i in 0 until selectedSlotList.size) {
+
+
+
                         if (selectedSlotList[i].isBooked) {
 
 
@@ -113,13 +118,36 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
                             mFromTime = fromTime.split("-")[0]   // gettimg fromTime from List
                             mToTime = toTime.split("-")[1]     // // gettimg toTime from List
 
-                            if (mFromTime.contains("am")) {
+                            if (mFromTime.contains("am") && mToTime.contains("am")) {
                                 mFromTime = mFromTime.split("am")[0]
                                 mToTime = mToTime.split("am")[0]
-                            } else {
+                            } else if (mFromTime.contains("am") && mToTime.contains("pm")) {
+                                mFromTime = mFromTime.split("am")[0]
+                                mToTime = mToTime.split("pm")[0]
+                            } else if (mFromTime.contains("pm") && mToTime.contains("pm")) {
                                 mFromTime = mFromTime.split("pm")[0]
                                 mToTime = mToTime.split("pm")[0]
+                            } else if (mFromTime.contains("pm") && mToTime.contains("am")){
+                                mFromTime = mFromTime.split("pm")[0]
+                                mToTime = mToTime.split("am")[0]
                             }
+
+//                            if (mFromTime.contains("am")) {
+//                                mFromTime = mFromTime.split("am")[0]
+//                                mToTime = mToTime.split("am")[0]
+//
+//                            }else if (mFromTime.contains("am") && mFromTime.contains("pm") ) {
+//                                mFromTime = mFromTime.split("am")[0]
+//                                mToTime = mToTime.split("pm")[0]
+//
+//                            }else if (mFromTime.contains("pm") && mFromTime.contains("am") ) {
+//                                mFromTime = mFromTime.split("pm")[0]
+//                                mToTime = mToTime.split("am")[0]
+//
+//                            } else {
+//                                mFromTime = mFromTime.split("pm")[0]
+//                                mToTime = mToTime.split("pm")[0]
+//                            }
 
                         }
                     }
@@ -169,8 +197,6 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
         fakeList.add(SlotDataModel("0", "", "11:00 pm - 00:00 am", 0, false))
 
         bookingSlotApi()
-
-
     }
 
     // Booking Create Api....
@@ -221,9 +247,14 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
             })
     }
 
-    override fun date(fromTime: String, toTime: String, slotList: ArrayList<SlotDataModel>) {
+    override fun date(slotList: ArrayList<SlotDataModel>) {
 
         selectedSlotList = slotList
+        if (selectedSlotList.isNotEmpty()) {
+            binding.proceedToCheckoutBtn.setBackgroundColor(ContextCompat.getColor(ctx,R.color.colorPrimary))
+        }else  {
+            binding.proceedToCheckoutBtn.setBackgroundColor(ContextCompat.getColor(ctx,R.color.grey_color))
+        }
 
     }
 

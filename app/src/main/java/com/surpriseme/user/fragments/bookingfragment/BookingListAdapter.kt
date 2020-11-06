@@ -13,18 +13,86 @@ import com.google.android.material.chip.ChipGroup
 import com.google.android.material.textview.MaterialTextView
 import com.squareup.picasso.Picasso
 import com.surpriseme.user.R
+import com.surpriseme.user.util.BaseViewHolder
 import com.surpriseme.user.util.Constants
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 class BookingListAdapter(val context: Context, val bookingList: ArrayList<BookingArtistDetailModel>,
-                         val seeFullDetailClick:SeeFullDetailClick) :RecyclerView.Adapter<BookingListAdapter.BookingListViewHolder>() {
+                         val seeFullDetailClick:SeeFullDetailClick) :RecyclerView.Adapter<BaseViewHolder>() {
 
     private var fromTime = ""
     private var toTime = ""
+    private val VIEW_TYPE_LOADING = 0
+    private val VIEW_TYPE_NORMAL = 1
+    private var isLoaderVisible = false
 
-    inner class BookingListViewHolder(itemview: View) :RecyclerView.ViewHolder(itemview) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+
+//        val view = LayoutInflater.from(context).inflate(R.layout.artist_recycler_layout,parent,false)
+//        return ArtistViewHolder(view)
+        return when (viewType) {
+            VIEW_TYPE_NORMAL -> ViewHolder(
+
+                LayoutInflater.from(context).inflate(R.layout.booking_list_layout, parent, false)
+            )
+            VIEW_TYPE_LOADING -> ProgressHolder(
+                LayoutInflater.from(parent.context).inflate(R.layout.item_progress, parent, false)
+            )
+            else -> null!!
+        }
+
+    }
+
+    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+
+        holder.onBind(position)
+    }
+    override fun getItemViewType(position: Int): Int {
+        if (bookingList.size == 1) {
+            return VIEW_TYPE_NORMAL
+        }
+        return if (isLoaderVisible) {
+            if (position == bookingList.size - 1) VIEW_TYPE_LOADING else VIEW_TYPE_NORMAL
+        } else {
+            VIEW_TYPE_NORMAL
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return bookingList.size ?: 0
+    }
+    fun addItems(postItems: ArrayList<BookingArtistDetailModel>?) {
+        bookingList.addAll(postItems!!)
+        notifyDataSetChanged()
+    }
+
+    fun addLoading() {
+        isLoaderVisible = true
+        bookingList.add(BookingArtistDetailModel())
+        notifyItemInserted(bookingList.size - 1)
+    }
+
+    fun removeLoading() {
+        isLoaderVisible = false
+        val position = bookingList.size - 1
+        val item: BookingArtistDetailModel = getItem(position)
+        if (item != null) {
+            bookingList.removeAt(position)
+            notifyItemRemoved(position)
+        }
+    }
+    fun clear() {
+        bookingList.clear()
+        notifyDataSetChanged()
+    }
+
+    private fun getItem(position: Int): BookingArtistDetailModel {
+        return bookingList[position]
+    }
+
+    inner class ViewHolder(itemview: View) : BaseViewHolder(itemview) {
 
         val status = itemview.findViewById<MaterialTextView>(R.id.statusMtv)
         val type = itemview.findViewById<MaterialTextView>(R.id.typeMtv)
@@ -39,90 +107,89 @@ class BookingListAdapter(val context: Context, val bookingList: ArrayList<Bookin
         val description = itemview.findViewById<MaterialTextView>(R.id.descTxt)
         val dateMtv = itemview.findViewById<MaterialTextView>(R.id.dateMtv)
 
+        override fun clear() {}
 
-    }
+        override fun onBind(position: Int) {
+            super.onBind(position)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookingListViewHolder {
+            val bookingModel = bookingList[position]
 
-        val view = LayoutInflater.from(context).inflate(R.layout.booking_list_layout, parent, false)
-        return BookingListViewHolder(view)
-    }
+            if (bookingModel.status == Constants.COMPLETE_REVIEW) {
+                rating.visibility = View.VISIBLE
+                description.visibility = View.VISIBLE
+            } else {
+                rating.visibility = View.GONE
+                description.visibility = View.GONE
+            }
 
-    override fun onBindViewHolder(holder: BookingListViewHolder, position: Int) {
+            if (bookingModel.rate_detail !=null) {
+                rating.rating = bookingModel.rate_detail.rate.toFloat()
+                description.text = bookingModel.rate_detail.review
+            }
 
-        val bookingModel = bookingList[position]
-        if (bookingModel.status == Constants.COMPLETE_REVIEW) {
-            holder.rating.visibility = View.VISIBLE
-            holder.description.visibility = View.VISIBLE
-        } else {
-            holder.rating.visibility = View.GONE
-            holder.description.visibility = View.GONE
-        }
+            type.text = bookingModel.type        // Display type of booking
+            status.text = context.resources.getString(R.string.status) +" "+ bookingModel.status    // Display Status of booking
 
-        if (bookingModel.rate_detail !=null) {
-            holder.rating.rating = bookingModel.rate_detail.rate.toFloat()
-            holder.description.text = bookingModel.rate_detail.review
-        }
+            // Display date at top of card....
+            var date = bookingModel.date
+            var spf = SimpleDateFormat("yyyy-MM-dd")
+            val newDate: Date = spf.parse(date)
+            spf = SimpleDateFormat("dd-MMM-yyyy")
+            date = spf.format(newDate)
+            dateMtv.setText(date)
 
-        holder.type.text = bookingModel.type        // Display type of booking
-        holder.status.text = holder.itemView.resources.getString(R.string.status) +" "+ bookingModel.status    // Display Status of booking
+            // Dispaly Image of Artist....
+            Picasso.get().load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + bookingModel.artist_detail?.image)
+                .placeholder(R.drawable.user_pholder_updated)
+                .resize(4000, 1500)
+                .onlyScaleDown()
+                .into(image)
 
-        // Display date at top of card....
-        var date = bookingModel.date
-        var spf = SimpleDateFormat("yyyy-MM-dd")
-        val newDate: Date = spf.parse(date)
-        spf = SimpleDateFormat("dd-MMM-yyyy")
-        date = spf.format(newDate)
-        holder.dateMtv.setText(date)
+            // Display Name of Artist....
+            name.text = bookingModel.artist_detail?.name
 
-        // Dispaly Image of Artist....
-        Picasso.get().load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + bookingModel.artist_detail.image)
-            .placeholder(R.drawable.user_pholder_updated)
-            .resize(4000, 1500)
-            .onlyScaleDown()
-            .into(holder.image)
-        // Display Name of Artist....
-        holder.name.text = bookingModel.artist_detail.name
+            // Display date inside card....
+            val outSdf = SimpleDateFormat("dd MMMM, yyyy")
+            val cardDate = outSdf.format(newDate)
+            dateTxt.text = cardDate.toString()
 
-        // Display date inside card....
-        val outSdf = SimpleDateFormat("dd MMMM, yyyy")
-        val cardDate = outSdf.format(newDate)
-        holder.dateTxt.text = cardDate.toString()
+            // converting time to display in card....
+            fromTime = bookingModel.from_time
+            toTime = bookingModel.to_time
+            val fromSdf = SimpleDateFormat("HH:mm")
+            val fromConvert = fromSdf.parse(fromTime)
+            val fromTime = fromSdf.format(fromConvert!!)
 
-        // converting time to display in card....
-        fromTime = bookingModel.from_time
-        toTime = bookingModel.to_time
-        val fromSdf = SimpleDateFormat("HH:mm")
-        val fromConvert = fromSdf.parse(fromTime)
-        val fromTime = fromSdf.format(fromConvert!!)
+            val toSdf = SimpleDateFormat("HH:mm")
+            val toConvert = toSdf.parse(toTime)
+            val toTime = toSdf.format(toConvert!!)
 
-        val toSdf = SimpleDateFormat("HH:mm")
-        val toConvert = toSdf.parse(toTime)
-        val toTime = toSdf.format(toConvert!!)
+            //        holder.timeTxt.text = fromTime + " " +  toTime
+            timeTxt.text = "$fromTime to $toTime"
+            address.text = bookingModel.address
 
-
-//        holder.timeTxt.text = fromTime + " " +  toTime
-        holder.timeTxt.text = "$fromTime to $toTime"
-        holder.address.text = bookingModel.address
-
-        if (bookingModel.artist_detail.category_id_details .size >0) {
-            for (i in 0 until bookingModel.artist_detail.category_id_details.size)
-                addChip(
-                    bookingModel.artist_detail.category_id_details[i].toString(),
-                    holder.categoriesChips
-                )
-        }
-        // See Full Detail button Click....
-        holder.seeFullDetail.setOnClickListener{
-            // See Full Detail button click....
-            seeFullDetailClick.fullDetail(bookingModel.id.toString())
-
+            if (bookingModel.artist_detail?.category_id_details?.size!! >0) {
+                for (i in 0 until bookingModel.artist_detail.category_id_details.size)
+                    addChip(
+                        bookingModel.artist_detail.category_id_details[i].toString(),
+                        categoriesChips
+                    )
+            }
+            // See Full Detail button Click....
+            seeFullDetail.setOnClickListener{
+                // See Full Detail button click....
+                seeFullDetailClick.fullDetail(bookingModel.id.toString())
+            }
+            itemView.setOnClickListener {
+                seeFullDetailClick.fullDetail(bookingModel.id.toString())
+            }
 
         }
     }
 
-    override fun getItemCount(): Int {
-        return bookingList.size
+    class ProgressHolder internal constructor(itemView: View?) :
+        BaseViewHolder(itemView) {
+        override fun clear() {}
     }
 
     private fun addChip(pItem: String, pChipGroup: ChipGroup) {

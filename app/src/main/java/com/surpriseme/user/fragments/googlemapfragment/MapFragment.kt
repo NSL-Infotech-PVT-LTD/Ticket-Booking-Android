@@ -30,6 +30,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.R
 import com.surpriseme.user.databinding.FragmentMapBinding
 import com.surpriseme.user.fragments.locationfragment.LocationDataList
@@ -55,7 +56,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener,
     private lateinit var shared: PrefrenceShared
     private lateinit var mMap: GoogleMap
     private lateinit var ctx: Context
-    private lateinit var tbackpress: ImageView
+    private lateinit var tbackpress: MaterialTextView
     private lateinit var centerLatlng: LatLng
     private var googleApiClient: GoogleApiClient? = null
 
@@ -225,8 +226,25 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener,
                     1
                 )
                 val address = (addresses as MutableList<Address>?)?.get(0)
+                var locality = ""
+                var checkLocality = ""
                 if (address != null) {
-                    val locality = address.subLocality+ ","+address.featureName+","+address.locality+","+address.adminArea+","+address.postalCode+","+address.countryName
+                    var subLocality = address.subLocality
+                    checkLocality = address.locality
+                    if (subLocality == null) {
+                        subLocality = ""
+                    }
+                    if (checkLocality == null)
+                        checkLocality = ""
+
+                    if (subLocality == "" || checkLocality =="") {
+                        locality =
+                            address.featureName + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
+                    }else {
+                        locality =
+                            subLocality + "," + address.featureName + "," + address.locality + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
+                    }
+
                     binding.mapAddressTxt.text = locality
                     streetAddress = locality
                     city = locality

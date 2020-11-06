@@ -7,6 +7,7 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
     compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
     dataBinding {
@@ -102,6 +103,11 @@ dependencies {
     //Facebook api implemented
     implementation 'com.facebook.android:facebook-login:5.15.3'
 
+//    // use this library for zoom function on image.
+//    implementation 'com.github.chrisbanes:PhotoView:2.1.3'//zoom
+
+    implementation 'com.commit451:PhotoView:1.2.4'
+//
 
 
 }

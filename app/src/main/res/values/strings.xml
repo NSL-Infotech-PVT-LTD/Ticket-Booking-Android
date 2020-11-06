@@ -58,7 +58,7 @@
     <string name="about_us">About Us</string>
     <string name="update_profile">Update Profile</string>
     <string name="logout">Logout</string>
-    <string name="alert">Alert</string>
+    <string name="alert">Alert!</string>
     <string name="do_you_want_to_logout">Do you want to logout?</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
@@ -177,4 +177,21 @@
     <string name="profile">Profile</string>
     <string name="please_choose_type_of_booking">Please choose type of booking</string>
     <string name="you_may_select_multiple_slot">You may select multiple slot in a row</string>
+    <string name="do_you_want_to_save_your_profile">Do you want to save your profile?</string>
+    <string name="review">Review</string>
+    <string name="booking_date">Booking Date</string>
+    <string name="location">Location</string>
+    <string name="payment">Payment</string>
+    <string name="live">Live</string>
+    <string name="pending">Pending</string>
+    <string name="not_paid">Not Paid</string>
+    <string name="accepted">Accepted</string>
+    <string name="rejected">Rejected</string>
+    <string name="confirm">Confirm</string>
+    <string name="paid">Paid</string>
+    <string name="processing">Processing</string>
+    <string name="complete">Complete</string>
+    <string name="reason">Reason :- \n \n</string>
+    <string name="report">Report</string>
+    <string name="are_you_sure_want_to_cancel">Are you sure you want to cancel?</string>
 </resources>

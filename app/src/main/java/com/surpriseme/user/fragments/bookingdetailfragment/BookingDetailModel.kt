@@ -15,6 +15,7 @@ data class BookingDataModel(
     val from_time: String,
     val id: Int,
     val otp: Int,
+    val params:Report,
     val payment_mode: Any,
     val payment_params: Any,
     val rate_artist: Any,
@@ -22,6 +23,9 @@ data class BookingDataModel(
     val status: String,
     val to_time: String,
     val type: String
+)
+data class Report(
+    val report: String = ""
 )
 
 data class ArtistDetailBookingDetail(

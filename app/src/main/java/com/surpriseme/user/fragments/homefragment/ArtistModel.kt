@@ -21,36 +21,36 @@ data class DataArtistList(
     val total: Int
 )
 
-data class DataUserArtistList(
-    val category_id: ArrayList<Any>,
-    val category_id_details: ArrayList<String>,
-    val created_at: String,
-    val currency: String,
-    val description: String,
-    val digital_price_per_hr: Any,
-    val distance: Double,
-    val email: String,
-    val id: Int,
-    val image: String,
-    val latitude: String,
-    val live_price_per_hr: String,
-    val location: String,
-    val longitude: String,
-    val mobile: String,
-    val name: String,
-    val role: RoleArtistList,
-    val shows_image: List<Any>,
-    val shows_image_1: Any,
-    val shows_image_2: Any,
-    val shows_image_3: Any,
-    val shows_image_4: Any,
-    val shows_video: Any,
-    val social_link_insta: String,
-    val social_link_youtube: String,
-    val status: String,
-    val updated_at: String,
-    val rating:Float
-)
+ class DataUserArtistList {
+     val category_id: ArrayList<Any>? = null
+     val category_id_details: ArrayList<String>?=null
+     val created_at: String=""
+     val currency: String=""
+     val description: String=""
+     val digital_price_per_hr: Any?=null
+     val distance: Double=0.0
+     val email: String=""
+     val id: Int=0
+     val image: String=""
+     val latitude: String=""
+     val live_price_per_hr: String=""
+     val location: String=""
+     val longitude: String=""
+     val mobile: String=""
+     val name: String=""
+     val role: RoleArtistList?=null
+     val shows_image: List<Any>?=null
+     val shows_image_1: Any?=null
+     val shows_image_2: Any?=null
+     val shows_image_3: Any?= null
+     val shows_image_4: Any?=null
+     val shows_video: Any?=null
+     val social_link_insta: String=""
+     val social_link_youtube: String=""
+     val status: String=""
+     val updated_at: String=""
+     val rating: Float=0f
+ }
 
 data class RoleArtistList(
     val id: Int,
