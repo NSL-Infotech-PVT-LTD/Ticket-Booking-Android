@@ -33,13 +33,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 //                val data_type = remoteMessage.data.get("data_type")
             val target_Model = remoteMessage.data.get("target_model")
 
-                    greater_M_version(remoteMessage.notification?.title!!, remoteMessage.notification?.body!!,id!!,target_Model!!)
+                    greater_M_version(remoteMessage.notification?.title?:"", remoteMessage.notification?.body?:"",id?:"",target_Model?:"")
             } else {
                 val id = remoteMessage.data.get("target_id")
 //                val data_type = remoteMessage.data.get("data_type")
             val target_Model = remoteMessage.data.get("target_model")
 
-                    showNotification(remoteMessage.notification?.title!!, remoteMessage.notification?.body!!,id!!,target_Model!!)
+                    showNotification(remoteMessage.notification?.title?:"", remoteMessage.notification?.body?:"",id?:"",target_Model?:"")
             }
         } else {
             Log.d("MESSAGE RECIEVER--->", remoteMessage.data.toString())
@@ -47,15 +47,20 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     // if api lever lower than "O"....
-    private fun showNotification(title: String, body: String, id:String,target_Model:String) {
+    private fun showNotification(title: String, body: String, id:String?,target_Model:String?) {
         var intent: Intent? = null
-        if (target_Model.equals(Constants.TARGET_MODEL_BOOKING)) {
-            intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("bookingId",id)
-        } else if (target_Model.equals(Constants.TARGET_MODEL_MESSAGE)) {
-            intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("chatId", id)
-        }
+            if (target_Model.equals(Constants.TARGET_MODEL_BOOKING)) {
+                intent = Intent(this, MainActivity::class.java)
+                intent.putExtra("bookingId", id)
+            } else if (target_Model.equals(Constants.TARGET_MODEL_MESSAGE)) {
+
+                intent = Intent(this, MainActivity::class.java)
+                intent.putExtra("chatId", id)
+            } else {
+                intent = Intent(this, MainActivity::class.java)
+
+            }
+
 
         val stackBuilder = TaskStackBuilder.create(this)
         stackBuilder.addNextIntentWithParentStack(intent!!)
@@ -83,17 +88,23 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     // if api lever greate than "O"....
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private fun greater_M_version(title: String, messageData: String,id:String,target_Model:String) {
+    private fun greater_M_version(title: String, messageData: String,id:String?,target_Model:String?) {
 
         var intent: Intent? = null
-        if (target_Model.equals(Constants.TARGET_MODEL_BOOKING)) {
-            intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("bookingId",id)
+            if (target_Model.equals(Constants.TARGET_MODEL_BOOKING)) {
+                intent = Intent(this, MainActivity::class.java)
+                intent.putExtra("bookingId", id)
 
-        } else if (target_Model.equals(Constants.TARGET_MODEL_MESSAGE)) {
+            } else if (target_Model.equals(Constants.TARGET_MODEL_MESSAGE)) {
                 intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("chatId", id)
-        }
+            }else {
+                intent = Intent(this, MainActivity::class.java)
+
+            }
+
+
+
 
         val stackBuilder: TaskStackBuilder = TaskStackBuilder.create(this)
         stackBuilder.addParentStack(MainActivity::class.java)
@@ -115,8 +126,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             BitmapFactory.decodeResource(applicationContext.resources, R.drawable.splash_logo)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         val defaultSoundUri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        val notifyPendingIntent =
-            PendingIntent.getActivity(applicationContext, 0, intent, PendingIntent.FLAG_ONE_SHOT)
+        val notifyPendingIntent = PendingIntent.getActivity(applicationContext, 0, intent, PendingIntent.FLAG_ONE_SHOT)
         notification = mBuilder.setSmallIcon(R.drawable.splash_logo) //.setAutoCancel(true)
             .setContentTitle(title)
             .setContentIntent(notifyPendingIntent)

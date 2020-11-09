@@ -1,77 +1,49 @@
 {
   "project_info": {
-    "project_number": "965223697290",
-    "firebase_url": "https://surprisemeartistios.firebaseio.com",
-    "project_id": "surprisemeartistios",
-    "storage_bucket": "surprisemeartistios.appspot.com"
+    "project_number": "410297498914",
+    "firebase_url": "https://surpriseme-artist.firebaseio.com",
+    "project_id": "surpriseme-artist",
+    "storage_bucket": "surpriseme-artist.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:965223697290:android:32006ffbb8dc62d987d673",
-        "android_client_info": {
-          "package_name": "com.app.surpriseme.artist"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "965223697290-mudd6kstd6svekflatqgfq5ukutdvucg.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyD-MEbcmUcarD6wfjxo30bK_uCoExWEXRw"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "965223697290-mudd6kstd6svekflatqgfq5ukutdvucg.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "965223697290-nkrqgkr68r9hg77eunq9fn5uivjlq8ln.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "Netscapelabs.SurpriseMe-User"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:965223697290:android:6ae54937c49c5d9b87d673",
+        "mobilesdk_app_id": "1:410297498914:android:20618b96d7798532ad397b",
         "android_client_info": {
           "package_name": "com.surpriseme.user"
         }
       },
       "oauth_client": [
         {
-          "client_id": "965223697290-mudd6kstd6svekflatqgfq5ukutdvucg.apps.googleusercontent.com",
+          "client_id": "410297498914-rfh5cghstusa9kboes8al321sc7rdbcp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.surpriseme.user",
+            "certificate_hash": "e369c3084ce15e7c3a8bd70726a9959bcb1b055e"
+          }
+        },
+        {
+          "client_id": "410297498914-7mlt9kedgccma7pfut3k5tajk9v53ug7.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD-MEbcmUcarD6wfjxo30bK_uCoExWEXRw"
+          "current_key": "AIzaSyDc8DJGQEyMWa8mWLXItSasXyk26d65R7U"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "965223697290-mudd6kstd6svekflatqgfq5ukutdvucg.apps.googleusercontent.com",
+              "client_id": "410297498914-7mlt9kedgccma7pfut3k5tajk9v53ug7.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "965223697290-nkrqgkr68r9hg77eunq9fn5uivjlq8ln.apps.googleusercontent.com",
+              "client_id": "410297498914-94gg2chfm2gjqgukljq60ehek7rogkgj.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "Netscapelabs.SurpriseMe-User"
+                "bundle_id": "Netscapelabs.SurpriseMe.User"
               }
             }
           ]

@@ -19,8 +19,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class BookingListAdapter(val context: Context, val bookingList: ArrayList<BookingArtistDetailModel>,
-                         val seeFullDetailClick:SeeFullDetailClick) :RecyclerView.Adapter<BaseViewHolder>() {
+class BookingListAdapter(
+    val context: Context, val bookingList: ArrayList<BookingArtistDetailModel>,
+    val seeFullDetailClick: SeeFullDetailClick
+) : RecyclerView.Adapter<BaseViewHolder>() {
 
     private var fromTime = ""
     private var toTime = ""
@@ -49,6 +51,7 @@ class BookingListAdapter(val context: Context, val bookingList: ArrayList<Bookin
 
         holder.onBind(position)
     }
+
     override fun getItemViewType(position: Int): Int {
         if (bookingList.size == 1) {
             return VIEW_TYPE_NORMAL
@@ -63,6 +66,7 @@ class BookingListAdapter(val context: Context, val bookingList: ArrayList<Bookin
     override fun getItemCount(): Int {
         return bookingList.size ?: 0
     }
+
     fun addItems(postItems: ArrayList<BookingArtistDetailModel>?) {
         bookingList.addAll(postItems!!)
         notifyDataSetChanged()
@@ -83,6 +87,7 @@ class BookingListAdapter(val context: Context, val bookingList: ArrayList<Bookin
             notifyItemRemoved(position)
         }
     }
+
     fun clear() {
         bookingList.clear()
         notifyDataSetChanged()
@@ -122,68 +127,72 @@ class BookingListAdapter(val context: Context, val bookingList: ArrayList<Bookin
                 description.visibility = View.GONE
             }
 
-            if (bookingModel.rate_detail !=null) {
+            if (bookingModel.rate_detail != null) {
                 rating.rating = bookingModel.rate_detail.rate.toFloat()
                 description.text = bookingModel.rate_detail.review
             }
 
             type.text = bookingModel.type        // Display type of booking
-            status.text = context.resources.getString(R.string.status) +" "+ bookingModel.status    // Display Status of booking
+            status.text =
+                context.resources.getString(R.string.status) + " " + bookingModel.status    // Display Status of booking
 
             // Display date at top of card....
             var date = bookingModel.date
-            var spf = SimpleDateFormat("yyyy-MM-dd")
-            val newDate: Date = spf.parse(date)
-            spf = SimpleDateFormat("dd-MMM-yyyy")
-            date = spf.format(newDate)
-            dateMtv.setText(date)
+            if (date.isNotEmpty()) {
+                var spf = SimpleDateFormat("yyyy-MM-dd")
+                val newDate: Date = spf.parse(date)
+                spf = SimpleDateFormat("dd-/MMM-yyyy")
+                date = spf.format(newDate)
+                dateMtv.setText(date)
 
-            // Dispaly Image of Artist....
-            Picasso.get().load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + bookingModel.artist_detail?.image)
-                .placeholder(R.drawable.user_pholder_updated)
-                .resize(4000, 1500)
-                .onlyScaleDown()
-                .into(image)
+                // Dispaly Image of Artist....
+                Picasso.get()
+                    .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + bookingModel.artist_detail?.image)
+                    .placeholder(R.drawable.user_pholder_updated)
+                    .resize(4000, 1500)
+                    .onlyScaleDown()
+                    .into(image)
 
-            // Display Name of Artist....
-            name.text = bookingModel.artist_detail?.name
+                // Display Name of Artist....
+                name.text = bookingModel.artist_detail?.name
 
-            // Display date inside card....
-            val outSdf = SimpleDateFormat("dd MMMM, yyyy")
-            val cardDate = outSdf.format(newDate)
-            dateTxt.text = cardDate.toString()
+                // Display date inside card....
+                val outSdf = SimpleDateFormat("dd MMMM, yyyy")
+                val cardDate = outSdf.format(newDate)
+                dateTxt.text = cardDate.toString()
 
-            // converting time to display in card....
-            fromTime = bookingModel.from_time
-            toTime = bookingModel.to_time
-            val fromSdf = SimpleDateFormat("HH:mm")
-            val fromConvert = fromSdf.parse(fromTime)
-            val fromTime = fromSdf.format(fromConvert!!)
+                // converting time to display in card....
+                fromTime = bookingModel.from_time
+                toTime = bookingModel.to_time
+                val fromSdf = SimpleDateFormat("HH:mm")
+                val fromConvert = fromSdf.parse(fromTime)
+                val fromTime = fromSdf.format(fromConvert!!)
 
-            val toSdf = SimpleDateFormat("HH:mm")
-            val toConvert = toSdf.parse(toTime)
-            val toTime = toSdf.format(toConvert!!)
+                val toSdf = SimpleDateFormat("HH:mm")
+                val toConvert = toSdf.parse(toTime)
+                val toTime = toSdf.format(toConvert!!)
 
-            //        holder.timeTxt.text = fromTime + " " +  toTime
-            timeTxt.text = "$fromTime to $toTime"
-            address.text = bookingModel.address
+                //        holder.timeTxt.text = fromTime + " " +  toTime
+                timeTxt.text = "$fromTime to $toTime"
+                address.text = bookingModel.address
 
-            if (bookingModel.artist_detail?.category_id_details?.size!! >0) {
-                for (i in 0 until bookingModel.artist_detail.category_id_details.size)
-                    addChip(
-                        bookingModel.artist_detail.category_id_details[i].toString(),
-                        categoriesChips
-                    )
+                if (bookingModel.artist_detail?.category_id_details?.size!! > 0) {
+                    for (i in 0 until bookingModel.artist_detail.category_id_details.size)
+                        addChip(
+                            bookingModel.artist_detail.category_id_details[i].toString(),
+                            categoriesChips
+                        )
+                }
+                // See Full Detail button Click....
+                seeFullDetail.setOnClickListener {
+                    // See Full Detail button click....
+                    seeFullDetailClick.fullDetail(bookingModel.id.toString())
+                }
+                itemView.setOnClickListener {
+                    seeFullDetailClick.fullDetail(bookingModel.id.toString())
+                }
+
             }
-            // See Full Detail button Click....
-            seeFullDetail.setOnClickListener{
-                // See Full Detail button click....
-                seeFullDetailClick.fullDetail(bookingModel.id.toString())
-            }
-            itemView.setOnClickListener {
-                seeFullDetailClick.fullDetail(bookingModel.id.toString())
-            }
-
         }
     }
 
@@ -207,7 +216,7 @@ class BookingListAdapter(val context: Context, val bookingList: ArrayList<Bookin
 
     }
 
-    interface SeeFullDetailClick{
-        fun fullDetail(bookingID:String)
+    interface SeeFullDetailClick {
+        fun fullDetail(bookingID: String)
     }
 }

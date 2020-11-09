@@ -33,13 +33,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-        bottomNav.menu.findItem(R.id.navHome).setTitle("")
-        bottomNav.menu.findItem(R.id.navHome).icon = ContextCompat.getDrawable(this@MainActivity,R.drawable.home_icon)
-        bottomNav.menu.findItem(R.id.navBooking).setTitle(R.string.booking)
-        bottomNav.menu.findItem(R.id.navBooking).icon = null
-        bottomNav.menu.findItem(R.id.navChat).setTitle(R.string.chat)
-        bottomNav.menu.findItem(R.id.navChat).icon = null
+//        bottomNav.menu.findItem(R.id.navHome).setTitle("")
+//        bottomNav.menu.findItem(R.id.navHome).icon = ContextCompat.getDrawable(this@MainActivity,R.drawable.home_icon)
+//        bottomNav.menu.findItem(R.id.navBooking).setTitle(R.string.booking)
+//        bottomNav.menu.findItem(R.id.navBooking).icon = null
+//        bottomNav.menu.findItem(R.id.navChat).setTitle(R.string.chat)
+//        bottomNav.menu.findItem(R.id.navChat).icon = null
 
         if (intent.hasExtra("bookingModel")) {
             val model = intent.getSerializableExtra("bookingModel")
@@ -94,16 +93,16 @@ class MainActivity : AppCompatActivity() {
             when(it.itemId) {
 
                 R.id.navHome -> {
-                    Constants.SAVED_LOCATION = false
-                    loadFragment(HomeFragment())
-                    bottomNav.menu.findItem(R.id.navHome).setTitle("")
-                    bottomNav.menu.findItem(R.id.navHome).icon = ContextCompat.getDrawable(this@MainActivity,R.drawable.home_icon)
-
-                    bottomNav.menu.findItem(R.id.navBooking).setTitle(R.string.booking)
-                    bottomNav.menu.findItem(R.id.navBooking).icon = null
-
-                    bottomNav.menu.findItem(R.id.navChat).setTitle(R.string.chat)
-                    bottomNav.menu.findItem(R.id.navChat).icon = null
+//                    Constants.SAVED_LOCATION = false
+//                    loadFragment(HomeFragment())
+//                    bottomNav.menu.findItem(R.id.navHome).setTitle("")
+//                    bottomNav.menu.findItem(R.id.navHome).icon = ContextCompat.getDrawable(this@MainActivity,R.drawable.home_icon)
+//
+//                    bottomNav.menu.findItem(R.id.navBooking).setTitle(R.string.booking)
+//                    bottomNav.menu.findItem(R.id.navBooking).icon = null
+//
+//                    bottomNav.menu.findItem(R.id.navChat).setTitle(R.string.chat)
+//                    bottomNav.menu.findItem(R.id.navChat).icon = null
 
                     return@setOnNavigationItemSelectedListener true
                 }
@@ -111,27 +110,27 @@ class MainActivity : AppCompatActivity() {
                     Constants.SAVE_BOOKING_LIST.clear()
                     Constants.COMING_FROM_DETAIL = false
                     loadFragment(BookingFragment())
-                    bottomNav.menu.findItem(R.id.navBooking).setTitle("")
-                    bottomNav.menu.findItem(R.id.navBooking).icon = ContextCompat.getDrawable(this@MainActivity, R.drawable.calender_icon)
-
-                    bottomNav.menu.findItem(R.id.navHome).setTitle(R.string.home)
-                    bottomNav.menu.findItem(R.id.navHome).icon = null
-
-                    bottomNav.menu.findItem(R.id.navChat).setTitle(R.string.chat)
-                    bottomNav.menu.findItem(R.id.navChat).icon = null
+//                    bottomNav.menu.findItem(R.id.navBooking).setTitle("")
+//                    bottomNav.menu.findItem(R.id.navBooking).icon = ContextCompat.getDrawable(this@MainActivity, R.drawable.calender_icon)
+//
+//                    bottomNav.menu.findItem(R.id.navHome).setTitle(R.string.home)
+//                    bottomNav.menu.findItem(R.id.navHome).icon = null
+//
+//                    bottomNav.menu.findItem(R.id.navChat).setTitle(R.string.chat)
+//                    bottomNav.menu.findItem(R.id.navChat).icon = null
 
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.navChat -> {
                     loadFragment(ChatListFragment())
-                    bottomNav.menu.findItem(R.id.navChat).setTitle("")
-                    bottomNav.menu.findItem(R.id.navChat).icon = ContextCompat.getDrawable(this@MainActivity,R.drawable.chat_icon)
-
-                    bottomNav.menu.findItem(R.id.navHome).setTitle(R.string.home)
-                    bottomNav.menu.findItem(R.id.navHome).icon = null
-
-                    bottomNav.menu.findItem(R.id.navBooking).setTitle(R.string.booking)
-                    bottomNav.menu.findItem(R.id.navBooking).icon = null
+//                    bottomNav.menu.findItem(R.id.navChat).setTitle("")
+//                    bottomNav.menu.findItem(R.id.navChat).icon = ContextCompat.getDrawable(this@MainActivity,R.drawable.chat_icon)
+//
+//                    bottomNav.menu.findItem(R.id.navHome).setTitle(R.string.home)
+//                    bottomNav.menu.findItem(R.id.navHome).icon = null
+//
+//                    bottomNav.menu.findItem(R.id.navBooking).setTitle(R.string.booking)
+//                    bottomNav.menu.findItem(R.id.navBooking).icon = null
                     return@setOnNavigationItemSelectedListener true
                 }
                 else -> false

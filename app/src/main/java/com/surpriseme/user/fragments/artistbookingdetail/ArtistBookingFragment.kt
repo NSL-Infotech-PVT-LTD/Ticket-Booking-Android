@@ -86,6 +86,7 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
         binding.youtubePlayIcon.setOnClickListener(this)
         binding.profileImg.setOnClickListener(this)
         binding.seeReviewTxt.setOnClickListener(this)
+        binding.backpress.setOnClickListener(this)
 //        binding.youtubeView.initialize(resources.getString(R.string.youtube_api_key), this)
 
         artistID = arguments?.getString("artistID")!!
@@ -129,6 +130,9 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                  transaction?.addToBackStack("artistFragment")
                  transaction?.commit()
              }
+            R.id.backpress -> {
+                fragmentManager?.popBackStack()
+            }
         }
     }
 
