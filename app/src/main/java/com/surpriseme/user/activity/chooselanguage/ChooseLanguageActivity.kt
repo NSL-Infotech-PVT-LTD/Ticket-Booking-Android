@@ -83,19 +83,30 @@ class ChooseLanguageActivity : AppCompatActivity(), View.OnClickListener, Choose
     }
 
     fun setLocale(lang: String?) {
-        val myLocale = Locale(lang)
-        val res: Resources = resources
-        val dm: DisplayMetrics = res.getDisplayMetrics()
-        val conf: Configuration = res.getConfiguration()
-        conf.locale = myLocale
-        res.updateConfiguration(conf, dm)
-        val refresh = Intent(this, LoginActivity::class.java)
-        finish()
-        startActivity(refresh)
+
+        val config = resources.configuration
+        val locale = Locale(lang!!)
+        Locale.setDefault(locale)
+        config.locale = locale
+        resources.updateConfiguration(config, resources.displayMetrics)
+//        val myLocale = Locale(lang)
+//        val res: Resources = resources
+//        val dm: DisplayMetrics = res.getDisplayMetrics()
+//        val conf: Configuration = res.getConfiguration()
+//        conf.locale = myLocale
+//        res.updateConfiguration(conf, dm)
+//        val refresh = Intent(this, LoginActivity::class.java)
+//        finish()
+//        startActivity(refresh)
     }
 
     override fun language(language: String) {
         setLocale(language)
+        val intent = Intent(this@ChooseLanguageActivity,LoginActivity ::class.java)
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivity(intent)
+        finishAffinity()
     }
 
 
