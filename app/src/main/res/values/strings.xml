@@ -7,23 +7,24 @@
     <string name="player_error">Error initializing YouTube player: %s</string>
     <string name="seek_to">Jump To</string>
     <string name="seek_to_hint">Seconds</string>
-    <string name="title_text_1">Birthday Surprise Performers</string>
-    <string name="title_text_2">DJ Performers</string>
-    <string name="title_text_3">DIGITAL Performers</string>
+    <string name="title_text_1">Birthday Surprise</string>
+    <string name="title_text_2">Dj Performers</string>
+    <string name="title_text_3">Digital Performers</string>
     <string name="splash_dummy_text">Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem ipsum has been the industry\'s standard dummy text ever.</string>
     <string name="welcome">Welcome</string>
-    <string name="sign_in_to_continue">Sign in to Continue</string>
+    <string name="sign_in_to_continue">Sign In to Continue</string>
     <string name="e_mail_address">E-mail Address</string>
-    <string name="type_here">Type here…</string>
+    <string name="type_here">type here…</string>
     <string name="password">Password</string>
     <string name="remember_me">Remember me</string>
     <string name="forget_password">Forgot Password?</string>
     <string name="login">Log In</string>
-    <string name="yet">Don\'t have an account yet?<font color='#D4145A'><b> Signup</b></font></string>
+    <string name="yet">Don\'t have an account yet?<font color='#D4145A'><b> Sign up</b></font></string>
     <string name="status_stop"><font fgcolor='#D4145A'>Stopped</font></string> <!--gray-->
     <string name="signup">Sign up</string>
-    <string name="register_with_us">Register with us in surpriseme.</string>
-    <string name="by_signing_up_text"><![CDATA[By signing up, you are agree with ourTerms&Conditions]]></string>
+    <string name="register_with_us">Register with us in<font color='#000000'><b> surprise</b></font><font color='#D4145A'><b>me</b></font>.</string>
+    <string name="register_with_us_plain">Register with us in surpriseme.</string>
+    <string name="by_signing_up_text">By signing up, you are agree with our <font color='#fd8c00'><font>Terms &amp; Conditions</font></font></string>
     <string name="are_you_new">Are you new?</string>
     <string name="signup_with_email">Signup with Email</string>
     <string name="or">Or</string>
@@ -92,11 +93,11 @@
     <string name="booking_price">Booking Price</string>
     <string name="live_show">Live Show</string>
     <string name="per_hour">Per Hour</string>
-    <string name="_20_999">00</string>
+    <string name="_20_999">299</string>
     <string name="digital_price">Digital Price</string>
     <string name="digital_show">Digital Show</string>
     <string name="gallery">Gallery</string>
-    <string name="social_media_handles">Social Media Handles</string>
+    <string name="social_media_handles">Social Media handles</string>
     <string name="media">Media</string>
     <string name="chat_demo_text">Have a chat about your...................</string>
     <string name="select_way_of_booking">Select Way Of Booking</string>
@@ -194,4 +195,18 @@
     <string name="reason">Reason :- \n \n</string>
     <string name="report">Report</string>
     <string name="are_you_sure_want_to_cancel">Are you sure you want to cancel?</string>
+    <string name="no_booking_right_now">No Booking Right Now</string>
+    <string name="unable_to_find_booking_on_this_page">Unable to find booking on this page</string>
+    <string name="unable_to_find_data">Unable to find data on this page.\n  Please try again later.</string>
+    <string name="no_chat_right_now">No Chat Right Now</string>
+    <string name="unable_to_find_chat">Unable to find Booking on this page. \n Please make bookings first.</string>
+    <string name="price_demo">299</string>
+    <string name="no_video_uploaded">No Video Uploaded</string>
+    <string name="no_address_right_now">No Address Right Now</string>
+    <string name="unable_to_find_saved_addresses">Unable to find saved address.  \n Please add address</string>
+    <string name="do_you_want_to_delete">Do you want to delete?</string>
+    <string name="please_enter_other_address">Please enter other address</string>
+    <string name="choose_your_preffered_language">Choose Your Preffered Language</string>
+    <string name="we_will_served_on_the_basis_of_your_selection">We will served on the basis of your selection.</string>
+    <string name="save">Save</string>
 </resources>

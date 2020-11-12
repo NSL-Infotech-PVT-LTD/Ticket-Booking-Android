@@ -141,7 +141,7 @@ class BookingListAdapter(
             if (date.isNotEmpty()) {
                 var spf = SimpleDateFormat("yyyy-MM-dd")
                 val newDate: Date = spf.parse(date)
-                spf = SimpleDateFormat("dd-/MMM-yyyy")
+                spf = SimpleDateFormat("dd-MMM-yyyy")
                 date = spf.format(newDate)
                 dateMtv.setText(date)
 

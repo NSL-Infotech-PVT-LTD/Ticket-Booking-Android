@@ -8,11 +8,63 @@
         android:layout_height="match_parent"
         tools:context=".fragments.homefragment.HomeFragment">
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white">
+            android:background="@color/colorPrimary">
+
+
+            <!-- when no data found. -->
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/noArtistText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_data_found"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sdp"
+                android:gravity="center"
+                android:layout_marginHorizontal="@dimen/_30sdp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.3"
+                android:fontFamily="@font/montserrat_bold"/>
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/unableToFindBookingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/unable_to_find_data"
+                android:textColor="#99FFFFFF"
+                android:textSize="@dimen/_12sdp"
+                android:gravity="center"
+                android:layout_marginHorizontal="@dimen/_30sdp"
+                app:layout_constraintTop_toBottomOf="@id/noArtistText"
+                android:layout_marginTop="@dimen/_20sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:fontFamily="@font/montserrat_semibold"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_200sdp"
+                app:layout_constraintTop_toBottomOf="@id/unableToFindBookingText"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:src="@drawable/no_artist_found"/>
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/homeContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="visible">
+
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/headerCard"
@@ -30,8 +82,8 @@
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/imageCard"
-                        android:layout_width="@dimen/_50sdp"
-                        android:layout_height="@dimen/_50sdp"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -68,9 +120,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_10sdp"
                             android:text="@string/your_location"
-                            android:textColor="@color/black"
+                            android:textColor="#35353a"
                             android:textSize="@dimen/_12sdp"
-                            android:textStyle="bold"
+                            android:fontFamily="@font/montserrat_semibold"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -79,8 +131,9 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:maxLines="2"
-                            android:textColor="@color/grey_Dark_color"
+                            android:textColor="#8e8e8e"
                             android:textSize="@dimen/_8sdp"
+                            android:fontFamily="@font/montserrat_semibold"
                             app:layout_constraintStart_toStartOf="@+id/yourLocationTxt"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/yourLocationTxt" />
@@ -104,6 +157,7 @@
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_8sdp"
                         android:text="@string/view_profile"
+                        android:fontFamily="@font/cabin_medium"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/_10sdp"
                         app:layout_constraintStart_toStartOf="@id/imageCard"
@@ -138,6 +192,8 @@
                         android:drawableEnd="@drawable/ic_search_24"
                         android:hint="@string/search_for_artist_singer"
                         android:singleLine="true"
+                        android:gravity="center_vertical"
+                        android:fontFamily="@font/montserrat_regular"
                         android:imeOptions="actionDone"
                         android:maxLength="50"
                         android:paddingHorizontal="@dimen/_20sdp"
@@ -153,6 +209,7 @@
                         android:text="@string/book_artist_you_listen"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12sdp"
+                        android:fontFamily="@font/cabin_bold"
                         app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginStart="@dimen/_20sdp"
                         app:layout_constraintTop_toBottomOf="@id/searchEdt" />
@@ -179,32 +236,6 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/noDataFound"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/no_data_found"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_14sdp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/refresh"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_50sdp"
-                android:text="@string/refresh"
-                android:textAllCaps="false"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.8" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -212,6 +243,7 @@
             android:visibility="gone"
             android:id="@+id/loaderLayout"/>
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </FrameLayout>
 

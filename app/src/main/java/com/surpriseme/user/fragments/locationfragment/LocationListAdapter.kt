@@ -40,7 +40,7 @@ private val deleteAddress: DeleteAddress,private val editLocation: EditAddress) 
                     holder.addressIcon.setImageDrawable(
                         ContextCompat.getDrawable(
                             context,
-                            R.drawable.ic_home
+                            R.drawable.home_icon_updated
                         )
                     )
                     holder.addressTypeTxt.text = model.name
@@ -50,7 +50,7 @@ private val deleteAddress: DeleteAddress,private val editLocation: EditAddress) 
                     holder.addressIcon.setImageDrawable(
                         ContextCompat.getDrawable(
                             context,
-                            R.drawable.ic_work_icon
+                            R.drawable.work_icon
                         )
                     )
                     holder.addressTypeTxt.text = model.name
@@ -59,7 +59,7 @@ private val deleteAddress: DeleteAddress,private val editLocation: EditAddress) 
                 holder.addressIcon.setImageDrawable(
                     ContextCompat.getDrawable(
                         context,
-                        R.drawable.ic_other_icon
+                        R.drawable.other_icon
                     )
                 )
                 holder.addressTypeTxt.text = model.name

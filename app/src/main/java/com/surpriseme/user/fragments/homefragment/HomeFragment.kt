@@ -88,11 +88,11 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         ctx = context
     }
 
-//    override fun onStart() {
-//        super.onStart()
-//        binding.yourLocationInfo.text = shared.getString(Constants.ADDRESS)
-//        artistListApi(latitude.toString(),longitude.toString(),search)
-//    }
+    override fun onStart() {
+        super.onStart()
+        binding.yourLocationInfo.text = shared.getString(Constants.ADDRESS)
+        artistListApi(latitude.toString(),longitude.toString(),search)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -117,7 +117,6 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
             )
         }
         binding.viewProfile.setOnClickListener(this)
-        binding.refresh.setOnClickListener(this)
         binding.addressLayout.setOnClickListener(this)
         binding.searchEdt.setOnClickListener(this)
         binding.notiIcon.setOnClickListener(this)
@@ -187,13 +186,6 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
             R.id.viewProfile -> {
                 replaceFragment(ProfileFragment())
             }
-            R.id.refresh -> {
-                binding.searchEdt.setText("")
-                binding.noDataFound.visibility = View.GONE
-                binding.refresh.visibility = View.GONE
-                search = ""
-                artistListApi(latitude.toString(), longitude.toString(), search)
-            }
             R.id.addressLayout -> {
 
                 replaceFragment(LocationFragment())
@@ -256,10 +248,10 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                                     }
                                 }, 1500)
 
-                                binding.noDataFound.visibility = View.GONE
+                                binding.homeContainer.visibility = View.VISIBLE
 
                             } else {
-                                binding.noDataFound.visibility = View.VISIBLE
+                                binding.homeContainer.visibility = View.GONE
                             }
                         }
                     } else if (response.code() == 401) {

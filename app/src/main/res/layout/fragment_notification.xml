@@ -12,7 +12,8 @@
         tools:context=".fragments.notificationfragment.NotificationActivity"
         android:weightSum="2">
 
-        <include layout="@layout/loader_layout" android:id="@+id/loaderLayout"
+        <include layout="@layout/loader_layout"
+            android:id="@+id/loaderLayout"
             android:visibility="gone"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,9 +31,9 @@
                 android:drawableStart="@drawable/back"
                 android:gravity="center"
                 android:text="@string/back"
-                android:textColor="@color/black"
+                android:textColor="#262a29"
                 android:textSize="@dimen/_14sdp"
-                android:textStyle="bold"
+                android:fontFamily="@font/montserrat_bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -45,8 +46,8 @@
                 app:layout_constraintTop_toBottomOf="@id/backpress"
                 app:layout_constraintStart_toStartOf="@id/backpress"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:textColor="@color/black"
-                android:textStyle="bold"
+                android:textColor="#242830"
+                android:fontFamily="@font/montserrat_bold"
                 android:textSize="@dimen/_18sdp"/>
 
             <com.google.android.material.textview.MaterialTextView
@@ -58,6 +59,7 @@
                 app:layout_constraintTop_toBottomOf="@id/notificationTxt"
                 app:layout_constraintStart_toStartOf="@id/backpress"
                 android:textColor="@color/grey_color"
+                android:fontFamily="@font/montserrat_regular"
                 android:textSize="@dimen/_10sdp"/>
 
             <androidx.appcompat.widget.SwitchCompat

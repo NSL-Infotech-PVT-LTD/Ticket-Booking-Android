@@ -15,50 +15,36 @@
             android:layout_height="wrap_content">
 
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/back_cardview"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_50sdp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:elevation="@dimen/_10sdp"
-        app:layout_constraintStart_toStartOf="parent" >
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/backArrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_15sdp"
-                app:layout_constraintStart_toStartOf="parent"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/toolbarCard"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50sdp"
+                app:cardElevation="@dimen/_10sdp"
                 app:layout_constraintTop_toTopOf="parent"
-                android:src="@drawable/ic_baseline_keyboard_arrow_left_24"/>
-            <TextView
-                android:id="@+id/txt_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toEndOf="@id/backArrow"
-                android:text="@string/back"
-                android:textColor="@color/black"
-                app:layout_constraintTop_toTopOf="@id/backArrow"
-                app:layout_constraintBottom_toBottomOf="@id/backArrow"
-                android:textSize="@dimen/_15sdp"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <include layout="@layout/toolbar_layout" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/back_cardview"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarCard"
         app:layout_constraintStart_toStartOf="parent"
         android:text="@string/fill_up_details"
-        android:textColor="#1E1A1A"
+        android:textColor="#2b2b44"
         android:textSize="@dimen/_20sdp"
         android:layout_marginStart="@dimen/_30sdp"
-        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_30sdp" />
     <TextView
         android:id="@+id/subtitle"
@@ -67,9 +53,10 @@
         app:layout_constraintTop_toBottomOf="@+id/details"
         app:layout_constraintStart_toStartOf="parent"
         android:text="@string/register_with_us"
+        android:fontFamily="@font/quicksand_medium"
         android:textSize="@dimen/_12sdp"
         android:layout_marginStart="@dimen/_30sdp"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginEnd="@dimen/_30sdp"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -99,7 +86,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/username"
-                android:textColor="@color/black"
+                android:textColor="#66667e"
+                android:fontFamily="@font/quicksand_medium"
                 android:textSize="@dimen/_14sdp"
                 app:layout_constraintStart_toEndOf="@id/userIcon"
                 app:layout_constraintTop_toTopOf="@id/userIcon" />
@@ -111,6 +99,8 @@
                 android:background="@null"
                 android:hint="@string/type_here"
                 android:textSize="@dimen/_12sdp"
+                android:fontFamily="@font/quicksand_medium"
+                android:textColor="#c1c1c1"
                 android:singleLine="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/usernameTxt"
@@ -143,7 +133,8 @@
                 android:layout_width="@dimen/_140sdp"
                 android:layout_height="wrap_content"
                 android:text="@string/e_mail_address"
-                android:textColor="@color/black"
+                android:textColor="#66667e"
+                android:fontFamily="@font/quicksand_medium"
                 android:textSize="@dimen/_14sdp"
                 app:layout_constraintStart_toEndOf="@id/emailIcon"
                 app:layout_constraintTop_toTopOf="@+id/emailIcon" />
@@ -156,6 +147,8 @@
                 android:hint="@string/type_here"
                 android:textSize="@dimen/_12sdp"
                 android:singleLine="true"
+                android:fontFamily="@font/quicksand_medium"
+                android:textColor="#c1c1c1"
                 app:layout_constraintStart_toStartOf="@+id/emailTxt"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/emailTxt" />
@@ -188,7 +181,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/password"
-                android:textColor="@color/black"
+                android:textColor="#66667e"
+                android:fontFamily="@font/quicksand_medium"
                 android:textSize="@dimen/_14sdp"
                 app:layout_constraintStart_toEndOf="@id/passwordIcon"
                 app:layout_constraintTop_toTopOf="@id/passwordIcon" />
@@ -202,6 +196,8 @@
                 android:textSize="@dimen/_12sdp"
                 android:inputType="textPassword"
                 android:singleLine="true"
+                android:fontFamily="@font/quicksand_medium"
+                android:textColor="#c1c1c1"
                 app:layout_constraintStart_toStartOf="@+id/passwordTxt"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/passwordTxt" />
@@ -234,7 +230,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/confirm_pass"
-                android:textColor="@color/black"
+                android:textColor="#66667e"
+                android:fontFamily="@font/quicksand_medium"
                 android:textSize="@dimen/_14sdp"
                 app:layout_constraintStart_toEndOf="@id/confirmPassIcon"
                 app:layout_constraintTop_toTopOf="@+id/confirmPassIcon" />
@@ -248,6 +245,8 @@
                 android:textSize="@dimen/_12sdp"
                 android:inputType="textPassword"
                 android:singleLine="true"
+                android:fontFamily="@font/quicksand_medium"
+                android:textColor="#c1c1c1"
                 app:layout_constraintStart_toEndOf="@+id/confirmPassIcon"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/confirmPassTxt" />
@@ -260,12 +259,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_50sdp"
                 android:layout_marginHorizontal="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_30sdp"
                 android:backgroundTint="@color/colorPrimary"
                 android:text="@string/register_now"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="12sp"
+                android:textSize="@dimen/_12sdp"
+                android:fontFamily="@font/quicksand_medium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/confirmPassLayout" />
@@ -280,38 +280,22 @@
                 android:paddingHorizontal="@dimen/_20sdp"
                 android:text="@string/back_to_login"
                 android:textAllCaps="false"
-                android:textColor="@color/grey_color"
+                android:textColor="#5a5a5a"
                 android:textSize="@dimen/_12sdp"
-                app:cornerRadius="@dimen/_15sdp"
+                app:cornerRadius="@dimen/_8sdp"
+                android:fontFamily="@font/quicksand_regular"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/signupBtn"
                 app:layout_constraintVertical_bias="1"
-                app:strokeColor="@color/grey_color"
+                app:strokeColor="#5a5a5a"
                 app:strokeWidth="@dimen/_1sdp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
-    <FrameLayout
+    <include layout="@layout/loader_layout"
         android:id="@+id/loaderLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        android:background="@color/loaderBg">
-
-        <com.wang.avi.AVLoadingIndicatorView
-            android:id="@+id/progressBar"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_50sdp"
-            app:indicatorName="LineScaleIndicator"
-            style="@style/AVLoadingIndicatorView"
-            android:layout_gravity="center_horizontal|center_vertical"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:indicatorColor="@color/colorPrimary"/>
-    </FrameLayout>
+        android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

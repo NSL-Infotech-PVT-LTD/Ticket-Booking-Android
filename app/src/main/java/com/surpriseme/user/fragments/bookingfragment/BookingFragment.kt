@@ -158,8 +158,10 @@ class BookingFragment : Fragment(), View.OnClickListener, BookingListAdapter.See
                                 }, 1500)
 
                                 binding.noDataFound.visibility = View.GONE
+                                binding.bookingContainer.visibility = View.VISIBLE
 
                             } else {
+                                binding.bookingContainer.visibility = View.GONE
                                 binding.noDataFound.visibility = View.VISIBLE
                                 binding.refresh.visibility = View.VISIBLE
                             }

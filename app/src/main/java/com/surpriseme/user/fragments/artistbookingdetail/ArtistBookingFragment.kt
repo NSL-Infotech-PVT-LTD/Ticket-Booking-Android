@@ -25,29 +25,36 @@ import com.squareup.picasso.Picasso
 import com.surpriseme.user.R
 import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.databinding.FragmentArtistBookingBinding
+import com.surpriseme.user.fragments.chatFragment.ChatFragment
 import com.surpriseme.user.fragments.reviewfragment.ReviewFragment
 import com.surpriseme.user.fragments.wayofbookingfragment.WayOfBookingFragment
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
-import kotlinx.android.synthetic.main.chat_list_layout.*
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import uk.co.senab.photoview.PhotoViewAttacher
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 
 class ArtistBookingFragment : Fragment(), View.OnClickListener,
     YouTubePlayer.OnInitializedListener {
 
+    private var img_url: String = ""
+    private var img_url1: String = ""
     private lateinit var binding: FragmentArtistBookingBinding
     private var artistID = ""
     private lateinit var shared: PrefrenceShared
     private lateinit var ctx: Context
     private lateinit var artistModel: ArtistDataModel
-    var imagePath = ""
+    private var imagePath = ""
+    private var backpress:MaterialTextView?=null
+    private var artistImage = ""
+    private var artistName = ""
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -69,24 +76,28 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
         val view = binding.root
         shared = PrefrenceShared(ctx)
         ((ctx as MainActivity)).hideBottomNavigation()
-        init()
+        init(view)
 
-        val videoKey = "bSMZknDI6bg"
-        val thumbnail = "https://img.youtube.com/vi/$videoKey/mqdefault.jpg"
 
-        Picasso.get().load(thumbnail).into(binding.thumbnail)
+//        val thumbnail = "https://img.youtube.com/vi/$img_url/mqdefault.jpg"
+
+//        Picasso.get().load(thumbnail).into(binding.thumbnail)
+
 
 
         return view
     }
 
-    private fun init() {
+    private fun init(view: View) {
 
         binding.bookBtn.setOnClickListener(this)
-        binding.youtubePlayIcon.setOnClickListener(this)
+
         binding.profileImg.setOnClickListener(this)
         binding.seeReviewTxt.setOnClickListener(this)
-        binding.backpress.setOnClickListener(this)
+        binding.youtubePlayIcon.setOnClickListener(this)
+        binding.chatStartIcon.setOnClickListener(this)
+        backpress = view.findViewById(R.id.backpress)
+        backpress?.setOnClickListener(this)
 //        binding.youtubeView.initialize(resources.getString(R.string.youtube_api_key), this)
 
         artistID = arguments?.getString("artistID")!!
@@ -132,6 +143,20 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
              }
             R.id.backpress -> {
                 fragmentManager?.popBackStack()
+            }
+            R.id.chatStartIcon -> {
+
+                val bundle = Bundle()
+                val fragment = ChatFragment()
+                bundle.putString("chatId", artistID)
+                bundle.putString("receiverImage",artistImage)
+                bundle.putString("receiverName",artistName)
+                fragment.arguments = bundle
+                val transaction = fragmentManager?.beginTransaction()
+                transaction?.replace(R.id.frameContainer,fragment)
+                transaction?.addToBackStack("chatListFragment")
+                transaction?.commit()
+
             }
         }
     }
@@ -199,6 +224,20 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                             binding.chipGroup
                                         )
                                 }
+                                if (artistModel.shows_video !="" || artistModel.shows_video !=null) {
+                                    val videoUrl = artistModel.shows_video
+                                    binding.youtubePlayIcon.visibility = View.VISIBLE
+                                    binding.thumbnail.visibility = View.VISIBLE
+                                    extractYoutubeId(videoUrl.toString())
+                                    binding.noVideoUploadedTxt.visibility = View.GONE
+                                } else {
+
+                                    binding.noVideoUploadedTxt.visibility = View.VISIBLE
+                                    binding.youtubePlayIcon.visibility = View.GONE
+                                    binding.thumbnail.visibility = View.GONE
+
+                                }
+
 
                                 imagePath =
                                     Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.image
@@ -245,6 +284,10 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                 binding.mediaText.text = artistModel.social_link_youtube
                                 binding.mediaTextInsta.text = artistModel.social_link_insta
                                 binding.aboutText.text = artistModel.description
+
+                                artistImage = imagePath
+                                artistName = artistModel.name
+
 
                             } else {
                                 Toast.makeText(ctx, "No data found", Toast.LENGTH_SHORT).show()
@@ -299,7 +342,7 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
         if (wasRestored) {
             player.play()
         } else {
-            player.cueVideo("W4hTJybfU7s")
+            player.cueVideo(img_url)
             player.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
         }
     }
@@ -310,6 +353,43 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
     ) {
         Log.d("Youtube Player", "Failed to initialize")
 
+    }
+
+    private fun extractYoutubeId(url: String): String? {
+        var videoid: String? = null
+        val pattern =
+            "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%\u200C\u200B2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*"
+
+        val compiledPattern: Pattern = Pattern.compile(pattern)
+        val matcher: Matcher =
+            compiledPattern.matcher(url!!) //url is youtube url for which you want to extract the id.
+
+        if (matcher.find()) {
+            videoid = matcher.group()
+        }
+
+// val query: String = URL(url).query
+// val param = query.split("&".toRegex()).toTypedArray()
+// var id: String? = null
+// for (row in param) {
+// val param1 = row.split("=".toRegex()).toTypedArray()
+// if (param1[0] == "v") {
+// id = param1[1]
+// }
+// }
+        img_url =videoid!!
+        img_url1 =
+            "https://img.youtube.com/vi/$videoid/0.jpg"
+
+//
+//
+//
+        Picasso.get().load(img_url1)
+
+            .resize(300, 300)
+            .onlyScaleDown().into(binding.thumbnail)
+// binding.upload.visibility = View.GONE
+        return videoid
     }
 
 }

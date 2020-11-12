@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
+import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.R
 import com.surpriseme.user.databinding.ActivitySettingsBinding
 import kotlinx.android.synthetic.main.activity_settings.*
@@ -14,7 +15,7 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener {
 
     private var headerTxt = ""
     private lateinit var headerTv:TextView
-    private lateinit var tbackpress:ImageView
+    private lateinit var tbackpress:MaterialTextView
     private var mSettings = false
     private var mSettingsLayout = false
 

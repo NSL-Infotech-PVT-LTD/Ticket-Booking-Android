@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.WindowManager
 import com.surpriseme.user.R
+import com.surpriseme.user.activity.chooselanguage.ChooseLanguageActivity
 import com.surpriseme.user.activity.splashwalkthrough.SplashGetStartedActivity
 import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.util.Constants
@@ -35,9 +36,13 @@ class SplashActivity : AppCompatActivity() {
 
         Handler().postDelayed({
 
+
+            startActivity(intent)
+            finish()
+
                 if (shared.getString(Constants.DataKey.AUTH_VALUE).equals("")) {
 
-                    val intent = Intent(applicationContext, SplashGetStartedActivity ::class.java)
+                    val intent = Intent(this@SplashActivity,ChooseLanguageActivity ::class.java)
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     startActivity(intent)

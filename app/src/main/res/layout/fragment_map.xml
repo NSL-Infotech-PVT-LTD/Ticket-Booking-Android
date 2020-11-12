@@ -72,6 +72,8 @@
                         android:gravity="center_vertical"
                         android:hint="@string/your_location"
                         android:imeOptions="actionDone"
+                        android:textColor="#66667E"
+                        android:fontFamily="@font/montserrat_semibold"
                         android:paddingHorizontal="@dimen/_10sdp"
                         android:textSize="@dimen/_10sdp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -89,6 +91,8 @@
                         android:hint="@string/house_number_flat"
                         android:imeOptions="actionDone"
                         android:paddingHorizontal="@dimen/_10sdp"
+                        android:textColor="#66667e"
+                        android:fontFamily="@font/montserrat_semibold"
                         android:singleLine="true"
                         android:textSize="@dimen/_10sdp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -107,6 +111,8 @@
                         android:imeOptions="actionDone"
                         android:paddingHorizontal="@dimen/_10sdp"
                         android:singleLine="true"
+                        android:textColor="#66667E"
+                        android:fontFamily="@font/montserrat_semibold"
                         android:textSize="@dimen/_10sdp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -131,6 +137,7 @@
                             android:textSize="@dimen/_10sdp"
                             app:backgroundTint="@color/grey_color"
                             app:cornerRadius="@dimen/_20sdp"
+                            android:fontFamily="@font/montserrat_bold"
                             app:layout_constraintEnd_toStartOf="@+id/workBtn"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -143,6 +150,7 @@
                             android:textAllCaps="false"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_10sdp"
+                            android:fontFamily="@font/montserrat_bold"
                             app:backgroundTint="@color/grey_color"
                             app:cornerRadius="@dimen/_20sdp"
                             app:layout_constraintEnd_toStartOf="@id/otherBtn"
@@ -159,6 +167,7 @@
                             android:textSize="@dimen/_10sdp"
                             app:backgroundTint="@color/grey_color"
                             app:cornerRadius="@dimen/_20sdp"
+                            android:fontFamily="@font/montserrat_bold"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/workBtn"
                             app:layout_constraintTop_toTopOf="@+id/homeBtn" />
@@ -204,6 +213,7 @@
                         android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12sdp"
+                        android:fontFamily="@font/montserrat_bold"
                         app:cornerRadius="@dimen/_20sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -214,28 +224,9 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
 
-            <FrameLayout
+            <include layout="@layout/loader_layout"
                 android:id="@+id/loaderLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/loaderBg"
-                android:visibility="gone">
-
-                <com.wang.avi.AVLoadingIndicatorView
-                    android:id="@+id/progressBar"
-                    style="@style/AVLoadingIndicatorView"
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="@dimen/_50sdp"
-                    android:layout_gravity="center_horizontal|center_vertical"
-                    app:indicatorColor="@color/colorPrimary"
-                    app:indicatorName="LineScaleIndicator"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-
-                    />
-            </FrameLayout>
+                android:visibility="gone"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -10,6 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_300sdp"
+            android:src="@drawable/forget_bg"
+            android:adjustViewBounds="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
 
 <ScrollView
     android:layout_width="match_parent"
@@ -24,8 +33,8 @@
             android:id="@+id/img_sign"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/_100sdp"
-            android:layout_marginTop="@dimen/_30sdp"
-            android:src="@drawable/login_logo"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:src="@drawable/splash_logo_updated"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -34,9 +43,9 @@
             android:id="@+id/welcomeTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_30sdp"
             android:text="@string/welcome"
+            android:fontFamily="@font/montserrat_medium"
             android:textColor="@color/black"
             android:textSize="@dimen/_20sdp"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,6 +57,8 @@
             android:layout_height="wrap_content"
             android:text="@string/sign_in_to_continue"
             android:textSize="15sp"
+            android:textColor="#949494"
+            android:fontFamily="@font/montserrat_medium"
             app:layout_constraintStart_toStartOf="@id/welcomeTxt"
             app:layout_constraintTop_toBottomOf="@+id/welcomeTxt" />
 
@@ -56,7 +67,7 @@
             android:id="@+id/emailLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginHorizontal="@dimen/_30sdp"
             android:layout_marginTop="@dimen/_20sdp"
             android:background="@drawable/boxcardview"
             app:layout_constraintStart_toStartOf="parent"
@@ -77,8 +88,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/e_mail_address"
-                android:textColor="@color/black"
-                android:textSize="14sp"
+                android:textColor="#66667e"
+                android:fontFamily="@font/montserrat_medium"
+                android:textSize="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_1sdp"
                 app:layout_constraintStart_toEndOf="@id/mailicon"
                 app:layout_constraintTop_toTopOf="@+id/mailicon" />
@@ -89,11 +101,12 @@
                 android:layout_height="@dimen/_40sdp"
                 android:background="@null"
                 android:hint="@string/type_here"
-                android:textSize="16sp"
+                android:textSize="@dimen/_12sdp"
                 android:singleLine="true"
                 android:imeOptions="actionDone"
                 android:paddingEnd="@dimen/_10sdp"
-                android:textColor="@color/black"
+                android:textColor="#c1c1c1"
+                android:fontFamily="@font/montserrat_regular"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/mailicon"
@@ -105,9 +118,8 @@
             android:id="@+id/passwordLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginHorizontal="@dimen/_30sdp"
             android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_20sdp"
             android:background="@drawable/boxcardview"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/emailLayout">
@@ -127,8 +139,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/password"
-                android:textSize="14sp"
-                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp"
+                android:textColor="#66667e"
+                android:fontFamily="@font/montserrat_medium"
                 app:layout_constraintStart_toEndOf="@id/passicon"
                 app:layout_constraintTop_toTopOf="@+id/passicon" />
 
@@ -138,25 +151,28 @@
                 android:layout_height="@dimen/_40sdp"
                 android:background="@null"
                 android:hint="@string/type_here"
-                android:textSize="16sp"
+                android:textSize="@dimen/_12sdp"
                 android:singleLine="true"
                 android:inputType="textPassword"
                 android:paddingEnd="@dimen/_10sdp"
-                android:textColor="@color/black"
+                android:textColor="#c1c1c1"
+                android:fontFamily="@font/montserrat_regular"
                 android:imeOptions="actionDone"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/eye"
+                android:layout_marginEnd="@dimen/_10sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/passicon"
                 app:layout_constraintTop_toBottomOf="@+id/txt_pass" />
 
             <ImageView
                 android:id="@+id/eye"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/passwordLayout"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/passwordLayout"
+                android:src="@drawable/eye_icon"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <CheckBox
@@ -165,7 +181,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:text="@string/remember_me"
-            android:textColor="@color/grey_Dark_color"
+            android:textColor="#66667e"
+            android:fontFamily="@font/montserrat_medium"
             app:layout_constraintStart_toStartOf="@id/passwordLayout"
             app:layout_constraintTop_toBottomOf="@id/passwordLayout" />
 
@@ -175,10 +192,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_20sdp"
-            android:padding="5dp"
+            android:padding="@dimen/_10sdp"
             android:text="@string/forget_password"
             android:textColor="@color/colorPrimary"
-            android:textSize="15sp"
+            android:textSize="@dimen/_10sdp"
+            android:fontFamily="@font/quicksand_medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/checkbox"
             app:layout_constraintBottom_toBottomOf="@+id/checkbox"/>
@@ -191,6 +209,7 @@
             android:layout_marginHorizontal="@dimen/_30sdp"
             android:text="@string/login"
             android:textAllCaps="false"
+            android:fontFamily="@font/montserrat_bold"
             android:textColor="@color/white"
             android:textSize="@dimen/_12sdp"
             app:cornerRadius="@dimen/_15sdp"
@@ -205,6 +224,7 @@
             android:text="@string/yet"
             android:textColor="@color/grey_Dark_color"
             android:textSize="@dimen/_12sdp"
+            android:fontFamily="@font/montserrat_bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/loginButton" />

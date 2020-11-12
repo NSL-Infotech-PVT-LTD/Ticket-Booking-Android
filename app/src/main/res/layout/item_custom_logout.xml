@@ -32,6 +32,7 @@
                 android:text="@string/alert"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14sdp"
+                android:fontFamily="@font/quicksand_medium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -47,6 +48,7 @@
                 android:paddingEnd="@dimen/_20sdp"
                 android:text="@string/do_yout_want_to_logout"
                 android:textColor="@color/black"
+                android:fontFamily="@font/quicksand_medium"
                 android:textSize="13sp"
                 app:layout_constraintEnd_toEndOf="parent"
 
@@ -77,6 +79,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/blue_signup"
                     android:textSize="@dimen/_12sdp"
+                    android:fontFamily="@font/quicksand_medium"
                     app:layout_constraintEnd_toStartOf="@id/yes"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -101,6 +104,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/redBtnBg"
                     android:textSize="@dimen/_12sdp"
+                    android:fontFamily="@font/quicksand_medium"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/cancel"
                     app:layout_constraintTop_toTopOf="parent" />

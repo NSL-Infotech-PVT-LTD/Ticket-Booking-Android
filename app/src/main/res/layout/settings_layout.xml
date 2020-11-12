@@ -44,7 +44,7 @@
         android:layout_marginTop="@dimen/_20sdp"
         android:textSize="@dimen/_16sdp"
         android:textColor="@color/black"
-        android:textStyle="bold"/>
+        android:fontFamily="@font/montserrat_bold"/>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/detailTxt"
@@ -58,6 +58,7 @@
         android:layout_marginHorizontal="@dimen/_20sdp"
         android:layout_marginTop="@dimen/_5sdp"
         android:textSize="@dimen/_12sdp"
+        android:fontFamily="@font/montserrat_regular"
         android:textColor="@color/black" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

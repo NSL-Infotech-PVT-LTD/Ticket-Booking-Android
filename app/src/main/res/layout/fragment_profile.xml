@@ -80,6 +80,7 @@
                     android:text="@string/edit_profile"
                     android:textAllCaps="false"
                     android:textColor="@color/colorPrimary"
+                    android:fontFamily="@font/quicksand_medium"
                     android:textSize="@dimen/_10sdp"
                     app:cornerRadius="@dimen/_10sdp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -118,7 +119,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/username"
-                        android:textColor="@color/grey_Dark_color"
+                        android:textColor="#66667e"
+                        android:fontFamily="@font/quicksand_medium"
                         android:textSize="@dimen/_12sdp"
                         app:layout_constraintStart_toEndOf="@id/userprofileIcon"
                         app:layout_constraintTop_toTopOf="@id/userprofileIcon" />
@@ -131,7 +133,8 @@
                         android:background="@null"
                         android:singleLine="true"
                         android:textSize="@dimen/_10sdp"
-                        android:textColor="@color/grey_Dark_color"
+                        android:fontFamily="@font/quicksand_medium"
+                        android:textColor="#c1c1c1"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/userprofilenameTxt"
                         app:layout_constraintTop_toBottomOf="@+id/userprofilenameTxt" />
@@ -163,7 +166,8 @@
                         android:layout_width="@dimen/_140sdp"
                         android:layout_height="wrap_content"
                         android:text="@string/e_mail_address"
-                        android:textColor="@color/grey_Dark_color"
+                        android:textColor="#66667e"
+                        android:fontFamily="@font/quicksand_medium"
                         android:textSize="@dimen/_12sdp"
                         app:layout_constraintStart_toEndOf="@id/emailIcon"
                         app:layout_constraintTop_toTopOf="@+id/emailIcon" />
@@ -175,7 +179,8 @@
                         android:background="@null"
                         android:singleLine="true"
                         android:textSize="@dimen/_10sdp"
-                        android:textColor="@color/grey_Dark_color"
+                        android:fontFamily="@font/quicksand_medium"
+                        android:textColor="#c1c1c1"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/emailTxt"
                         app:layout_constraintTop_toBottomOf="@+id/emailTxt" />
@@ -208,7 +213,8 @@
                         android:layout_height="@dimen/_52sdp"
                         android:gravity="center_vertical"
                         android:text="@string/changepassword"
-                        android:textColor="@color/grey_Dark_color"
+                        android:textColor="#66667e"
+                        android:fontFamily="@font/quicksand_medium"
                         android:textSize="@dimen/_12sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -244,7 +250,8 @@
                         android:background="@null"
                         android:gravity="center_vertical"
                         android:text="@string/settings"
-                        android:textColor="@color/grey_Dark_color"
+                        android:textColor="#66667e"
+                        android:fontFamily="@font/quicksand_medium"
                         android:textSize="@dimen/_12sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -280,7 +287,8 @@
                         android:layout_height="@dimen/_52sdp"
                         android:gravity="center_vertical"
                         android:text="@string/logout"
-                        android:textColor="@color/grey_Dark_color"
+                        android:textColor="#66667e"
+                        android:fontFamily="@font/quicksand_medium"
                         android:textSize="@dimen/_12sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -313,28 +321,9 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
-        <FrameLayout
-            android:id="@+id/loaderLayoutprofile"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/loaderBg"
-            android:visibility="gone">
-
-            <com.wang.avi.AVLoadingIndicatorView
-                android:id="@+id/progressBar"
-                style="@style/AVLoadingIndicatorView"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_50sdp"
-                android:layout_gravity="center_horizontal|center_vertical"
-                app:indicatorColor="@color/colorPrimary"
-                app:indicatorName="LineScaleIndicator"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-
-                />
-        </FrameLayout>
+        <include layout="@layout/loader_layout"
+            android:id="@+id/loaderLayout"
+            android:visibility="gone"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

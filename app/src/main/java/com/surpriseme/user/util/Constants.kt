@@ -31,13 +31,14 @@ object Constants {
     const val BOOKING_STATUS = "customer/change-booking-status"
     const val BOOKING_SLOT_LIST = "customer/bookslot/list"
     const val CUSTOMER_REVIEW = "customer/getartistrating"
+    const val CHANGE_LANGUAGE = "customer/update/lang"
 
 
     const val PLEASE_CLICK_BACK_AGAIN_To_EXIT = "Please click BACK again to exit"
     const val TIME_OUT = "Time Out"
-    const val HOME_ADDRESS = "home address"
+    const val HOME_ADDRESS = "Home"
     const val HOME = "Home"
-    const val WORK_ADDRESS = "work address"
+    const val WORK_ADDRESS = "Work"
     const val WORK = "Work"
     const val OTHER_ADDRESS = "other address"
     const val OTHER = "other"
@@ -119,6 +120,7 @@ object Constants {
         const val SORT_BY = "sort_by"
         const val SHOW_TYPE = "show_type"
         const val PAGE = "page"
+        const val LANG = "lang"
 
 
 

@@ -37,7 +37,7 @@ class ChangePasswordFragment : Fragment(), View.OnClickListener {
     private var oldPassValue = ""
     private lateinit var shared:PrefrenceShared
     private lateinit var ctx:Context
-    private lateinit var tbackpress:ImageView
+    private lateinit var tbackpress:MaterialTextView
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

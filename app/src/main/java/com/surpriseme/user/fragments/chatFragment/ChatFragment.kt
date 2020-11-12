@@ -92,14 +92,19 @@ class ChatFragment : Fragment(), View.OnClickListener, IOnMessageReceived {
             Picasso.get()
                 .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + mReceiverImage)
                 .resize(4000, 1500)
+                .placeholder(R.drawable.profile_pholder)
                 .onlyScaleDown()
                 .into(mReceiverImageView)
         }
         if ((mReceiverName != "") || (mReceiverName != "null")) {
             if (mReceiverName == "null")
                 mReceiverNameMtv?.text = ""
-            else
-            mReceiverNameMtv?.text = mReceiverName
+            else {
+//                val prefix = mReceiverName.substring(0,1)
+//                val suffix = mReceiverName.substring(1)
+//                pre
+                mReceiverNameMtv?.text = mReceiverName
+            }
         } else {
             mReceiverNameMtv?.text = ""
         }

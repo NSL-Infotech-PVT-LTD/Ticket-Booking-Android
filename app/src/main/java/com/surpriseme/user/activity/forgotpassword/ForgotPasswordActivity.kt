@@ -5,12 +5,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
+import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.R
 import com.surpriseme.user.activity.login.LoginActivity
+import com.surpriseme.user.databinding.ActivityForgotPasswordBinding
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.CheckValidEmail
 import com.surpriseme.user.util.Constants
 import kotlinx.android.synthetic.main.activity_forgot_password.*
+import kotlinx.android.synthetic.main.item_custom_logout.*
 import kotlinx.android.synthetic.main.toolbar_layout.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -20,11 +24,15 @@ import retrofit2.Response
 
 class ForgotPasswordActivity : AppCompatActivity(), View.OnClickListener {
 
+    private var binding:ActivityForgotPasswordBinding?=null
     private var email =""
     private lateinit var checkValidEmail: CheckValidEmail
+    private var backpress:MaterialTextView?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_forgot_password)
+//        setContentView(R.layout.activity_forgot_password)
+        binding = DataBindingUtil.setContentView(this@ForgotPasswordActivity,R.layout.activity_forgot_password)
 
         inIt()
         checkValidEmail = CheckValidEmail()
@@ -33,8 +41,9 @@ class ForgotPasswordActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun inIt() {
 
-        continueButton.setOnClickListener(this)
-        backpress.setOnClickListener(this)
+        binding?.continueButton?.setOnClickListener(this)
+        backpress = findViewById(R.id.backpress)
+        backpress?.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -42,11 +51,11 @@ class ForgotPasswordActivity : AppCompatActivity(), View.OnClickListener {
             R.id.continueButton -> {
                 email = emailedt.text.toString().trim()
                 if (email.isEmpty()) {
-                    emailedt.error = getString(R.string.please_fill_require_field)
-                    emailedt.requestFocus()
+                    binding?.emailedt?.error = getString(R.string.please_fill_require_field)
+                    binding?.emailedt?.requestFocus()
                 } else if (!checkValidEmail.isValidEmail(email)){
-                    emailedt.error = getString(R.string.please_enter_valid_email)
-                    emailedt.requestFocus()
+                    binding?.emailedt?.error = getString(R.string.please_enter_valid_email)
+                    binding?.emailedt?.requestFocus()
                 } else{
                     registerApi()
                 }
@@ -58,14 +67,14 @@ class ForgotPasswordActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun registerApi() {
-        loaderLayout.visibility = View.VISIBLE
+        binding?.loaderLayout?.visibility = View.VISIBLE
         RetrofitClient.api.resetPasswordApi(email)
             .enqueue(object :Callback<ResetPasswordModel> {
                 override fun onResponse(
                     call: Call<ResetPasswordModel>,
                     response: Response<ResetPasswordModel>
                 ) {
-                    loaderLayout.visibility = View.GONE
+                    binding?.loaderLayout?.visibility = View.GONE
                     if (response.body() !=null) {
                         if (response.isSuccessful) {
                             val intent = Intent(this@ForgotPasswordActivity, LoginActivity ::class.java)
@@ -86,7 +95,7 @@ class ForgotPasswordActivity : AppCompatActivity(), View.OnClickListener {
                     }
                 }
                 override fun onFailure(call: Call<ResetPasswordModel>, t: Throwable) {
-                    loaderLayout.visibility = View.GONE
+                    binding?.loaderLayout?.visibility = View.GONE
                     Toast.makeText(this@ForgotPasswordActivity, "" + t.message.toString(),Toast.LENGTH_SHORT).show()
                 }
             })

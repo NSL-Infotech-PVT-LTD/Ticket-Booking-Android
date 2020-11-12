@@ -4,69 +4,91 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:id="@+id/addressIcon"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="@dimen/_10sdp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="@dimen/_10sdp"/>
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/addressTypeTxt"
-        android:layout_width="0dp"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardlayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/addressIcon"
-        app:layout_constraintTop_toTopOf="@id/addressIcon"
-        app:layout_constraintBottom_toBottomOf="@id/addressIcon"
-        app:layout_constraintEnd_toStartOf="@id/addressDeleteIcon"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:textSize="@dimen/_12sdp"
-        android:layout_marginStart="@dimen/_10sdp"/>
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_10sdp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <ImageView
-        android:id="@+id/addressEditIcon"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/ic_pencil"
-        android:padding="5dp"
-        app:layout_constraintTop_toTopOf="@id/addressIcon"
-        app:layout_constraintBottom_toBottomOf="@id/addressIcon"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="@dimen/_10sdp"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp">
 
-    <ImageView
-        android:id="@+id/addressDeleteIcon"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/ic_delete"
-        android:padding="5dp"
-        app:layout_constraintTop_toTopOf="@id/addressIcon"
-        app:layout_constraintBottom_toBottomOf="@id/addressIcon"
-        app:layout_constraintEnd_toStartOf="@+id/addressEditIcon"
-        android:layout_marginEnd="@dimen/_20sdp"/>
+            <ImageView
+                android:id="@+id/addressIcon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="@dimen/_10sdp"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="@dimen/_5sdp"/>
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/addressTxt"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/addressTypeTxt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/addressIcon"
-        android:paddingVertical="@dimen/_5sdp"
-        android:textSize="@dimen/_10sdp" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/addressTypeTxt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/addressIcon"
+                app:layout_constraintTop_toTopOf="@id/addressIcon"
+                app:layout_constraintBottom_toBottomOf="@id/addressIcon"
+                app:layout_constraintEnd_toStartOf="@id/addressDeleteIcon"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:textColor="#49566e"
+                android:fontFamily="@font/montserrat_bold"
+                android:textSize="@dimen/_12sdp"
+                android:layout_marginStart="@dimen/_10sdp"/>
+
+            <ImageView
+                android:id="@+id/addressEditIcon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_pencil"
+                android:padding="5dp"
+                app:layout_constraintTop_toTopOf="@id/addressIcon"
+                app:layout_constraintBottom_toBottomOf="@id/addressIcon"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="@dimen/_10sdp"/>
+
+            <ImageView
+                android:id="@+id/addressDeleteIcon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_delete"
+                android:padding="5dp"
+                app:layout_constraintTop_toTopOf="@id/addressIcon"
+                app:layout_constraintBottom_toBottomOf="@id/addressIcon"
+                app:layout_constraintEnd_toStartOf="@+id/addressEditIcon"
+                android:layout_marginEnd="@dimen/_20sdp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/addressTxt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/addressTypeTxt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/addressIcon"
+
+                android:textSize="@dimen/_10sdp"
+                android:textColor="#49566e"
+                android:fontFamily="@font/montserrat_regular"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/addressTxt"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginStart="@dimen/_20sdp"/>
+        android:background="@color/grey_color"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardlayout"
+        android:layout_marginTop="@dimen/_5sdp"/>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

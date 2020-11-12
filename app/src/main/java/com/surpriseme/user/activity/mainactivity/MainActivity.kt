@@ -93,8 +93,8 @@ class MainActivity : AppCompatActivity() {
             when(it.itemId) {
 
                 R.id.navHome -> {
-//                    Constants.SAVED_LOCATION = false
-//                    loadFragment(HomeFragment())
+                    Constants.SAVED_LOCATION = false
+                    loadFragment(HomeFragment())
 //                    bottomNav.menu.findItem(R.id.navHome).setTitle("")
 //                    bottomNav.menu.findItem(R.id.navHome).icon = ContextCompat.getDrawable(this@MainActivity,R.drawable.home_icon)
 //

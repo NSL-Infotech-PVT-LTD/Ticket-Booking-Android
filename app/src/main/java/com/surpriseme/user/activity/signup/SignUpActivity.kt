@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.R
 import com.surpriseme.user.activity.login.LoginActivity
+import com.surpriseme.user.activity.signuptype.SignUpTypeActivity
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.CheckValidEmail
 import com.surpriseme.user.util.Constants
@@ -27,6 +29,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
     private var confirmPassword = ""
     private lateinit var checkValidEmail: CheckValidEmail
     private lateinit var shared: PrefrenceShared
+    private var backpress:MaterialTextView?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,17 +43,17 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun inIt() {
 
-        backArrow.setOnClickListener(this)
         signupBtn.setOnClickListener(this)
         backToLoginBtn.setOnClickListener(this)
-
+        backpress = findViewById(R.id.backpress)
+        backpress?.setOnClickListener(this)
 
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.backArrow -> {
-                val intent = Intent(this@SignUpActivity, LoginActivity::class.java)
+            R.id.backpress -> {
+                val intent = Intent(this@SignUpActivity, SignUpTypeActivity::class.java)
                 startActivity(intent)
                 finish()
             }
@@ -103,7 +106,8 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
             email,
             password,
             Constants.DataKey.DEVICE_TYPE_VALUE,
-            Constants.DataKey.DEVICE_TOKEN_VALUE
+            Constants.DataKey.DEVICE_TOKEN_VALUE,
+            "en"
         )
             .enqueue(object : Callback<RegisterModel> {
                 override fun onResponse(

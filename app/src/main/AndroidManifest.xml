@@ -18,7 +18,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.SettingsActivity"/>
+        <activity android:name=".activity.chooselanguage.ChooseLanguageActivity"></activity>
+        <activity android:name=".activity.SettingsActivity" />
         <activity
             android:name=".activity.searchactivity.SearchActivity"
             android:screenOrientation="portrait" /> <!-- testing.netscapelabs@gmail.com -->
@@ -82,8 +83,8 @@
             android:windowSoftInputMode="stateHidden|adjustPan" /> <!-- testing.netscape@gmail.com account is used for firebase -->
         <service
             android:name=".util.MyFirebaseMessagingService"
-            android:exported="true"
-            android:enabled="true">
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

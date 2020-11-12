@@ -14,7 +14,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -75,6 +74,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener,
     var mCurrLocationMarker: Marker? = null
     var mGoogleApiClient: GoogleApiClient? = null
     var mLocationRequest: LocationRequest? = null
+    private var isOtherAddress = false
 
     // var to get intent while update address....
     private lateinit var locationDataList: LocationDataList
@@ -111,6 +111,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener,
                 addressID = locationDataList.id.toString()
                 name = locationDataList.name
                 if (name!=null) {
+                    binding.otherTypeEdt.setText(name)
                     displayAddressType()
                 }
 
@@ -289,6 +290,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener,
             }
             R.id.homeBtn -> {
                 name = Constants.HOME_ADDRESS
+                isOtherAddress = false
                 binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.colorPrimary))
                 binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
                 binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
@@ -296,6 +298,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener,
             }   // end of home button....
             R.id.workBtn -> {
                 name = Constants.WORK_ADDRESS
+                isOtherAddress = false
                 binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx,R.color.grey_color))
                 binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx,R.color.colorPrimary))
                 binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx,R.color.grey_color))
@@ -304,6 +307,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener,
             }   // end of work button....
             R.id.otherBtn -> {
 
+                isOtherAddress = true
                 binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx,R.color.grey_color))
                 binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx,R.color.grey_color))
                 binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx,R.color.colorPrimary))
@@ -322,19 +326,50 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener,
                 binding.closeIcon.visibility = View.GONE
             }
             R.id.saveAddressBtn -> {
-                if (name == "") {
+                if (name == "" && isOtherAddress == false) {
+
                     Toast.makeText(
                         ctx,
                         "" + getString(R.string.please_select_address_type),
                         Toast.LENGTH_SHORT
                     ).show()
-                } else if (!Constants.WantToUpdateAddress || Constants.WantOtherLocation) {
-                    createAddressApi()
 
+                } else if (name == "" && isOtherAddress == true) {
+                    name = binding.otherTypeEdt.text.toString().trim()
+                    if (name == "") {
+                        Toast.makeText(
+                            ctx,
+                            "" + getString(R.string.please_enter_other_address),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 } else {
-                    updateAddressList()
+
+                if (!Constants.WantToUpdateAddress || Constants.WantOtherLocation) {
+                        createAddressApi()
+                    } else {
+                        updateAddressList()
+                    }
                 }
 
+
+
+
+
+
+//                if (name == "") {
+//                    Toast.makeText(
+//                        ctx,
+//                        "" + getString(R.string.please_select_address_type),
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                } else if (other == "") {
+//                    Toast.makeText(
+//                        ctx,
+//                        "" + getString(R.string.please_enter_other_address),
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                }
 
             }   // end of Save Address Button....
 

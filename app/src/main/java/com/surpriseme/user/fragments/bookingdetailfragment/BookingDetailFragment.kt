@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.InputType
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -61,7 +62,7 @@ class BookingDetailFragment : Fragment(), View.OnClickListener, AdapterView.OnIt
     private var wantToCancelBooking = false
     private var isArtistReach = false
     private var messageToDisplay = ""
-    private var status = ""
+
 
 
     override fun onAttach(context: Context) {
@@ -96,6 +97,7 @@ class BookingDetailFragment : Fragment(), View.OnClickListener, AdapterView.OnIt
         binding.chatBtn.setOnClickListener(this)
         binding.actionBtn.setOnClickListener(this)
         bookingId = arguments?.getString("bookingId")!!
+
         bookingDetailApi()
 
     }
@@ -275,6 +277,7 @@ class BookingDetailFragment : Fragment(), View.OnClickListener, AdapterView.OnIt
                     wantToCancelBooking = true
                 if (bookingModel.status == Constants.CONFIRMED)
                     isArtistReach = true
+                binding.liveDigitalTv.inputType = InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
                 binding.liveDigitalTv.text = "${bookingModel?.type}"
 
                 //change satatus of button...

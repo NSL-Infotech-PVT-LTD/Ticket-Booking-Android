@@ -18,13 +18,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-
-
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/grey_color">
+                android:background="@color/greyLighter">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/headerLayout"
@@ -40,12 +37,13 @@
                         android:id="@+id/backpress"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_marginStart="@dimen/_20sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_20sdp"
                         android:padding="@dimen/_5sdp"
                         android:src="@drawable/ic_white_back"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
 
                     <ImageView
                         android:id="@+id/ticketIcon"
@@ -53,7 +51,8 @@
                         android:layout_height="@dimen/_25sdp"
                         android:src="@drawable/ic_ticket"
                         app:layout_constraintTop_toBottomOf="@id/backpress"
-                        app:layout_constraintStart_toEndOf="@id/backpress"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="@dimen/_20sdp"
                         android:layout_marginTop="@dimen/_10sdp"/>
 
 
@@ -63,7 +62,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/booking_detail"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_20sdp"
+                        android:textSize="@dimen/_18sdp"
+                        android:fontFamily="@font/montserrat_regular"
                         android:layout_marginStart="@dimen/_8sdp"
                         app:layout_constraintStart_toEndOf="@id/ticketIcon"
                         app:layout_constraintTop_toTopOf="@id/ticketIcon"
@@ -80,7 +80,7 @@
                     android:background="@drawable/detail_screen_bg"
                     android:layout_marginTop="@dimen/_80sdp"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/footerLayout"
+
                     android:layout_marginBottom="@dimen/_20sdp">
 
                     <com.google.android.material.card.MaterialCardView
@@ -89,11 +89,11 @@
                         android:layout_height="@dimen/_120sdp"
                         app:cardElevation="5dp"
                         app:cardCornerRadius="@dimen/_10sdp"
-                        android:layout_marginHorizontal="@dimen/_16sdp"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="@dimen/_14sdp">
+                        android:layout_marginTop="@dimen/_18sdp">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
@@ -114,18 +114,20 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/live"
-                            android:textAllCaps="true"
-                            android:drawableStart="@drawable/grey_round"
+                            android:fontFamily="@font/montserrat_bold"
                             android:drawablePadding="@dimen/_5sdp"
                             android:background="@drawable/live_digital_bg"
+                            android:inputType="textCapSentences"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             android:layout_marginEnd="@dimen/_10sdp"
                             android:textColor="@color/white"
-                            android:paddingHorizontal="@dimen/_5sdp"
-                            android:textSize="@dimen/_10sdp"
+                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:textSize="@dimen/_8sdp"
                             android:layout_marginTop="@dimen/_5sdp"
-                            android:paddingVertical="@dimen/_1sdp"/>
+                            android:paddingVertical="@dimen/_2sdp"/>
+
+<!--                            android:drawableStart="@drawable/grey_round"-->
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </com.google.android.material.card.MaterialCardView>
@@ -137,78 +139,42 @@
                         android:id="@+id/profileName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/black"
+                        android:textColor="#5a6779"
                         android:textSize="@dimen/_14sdp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:singleLine="true"
                         android:text="Ravi"
+                        android:inputType="textCapSentences"
+                        android:fontFamily="@font/montserrat_semibold"
                         android:layout_marginHorizontal="@dimen/_30sdp"
                         app:layout_constraintTop_toBottomOf="@+id/imageCard"
                         android:layout_marginTop="@dimen/_10sdp"/>
 
 
 
-                    <LinearLayout
-                        android:id="@+id/linearLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        app:layout_constraintTop_toBottomOf="@id/profileName"
-                        android:gravity="center"
-                        android:layout_marginHorizontal="@dimen/_20sdp">
 
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/ratingDispTxt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="4.5"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:background="@color/yellowChat"
-                        android:layout_marginBottom="@dimen/_5sdp"
-                        app:layout_constraintTop_toBottomOf="@id/profileName"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:paddingHorizontal="@dimen/_10sdp"
-                        app:layout_constraintEnd_toStartOf="@id/ratingbar"
-                        android:paddingVertical="@dimen/_2sdp"/>
-
-                    <RatingBar
-                        android:id="@+id/ratingbar"
-                        style="@style/Widget.AppCompat.RatingBar.Small"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:rating="3"
-                        android:stepSize="1"
-                        android:visibility="visible"
-                        android:theme="@style/RatingBar"
-                        android:layout_marginTop="@dimen/_2sdp"
-                        app:layout_constraintStart_toEndOf="@id/ratingDispTxt"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        app:layout_constraintTop_toTopOf="@+id/ratingDispTxt"
-                        app:layout_constraintBottom_toBottomOf="@id/ratingDispTxt"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                    </LinearLayout>
 
                     <ImageView
                         android:id="@+id/dottedView"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_10sdp"
                         android:src="@drawable/dotted_view_line"
-                        app:layout_constraintTop_toBottomOf="@id/linearLayout"
-                        android:layout_marginHorizontal="@dimen/_50sdp"
-                        android:layout_marginTop="@dimen/_10sdp"/>
+                        app:layout_constraintTop_toBottomOf="@+id/profileName"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginHorizontal="@dimen/_50sdp" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/dateTv"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/booking_date"
+                        android:textColor="#91a1b7"
+                        android:fontFamily="@font/montserrat_regular"
                         app:layout_constraintTop_toBottomOf="@id/dottedView"
                         app:layout_constraintStart_toStartOf="@id/dottedView"
                         app:layout_constraintEnd_toStartOf="@id/timeTv"
-                        android:layout_marginTop="@dimen/_20sdp"/>
+                        android:layout_marginTop="@dimen/_10sdp"/>
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/dateTxt"
@@ -216,13 +182,13 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintTop_toBottomOf="@+id/dateTv"
                         app:layout_constraintStart_toStartOf="@id/dateTv"
-                        android:textColor="@color/black"
+                        android:textColor="#5a6779"
                         android:textSize="@dimen/_10sdp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toStartOf="@id/timeTxt"
+                        android:text="fsdlfkjasd;lkf"
+                        android:fontFamily="@font/montserrat_medium"
+                        app:layout_constraintEnd_toEndOf="@+id/dateTv"
                         android:drawablePadding="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        app:drawableStartCompat="@drawable/ic_calendar_today_24" />
+                        android:layout_marginTop="@dimen/_10sdp" />
 
 
                     <com.google.android.material.textview.MaterialTextView
@@ -230,10 +196,12 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/booking_date"
-                        app:layout_constraintTop_toBottomOf="@id/dottedView"
+                        android:textColor="#91a1b7"
+                        android:layout_marginStart="@dimen/_14sdp"
+                        android:fontFamily="@font/montserrat_regular"
+                        app:layout_constraintTop_toTopOf="@+id/dateTv"
                         app:layout_constraintEnd_toEndOf="@id/dottedView"
-                        app:layout_constraintStart_toEndOf="@+id/dateTv"
-                        android:layout_marginTop="@dimen/_20sdp"/>
+                        app:layout_constraintStart_toEndOf="@+id/dateTv" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/timeTxt"
@@ -243,18 +211,19 @@
                         app:layout_constraintStart_toStartOf="@+id/timeTv"
                         app:layout_constraintEnd_toEndOf="@id/timeTv"
                         app:layout_constraintHorizontal_bias="0"
-                        android:textColor="@color/black"
+                        android:textColor="#5a6779"
                         android:textSize="@dimen/_10sdp"
-                        android:textStyle="bold"
+                        android:text="fdsfsdf"
+                        android:fontFamily="@font/montserrat_medium"
                         android:drawablePadding="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        app:drawableStartCompat="@drawable/ic_time_24" />
+                        android:layout_marginTop="@dimen/_10sdp" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/locationTxt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/location"
+                        android:textColor="#91a1b7"
                         app:layout_constraintTop_toBottomOf="@id/dateTxt"
                         app:layout_constraintStart_toStartOf="@id/dottedView"
                         android:layout_marginTop="@dimen/_20sdp"/>
@@ -264,6 +233,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/location"
+                        android:textColor="#5a6779"
+                        android:textSize="@dimen/_10sdp"
                         app:layout_constraintTop_toBottomOf="@id/locationTxt"
                         app:layout_constraintStart_toStartOf="@id/dottedView"
                         app:layout_constraintEnd_toEndOf="@id/dottedView"
@@ -274,6 +245,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/status"
+                        android:textColor="#91a1b7"
                         app:layout_constraintTop_toBottomOf="@id/locationTv"
                         app:layout_constraintStart_toStartOf="@id/dottedView"
                         app:layout_constraintEnd_toStartOf="@id/timeTv"
@@ -288,6 +260,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         app:cornerRadius="@dimen/_10sdp"
                         android:gravity="center"
+                        android:fontFamily="@font/montserrat_bold"
                         android:textSize="@dimen/_10sdp"
                         android:textColor="@color/white"
                         android:paddingHorizontal="@dimen/_20sdp"
@@ -299,6 +272,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/payment"
+                        android:textColor="#91a1b7"
                         android:layout_marginStart="@dimen/_10sdp"
                         app:layout_constraintTop_toTopOf="@id/statusTxt"
                         app:layout_constraintStart_toEndOf="@id/statusTxt"
@@ -313,6 +287,7 @@
                         app:layout_constraintStart_toStartOf="@id/paymentTxt"
                         android:layout_marginTop="@dimen/_5sdp"
                         app:cornerRadius="@dimen/_10sdp"
+                        android:fontFamily="@font/montserrat_bold"
                         android:paddingHorizontal="@dimen/_20sdp"
                         android:paddingVertical="@dimen/_5sdp"
                         android:textSize="@dimen/_10sdp"
@@ -366,6 +341,7 @@
                         android:textAllCaps="false"
                         android:visibility="gone"
                         android:textSize="@dimen/_12sdp"
+                         android:fontFamily="@font/montserrat_medium"
                         android:layout_marginHorizontal="@dimen/_30sdp"
                         app:cornerRadius="@dimen/_16sdp" />
 
@@ -378,6 +354,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginHorizontal="@dimen/_20sdp"
                         android:padding="@dimen/_10sdp"
+                        android:fontFamily="@font/montserrat_regular"
                         android:textColor="@color/black"
                         android:background="@color/white"
                         app:layout_constraintBottom_toBottomOf="parent"

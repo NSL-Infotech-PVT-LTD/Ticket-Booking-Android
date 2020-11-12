@@ -142,10 +142,10 @@ class LocationFragment : Fragment(), View.OnClickListener,
                                         this@LocationFragment
                                     )
                                 binding.locationRecycler.adapter = locationListAdapter
+                                binding.locationErrorContainer.visibility = View.GONE
                             } else {
                                 // When location list will empty then display No data found and refresh button will display
-                                binding.noDataFound.visibility = View.VISIBLE
-                                binding.refresh.visibility = View.VISIBLE
+                                binding.locationErrorContainer.visibility = View.VISIBLE
                             }
                         }
                     } else {
@@ -258,10 +258,8 @@ class LocationFragment : Fragment(), View.OnClickListener,
 
         val dispMsgForPopUp = "Do you Want to delete?"
 
-        val ok: MaterialTextView = popUp.findViewById(R.id.okTv)
-        val cancelTv: MaterialTextView = popUp.findViewById(R.id.cancelTv)
-        val messageTxt: MaterialTextView = popUp.findViewById(R.id.congratsMsgTv)
-        messageTxt.text = dispMsgForPopUp
+        val ok: MaterialTextView = popUp.findViewById(R.id.yes)
+        val cancelTv: MaterialTextView = popUp.findViewById(R.id.cancel)
 
         ok.setOnClickListener {
             deleteAddressApi(id)
@@ -276,7 +274,6 @@ class LocationFragment : Fragment(), View.OnClickListener,
 
         Constants.WantToUpdateAddress = true
         Constants.WantOtherLocation = false
-        Toast.makeText(context, "Edit", Toast.LENGTH_SHORT).show()
         val fragment = MapFragment()
         val bundle = Bundle()
         bundle.putSerializable("addressList", locationDataList)

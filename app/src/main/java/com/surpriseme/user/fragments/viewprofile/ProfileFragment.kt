@@ -155,7 +155,7 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
 
     private fun updateProfileApi() {
 
-        binding.loaderLayoutprofile.visibility = View.VISIBLE
+        binding.loaderLayout.visibility = View.VISIBLE
 
         val requestBodyMap: HashMap<String, RequestBody> = HashMap()
         requestBodyMap[Constants.ApiKey.NAME] =
@@ -167,7 +167,7 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
                     call: Call<UpdateProfileModel>,
                     response: Response<UpdateProfileModel>
                 ) {
-                    binding.loaderLayoutprofile.visibility = View.GONE
+                    binding.loaderLayout.visibility = View.GONE
                     if (response.body() !=null) {
                         if (response.isSuccessful) {
 
@@ -194,7 +194,7 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
                     }
                 }
                 override fun onFailure(call: Call<UpdateProfileModel>, t: Throwable) {
-                    binding.loaderLayoutprofile.visibility = View.GONE
+                    binding.loaderLayout.visibility = View.GONE
                 }
             })
     }
@@ -209,14 +209,14 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
     }
 
     private fun getProfileApi() {
-//        loaderLayout?.visibility = View.VISIBLE
+        binding.loaderLayout.visibility = View.VISIBLE
         RetrofitClient.api.getProfileApi(shared.getString(Constants.DataKey.AUTH_VALUE))
             .enqueue(object : Callback<ViewProfileModel> {
                 override fun onResponse(
                     call: Call<ViewProfileModel>,
                     response: Response<ViewProfileModel>
                 ) {
-//                    loaderLayout?.visibility = View.GONE
+                    binding.loaderLayout.visibility = View.GONE
                     if (response.body() != null) {
                         if (response.isSuccessful) {
 
@@ -255,7 +255,7 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
                 }
 
                 override fun onFailure(call: Call<ViewProfileModel>, t: Throwable) {
-//                    loaderLayout?.visibility = View.GONE
+                    binding.loaderLayout.visibility = View.GONE
                     Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
                 }
             })

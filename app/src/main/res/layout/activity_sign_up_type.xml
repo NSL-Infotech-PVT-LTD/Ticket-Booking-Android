@@ -36,8 +36,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:gravity="center"
-                    android:text="@string/register_with_us"
+                    android:text="@string/register_with_us_plain"
                     android:textColor="@color/white"
+                    android:fontFamily="@font/montserrat_regular"
                     android:textSize="@dimen/_12sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +47,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:layout_marginBottom="@dimen/_20sdp"
                     app:cardCornerRadius="@dimen/_5sdp"
@@ -66,8 +67,9 @@
                             android:layout_marginTop="@dimen/_30sdp"
                             android:gravity="center"
                             android:text="@string/are_you_new"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_20sdp"
+                            android:textColor="#35353a"
+                            android:textSize="@dimen/_18sdp"
+                            android:fontFamily="@font/montserrat_bold"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -76,13 +78,14 @@
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/signUpEmailBtn"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_50sdp"
+                            android:layout_height="@dimen/_40sdp"
                             android:layout_marginHorizontal="@dimen/_20sdp"
                             android:layout_marginTop="@dimen/_30sdp"
                             android:background="@drawable/signup_with_email"
                             android:gravity="center"
                             android:text="@string/signup_with_email"
                             android:textAllCaps="false"
+                            android:fontFamily="@font/montserrat_medium"
                             android:textColor="@color/colorPrimary"
                             android:textSize="12sp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -106,7 +109,7 @@
                             android:layout_marginTop="@dimen/_10sdp"
                             android:gravity="center"
                             android:text="@string/or"
-                            android:textColor="@color/grey_color"
+                            android:textColor="#35353a"
                             android:textSize="@dimen/_15sdp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -117,29 +120,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="30dp"
+                            android:layout_marginTop="@dimen/_10sdp"
                             android:layout_marginBottom="30dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/orTxt" />
 
-                        <ImageView
-                            android:id="@+id/fbImage"
-                            android:layout_width="@dimen/_50sdp"
-                            android:layout_height="@dimen/_50sdp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/signUpFbBtn" />
 
-                        <TextView
-                            android:id="@+id/fbname"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:singleLine="true"
-                            android:text="fdlkfja;l"
-                            android:textColor="@color/black"
-                            android:textSize="14sp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/fbImage" />
+
 
                         <!--            <com.google.android.material.button.MaterialButton-->
                         <!--                android:id="@+id/signUpFbBtn"-->
@@ -167,16 +155,17 @@
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/backToLoginBtn"
                             android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_50sdp"
-                            android:layout_marginTop="@dimen/_50sdp"
+                            android:layout_height="@dimen/_40sdp"
+                            android:layout_marginTop="@dimen/_30sdp"
                             android:layout_marginBottom="@dimen/_20sdp"
                             android:backgroundTint="@color/white"
                             android:paddingHorizontal="@dimen/_30sdp"
                             android:text="@string/back_to_login"
                             android:textAllCaps="false"
-                            android:textColor="@color/grey_color"
+                            android:textColor="#5a5a5a"
                             android:textSize="@dimen/_12sdp"
                             app:cornerRadius="@dimen/_15sdp"
+                            android:fontFamily="@font/montserrat_semibold"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -199,7 +188,9 @@
                     android:gravity="center"
                     android:text="@string/by_signing_up_text"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_10sdp"
+                    android:textSize="@dimen/_8sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:fontFamily="@font/montserrat_regular"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />

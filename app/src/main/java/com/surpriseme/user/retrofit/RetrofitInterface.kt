@@ -47,7 +47,8 @@ interface RetrofitInterface {
         @Query(Constants.ApiKey.EMAIL) email: String,
         @Query(Constants.ApiKey.PASSWORD) password: String,
         @Query(Constants.ApiKey.DEVICE_TYPE) device_Type: String,
-        @Query(Constants.ApiKey.DEVICE_TOKEN) device_Token: String
+        @Query(Constants.ApiKey.DEVICE_TOKEN) device_Token: String,
+        @Query(Constants.ApiKey.LANG) lang:String
     ): Call<RegisterModel>
 
     @POST(Constants.RESET_PASSWORD)

@@ -51,7 +51,6 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
         binding.signUpFbBtn.setReadPermissions(
             Arrays.asList("email", "public_profile")
         )
-        binding.fbname.text = shared?.getString("name")
 
         accessTokenTracker = object : AccessTokenTracker() {
             // This method is invoked everytime access token changes
@@ -102,8 +101,6 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
                     val id = `object`.getString("id")
                     val image = `object`.getString("public_picture")
                     shared?.setString("name", name)
-                    binding.fbname.text = name
-                    Picasso.get().load(image).into(binding.fbImage)
                 } catch (e: JSONException) {
                     e.printStackTrace()
                 }
