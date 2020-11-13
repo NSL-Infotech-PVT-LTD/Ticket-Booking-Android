@@ -11,38 +11,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/toolbarLayout"
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/toolbarCard"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_50sdp"
+            app:cardElevation="@dimen/_10sdp"
             app:layout_constraintTop_toTopOf="parent"
-            android:elevation="@dimen/_10sdp"
-            app:layout_constraintStart_toStartOf="parent" >
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/backpress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:text="@string/back"
-                    android:textAllCaps="true"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp"
-                    android:gravity="center"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_height="match_parent">
 
-                    android:drawableStart="@drawable/ic_baseline_keyboard_arrow_left_24"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
+                <include layout="@layout/toolbar_layout" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </androidx.cardview.widget.CardView>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/selectDateTxt"
@@ -50,13 +37,13 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:text="@string/select_date_of_booking"
-            app:layout_constraintTop_toBottomOf="@id/toolbarLayout"
+            app:layout_constraintTop_toBottomOf="@id/toolbarCard"
             app:layout_constraintStart_toStartOf="parent"
-            android:textSize="@dimen/_16sdp"
+            android:textSize="@dimen/_14sdp"
             android:gravity="center"
             android:layout_marginTop="@dimen/_30sdp"
             android:textColor="@color/black"
-            android:textStyle="bold"/>
+            android:fontFamily="@font/montserrat_bold"/>
 
         <ImageView
             android:id="@+id/dottedLine"
@@ -76,6 +63,7 @@
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:textSize="@dimen/_12sdp"
+            android:fontFamily="@font/montserrat_semibold"
             android:textColor="@color/black"/>
 
         <CalendarView

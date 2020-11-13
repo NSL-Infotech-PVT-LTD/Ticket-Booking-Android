@@ -45,6 +45,8 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
     private var slotList: ArrayList<SlotDataModel> = ArrayList()
     val fakeList: ArrayList<SlotDataModel> = ArrayList()
     private var selectedSlotList: ArrayList<SlotDataModel> = ArrayList()
+    private var backpress:MaterialTextView?=null
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         ctx = context
@@ -59,18 +61,20 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
         val view = binding.root
         shared = PrefrenceShared(ctx)
 
-        init()
+        init(view)
 
         return view
     }
 
-    private fun init() {
+    private fun init(view:View) {
 
+        // initialization of views....
+        backpress = view.findViewById(R.id.backpress)
+        backpress?.setOnClickListener(this)
         artistID = shared.getString(Constants.ARTIST_ID)
 
         binding.proceedToCheckoutBtn.setOnClickListener(this)
         binding.clearAllBtn.setOnClickListener(this)
-        binding.backArrow.setOnClickListener(this)
 
         // getting date for api parameter....
         if (arguments?.getString("selectedDate") != null) {
@@ -159,7 +163,7 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
                 adapter?.settSlotClear(true)
                 list.clear()
             }
-            R.id.backArrow -> {
+            R.id.backpress -> {
                 fragmentManager?.popBackStack()
             }
         }

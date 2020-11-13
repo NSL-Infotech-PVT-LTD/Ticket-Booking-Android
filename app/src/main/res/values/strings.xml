@@ -158,7 +158,7 @@
     <string name="other_payment_methods">Other Payment Methods</string>
     <string name="choose_payment_method">Choose Payment Method</string>
     <string name="choose_your_favourable_method_of_payment">Choose your favourable method of payment</string>
-    <string name="ideal">Ideal</string>
+    <string name="ideal">iDeal</string>
     <string name="checkout">Checkout</string>
     <string name="pleasewait">Please wait</string>
     <string name="updating_your_profile">Updating Your Profile</string>
@@ -209,4 +209,16 @@
     <string name="choose_your_preffered_language">Choose Your Preffered Language</string>
     <string name="we_will_served_on_the_basis_of_your_selection">We will served on the basis of your selection.</string>
     <string name="save">Save</string>
+    <string name="booking_time">Booking Time</string>
+    <string name="card">Card</string>
+    <string name="live_show_booking_dummy_txt">We are now ready with the next of wave of entertainment. We are proud to announce our in-house online streaming platform.</string>
+    <string name="book_now">Book Now</string>
+    <string name="card_holder_name">Card Holder Name</string>
+    <string name="account_number">Account Number</string>
+    <string name="expiry_date_of_card">Expiry Date of Card</string>
+    <string name="MM">MM</string>
+    <string name="yy">YY</string>
+    <string name="cvv">cvv</string>
+    <string name="cvv_demo">Ex- 234</string>
+    <string name="card_number_demo">**** - **** - **** - 1452</string>
 </resources>

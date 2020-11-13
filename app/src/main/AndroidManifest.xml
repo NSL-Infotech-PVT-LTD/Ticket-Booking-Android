@@ -18,7 +18,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.chooselanguage.ChooseLanguageActivity"></activity>
+        <activity android:name=".activity.payment.AddCardActivity"></activity>
+        <activity android:name=".activity.payment.PaymentActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.chooselanguage.ChooseLanguageActivity" />
         <activity android:name=".activity.SettingsActivity" />
         <activity
             android:name=".activity.searchactivity.SearchActivity"
@@ -70,13 +78,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.splash.SplashActivity"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".activity.mainactivity.MainActivity"
             android:screenOrientation="portrait"

@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.payment.AddCardActivity">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/toolbarCard"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50sdp"
+        app:cardElevation="@dimen/_10sdp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <include layout="@layout/toolbar_layout" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/choosePaymentMethodTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:fontFamily="@font/montserrat_bold"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/pay_now"
+        android:textColor="#36396e"
+        android:textSize="@dimen/_14sdp"
+        app:layout_constraintTop_toBottomOf="@id/toolbarCard" />
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        android:src="@drawable/dotted_view_line"
+        app:layout_constraintTop_toBottomOf="@id/choosePaymentMethodTxt"
+        app:layout_constraintStart_toStartOf="@id/choosePaymentMethodTxt"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/favourableMethodTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="@string/choose_your_favourable_method_of_payment"
+        android:textColor="#22266b"
+        android:textSize="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/choosePaymentMethodTxt" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/cardHolderText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/card_holder_name"
+        android:fontFamily="@font/helveticanowdisplay_regular"
+        android:textColor="#1c1d1e"
+        app:layout_constraintTop_toBottomOf="@id/favourableMethodTxt"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/_50sdp"
+        android:textSize="@dimen/_12sdp"/>
+
+    <EditText
+        android:id="@+id/cardHolderEdt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/cardHolderText"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:drawablePadding="@dimen/_5sdp"
+        android:hint="Ravi Singla"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_10sdp"
+        android:textColor="#d1d1d1"
+        android:fontFamily="@font/helveticanowdisplay_medium"
+        android:paddingBottom="@dimen/_5sdp"
+        app:layout_constraintTop_toBottomOf="@id/cardHolderText"
+        android:textSize="@dimen/_10sdp"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/accountNumberText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/account_number"
+        android:fontFamily="@font/helveticanowdisplay_regular"
+        android:textColor="#1c1d1e"
+        app:layout_constraintTop_toBottomOf="@id/cardHolderEdt"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:textSize="@dimen/_12sdp" />
+
+    <EditText
+        android:id="@+id/accountNumberEdt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/cardHolderText"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:drawablePadding="@dimen/_5sdp"
+        android:hint="@string/card_number_demo"
+        android:textColor="#d1d1d1"
+        android:fontFamily="@font/helveticanowdisplay_medium"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@id/accountNumberText"
+        android:textSize="@dimen/_10sdp"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/expiryDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/expiry_date_of_card"
+        android:fontFamily="@font/helveticanowdisplay_regular"
+        android:textColor="#1c1d1e"
+        app:layout_constraintTop_toBottomOf="@id/accountNumberEdt"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:textSize="@dimen/_12sdp" />
+
+    <EditText
+        android:id="@+id/expiryEdt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/expiryDateText"
+        app:layout_constraintEnd_toEndOf="@id/expiryDateText"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:drawablePadding="@dimen/_5sdp"
+        android:hint="@string/MM"
+        android:gravity="center"
+        android:maxLength="2"
+        android:textColor="#d1d1d1"
+        android:fontFamily="@font/helveticanowdisplay_regular"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@id/expiryDateText"
+        android:textSize="@dimen/_10sdp"/>
+
+    <TextView
+        android:id="@+id/slash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="/"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_20sdp"
+        app:layout_constraintTop_toTopOf="@+id/expiryEdt"
+         app:layout_constraintStart_toEndOf="@+id/expiryEdt"
+        android:layout_marginStart="@dimen/_20sdp"/>
+
+    <EditText
+        android:id="@+id/yearEdt"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/slash"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:drawablePadding="@dimen/_5sdp"
+        android:hint="@string/yy"
+        android:gravity="center"
+        android:maxLength="4"
+        android:textColor="#d1d1d1"
+        android:fontFamily="@font/helveticanowdisplay_regular"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:inputType="number"
+        android:layout_marginStart="@dimen/_20sdp"
+        app:layout_constraintTop_toBottomOf="@id/expiryDateText"
+        android:textSize="@dimen/_10sdp"/>
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/cvvText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cvv"
+        android:textAllCaps="true"
+        android:fontFamily="@font/helveticanowdisplay_regular"
+        android:textColor="#1c1d1e"
+        app:layout_constraintTop_toBottomOf="@id/expiryEdt"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:textSize="@dimen/_12sdp" />
+
+
+    <EditText
+        android:id="@+id/cvvEdt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/cvvText"
+        app:layout_constraintBottom_toBottomOf="@+id/cvvText"
+        android:maxLength="3"
+        android:gravity="center"
+        android:textColor="#d1d1d1"
+        android:fontFamily="@font/helveticanowdisplay_regular"
+        android:paddingVertical="@dimen/_5sdp"
+        android:background="@drawable/expiry_bg"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:hint="@string/cvv_demo"
+        android:textSize="@dimen/_10sdp"
+        android:paddingHorizontal="@dimen/_20sdp"
+        android:inputType="number"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/loginButton"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_marginHorizontal="@dimen/_30sdp"
+        android:text="@string/pay_now"
+        android:textAllCaps="false"
+        android:fontFamily="@font/montserrat_bold"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12sdp"
+        app:cornerRadius="@dimen/_15sdp"
+        app:layout_constraintTop_toBottomOf="@id/cvvText"
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="@dimen/_20sdp"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

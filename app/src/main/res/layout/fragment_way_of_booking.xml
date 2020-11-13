@@ -1,148 +1,199 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragments.wayofbookingfragment.WayOfBookingFragment">
-
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        tools:context=".fragments.wayofbookingfragment.WayOfBookingFragment">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/toolbarLayout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_50sdp"
-            app:layout_constraintTop_toTopOf="parent"
-            android:elevation="@dimen/_10sdp"
-            app:layout_constraintStart_toStartOf="parent" >
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <ImageView
-                    android:id="@+id/backArrow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    app:layout_constraintStart_toStartOf="parent"
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/toolbarCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50sdp"
+                    app:cardElevation="@dimen/_10sdp"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:src="@drawable/ic_baseline_keyboard_arrow_left_24"/>
-                <TextView
-                    android:id="@+id/txt_back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toEndOf="@id/backArrow"
-                    android:text="@string/back"
-                    android:textColor="@color/black"
-                    app:layout_constraintTop_toTopOf="@id/backArrow"
-                    app:layout_constraintBottom_toBottomOf="@id/backArrow"
-                    android:textSize="@dimen/_15sdp"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+
+                        <include layout="@layout/toolbar_layout" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/headerLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:background="@color/colorPrimary"
+                    app:layout_constraintTop_toBottomOf="@id/toolbarCard"
+                    app:layout_constraintHeight_percent="0.2">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/selectWayBookingTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/select_way_of_booking"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_14sdp"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:fontFamily="@font/montserrat_semibold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/check_availablity"
+                        android:textColor="@color/white"
+                        android:textSize="12dp"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/montserrat_regular"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/selectWayBookingTxt"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/footerLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHeight_percent="0.71">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/liveShowBookingTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/live_show_booking"
+                        android:textSize="@dimen/_14sdp"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:textColor="#36396e"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginStart="@dimen/_20sdp"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/liveShowBookingDummyTxt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/live_show_booking_dummy_txt"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:textSize="10dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textColor="#b1b3c7"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_100sdp"
+                        app:layout_constraintStart_toStartOf="@id/liveShowBookingTxt"
+                        app:layout_constraintTop_toBottomOf="@+id/liveShowBookingTxt" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="@dimen/_100sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/liveShowBookingTxt"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:src="@drawable/ic_live_coust_img"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/liveBookNowBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/book_now"
+                        app:layout_constraintTop_toBottomOf="@id/liveShowBookingDummyTxt"
+                        app:layout_constraintStart_toStartOf="@id/liveShowBookingTxt"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        app:cornerRadius="8dp"
+                        android:textSize="@dimen/_10sdp"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:textAllCaps="false"/>
+
+                    <ImageView
+                        android:id="@+id/dottedView"
+                        android:layout_width="match_parent"
+                        android:layout_height="12dp"
+                        android:background="@drawable/dotted_view_line"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/liveBookNowBtn"
+                        android:layout_marginTop="@dimen/_30sdp"
+                        android:layout_marginHorizontal="@dimen/_20sdp"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/digitalShowBookingTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/digital_show_booking"
+                        android:textSize="@dimen/_14sdp"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:textColor="#36396e"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/dottedView"
+                        android:layout_marginStart="@dimen/_20sdp"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/digitalShowBookingDummyTxt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/live_show_booking_dummy_txt"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:textSize="10dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textColor="#b1b3c7"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_100sdp"
+                        app:layout_constraintStart_toStartOf="@id/digitalShowBookingTxt"
+                        app:layout_constraintTop_toBottomOf="@+id/digitalShowBookingTxt" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="@dimen/_100sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/digitalShowBookingTxt"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:src="@drawable/ic_digital_coust"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/digitalBookingNowBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/book_now"
+                        app:layout_constraintTop_toBottomOf="@id/digitalShowBookingDummyTxt"
+                        app:layout_constraintStart_toStartOf="@id/digitalShowBookingTxt"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        app:cornerRadius="8dp"
+                        android:textSize="@dimen/_10sdp"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:textAllCaps="false"/>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/selectWayBookingTxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/select_way_of_booking"
-            app:layout_constraintTop_toBottomOf="@+id/toolbarLayout"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:textSize="@dimen/_16sdp"
-            android:textColor="@color/black"
-            android:layout_marginHorizontal="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_20sdp"/>
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/toCheckAvailabilityTxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/check_availablity"
-            app:layout_constraintTop_toBottomOf="@+id/selectWayBookingTxt"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:textSize="@dimen/_12sdp"
-            android:textColor="@color/black"
-            android:layout_marginHorizontal="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_10sdp"/>
-
-        <RadioGroup
-            android:id="@+id/radioGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginHorizontal="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_30sdp"
-            android:orientation="vertical">
-
-            <RadioButton
-                android:id="@+id/radioLive"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/live_show_booking"
-                android:textSize="@dimen/_14sdp"
-                android:paddingHorizontal="@dimen/_20sdp"/>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_5sdp"
-                android:paddingHorizontal="@dimen/_20sdp"
-                android:background="@drawable/dotted_view_line"
-                android:layout_marginTop="@dimen/_10sdp"/>
-
-            <RadioButton
-                android:id="@+id/radioDigital"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/digital_show_booking"
-                android:textSize="@dimen/_14sdp"
-                android:paddingHorizontal="@dimen/_20sdp"/>
-
-        </RadioGroup>
-
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/proceedBtn"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_50sdp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginHorizontal="@dimen/_20sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="@dimen/_20sdp"
-            app:backgroundTint="@color/white"
-            app:strokeWidth="@dimen/_1sdp"
-            app:strokeColor="@color/colorPrimary"
-            app:cornerRadius="@dimen/_10sdp"
-            android:text="@string/proceed"
-            android:textColor="@color/colorPrimary"/>
-
-
-
-
+        </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </ScrollView>
-</FrameLayout>
 </layout>

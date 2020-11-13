@@ -10,6 +10,7 @@ import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.R
 import com.surpriseme.user.databinding.FragmentWayOfBookingBinding
 import com.surpriseme.user.activity.mainactivity.MainActivity
@@ -22,8 +23,8 @@ class WayOfBookingFragment : Fragment(), View.OnClickListener {
 
     private lateinit var binding: FragmentWayOfBookingBinding
     private lateinit var ctx: Context
-    private lateinit var radioButton: RadioButton
     private var bookingType = ""
+    private var backpress:MaterialTextView?=null
 
 
     override fun onAttach(context: Context) {
@@ -52,12 +53,14 @@ class WayOfBookingFragment : Fragment(), View.OnClickListener {
     }
 
     private fun init(view: View) {
-        binding.proceedBtn.setOnClickListener(this)
-        binding.radioLive.setOnClickListener(this)
-        binding.radioDigital.setOnClickListener(this)
-        binding.backArrow.setOnClickListener(this)
 
-        binding.radioGroup.setOnCheckedChangeListener(object :RadioGroup.OnCheckedChangeListener{
+        // initialization of views....
+        backpress = view.findViewById(R.id.backpress)
+        backpress?.setOnClickListener(this)
+        binding.liveBookNowBtn.setOnClickListener(this)
+        binding.digitalBookingNowBtn.setOnClickListener(this)
+
+        /*binding.radioGroup.setOnCheckedChangeListener(object :RadioGroup.OnCheckedChangeListener{
             override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
 
                 val radioid  = group?.findViewById<RadioButton>(checkedId)
@@ -68,12 +71,15 @@ class WayOfBookingFragment : Fragment(), View.OnClickListener {
                     type = Constants.DIGITAL
                 Constants.BOOKING_TYPE = type
             }
-        })
+        })*/
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.proceedBtn -> {
+            R.id.liveBookNowBtn -> {
+
+                bookingType = "live"
+                Constants.BOOKING_TYPE = bookingType
 
                 if (Constants.BOOKING_TYPE =="") {
                     Toast.makeText(ctx,"" + ctx.resources.getString(R.string.please_choose_type_of_booking),Toast.LENGTH_SHORT).show()
@@ -87,7 +93,23 @@ class WayOfBookingFragment : Fragment(), View.OnClickListener {
                 }
 
             }
-            R.id.backArrow -> {
+            R.id.digitalBookingNowBtn -> {
+
+                bookingType = "digital"
+                Constants.BOOKING_TYPE = bookingType
+
+                if (Constants.BOOKING_TYPE =="") {
+                    Toast.makeText(ctx,"" + ctx.resources.getString(R.string.please_choose_type_of_booking),Toast.LENGTH_SHORT).show()
+
+                }else {
+                    val fragment = SelectDateFragment()
+                    val transaction = fragmentManager?.beginTransaction()
+                    transaction?.replace(R.id.frameContainer,fragment)
+                    transaction?.addToBackStack("wayOfBooking")
+                    transaction?.commit()
+                }
+            }
+            R.id.backpress -> {
                 fragmentManager?.popBackStack()
             }
 

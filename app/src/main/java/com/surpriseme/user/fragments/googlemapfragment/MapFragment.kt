@@ -294,7 +294,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener,
                 binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.colorPrimary))
                 binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
                 binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
-                Toast.makeText(ctx, "" + name, Toast.LENGTH_SHORT).show()
+
             }   // end of home button....
             R.id.workBtn -> {
                 name = Constants.WORK_ADDRESS
@@ -302,7 +302,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener,
                 binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx,R.color.grey_color))
                 binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx,R.color.colorPrimary))
                 binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx,R.color.grey_color))
-                Toast.makeText(ctx, "" + name, Toast.LENGTH_SHORT).show()
 
             }   // end of work button....
             R.id.otherBtn -> {

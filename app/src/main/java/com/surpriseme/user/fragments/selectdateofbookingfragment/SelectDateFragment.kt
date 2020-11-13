@@ -9,6 +9,7 @@ import android.widget.CalendarView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.R
 import com.surpriseme.user.databinding.FragmentSelectDateBinding
 import com.surpriseme.user.fragments.bookingslotfragment.BookSlotFragment
@@ -23,6 +24,7 @@ class SelectDateFragment : Fragment(), View.OnClickListener {
     private var sdate = ""
     private lateinit var ctx: Context
     private lateinit var date: Date
+    private var backpress:MaterialTextView?=null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -38,16 +40,17 @@ class SelectDateFragment : Fragment(), View.OnClickListener {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_select_date, container, false)
         val view = binding.root
 
-        init()
+        init(view)
 
         return view
 
     }
 
-    private fun init() {
+    private fun init(view: View) {
 
         // initializing views here....
-        binding.backpress.setOnClickListener(this)
+        backpress = view.findViewById(R.id.backpress)
+        backpress?.setOnClickListener(this)
         // Open calender with tomorrow as minimum date
         openCalendar()
     }
