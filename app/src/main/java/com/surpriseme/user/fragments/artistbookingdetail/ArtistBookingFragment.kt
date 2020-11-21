@@ -1,6 +1,7 @@
 package com.surpriseme.user.fragments.artistbookingdetail
 
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -146,17 +147,11 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
             }
             R.id.chatStartIcon -> {
 
-                val bundle = Bundle()
-                val fragment = ChatFragment()
-                bundle.putString("chatId", artistID)
-                bundle.putString("receiverImage",artistImage)
-                bundle.putString("receiverName",artistName)
-                fragment.arguments = bundle
-                val transaction = fragmentManager?.beginTransaction()
-                transaction?.replace(R.id.frameContainer,fragment)
-                transaction?.addToBackStack("chatListFragment")
-                transaction?.commit()
-
+                val intent = Intent(ctx , ChatFragment::class.java)
+                intent.putExtra("chatId",artistID)
+                intent.putExtra("receiverImage",artistImage)
+                intent.putExtra("receiverName",artistName)
+                startActivity(intent)
             }
         }
     }

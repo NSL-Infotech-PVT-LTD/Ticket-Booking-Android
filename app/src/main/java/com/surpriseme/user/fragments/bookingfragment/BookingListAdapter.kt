@@ -176,13 +176,13 @@ class BookingListAdapter(
                 timeTxt.text = "$fromTime to $toTime"
                 address.text = bookingModel.address
 
-                if (bookingModel.artist_detail?.category_id_details?.size!! > 0) {
-                    for (i in 0 until bookingModel.artist_detail.category_id_details.size)
-                        addChip(
-                            bookingModel.artist_detail.category_id_details[i].toString(),
-                            categoriesChips
-                        )
-                }
+//                if (bookingModel.artist_detail?.category_id_details?.size!! > 0) {
+//                    for (i in 0 until bookingModel.artist_detail.category_id_details.size)
+//                        addChip(
+//                            bookingModel.artist_detail.category_id_details[i].toString(),
+//                            categoriesChips
+//                        )
+//                }
                 // See Full Detail button Click....
                 seeFullDetail.setOnClickListener {
                     // See Full Detail button click....

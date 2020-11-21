@@ -1,6 +1,7 @@
 package com.surpriseme.user.fragments.chatListfragment
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -116,16 +117,22 @@ class ChatListFragment : Fragment(), ChatListAdapter.GoToChat {
     // override method from ChatListAdapter to get receiver_id, then receiver_id will send to chatFragment for one to one chat....
     override fun chatId(chatid: String, rImage:String,rName:String) {
         this.mChatId = chatid
-        val bundle = Bundle()
-        val fragment = ChatFragment()
-        bundle.putString("chatId", mChatId)
-        bundle.putString("receiverImage",rImage)
-        bundle.putString("receiverName",rName)
-        fragment.arguments = bundle
-        val transaction = fragmentManager?.beginTransaction()
-        transaction?.replace(R.id.frameContainer,fragment)
-        transaction?.addToBackStack("chatListFragment")
-        transaction?.commit()
+
+        val intent = Intent(ctx , ChatFragment::class.java)
+        intent.putExtra("chatId",chatid)
+        intent.putExtra("receiverImage",rImage)
+        intent.putExtra("receiverName",rName)
+        startActivity(intent)
+//        val bundle = Bundle()
+//        val fragment = ChatFragment()
+//        bundle.putString("chatId", mChatId)
+//        bundle.putString("receiverImage",rImage)
+//        bundle.putString("receiverName",rName)
+//        fragment.arguments = bundle
+//        val transaction = fragmentManager?.beginTransaction()
+//        transaction?.replace(R.id.frameContainer,fragment)
+//        transaction?.addToBackStack("chatListFragment")
+//        transaction?.commit()
     }
 
     //Converting Utc Time to Local time

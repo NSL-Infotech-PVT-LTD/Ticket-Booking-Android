@@ -31,6 +31,7 @@ object Constants {
     const val BOOKING_STATUS = "customer/change-booking-status"
     const val BOOKING_SLOT_LIST = "customer/bookslot/list"
     const val CUSTOMER_REVIEW = "customer/getartistrating"
+    const val CARD_LIST = "customer/cards/list"
     const val CHANGE_LANGUAGE = "customer/update/lang"
 
 

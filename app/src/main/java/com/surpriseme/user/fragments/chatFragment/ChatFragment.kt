@@ -11,6 +11,7 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -34,11 +35,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ChatFragment : Fragment(), View.OnClickListener, IOnMessageReceived {
+class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceived {
 
     private var binding: FragmentChatBinding? = null
     private var shared: PrefrenceShared? = null
-    private var ctx: Context? = null
+  //  private var ctx: Context? = null
     private var mReceiverId = ""
     private var mReceiverImage = ""
     private var mReceiverName = ""
@@ -48,45 +49,40 @@ class ChatFragment : Fragment(), View.OnClickListener, IOnMessageReceived {
     private var mReceiverImageView: ImageView? = null
     private var mReceiverNameMtv: MaterialTextView? = null
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        ctx = context
-        ConnectionManger.listener = this@ChatFragment
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+//        setContentView(R.layout.activity_payment)
+        binding = DataBindingUtil.setContentView(this,R.layout.fragment_chat)
+        shared = PrefrenceShared(this)
+        ConnectionManger.listener = this
+//        activity!!.window.statusBarColor = ContextCompat.getColor(activity!!,R.color.chatPurple)
+//        activity!!.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+
+        init()
+
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_chat, container, false)
-        val view = binding?.root
-        shared = PrefrenceShared(ctx!!)
 
-        activity!!.window.statusBarColor = ContextCompat.getColor(activity!!,R.color.chatPurple)
-        activity!!.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+    private fun init() {
 
-        init(view!!)
-
-        return view
-    }
-
-    private fun init(view: View) {
-
-        messageList = view.findViewById(R.id.listchat)
-        chatBackpress = view.findViewById(R.id.chatBackpress)
-        mReceiverImageView = view.findViewById(R.id.chatImage)
-        mReceiverNameMtv = view.findViewById(R.id.chatName)
+        messageList = findViewById(R.id.listchat)
+        chatBackpress = findViewById(R.id.chatBackpress)
+        mReceiverImageView =findViewById(R.id.chatImage)
+        mReceiverNameMtv =findViewById(R.id.chatName)
         chatBackpress?.setOnClickListener(this)
-        ((ctx as MainActivity)).hideBottomNavigation()
+       // ((ctx as MainActivity)).hideBottomNavigation()
 
         binding?.sendBtn?.setOnClickListener(this)
         // getting chatId through bundle from chatListFragment....
-        mReceiverId = arguments?.getString("chatId").toString()
-        mReceiverImage = arguments?.getString("receiverImage").toString()
-        mReceiverName = arguments?.getString("receiverName").toString()
-        adapter = MessageAdapter(mReceiverId, shared, ArrayList(), ctx!!)
+        mReceiverId = intent.getStringExtra("chatId")!!.toString()
+        if(intent.getStringExtra("receiverImage")!=null ) {
+            mReceiverImage = intent.getStringExtra("receiverImage").toString()
+        }
+        if(intent.getStringExtra("receiverName")!=null) {
+            mReceiverName = intent.getStringExtra("receiverName").toString()
+        }
+        adapter = MessageAdapter(mReceiverId, shared, ArrayList(), this)
         if (mReceiverImage != "" || mReceiverImage != null) {
 
             Picasso.get()
@@ -137,11 +133,7 @@ class ChatFragment : Fragment(), View.OnClickListener, IOnMessageReceived {
             }
         }
     }
-    private fun loadFragment(fragment: Fragment) {
-        val transaction = fragmentManager?.beginTransaction()
-        transaction?.replace(R.id.frameContainer, fragment)
-        transaction?.commit()
-    }
+
 
     private fun chatApi(receiverId: String) {
         binding?.loaderLayout?.visibility = View.VISIBLE
@@ -175,9 +167,9 @@ class ChatFragment : Fragment(), View.OnClickListener, IOnMessageReceived {
                             try {
                                 jsonObject = JSONObject(response.errorBody()?.string()!!)
                                 val errorMesssage = jsonObject.getString(Constants.ERROR)
-                                Toast.makeText(ctx, "" + errorMesssage, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@ChatFragment, "" + errorMesssage, Toast.LENGTH_SHORT).show()
                             } catch (e: JSONException) {
-                                Toast.makeText(ctx, "" + e.message.toString(), Toast.LENGTH_SHORT)
+                                Toast.makeText(this@ChatFragment, "" + e.message.toString(), Toast.LENGTH_SHORT)
                                     .show()
                             }
                         }
@@ -185,13 +177,13 @@ class ChatFragment : Fragment(), View.OnClickListener, IOnMessageReceived {
                 }
                 override fun onFailure(call: Call<ChatByIdModel>, t: Throwable) {
                     binding?.loaderLayout?.visibility = View.GONE
-                    Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ChatFragment, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
                 }
             })
     }
 
     override fun onMessage(text: String) {
-        activity?.runOnUiThread {
+    runOnUiThread {
             val jsonObject = JSONObject()
             val model = ChatDataModel()
             try {
@@ -211,7 +203,7 @@ class ChatFragment : Fragment(), View.OnClickListener, IOnMessageReceived {
             } catch (e: JSONException) {
                 e.printStackTrace()
             }
-        }
+       }
     }
 
     class MessageAdapter(

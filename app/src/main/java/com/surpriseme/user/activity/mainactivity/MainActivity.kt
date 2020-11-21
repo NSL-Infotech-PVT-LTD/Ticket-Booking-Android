@@ -40,36 +40,35 @@ class MainActivity : AppCompatActivity() {
 //        bottomNav.menu.findItem(R.id.navChat).setTitle(R.string.chat)
 //        bottomNav.menu.findItem(R.id.navChat).icon = null
 
-        if (intent.hasExtra("bookingModel")) {
-            val model = intent.getSerializableExtra("bookingModel")
-            val bundle = Bundle()
-            val fragment = BookingDetailFragment()
-            bundle.putSerializable("bookingModel", model)
-            fragment.arguments = bundle
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.frameContainer,fragment)
-            transaction.commit()
-        } else if (intent.hasExtra("bookingId")) {
-            val bookingID = intent.getStringExtra("bookingId")
-            if (bookingID != null) {
-                val bundle = Bundle()
-                bundle.putString("bookingId", bookingID)
-                val fragment = BookingDetailFragment()
-                fragment.arguments = bundle
-                val transaction = supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.frameContainer, fragment)
-                transaction.commit()
-            }
-        }else if (intent.hasExtra("chatId")) {
+//        if (intent.hasExtra("bookingModel")) {
+//            val model = intent.getSerializableExtra("bookingModel")
+//            val bundle = Bundle()
+//            val fragment = BookingDetailFragment()
+//            bundle.putSerializable("bookingModel", model)
+//            fragment.arguments = bundle
+//            val transaction = supportFragmentManager.beginTransaction()
+//            transaction.replace(R.id.frameContainer,fragment)
+//            transaction.commit()
+//        } else if (intent.hasExtra("bookingId")) {
+//            val bookingID = intent.getStringExtra("bookingId")
+//            if (bookingID != null) {
+//                val bundle = Bundle()
+//                bundle.putString("bookingId", bookingID)
+//                val fragment = BookingDetailFragment()
+//                fragment.arguments = bundle
+//                val transaction = supportFragmentManager.beginTransaction()
+//                transaction.replace(R.id.frameContainer, fragment)
+//                transaction.commit()
+//            }
+//        }else
+//
+       if (intent.hasExtra("chatId")) {
             val chatID = intent.getStringExtra("chatId")
             if (chatID !=null) {
-                val bundle = Bundle()
-                bundle.putString("chatId", chatID)
-                val fragment = ChatFragment()
-                fragment.arguments = bundle
-                val transaction = supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.frameContainer, fragment)
-                transaction.commit()
+                val intent = Intent(this , ChatFragment::class.java)
+                intent.putExtra("chatId",chatID)
+
+                startActivity(intent)
             }
 
         } else if (intent.hasExtra("artistID")) {

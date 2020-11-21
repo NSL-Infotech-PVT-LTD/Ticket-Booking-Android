@@ -1,6 +1,7 @@
 package com.surpriseme.user.fragments.notificationfragment
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -233,14 +234,9 @@ class NotificationFragment : Fragment(),NotificationListAdapter.NotificationDeta
             transaction?.addToBackStack("notiFragment")
             transaction?.commit()
         }else {
-            val bundle = Bundle()
-            val fragment = BookingDetailFragment()
-            bundle.putString("bookingId",id)
-            fragment.arguments = bundle
-            val transaction = fragmentManager?.beginTransaction()
-            transaction?.replace(R.id.frameContainer,fragment)
-            transaction?.addToBackStack("notiFragment")
-            transaction?.commit()
+          val intent = Intent(ctx,BookingDetailFragment::class.java)
+            intent.putExtra("bookingId",id)
+            startActivity(intent)
         }
 
     }

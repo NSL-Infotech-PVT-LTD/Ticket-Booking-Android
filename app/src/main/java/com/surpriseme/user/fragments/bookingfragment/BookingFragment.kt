@@ -1,6 +1,7 @@
 package com.surpriseme.user.fragments.bookingfragment
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.fragment.app.Fragment
@@ -192,14 +193,9 @@ class BookingFragment : Fragment(), View.OnClickListener, BookingListAdapter.See
     override fun fullDetail(bookingID: String) {
         Constants.BOOKING = true
         Constants.NOTIFICATION = false
-        val bundle = Bundle()
-        val fragment = BookingDetailFragment()
-        bundle.putString("bookingId", bookingID)
-        fragment.arguments = bundle
-        val transaction = fragmentManager?.beginTransaction()
-        transaction?.replace(R.id.frameContainer, fragment)
-        transaction?.addToBackStack("bookingFragment")
-        transaction?.commit()
+        val intent = Intent(ctx,BookingDetailFragment::class.java)
+        intent.putExtra("bookingId",bookingID)
+        startActivity(intent)
 
     }
 

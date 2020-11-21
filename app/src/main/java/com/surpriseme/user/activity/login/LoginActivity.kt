@@ -131,6 +131,10 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                                 Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL +
                                         response.body()?.data?.user?.image
                             )
+
+
+
+
                             val mainActIntent = Intent(this@LoginActivity, MainActivity::class.java)
                             startActivity(mainActIntent)
                             finishAffinity()

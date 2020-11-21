@@ -4,7 +4,6 @@ package com.surpriseme.user.retrofit
 import com.surpriseme.user.activity.login.Loginmodel
 import com.surpriseme.user.activity.signup.RegisterModel
 import com.surpriseme.user.activity.forgotpassword.ResetPasswordModel
-import com.surpriseme.user.data.model.UpdateProfileModel
 import com.surpriseme.user.fragments.artistbookingdetail.ArtistDetailModel
 import com.surpriseme.user.fragments.bookingdetailfragment.BookingDetailModel
 import com.surpriseme.user.fragments.bookingfragment.CustomerBookingListModel
@@ -19,6 +18,7 @@ import com.surpriseme.user.fragments.viewprofile.ViewProfileModel
 import com.surpriseme.user.fragments.notificationfragment.NotificationListModel
 import com.surpriseme.user.fragments.notificationfragment.NotificationStatusModel
 import com.surpriseme.user.activity.searchactivity.CategoryModel
+import com.surpriseme.user.data.model.*
 import com.surpriseme.user.fragments.bookingslotfragment.SlotModel
 import com.surpriseme.user.fragments.chatFragment.ChatByIdModel
 import com.surpriseme.user.fragments.chatListfragment.ChatListModel
@@ -205,9 +205,37 @@ interface RetrofitInterface {
 
     @POST(Constants.CUSTOMER_REVIEW)
     fun customerReviewApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
-    @Query(Constants.ApiKey.ARTIST_ID) artistID: String) :Call<ReviewModel>
+                          @Query(Constants.ApiKey.ARTIST_ID) artistID: String) :Call<ReviewModel>
 
 
+    @POST(Constants.CARD_LIST)
+    fun cardlist(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+   ) :Call<CardGetModel>
 
+
+    @POST("customer/cards/store")
+    fun cardadd(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+                @Query("token") artistID: String
+    ) :Call<CardAddModel>
+
+    @POST(Constants.BOOKING_STATUS)
+    fun paynow(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+                @Query("card_id") artistID: String,
+                @Query("booking_id") bookingid: String,
+                @Query("status") status: String,
+                @Query("payment_method") paymentmethod: String
+    ) :Call<PaymentModel>
+
+    @POST("customer/create-payment-intent")
+    fun payintent(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+               @Query("id") artistID: String
+
+    ) :Call<PaymentIntent>
+
+
+    @POST("customer/cards/delete")
+    fun deletecard(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+               @Query("card_id") artistID: String
+    ) :Call<DeleteCard>
 
 }

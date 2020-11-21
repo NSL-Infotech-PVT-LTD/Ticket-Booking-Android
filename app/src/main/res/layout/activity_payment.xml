@@ -157,6 +157,11 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+        <include
+            android:id="@+id/loaderLayout"
+            layout="@layout/loader_layout"
+            android:visibility="gone"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

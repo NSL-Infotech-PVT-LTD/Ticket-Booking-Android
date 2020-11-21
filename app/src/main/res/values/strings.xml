@@ -221,4 +221,19 @@
     <string name="cvv">cvv</string>
     <string name="cvv_demo">Ex- 234</string>
     <string name="card_number_demo">**** - **** - **** - 1452</string>
+    <string name="idealpayment">iDeal Payment</string>
+    <string name="choosebnk">Choose Bank Name</string>
+    <string name="accountholder">Account Holder Name</string>
+    <string name="next">Next</string>
+    <string name="selectbank">Select Bank</string>
+    <string name="pleaseenteraccount">Please enter account holder name</string>
+    <string name="addcard">+ Add Card</string>
+    <string name="selectcard">Select Card</string>
+    <string name="chooseyourcard_payment_method">Choose your card method of payment</string>
+    <string name="expiry">Expires</string>
+    <string name="addcardd">Add Card</string>
+    <string name="pleaseenteraccountnum">Please enter account number</string>
+    <string name="pleaseentermonth">Please enter month</string>
+    <string name="pleaseentercvv">Please enter cvv</string>
+    <string name="pleaseenteryear">Please enter year</string>
 </resources>
