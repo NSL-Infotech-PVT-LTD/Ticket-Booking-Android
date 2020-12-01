@@ -28,7 +28,7 @@ val lang:ChangeLocale) : RecyclerView.Adapter<ChooseLanguageAdapter.LanguageView
         holder.languageName.setText(languageList[position].lang_name)
 
         holder.itemView.setOnClickListener {
-            lang.language(languageList[position].lang_code)
+//            lang.language(languageList[position].lang_code)
         }
 
     }

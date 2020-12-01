@@ -31,6 +31,7 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.PendingResult
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.*
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.squareup.picasso.Picasso
 import com.surpriseme.user.R
@@ -39,7 +40,10 @@ import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.activity.searchactivity.SearchActivity
 import com.surpriseme.user.databinding.FragmentHomeBinding
 import com.surpriseme.user.fragments.artistbookingdetail.ArtistBookingFragment
+import com.surpriseme.user.fragments.locationfragment.LocationDataList
 import com.surpriseme.user.fragments.locationfragment.LocationFragment
+import com.surpriseme.user.fragments.locationfragment.LocationListAdapter
+import com.surpriseme.user.fragments.locationfragment.LocationListModel
 import com.surpriseme.user.fragments.notificationfragment.NotificationFragment
 import com.surpriseme.user.fragments.viewprofile.ProfileFragment
 import com.surpriseme.user.fragments.wayofbookingfragment.WayOfBookingFragment
@@ -54,13 +58,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
+import java.net.SocketTimeoutException
 import java.util.*
 import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistListFace,
-    ArtistListAdapter.BookBtnClick,GoogleApiClient.ConnectionCallbacks,
-    GoogleApiClient.OnConnectionFailedListener,
-    LocationListener{
+    ArtistListAdapter.BookBtnClick {
     private var mylocation: Location? = null
     private var googleApiClient: GoogleApiClient? = null
     private val REQUEST_CHECK_SETTINGS_GPS = 0x1
@@ -82,16 +85,35 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
     private var isLoading = false
     private var currentPage: Int = 1
     private var totalPage = 0
+    private var showType = ""
+    private var locationFragment: LocationFragment?=null
+    var locationList: ArrayList<LocationDataList> = ArrayList()
+
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         ctx = context
+
     }
 
     override fun onStart() {
         super.onStart()
-        binding.yourLocationInfo.text = shared.getString(Constants.ADDRESS)
-        artistListApi(latitude.toString(),longitude.toString(),search)
+
+
+        if (Constants.SHOW_TYPE == "live") {
+//            binding.yourLocationInfo.text = shared.getString(Constants.ADDRESS)
+            artistListApi(
+                shared.getString(Constants.LATITUDE),
+                shared.getString(Constants.LONGITUDE),
+                search
+            )
+        } else {
+            artistListApiWithoutLatlng(search)
+        }
+
+
+
     }
 
     override fun onCreateView(
@@ -103,7 +125,26 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         val view = binding.root
         shared = PrefrenceShared(ctx)
-        setUpGClient()
+
+        if (Constants.SHOW_TYPE == "") {
+                Handler().postDelayed({
+                    popupShowType()
+                }, 3000)
+
+        }else if (Constants.SHOW_TYPE  == "digital") {
+            binding.virtualTv.background =
+                ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_blue)
+            binding.inPersonTv.background =
+                ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+        } else {
+            binding.virtualTv.background =
+                ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_pink)
+            binding.inPersonTv.background =
+                ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+        }
+            locationListApi()
+
+//        setUpGClient()
 
         if (shared.getString(Constants.DataKey.USER_IMAGE) !="") {
             Picasso.get().load(shared.getString(Constants.DataKey.USER_IMAGE)).placeholder(R.drawable.profile_pholder)
@@ -121,11 +162,11 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         binding.searchEdt.setOnClickListener(this)
         binding.notiIcon.setOnClickListener(this)
         ((ctx as MainActivity)).showBottomNavigation()
-
+//
+////        popupShowType()
         layoutManager = LinearLayoutManager(ctx)
         binding.artistRecycler.layoutManager = layoutManager
         binding.artistRecycler.setHasFixedSize(true)
-
         artistListAdapter = ArtistListAdapter(ctx, ArrayList(), this@HomeFragment, this@HomeFragment)
         binding.artistRecycler.adapter = artistListAdapter
 
@@ -144,43 +185,43 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 return isLoading
             }
         })
-        Handler().postDelayed({
-            if (Constants.SAVED_LOCATION) {
-                binding.yourLocationInfo.text = shared.getString(Constants.ADDRESS)
-                artistListApi(
-                    shared.getString(Constants.LATITUDE),
-                    shared.getString(Constants.LONGITUDE),
-                    search
-                )
-            }
-
-        }, 2000)
+//        Handler().postDelayed({
+//            if (Constants.SAVED_LOCATION) {
+//                binding.yourLocationInfo.text = shared.getString(Constants.ADDRESS)
+//                artistListApi(
+//                    shared.getString(Constants.LATITUDE),
+//                    shared.getString(Constants.LONGITUDE),
+//                    search
+//                )
+//            }
+//
+//        }, 2000)
 
 
         return view
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        val permissionLocation = ContextCompat.checkSelfPermission(activity!!, ACCESS_FINE_LOCATION)
-        if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
-            getMyLocation()
-        }
-    }
+//    override fun onRequestPermissionsResult(
+//        requestCode: Int,
+//        permissions: Array<out String>,
+//        grantResults: IntArray
+//    ) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        val permissionLocation = ContextCompat.checkSelfPermission(requireActivity(), ACCESS_FINE_LOCATION)
+//        if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
+////            getMyLocation()
+//        }
+//    }
 
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_CHECK_SETTINGS_GPS) {
-            getMyLocation()
-        }
-    }
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (resultCode == RESULT_OK) {
+//            if (requestCode == REQUEST_CHECK_SETTINGS_GPS) {
+////            getMyLocation()
+//        }
+//    }
+//    }
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.viewProfile -> {
@@ -280,6 +321,79 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 }
             })
     }
+    private fun artistListApiWithoutLatlng(search: String) {
+
+        if (currentPage == 1)
+            binding.loaderLayout.visibility = View.VISIBLE
+
+        RetrofitClient.api.artistListApi(
+            shared.getString(Constants.DataKey.AUTH_VALUE),
+             Constants.DataKey.CONTENT_TYPE_VALUE, "",search,currentPage.toString()
+        )
+            .enqueue(object : Callback<ArtistModel> {
+                override fun onResponse(call: Call<ArtistModel>, response: Response<ArtistModel>) {
+                    binding.loaderLayout.visibility = View.GONE
+                    if (response.body() != null) {
+                        if (response.isSuccessful) {
+
+                            // after api successfull do your stuff....
+                            artistList.clear()
+                            artistList = response.body()?.data?.data!!
+                            totalPage = response.body()?.data?.last_page!!
+                            if (artistList.size > 0) {
+
+                                Handler().postDelayed({
+                                    run {
+                                        /**
+                                         * manage progress view
+                                         */
+                                        /**
+                                         * manage progress view
+                                         */
+                                        if (currentPage != PaginationScrollListener.PAGE_START)
+                                            artistListAdapter?.removeLoading()
+                                        artistListAdapter?.addItems(artistList)
+                                        if (currentPage < totalPage) {
+                                            artistListAdapter?.addLoading()
+                                        } else {
+                                            isLastPage = true
+                                        }
+                                        isLoading = false
+                                    }
+                                }, 1500)
+
+                                binding.homeContainer.visibility = View.VISIBLE
+
+                            } else {
+                                binding.homeContainer.visibility = View.GONE
+                            }
+                        }
+                    } else if (response.code() == 401) {
+                        isInvalidAuth = true
+                        val jsonObject: JSONObject
+                        if (response.errorBody() != null) {
+                            try {
+                                jsonObject = JSONObject(response.errorBody()?.string()!!)
+                                val errorMessage = jsonObject.getString(Constants.ERRORS)
+//                                Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT).show()
+                                invalidAuthPopUp()
+                            } catch (e: JSONException) {
+                                Toast.makeText(
+                                    ctx,
+                                    "" + Constants.SOMETHING_WENT_WRONG,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ArtistModel>, t: Throwable) {
+                    binding.loaderLayout.visibility = View.GONE
+                    Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
 
     // Calling interface from Artist List adapter to send data from home fragment to ArtistDetail fragment with list on Item view click.
     override fun artistDetailLink(artistID: String) {
@@ -305,154 +419,154 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
     }
 
 
-    override fun onConnected(bundle: Bundle?) {
-        checkPermissions()
-    }
-
-    override   fun onConnectionSuspended(i: Int) {
-        //Do whatever you need
-        //You can display a message here
-    }
-
-
-    override  fun onLocationChanged(location: Location) {
-        mylocation = location
-        if (mylocation != null) {
-            latitude = mylocation?.latitude!!
-            longitude = mylocation?.longitude!!
-            shared.setString(Constants.LATITUDE,latitude.toString())
-            shared.setString(Constants.LONGITUDE,longitude.toString())
-            val geocoder: Geocoder
-            var addresses: List<Address>?=null
-            geocoder = Geocoder(ctx, Locale.getDefault())
-
-            addresses = geocoder.getFromLocation(
-                latitude,
-                longitude,
-                1
-            ) // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-            try {
-                if (isFirstTime){
-                    address = addresses!![0].getAddressLine(0)
-                    val address = (addresses as MutableList<Address>?)?.get(0)
-                    if (address != null) {
-                        val locality = address.featureName+","+address.subLocality+","+address.locality+","+address.adminArea+","+address.postalCode+","+address.countryName
-                        binding.yourLocationInfo.text = locality
-                        shared.setString(Constants.ADDRESS, locality)
-                        artistListApi(latitude.toString(),longitude.toString(),search)
-                    }
-                    isFirstTime =false
-                }
+//    override fun onConnected(bundle: Bundle?) {
+//        checkPermissions()
+//    }
+//
+//    override   fun onConnectionSuspended(i: Int) {
+//        //Do whatever you need
+//        //You can display a message here
+//    }
 
 
-                // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
-    }
+//    override  fun onLocationChanged(location: Location) {
+//        mylocation = location
+//        if (mylocation != null) {
+//            latitude = mylocation?.latitude!!
+//            longitude = mylocation?.longitude!!
+//            shared.setString(Constants.LATITUDE,latitude.toString())
+//            shared.setString(Constants.LONGITUDE,longitude.toString())
+//            val geocoder: Geocoder
+//            var addresses: List<Address>?=null
+//            geocoder = Geocoder(ctx, Locale.getDefault())
+//
+//            addresses = geocoder.getFromLocation(
+//                latitude,
+//                longitude,
+//                1
+//            ) // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+//            try {
+//                if (isFirstTime){
+//                    address = addresses!![0].getAddressLine(0)
+//                    val address = (addresses as MutableList<Address>?)?.get(0)
+//                    if (address != null) {
+//                        val locality = address.featureName+","+address.subLocality+","+address.locality+","+address.adminArea+","+address.postalCode+","+address.countryName
+//                        binding.yourLocationInfo.text = locality
+//                        shared.setString(Constants.ADDRESS, locality)
+//                        artistListApi(latitude.toString(),longitude.toString(),search)
+//                    }
+//                    isFirstTime =false
+//                }
+//
+//
+//                // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+//            } catch (e: IOException) {
+//                e.printStackTrace()
+//            }
+//        }
+//    }
 
-    @Synchronized
-    private fun setUpGClient() {
-        googleApiClient = GoogleApiClient.Builder(ctx)
-            .enableAutoManage(activity!!, 0, this)
-            .addConnectionCallbacks(this)
-            .addOnConnectionFailedListener(this)
-            .addApi(LocationServices.API)
-            .build()
-        googleApiClient?.connect()
-    }
+//    @Synchronized
+//    private fun setUpGClient() {
+//        googleApiClient = GoogleApiClient.Builder(ctx)
+//            .enableAutoManage(activity!!, 0, this)
+//            .addConnectionCallbacks(this)
+//            .addOnConnectionFailedListener(this)
+//            .addApi(LocationServices.API)
+//            .build()
+//        googleApiClient?.connect()
+//    }
 
-    override fun onPause() {
-        super.onPause()
-        googleApiClient?.stopAutoManage(getActivity()!!)
-        googleApiClient?.disconnect()
-    }
+//    override fun onPause() {
+//        super.onPause()
+//        googleApiClient?.stopAutoManage(getActivity()!!)
+//        googleApiClient?.disconnect()
+//    }
 
-    private fun getMyLocation() {
-        if (googleApiClient != null) {
-            if (googleApiClient?.isConnected()!!) {
-                val permissionLocation = ContextCompat.checkSelfPermission(
-                    activity!!,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
-                if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
-                    mylocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient)
-                    val locationRequest = LocationRequest()
-                    locationRequest.setInterval(3000)
-                    locationRequest.setFastestInterval(3000)
-                    locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                    val builder = LocationSettingsRequest.Builder()
-                        .addLocationRequest(locationRequest)
-                    builder.setAlwaysShow(true)
-                    LocationServices.FusedLocationApi
-                        .requestLocationUpdates(googleApiClient, locationRequest, this)
-                    val result: PendingResult<LocationSettingsResult> = LocationServices.SettingsApi
-                        .checkLocationSettings(googleApiClient, builder.build())
-                    result.setResultCallback { result ->
-                        val status: Status = result.getStatus()
-                        when (status.getStatusCode()) {
-                            LocationSettingsStatusCodes.SUCCESS -> {
-                                // All location settings are satisfied.
-                                // You can initialize location requests here.
-                                val permissionLocation = ContextCompat
-                                    .checkSelfPermission(
-                                        activity!!,
-                                        Manifest.permission.ACCESS_FINE_LOCATION
-                                    )
-                                if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
-                                    mylocation = LocationServices.FusedLocationApi
-                                        .getLastLocation(googleApiClient)
-                                }
+//    private fun getMyLocation() {
+//        if (googleApiClient != null) {
+//            if (googleApiClient?.isConnected()!!) {
+//                val permissionLocation = ContextCompat.checkSelfPermission(
+//                    activity!!,
+//                    Manifest.permission.ACCESS_FINE_LOCATION
+//                )
+//                if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
+//                    mylocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient)
+//                    val locationRequest = LocationRequest()
+//                    locationRequest.setInterval(3000)
+//                    locationRequest.setFastestInterval(3000)
+//                    locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+//                    val builder = LocationSettingsRequest.Builder()
+//                        .addLocationRequest(locationRequest)
+//                    builder.setAlwaysShow(true)
+//                    LocationServices.FusedLocationApi
+//                        .requestLocationUpdates(googleApiClient, locationRequest, this)
+//                    val result: PendingResult<LocationSettingsResult> = LocationServices.SettingsApi
+//                        .checkLocationSettings(googleApiClient, builder.build())
+//                    result.setResultCallback { result ->
+//                        val status: Status = result.getStatus()
+//                        when (status.getStatusCode()) {
+//                            LocationSettingsStatusCodes.SUCCESS -> {
+//                                // All location settings are satisfied.
+//                                // You can initialize location requests here.
+//                                val permissionLocation = ContextCompat
+//                                    .checkSelfPermission(
+//                                        activity!!,
+//                                        Manifest.permission.ACCESS_FINE_LOCATION
+//                                    )
+//                                if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
+//                                    mylocation = LocationServices.FusedLocationApi
+//                                        .getLastLocation(googleApiClient)
+//                                }
+//
+//                            }
+//                            LocationSettingsStatusCodes.RESOLUTION_REQUIRED ->                                     // Location settings are not satisfied.
+//                                // But could be fixed by showing the user a dialog.
+//                                try {
+//                                    // Show the dialog by calling startResolutionForResult(),
+//                                    // and check the result in onActivityResult().
+//                                    // Ask to turn on GPS automatically
+//                                    status.startResolutionForResult(
+//                                        activity,
+//                                        REQUEST_CHECK_SETTINGS_GPS
+//                                    )
+//
+//                                } catch (e: IntentSender.SendIntentException) {
+//                                    // Ignore the error.
+//                                }
+//                            LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
 
-                            }
-                            LocationSettingsStatusCodes.RESOLUTION_REQUIRED ->                                     // Location settings are not satisfied.
-                                // But could be fixed by showing the user a dialog.
-                                try {
-                                    // Show the dialog by calling startResolutionForResult(),
-                                    // and check the result in onActivityResult().
-                                    // Ask to turn on GPS automatically
-                                    status.startResolutionForResult(
-                                        activity,
-                                        REQUEST_CHECK_SETTINGS_GPS
-                                    )
 
-                                } catch (e: IntentSender.SendIntentException) {
-                                    // Ignore the error.
-                                }
-                            LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
-    private fun checkPermissions(): Boolean {
-        val permissionLocation = ContextCompat.checkSelfPermission(
-            activity!!,
-            ACCESS_FINE_LOCATION
-        )
-        val listPermissionsNeeded: ArrayList<String> = ArrayList()
-        return if (permissionLocation != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(ACCESS_FINE_LOCATION)
-            if (!listPermissionsNeeded.isEmpty()) {
-                ActivityCompat.requestPermissions(activity!!,
-                    listPermissionsNeeded.toArray(arrayOfNulls<String>(listPermissionsNeeded.size)), REQUEST_ID_MULTIPLE_PERMISSIONS)
-
-            }
-            false
-        } else {
-            getMyLocation()
-            true
-        }
-    }
-
-    override fun onConnectionFailed(p0: ConnectionResult) {
-
-    }
+//    private fun checkPermissions(): Boolean {
+//        val permissionLocation = ContextCompat.checkSelfPermission(
+//            activity!!,
+//            ACCESS_FINE_LOCATION
+//        )
+//        val listPermissionsNeeded: ArrayList<String> = ArrayList()
+//        return if (permissionLocation != PackageManager.PERMISSION_GRANTED) {
+//            listPermissionsNeeded.add(ACCESS_FINE_LOCATION)
+//            if (!listPermissionsNeeded.isEmpty()) {
+//                ActivityCompat.requestPermissions(activity!!,
+//                    listPermissionsNeeded.toArray(arrayOfNulls<String>(listPermissionsNeeded.size)), REQUEST_ID_MULTIPLE_PERMISSIONS)
+//
+//            }
+//            false
+//        } else {
+//            getMyLocation()
+//            true
+//        }
+//    }
+//
+//    override fun onConnectionFailed(p0: ConnectionResult) {
+//
+//    }
 
     private  fun  invalidAuthPopUp() {
 
@@ -482,12 +596,117 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 popUpWindowReport.dismiss()
                 val intent = Intent(ctx,LoginActivity::class.java)
                 startActivity(intent)
-                activity!!.finishAffinity()
+                requireActivity().finishAffinity()
             } else {
                 popUpWindowReport.dismiss()
             }
 
         }
     }
+
+    private  fun  popupShowType() {
+
+        val layoutInflater : LayoutInflater = ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+        val popUp: View = layoutInflater.inflate(R.layout.popup_show_type, null)
+        val popUpWindow = PopupWindow(
+            popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
+            ConstraintLayout.LayoutParams.MATCH_PARENT, true
+        )
+        popUpWindow.showAtLocation(popUp, Gravity.CENTER, 0, 0)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            popUpWindow.elevation = 10f
+        }
+        popUpWindow.isTouchable = false
+        popUpWindow.isOutsideTouchable = false
+
+        val virtual: MaterialButton = popUp.findViewById(R.id.virtualSelectBtn)
+        val live: MaterialButton = popUp.findViewById(R.id.inPersonSelectBtn)
+
+        virtual.setOnClickListener {
+            artistListApiWithoutLatlng(search)
+            Constants.SHOW_TYPE  = "digital"
+            binding.virtualTv.background = ContextCompat.getDrawable(ctx,R.drawable.corner_round_5_blue)
+            binding.inPersonTv.background = ContextCompat.getDrawable(ctx,R.drawable.corner_round_5_grey)
+            popUpWindow.dismiss()
+
+        }
+        live.setOnClickListener{
+            Constants.SHOW_TYPE  = "live"
+            binding.inPersonTv.background = ContextCompat.getDrawable(ctx,R.drawable.corner_round_5_pink)
+            binding.virtualTv.background = ContextCompat.getDrawable(ctx,R.drawable.corner_round_5_grey)
+            artistListApi(latitude.toString(),longitude.toString(),search)
+            popUpWindow.dismiss()
+        }
+    }
+
+    fun locationListApi() {
+
+        binding.loaderLayout.visibility = View.VISIBLE
+
+        RetrofitClient.api.addressListApi(shared.getString(Constants.DataKey.AUTH_VALUE))
+            .enqueue(object : Callback<LocationListModel> {
+                override fun onResponse(
+                    call: Call<LocationListModel>,
+                    response: Response<LocationListModel>
+                ) {
+                    binding.loaderLayout.visibility = View.GONE
+                    if (response.body() != null) {
+                        if (response.isSuccessful) {
+
+                            locationList.clear()
+                            locationList = response.body()?.data!!
+                            if (locationList.isNotEmpty()) {
+
+                                if (Constants.SAVED_LOCATION) {
+                                    binding.yourLocationTxt.text = shared.getString(Constants.NAME)
+                                    binding.yourLocationInfo.text = shared.getString(Constants.ADDRESS)
+                                } else {
+                                    binding.yourLocationTxt.text = locationList[0].name
+                                    binding.yourLocationInfo.text = locationList[0].street_address
+                                }
+
+                            } else {
+
+                                val fragment = LocationFragment()
+                                val transaction = fragmentManager?.beginTransaction()
+                                transaction?.replace(R.id.frameContainer, fragment)
+                                transaction?.commit()
+
+                            }
+                        }
+                    } else {
+                        // When Api will not successfull then error to display in json
+                        val jsonObject: JSONObject
+                        if (response.errorBody() != null) {
+                            try {
+                                jsonObject = JSONObject(response.errorBody()?.string()!!)
+                                val errorMessage = jsonObject.getString(Constants.ERROR)
+                                Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT).show()
+                            } catch (e: JSONException) {
+                                Toast.makeText(ctx, "" + e.message.toString(), Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<LocationListModel>, t: Throwable) {
+                    binding.loaderLayout.visibility = View.GONE
+                    if (t is SocketTimeoutException)
+                        Toast.makeText(ctx, "" + Constants.TIME_OUT, Toast.LENGTH_SHORT).show()
+                    else
+                        Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
+                }
+            })
+    }   // End of location list api....
+
+
+
+
+
+
 
 }

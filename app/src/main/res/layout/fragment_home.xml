@@ -106,12 +106,12 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/addressLayout"
                         android:layout_width="0dp"
-                        android:layout_height="0dp"
+                        android:layout_height="wrap_content"
                         app:layout_constraintTop_toTopOf="@id/imageCard"
                         app:layout_constraintBottom_toBottomOf="@id/imageCard"
                         app:layout_constraintStart_toEndOf="@id/imageCard"
-                        android:layout_marginEnd="@dimen/_20sdp"
-                        app:layout_constraintEnd_toStartOf="@id/notiIcon">
+                        app:layout_constraintEnd_toStartOf="@+id/virtualTv"
+                        android:layout_marginEnd="@dimen/_20sdp">
 
 
                         <com.google.android.material.textview.MaterialTextView
@@ -121,7 +121,8 @@
                             android:layout_marginStart="@dimen/_10sdp"
                             android:text="@string/your_location"
                             android:textColor="#35353a"
-                            android:textSize="@dimen/_12sdp"
+                            android:textSize="12dp"
+                            android:singleLine="true"
                             android:fontFamily="@font/montserrat_semibold"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -130,7 +131,7 @@
                             android:id="@+id/yourLocationInfo"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:maxLines="2"
+                            android:singleLine="true"
                             android:textColor="#8e8e8e"
                             android:textSize="@dimen/_8sdp"
                             android:fontFamily="@font/montserrat_semibold"
@@ -140,12 +141,53 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/virtualTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/virtual"
+                        android:textAllCaps="true"
+                        android:background="@drawable/corner_round_5_grey"
+                        android:textColor="@color/white"
+                        app:layout_constraintStart_toEndOf="@id/addressLayout"
+                        app:layout_constraintTop_toTopOf="@id/addressLayout"
+                        app:layout_constraintBottom_toBottomOf="@id/addressLayout"
+                        app:layout_constraintEnd_toStartOf="@+id/inPersonTv"
+
+                        android:paddingHorizontal="5dp"
+                        android:paddingVertical="2dp"
+                        android:textSize="10dp"
+                        android:drawablePadding="5dp"
+                        android:gravity="center"
+                        android:drawableStart="@drawable/ic_online_prediction_24"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/inPersonTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/in_person"
+                        android:textAllCaps="true"
+                        android:background="@drawable/corner_round_5_grey"
+                        android:textColor="@color/white"
+                        app:layout_constraintStart_toEndOf="@id/virtualTv"
+                        app:layout_constraintTop_toTopOf="@id/virtualTv"
+                        app:layout_constraintBottom_toBottomOf="@id/virtualTv"
+                        app:layout_constraintEnd_toStartOf="@+id/notiIcon"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:paddingHorizontal="5dp"
+                        android:paddingVertical="2dp"
+                        android:textSize="10dp"
+                        android:drawablePadding="5dp"
+                        android:gravity="center"
+                        android:drawableStart="@drawable/ic_person_24"/>
+
 
                     <ImageView
                         android:id="@+id/notiIcon"
                         android:layout_width="@dimen/_40sdp"
                         android:layout_height="@dimen/_40sdp"
-                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:src="@drawable/noti_icon"
                         app:layout_constraintBottom_toBottomOf="@+id/imageCard"
                         app:layout_constraintEnd_toEndOf="parent"

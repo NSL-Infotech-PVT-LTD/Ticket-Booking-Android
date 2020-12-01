@@ -236,4 +236,10 @@
     <string name="pleaseentermonth">Please enter month</string>
     <string name="pleaseentercvv">Please enter cvv</string>
     <string name="pleaseenteryear">Please enter year</string>
+    <string name="choose_the_show_you_want_to_search">Choose the show you want to search</string>
+    <string name="we_are_now_ready">We are now ready with the next of entertainment. We are proud to announce our in-house line streaming plateform.</string>
+    <string name="virtual_show">Virtual Show</string>
+    <string name="select">Select</string>
+    <string name="virtual">Virtual</string>
+    <string name="in_person">In-Person</string>
 </resources>

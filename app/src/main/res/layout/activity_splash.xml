@@ -16,7 +16,7 @@
             >
 
             <ImageView
-                android:id="@+id/splashImg"
+                android:id="@+id/splashBg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/spalsh_bg1"
@@ -27,9 +27,10 @@
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
             <ImageView
+                android:id="@+id/splashImg"
                 android:layout_width="@dimen/_200sdp"
                 android:layout_height="@dimen/_200sdp"
-                android:src="@drawable/splash_logo_updated"
+                android:src="@drawable/splash_log"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

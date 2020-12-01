@@ -81,6 +81,15 @@ interface RetrofitInterface {
         @Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
         @Header(Constants.ApiKey.CONTENT_TYPE) content_type: String,
         @Query(Constants.ApiKey.LIMIT) limit: String,
+        @Query(Constants.ApiKey.SEARCH) search:String,
+        @Query(Constants.ApiKey.PAGE) page:String
+    ): Call<ArtistModel>
+
+    @POST(Constants.CUSTOMER_ARTIST_LIST)
+    fun artistListApi(
+        @Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+        @Header(Constants.ApiKey.CONTENT_TYPE) content_type: String,
+        @Query(Constants.ApiKey.LIMIT) limit: String,
         @Query(Constants.ApiKey.LATITUDE) latitude: String,
         @Query(Constants.ApiKey.LONGITUDE) longitude: String,
         @Query(Constants.ApiKey.SEARCH) search:String,

@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.WindowManager
+import android.widget.ImageView
+import com.squareup.picasso.Picasso
 import com.surpriseme.user.R
 import com.surpriseme.user.activity.chooselanguage.ChooseLanguageActivity
 import com.surpriseme.user.activity.splashwalkthrough.SplashGetStartedActivity
@@ -33,10 +35,7 @@ class SplashActivity : AppCompatActivity() {
 
     private fun init() {
 
-
         Handler().postDelayed({
-
-
             startActivity(intent)
             finish()
 

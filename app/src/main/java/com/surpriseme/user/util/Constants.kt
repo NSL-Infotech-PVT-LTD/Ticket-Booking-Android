@@ -33,6 +33,7 @@ object Constants {
     const val CUSTOMER_REVIEW = "customer/getartistrating"
     const val CARD_LIST = "customer/cards/list"
     const val CHANGE_LANGUAGE = "customer/update/lang"
+    const val ISREMEMBER = "ISREMEMBER"
 
 
     const val PLEASE_CLICK_BACK_AGAIN_To_EXIT = "Please click BACK again to exit"
@@ -46,6 +47,7 @@ object Constants {
     var ADDRESS = "ADDRESS"
     var LATITUDE = "LATITUDE"
     var LONGITUDE = "LONGITUDE"
+    var NAME = ""
     var WantToUpdateAddress = false
     var WantOtherLocation = false
     const val RECOVERY_REQUEST = 1
@@ -81,6 +83,7 @@ object Constants {
     var REPORT = "report"
     var COMING_FROM_DETAIL = false
     var SAVE_BOOKING_LIST:ArrayList<BookingArtistDetailModel> = ArrayList()
+    var SHOW_TYPE = ""
 
 
     object ApiKey {

@@ -7,7 +7,6 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -39,15 +38,16 @@ class LocationFragment : Fragment(), View.OnClickListener,
     private lateinit var tbackpress: MaterialTextView
     private lateinit var ctx: Context
     private lateinit var shared: PrefrenceShared
-    private var locationList: ArrayList<LocationDataList> = ArrayList()
+    var locationList: ArrayList<LocationDataList> = ArrayList()
     private var addressDashboard = ""
     private var latitude:String = ""
     private var longitude:String = ""
 
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         ctx = context
+        ((ctx as MainActivity)).locationFragmentContext(this@LocationFragment)
+
     }
 
     override fun onCreateView(
@@ -112,7 +112,7 @@ class LocationFragment : Fragment(), View.OnClickListener,
         transaction?.commit()
     }
 
-    private fun locationListApi() {
+    fun locationListApi() {
 
         binding.loaderLayout.visibility = View.VISIBLE
 
@@ -174,7 +174,7 @@ class LocationFragment : Fragment(), View.OnClickListener,
             })
     }   // End of location list api....
 
-    override fun dispAddressDashboard(address: String,lat:String,lng:String) {
+    override fun dispAddressDashboard(address: String,lat:String,lng:String, name:String) {
 
         Constants.SAVED_LOCATION = true
         addressDashboard = address
@@ -182,7 +182,7 @@ class LocationFragment : Fragment(), View.OnClickListener,
         longitude = lng
         shared.setString(Constants.ADDRESS, addressDashboard)
         shared.setString(Constants.LATITUDE, latitude)
-        shared.setString(Constants.LONGITUDE, longitude)
+        shared.setString(Constants.NAME, name)
 
         val fragment = HomeFragment()
         val transaction = fragmentManager?.beginTransaction()
@@ -242,7 +242,7 @@ class LocationFragment : Fragment(), View.OnClickListener,
         val layoutInflater: LayoutInflater =
             ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        val popUp: View = layoutInflater.inflate(R.layout.lopout_popup, null)
+        val popUp: View = layoutInflater.inflate(R.layout.logout_popup, null)
         val popUpWindow = PopupWindow(
             popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
             ConstraintLayout.LayoutParams.MATCH_PARENT, true

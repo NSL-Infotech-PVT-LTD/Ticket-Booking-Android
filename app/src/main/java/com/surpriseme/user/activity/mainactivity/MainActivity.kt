@@ -17,6 +17,7 @@ import com.surpriseme.user.fragments.bookingfragment.BookingFragment
 import com.surpriseme.user.fragments.chatFragment.ChatFragment
 import com.surpriseme.user.fragments.chatListfragment.ChatListFragment
 import com.surpriseme.user.fragments.homefragment.HomeFragment
+import com.surpriseme.user.fragments.locationfragment.LocationFragment
 import com.surpriseme.user.fragments.viewprofile.ProfileFragment
 import com.surpriseme.user.fragments.wayofbookingfragment.WayOfBookingFragment
 import com.surpriseme.user.util.Constants
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
 
 //    private var doubleBackToExitPressedOnce: Boolean = false
     private lateinit var profileFragment:ProfileFragment
+    private lateinit var locationFragment:LocationFragment
     private lateinit var artistBookingFragment:ArtistBookingFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -214,9 +216,14 @@ class MainActivity : AppCompatActivity() {
     fun artistBookingContext(fragment:ArtistBookingFragment){
         this.artistBookingFragment = fragment
     }
+    fun locationFragmentContext(fragment:LocationFragment){
+        this.locationFragment = fragment
+    }
 
     interface SendImageBitmap {
         fun getImageBitmap(mPaths: List<String?>?)
     }
+
+
 
 }

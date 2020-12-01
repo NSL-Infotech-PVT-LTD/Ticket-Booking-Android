@@ -18,6 +18,7 @@ import com.surpriseme.user.activity.forgotpassword.ForgotPasswordActivity
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.CheckValidEmail
 import com.surpriseme.user.util.Constants
+import com.surpriseme.user.util.PrefManger
 import com.surpriseme.user.util.PrefrenceShared
 import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONException
@@ -34,6 +35,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var shared: PrefrenceShared
     private var fbtoken: String = ""
     private var loaderLayout:ConstraintLayout?=null
+    private var prefManager:PrefManger?=null
 
 
     override fun onStart() {
@@ -51,6 +53,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_login)
 
         shared = PrefrenceShared(this@LoginActivity)
+        prefManager = PrefManger(this)
         inIt()
         checkValidEmail = CheckValidEmail()
     }
@@ -61,7 +64,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         forgetTxt.setOnClickListener(this)
         accountYetTxt.setOnClickListener(this)
 
+        shared()
         loaderLayout = findViewById(R.id.loaderLayout)
+
+        checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
+            prefManager!!.setBoolean1(Constants.ISREMEMBER, isChecked)
+        }
+
 
     }
 
@@ -104,6 +113,17 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private fun shared() {
+        if (prefManager!!.getBoolean1(Constants.ISREMEMBER)) {
+            emailedt?.setText(prefManager!!.getString1("username"))
+            passwordEdt?.setText(prefManager!!.getString1("password"))
+            checkbox.isChecked = true
+        } else {
+            checkbox.isChecked = false
+        }
+    }
+
+
     private fun loginApi() {
 
         loaderLayout?.visibility = View.VISIBLE
@@ -134,7 +154,18 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
 
 
-
+                            if (prefManager!!.getBoolean1(Constants.ISREMEMBER)) {
+                                prefManager!!.setString1(
+                                    "username",
+                                   email
+                                )
+                                prefManager!!.setString1(
+                                    "password",
+password                                )
+                            } else {
+                                prefManager!!.setString1("username", "")
+                                prefManager!!.setString1("password", "")
+                            }
                             val mainActIntent = Intent(this@LoginActivity, MainActivity::class.java)
                             startActivity(mainActIntent)
                             finishAffinity()

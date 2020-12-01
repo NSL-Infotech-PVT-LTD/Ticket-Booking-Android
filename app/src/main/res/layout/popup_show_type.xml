@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#60000000">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_35sdp"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        app:cardCornerRadius="@dimen/_10sdp"
+        app:cardElevation="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/titleconstrain"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/_50sdp">
+
+            <TextView
+                android:id="@+id/title1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:gravity="center_horizontal"
+                android:text="@string/choose_the_show_you_want_to_search"
+                android:textColor="@color/black"
+                android:textSize="14dp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:fontFamily="@font/montserrat_bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/dialogtext11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:gravity="center"
+                android:paddingStart="@dimen/_20sdp"
+                android:paddingEnd="@dimen/_20sdp"
+                android:text="@string/we_are_now_ready"
+                android:textColor="@color/black"
+                android:fontFamily="@font/quicksand_medium"
+                android:textSize="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title1" />
+
+            <ImageView
+                android:id="@+id/digitalIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_digital_coust"
+                app:layout_constraintTop_toBottomOf="@+id/dialogtext11"
+                android:layout_marginTop="@dimen/_20sdp"
+                app:layout_constraintEnd_toStartOf="@+id/liveIcon"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/virtualShowTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/virtual_show"
+                app:layout_constraintTop_toBottomOf="@id/digitalIcon"
+                app:layout_constraintStart_toStartOf="@id/digitalIcon"
+                android:textColor="@color/black"
+                android:textSize="10dp"
+                app:layout_constraintEnd_toEndOf="@id/digitalIcon"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/virtualSelectBtn"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:text="@string/select"
+                app:layout_constraintTop_toBottomOf="@+id/virtualShowTxt"
+                android:textAllCaps="false"
+                app:cornerRadius="10dp"
+                android:textSize="10dp"
+                android:layout_marginTop="@dimen/_5sdp"
+                app:layout_constraintEnd_toEndOf="@id/virtualShowTxt"
+                app:layout_constraintStart_toStartOf="@id/virtualShowTxt"/>
+
+            <ImageView
+                android:id="@+id/liveIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_live_coust_img"
+                app:layout_constraintTop_toBottomOf="@+id/dialogtext11"
+                android:layout_marginTop="@dimen/_20sdp"
+                app:layout_constraintStart_toEndOf="@+id/virtualShowTxt"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/inPersonTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/virtual_show"
+                app:layout_constraintTop_toBottomOf="@id/liveIcon"
+                app:layout_constraintStart_toStartOf="@id/liveIcon"
+                android:textColor="@color/black"
+                android:textSize="10dp"
+                app:layout_constraintEnd_toEndOf="@id/liveIcon"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/inPersonSelectBtn"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:text="@string/select"
+                app:layout_constraintTop_toBottomOf="@+id/inPersonTxt"
+                android:textAllCaps="false"
+                app:cornerRadius="10dp"
+                android:textSize="10dp"
+                android:layout_marginTop="@dimen/_5sdp"
+                app:layout_constraintEnd_toEndOf="@id/inPersonTxt"
+                app:layout_constraintStart_toStartOf="@id/inPersonTxt"/>
+
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

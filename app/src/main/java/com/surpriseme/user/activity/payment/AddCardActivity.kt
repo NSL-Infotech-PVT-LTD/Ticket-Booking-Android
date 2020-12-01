@@ -8,11 +8,17 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.facebook.AccessToken
+import com.facebook.FacebookException
 import com.google.android.material.textview.MaterialTextView
+import com.stripe.android.ApiResultCallback
+import com.stripe.android.PaymentIntentResult
 import com.stripe.android.Stripe
+import com.stripe.android.model.*
+import com.stripe.android.view.CardInputWidget
+import com.stripe.android.view.CardMultilineWidget
+
 //import com.stripe.android.TokenCallback
-import com.stripe.android.model.Card
-import com.stripe.android.model.Token
 import com.surpriseme.user.R
 import com.surpriseme.user.data.model.CardAddModel
 import com.surpriseme.user.data.model.PaymentModel
@@ -26,6 +32,8 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
+import kotlin.collections.HashMap
 
 class AddCardActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -175,65 +183,46 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
         }
         else {
 
-//            val expiryedt = binding!!.expiryEdt.text.toString()
-//            val yearedt = binding!!.yearEdt.text.toString()
-//
-//            var year = yearedt.toInt()
-//            val month  = expiryedt.toInt()
-//          val card = Card(
-//              binding!!.accountNumberEdt.text.toString(),
-//              month,
-//              year,
-//              binding!!.cvvEdt.text.toString(),
-//              binding!!.cardHolderEdt.text.toString(),
-//              "",
-//              "",
-//              "",
-//              "",
-//              "",
-//              "",
-//              "",
-//              null
-//          )
-//             CreateToken(card)
+
+            val expiryedt = binding!!.expiryEdt.text.toString()
+            val yearedt = binding!!.yearEdt.text.toString()
+
+            var year = yearedt.toInt()
+            val month  = expiryedt.toInt()
+          val card = CardParams(
+              binding!!.accountNumberEdt.text.toString(),
+              month,
+              year,
+              binding!!.cvvEdt.text.toString(),
+              binding!!.cardHolderEdt.text.toString()
+
+          )
+             CreateToken(card)
         }
 
     }
 
 
 
-//    private fun CreateToken(card: Card) {
-//
-//        binding!!.loaderLayout.visibility =View.VISIBLE
-//        val stripe = Stripe(
-//            applicationContext,
-//            "pk_test_51HcYaaDVPC7KpoaUBqxarUUagXrI14GRCicyaZt8NztibJ4G9Y7KMtunrcWTg5PDm3PzcuBe1zkFFJiJRt1mXs8s009njabz8l"
-//        )
-//        stripe.createToken(
-//            card,
-//            object : TokenCallback {
-//                override fun onSuccess(token: Token) {
-//
-//                    cardget(token.id)
-//
-//
-//                    // Send token to your serve
-//                }
-//
-//                override fun onError(error: Exception) {
-//                    binding!!.loaderLayout.visibility = View.GONE
-//                    // Show localized error message
-//                    Toast.makeText(
-//                        applicationContext,
-//                        error.localizedMessage,
-//                        Toast.LENGTH_LONG
-//                    ).show()
-//                }
-//
-//
-//            }
-//        )
-//    }
+    private fun CreateToken(card: CardParams) {
+
+        binding!!.loaderLayout.visibility =View.VISIBLE
+        val stripe = Stripe(
+            applicationContext,
+            "pk_test_51HcYaaDVPC7KpoaUBqxarUUagXrI14GRCicyaZt8NztibJ4G9Y7KMtunrcWTg5PDm3PzcuBe1zkFFJiJRt1mXs8s009njabz8l"
+        )
+        stripe!!.createCardToken(card,null,null, object : ApiResultCallback<Token> {
+            override fun onError(e: Exception) {
+            }
+
+
+            override fun onSuccess(result: Token) {
+
+                cardget(result.id)
+            }
+
+        })
+    }
 
     override fun onClick(v: View?) {
         when (v?.id) {
@@ -373,3 +362,4 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
 
 
 }
+

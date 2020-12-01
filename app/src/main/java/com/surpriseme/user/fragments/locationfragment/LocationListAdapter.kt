@@ -79,7 +79,7 @@ private val deleteAddress: DeleteAddress,private val editLocation: EditAddress) 
             holder.itemView.setOnClickListener {
                 // Item view click to send address to dashboard, Click implemented on LocationFragment....
                 if (model.street_address!=null)
-                dispAddToDashboard.dispAddressDashboard(model.street_address, model.latitude,model.longitude)
+                dispAddToDashboard.dispAddressDashboard(model.street_address, model.latitude,model.longitude, model.name)
             }
         }
     }
@@ -89,7 +89,7 @@ private val deleteAddress: DeleteAddress,private val editLocation: EditAddress) 
     }
 
     interface DisplayAddToDashboard{
-        fun dispAddressDashboard(address:String, lat:String,lng:String)
+        fun dispAddressDashboard(address:String, lat:String,lng:String, name:String)
     }
     interface DeleteAddress {
         fun deleteAdd(id:String)
