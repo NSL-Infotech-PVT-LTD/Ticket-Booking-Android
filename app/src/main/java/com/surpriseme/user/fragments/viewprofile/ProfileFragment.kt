@@ -318,6 +318,7 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
 
         yes.setOnClickListener {
             shared.clearShared()
+            Constants.SHOW_TYPE = ""
             val loginActivity = Intent(ctx, LoginActivity ::class.java)
             startActivity(loginActivity)
             activity?.finishAffinity()

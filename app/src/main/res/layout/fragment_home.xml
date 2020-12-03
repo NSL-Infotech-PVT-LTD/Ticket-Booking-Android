@@ -10,51 +10,10 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary">
+            android:layout_height="match_parent">
 
 
-            <!-- when no data found. -->
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/noArtistText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/no_data_found"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_14sdp"
-                android:gravity="center"
-                android:layout_marginHorizontal="@dimen/_30sdp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintVertical_bias="0.3"
-                android:fontFamily="@font/montserrat_bold"/>
-
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/unableToFindBookingText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/unable_to_find_data"
-                android:textColor="#99FFFFFF"
-                android:textSize="@dimen/_12sdp"
-                android:gravity="center"
-                android:layout_marginHorizontal="@dimen/_30sdp"
-                app:layout_constraintTop_toBottomOf="@id/noArtistText"
-                android:layout_marginTop="@dimen/_20sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:fontFamily="@font/montserrat_semibold"/>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_200sdp"
-                app:layout_constraintTop_toBottomOf="@id/unableToFindBookingText"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:src="@drawable/no_artist_found"/>
 
 
 
@@ -62,8 +21,7 @@
             android:id="@+id/homeContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
-            android:visibility="visible">
+            android:background="@color/white">
 
 
             <com.google.android.material.card.MaterialCardView
@@ -111,7 +69,7 @@
                         app:layout_constraintBottom_toBottomOf="@id/imageCard"
                         app:layout_constraintStart_toEndOf="@id/imageCard"
                         app:layout_constraintEnd_toStartOf="@+id/virtualTv"
-                        android:layout_marginEnd="@dimen/_20sdp">
+                        android:layout_marginEnd="@dimen/_10sdp">
 
 
                         <com.google.android.material.textview.MaterialTextView
@@ -149,12 +107,11 @@
                         android:textAllCaps="true"
                         android:background="@drawable/corner_round_5_grey"
                         android:textColor="@color/white"
-                        app:layout_constraintStart_toEndOf="@id/addressLayout"
                         app:layout_constraintTop_toTopOf="@id/addressLayout"
                         app:layout_constraintBottom_toBottomOf="@id/addressLayout"
                         app:layout_constraintEnd_toStartOf="@+id/inPersonTv"
-
-                        android:paddingHorizontal="5dp"
+                        android:layout_marginEnd="@dimen/_3sdp"
+                        android:paddingHorizontal="@dimen/_3sdp"
                         android:paddingVertical="2dp"
                         android:textSize="10dp"
                         android:drawablePadding="5dp"
@@ -169,13 +126,10 @@
                         android:textAllCaps="true"
                         android:background="@drawable/corner_round_5_grey"
                         android:textColor="@color/white"
-                        app:layout_constraintStart_toEndOf="@id/virtualTv"
                         app:layout_constraintTop_toTopOf="@id/virtualTv"
                         app:layout_constraintBottom_toBottomOf="@id/virtualTv"
                         app:layout_constraintEnd_toStartOf="@+id/notiIcon"
-                        android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_marginEnd="@dimen/_5sdp"
-                        android:paddingHorizontal="5dp"
+                        android:paddingHorizontal="3dp"
                         android:paddingVertical="2dp"
                         android:textSize="10dp"
                         android:drawablePadding="5dp"
@@ -278,8 +232,65 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/artistNotFoundLayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                android:background="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@id/headerCard"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+
+
+                <!-- when no data found. -->
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/noArtistText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_data_found"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14sdp"
+                    android:gravity="center"
+                    android:layout_marginHorizontal="@dimen/_30sdp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintVertical_bias="0.3"
+                    android:fontFamily="@font/montserrat_bold"/>
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/unableToFindBookingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/unable_to_find_data"
+                    android:textColor="#99FFFFFF"
+                    android:textSize="@dimen/_12sdp"
+                    android:gravity="center"
+                    android:layout_marginHorizontal="@dimen/_30sdp"
+                    app:layout_constraintTop_toBottomOf="@id/noArtistText"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:fontFamily="@font/montserrat_semibold"/>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_200sdp"
+                    app:layout_constraintTop_toBottomOf="@id/unableToFindBookingText"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:src="@drawable/no_artist_found"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
         <include layout="@layout/loader_layout"
             android:visibility="gone"

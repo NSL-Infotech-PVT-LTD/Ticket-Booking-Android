@@ -23,108 +23,292 @@
             android:layout_height="match_parent"
             android:paddingBottom="@dimen/_50sdp">
 
-            <TextView
-                android:id="@+id/title1"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/showTypeLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:gravity="center_horizontal"
-                android:text="@string/choose_the_show_you_want_to_search"
-                android:textColor="@color/black"
-                android:textSize="14dp"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                android:fontFamily="@font/montserrat_bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/dialogtext11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:gravity="center"
-                android:paddingStart="@dimen/_20sdp"
-                android:paddingEnd="@dimen/_20sdp"
-                android:text="@string/we_are_now_ready"
-                android:textColor="@color/black"
-                android:fontFamily="@font/quicksand_medium"
-                android:textSize="12dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/title1" />
-
-            <ImageView
-                android:id="@+id/digitalIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_digital_coust"
-                app:layout_constraintTop_toBottomOf="@+id/dialogtext11"
-                android:layout_marginTop="@dimen/_20sdp"
-                app:layout_constraintEnd_toStartOf="@+id/liveIcon"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/virtualShowTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/virtual_show"
-                app:layout_constraintTop_toBottomOf="@id/digitalIcon"
-                app:layout_constraintStart_toStartOf="@id/digitalIcon"
-                android:textColor="@color/black"
-                android:textSize="10dp"
-                app:layout_constraintEnd_toEndOf="@id/digitalIcon"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/virtualSelectBtn"
-                android:layout_width="@dimen/_60sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:text="@string/select"
-                app:layout_constraintTop_toBottomOf="@+id/virtualShowTxt"
-                android:textAllCaps="false"
-                app:cornerRadius="10dp"
-                android:textSize="10dp"
-                android:layout_marginTop="@dimen/_5sdp"
-                app:layout_constraintEnd_toEndOf="@id/virtualShowTxt"
-                app:layout_constraintStart_toStartOf="@id/virtualShowTxt"/>
-
-            <ImageView
-                android:id="@+id/liveIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_live_coust_img"
-                app:layout_constraintTop_toBottomOf="@+id/dialogtext11"
-                android:layout_marginTop="@dimen/_20sdp"
-                app:layout_constraintStart_toEndOf="@+id/virtualShowTxt"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/inPersonTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/virtual_show"
-                app:layout_constraintTop_toBottomOf="@id/liveIcon"
-                app:layout_constraintStart_toStartOf="@id/liveIcon"
-                android:textColor="@color/black"
-                android:textSize="10dp"
-                app:layout_constraintEnd_toEndOf="@id/liveIcon"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/inPersonSelectBtn"
-                android:layout_width="@dimen/_60sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:text="@string/select"
-                app:layout_constraintTop_toBottomOf="@+id/inPersonTxt"
-                android:textAllCaps="false"
-                app:cornerRadius="10dp"
-                android:textSize="10dp"
-                android:layout_marginTop="@dimen/_5sdp"
-                app:layout_constraintEnd_toEndOf="@id/inPersonTxt"
-                app:layout_constraintStart_toStartOf="@id/inPersonTxt"/>
+                android:layout_height="match_parent"
+                android:visibility="visible">
 
 
+                <TextView
+                    android:id="@+id/title1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:gravity="center_horizontal"
+                    android:text="@string/choose_the_show_you_want_to_search"
+                    android:textColor="@color/black"
+                    android:textSize="14dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/dialogtext11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:fontFamily="@font/quicksand_medium"
+                    android:gravity="center"
+                    android:paddingStart="@dimen/_20sdp"
+                    android:paddingEnd="@dimen/_20sdp"
+                    android:text="@string/we_are_now_ready"
+                    android:textColor="@color/black"
+                    android:textSize="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/title1" />
+
+                <ImageView
+                    android:id="@+id/digitalIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:src="@drawable/ic_digital_coust"
+                    app:layout_constraintEnd_toStartOf="@+id/liveIcon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/dialogtext11" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/virtualShowTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/virtual_show"
+                    android:textColor="@color/black"
+                    android:textSize="10dp"
+                    app:layout_constraintEnd_toEndOf="@id/digitalIcon"
+                    app:layout_constraintStart_toStartOf="@id/digitalIcon"
+                    app:layout_constraintTop_toBottomOf="@id/digitalIcon" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/virtualSelectBtn"
+                    android:layout_width="@dimen/_60sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="@string/select"
+                    android:textAllCaps="false"
+                    android:textSize="10dp"
+                    app:cornerRadius="10dp"
+                    app:layout_constraintEnd_toEndOf="@id/virtualShowTxt"
+                    app:layout_constraintStart_toStartOf="@id/virtualShowTxt"
+                    app:layout_constraintTop_toBottomOf="@+id/virtualShowTxt" />
+
+                <ImageView
+                    android:id="@+id/liveIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:src="@drawable/ic_live_coust_img"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/virtualShowTxt"
+                    app:layout_constraintTop_toBottomOf="@+id/dialogtext11" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/inPersonTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/in_person_show"
+                    android:textColor="@color/black"
+                    android:textSize="10dp"
+                    app:layout_constraintEnd_toEndOf="@id/liveIcon"
+                    app:layout_constraintStart_toStartOf="@id/liveIcon"
+                    app:layout_constraintTop_toBottomOf="@id/liveIcon" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/inPersonSelectBtn"
+                    android:layout_width="@dimen/_60sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="@string/select"
+                    android:textAllCaps="false"
+                    android:textSize="10dp"
+                    app:cornerRadius="10dp"
+                    app:layout_constraintEnd_toEndOf="@id/inPersonTxt"
+                    app:layout_constraintStart_toStartOf="@id/inPersonTxt"
+                    app:layout_constraintTop_toBottomOf="@+id/inPersonTxt" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/virtualLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/vTitle1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:gravity="center_horizontal"
+                    android:text="@string/we_are_setting_up_for_you"
+                    android:textColor="@color/black"
+                    android:textSize="14dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/vDialogtext11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:fontFamily="@font/quicksand_medium"
+                    android:gravity="center"
+                    android:paddingStart="@dimen/_20sdp"
+                    android:paddingEnd="@dimen/_20sdp"
+                    android:text="@string/we_are_now_ready"
+                    android:textColor="@color/black"
+                    android:textSize="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/vTitle1" />
+
+                <ImageView
+                    android:id="@+id/vDigitalIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:src="@drawable/ic_digital_coust"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/vDialogtext11" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/vVirtualShowTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="@string/virtual_show"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp"
+                    app:layout_constraintEnd_toEndOf="@id/vDigitalIcon"
+                    app:layout_constraintStart_toStartOf="@id/vDigitalIcon"
+                    app:layout_constraintTop_toBottomOf="@id/vDigitalIcon" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/pleaseWaitTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:text="@string/please_wait"
+                    android:textColor="#E6000000"
+                    android:textSize="@dimen/_10sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/vVirtualShowTxt" />
+
+                <com.wang.avi.AVLoadingIndicatorView
+                    android:id="@+id/avi"
+                    style="@style/AVLoadingIndicatorView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_15sdp"
+                    android:visibility="visible"
+                    app:indicatorColor="@color/black"
+                    app:layout_constraintStart_toEndOf="@id/pleaseWaitTv"
+                    app:layout_constraintTop_toTopOf="@id/pleaseWaitTv"
+                    app:layout_constraintBottom_toBottomOf="@id/pleaseWaitTv"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    app:indicatorName="BallPulseIndicator" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/liveLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/lTitle1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:gravity="center_horizontal"
+                    android:text="@string/we_are_setting_up_for_you"
+                    android:textColor="@color/black"
+                    android:textSize="14dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/lDialogtext11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:fontFamily="@font/quicksand_medium"
+                    android:gravity="center"
+                    android:paddingStart="@dimen/_20sdp"
+                    android:paddingEnd="@dimen/_20sdp"
+                    android:text="@string/we_are_now_ready"
+                    android:textColor="@color/black"
+                    android:textSize="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lTitle1" />
+
+                <ImageView
+                    android:id="@+id/lDigitalIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:src="@drawable/ic_live_coust_img"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/lDialogtext11" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/lVirtualShowTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="@string/in_person_show"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp"
+                    app:layout_constraintEnd_toEndOf="@id/lDigitalIcon"
+                    app:layout_constraintStart_toStartOf="@id/lDigitalIcon"
+                    app:layout_constraintTop_toBottomOf="@id/lDigitalIcon" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/lpleaseWaitTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:text="@string/please_wait"
+                    android:textColor="#E6000000"
+                    android:textSize="@dimen/_10sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/lVirtualShowTxt" />
+
+                <com.wang.avi.AVLoadingIndicatorView
+                    android:id="@+id/lAvi"
+                    style="@style/AVLoadingIndicatorView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_15sdp"
+                    android:visibility="visible"
+                    app:indicatorColor="@color/black"
+                    app:layout_constraintStart_toEndOf="@id/lpleaseWaitTv"
+                    app:layout_constraintBottom_toBottomOf="@id/lpleaseWaitTv"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    app:indicatorName="BallPulseIndicator" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -242,4 +242,7 @@
     <string name="select">Select</string>
     <string name="virtual">Virtual</string>
     <string name="in_person">In-Person</string>
+    <string name="in_person_show">In-Person Show</string>
+    <string name="we_are_setting_up_for_you">We are setting up for you.</string>
+    <string name="please_wait">Please wait</string>
 </resources>
