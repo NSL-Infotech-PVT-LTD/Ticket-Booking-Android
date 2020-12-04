@@ -262,6 +262,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
             }
             R.id.virtualTv -> {
 
+                artistListAdapter?.clear()
                 binding.artistNotFoundLayout.visibility = View.GONE
 
                 Constants.SHOW_TYPE = "digital"
@@ -273,6 +274,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 artistListApiWithoutLatlng(search)
             }
             R.id.inPersonTv -> {
+                artistListAdapter?.clear()
                 binding.artistNotFoundLayout.visibility = View.GONE
                 Constants.SHOW_TYPE = "live"
                 binding.virtualTv.background =
@@ -347,7 +349,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                             } else {
                                 binding.searchCard.visibility = View.GONE
                                 binding.artistNotFoundLayout.visibility = View.VISIBLE
-                                
+
                             }
                         }
                     } else if (response.code() == 401) {
@@ -706,7 +708,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 Constants.SHOW_TYPE  = "live"
                 binding.inPersonTv.background = ContextCompat.getDrawable(ctx,R.drawable.corner_round_5_pink)
                 binding.virtualTv.background = ContextCompat.getDrawable(ctx,R.drawable.corner_round_5_grey)
-                artistListApi(latitude.toString(),longitude.toString(),search)
+                artistListApi(locationList[0].latitude,locationList[0].longitude,search)
                 binding.addressLayout.visibility = View.VISIBLE
             },3000)
 

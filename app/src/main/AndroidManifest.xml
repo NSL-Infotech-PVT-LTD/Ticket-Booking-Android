@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.SeleckBank"></activity>
+        <activity android:name=".activity.SeleckBank"/>
         <activity android:name=".activity.IdealPayment" />
         <activity android:name=".activity.payment.AddCardActivity" />
         <activity android:name=".activity.payment.PaymentActivity" />
@@ -26,7 +26,8 @@
         <activity android:name=".activity.SettingsActivity" />
         <activity
             android:name=".activity.searchactivity.SearchActivity"
-            android:screenOrientation="portrait" /> <!-- testing.netscapelabs@gmail.com -->
+            android:screenOrientation="portrait"
+            android:theme="@style/searchStyle"/> <!-- testing.netscapelabs@gmail.com -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_Map_Key_latest" /> <!-- Facebook Integration with test.netscape account -->

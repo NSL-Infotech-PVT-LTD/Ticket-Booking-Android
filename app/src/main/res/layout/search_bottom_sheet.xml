@@ -12,10 +12,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/corner_round_white_5"
-            app:layout_constraintBottom_toBottomOf="parent"
-
-            >
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -118,8 +115,8 @@
 
                     <ImageView
                         android:id="@+id/calenderIcon"
-                        android:layout_width="50dp"
-                        android:layout_height="@dimen/_50sdp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:src="@drawable/cal_icon"
                         app:layout_constraintBottom_toBottomOf="@+id/fromDateTxt"
@@ -157,6 +154,124 @@
                         app:layout_constraintStart_toStartOf="@id/filterTxt"
                         app:layout_constraintTop_toBottomOf="@+id/fromDateTxt" />
 
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/byRatingTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/by_rating"
+                        app:layout_constraintTop_toBottomOf="@+id/dottedView2"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:textColor="@color/black"
+                        android:textSize="16dp"
+                        android:fontFamily="@font/montserrat_semibold"/>
+
+                    <com.warkiz.widget.IndicatorSeekBar
+                        android:id="@+id/ratingSeekbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        app:layout_constraintTop_toBottomOf="@id/byRatingTv"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        app:isb_max="5"
+                        app:isb_min="1"
+                        app:isb_r2l="false"
+                        app:isb_progress="1"
+                        app:isb_seek_smoothly="true"
+                        app:isb_ticks_count="5"
+                        app:isb_progress_value_float="true"
+                        app:isb_tick_marks_size="13dp"
+                        app:isb_tick_marks_drawable="@drawable/round_blue_bg"
+                        app:isb_show_tick_texts="true"
+                        app:isb_tick_texts_size="15sp"
+                        app:isb_tick_texts_color="@color/blue_signup"
+                        app:isb_thumb_color="@color/blue_signup"
+                        app:isb_thumb_size="20dp"
+                        app:isb_show_thumb_text="true"
+                        app:isb_show_indicator="rounded_rectangle"
+                        app:isb_indicator_color="@color/blue_signup"
+                        app:isb_indicator_text_color="@color/grey_color"
+                        app:isb_indicator_text_size="18sp"
+                        app:isb_track_background_color="@color/blue_signup"
+                        app:isb_track_background_size="2dp"
+                        app:isb_track_progress_color="@color/blue_signup"
+                        app:isb_track_progress_size="4dp"
+                        app:layout_constraintStart_toStartOf="@id/filterTxt"
+                        app:isb_only_thumb_draggable="false"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/byDistanceTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/by_distance"
+                        app:layout_constraintTop_toBottomOf="@+id/ratingSeekbar"
+                        app:layout_constraintStart_toStartOf="@id/filterTxt"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:textColor="@color/black"
+                        android:textSize="16dp"
+                        android:fontFamily="@font/montserrat_semibold"/>
+
+                    <SeekBar
+                        android:id="@+id/ratingByDistance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:thumbTint="@color/blue_signup"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        app:layout_constraintStart_toStartOf="@id/filterTxt"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:min="50"
+                        android:max="200"
+                        android:backgroundTint="@color/blue_signup"
+                        android:secondaryProgressTint="@color/blue_signup"
+                        app:layout_constraintTop_toBottomOf="@+id/byDistanceTv"/>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/kilometerLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@+id/ratingByDistance"
+                        app:layout_constraintStart_toStartOf="@id/filterTxt"
+                        app:layout_constraintEnd_toEndOf="@id/ratingByDistance">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/fiftyKmTv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/fifty_kilometer"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        app:layout_constraintEnd_toStartOf="@+id/hundredKmTv"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/hundredKmTv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/hundered_kilometer"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/fiftyKmTv"
+                        android:layout_marginTop="@dimen/_5sdp"
+
+                        app:layout_constraintEnd_toStartOf="@+id/twoHunderedKmTv"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/twoHunderedKmTv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/two_hundered_km"
+                        android:gravity="end"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/hundredKmTv"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/sortByTxt"
@@ -165,9 +280,11 @@
                         android:layout_marginTop="@dimen/_20sdp"
                         android:text="@string/sort_by"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_16sdp"
+                        android:textSize="16dp"
+                        app:layout_goneMarginTop="@dimen/_20sdp"
+                        android:fontFamily="@font/montserrat_semibold"
                         app:layout_constraintStart_toStartOf="@id/filterTxt"
-                        app:layout_constraintTop_toBottomOf="@+id/dottedView2" />
+                        app:layout_constraintTop_toBottomOf="@+id/kilometerLayout" />
 
                     <RadioGroup
                         android:id="@+id/radioGroup"
@@ -177,7 +294,8 @@
                         android:layout_gravity="end"
                         android:layout_marginTop="@dimen/_20sdp"
                         android:layout_marginHorizontal="@dimen/_20sdp"
-                        app:layout_constraintTop_toBottomOf="@id/sortByTxt">
+                        app:layout_constraintTop_toBottomOf="@id/sortByTxt"
+                        app:layout_constraintStart_toStartOf="@id/filterTxt">
 
                         <RadioButton
                             android:layout_width="match_parent"

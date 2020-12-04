@@ -5,13 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.ImageView
-import android.widget.RadioButton
-import android.widget.RadioGroup
+import android.widget.*
 import android.widget.TextView.OnEditorActionListener
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.*
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -27,6 +26,9 @@ import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.HideKeyBoard
 import com.surpriseme.user.util.PrefrenceShared
+import com.warkiz.widget.IndicatorSeekBar
+import com.warkiz.widget.OnSeekChangeListener
+import com.warkiz.widget.SeekParams
 import kotlinx.android.synthetic.main.fragment_booking_detail.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -66,6 +68,11 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
     private var sortBy = ""
     private var showType = "live"
     private var isCategoryClicked = false
+    private var ratingSeekbar:IndicatorSeekBar?=null
+    private var byDistanceTv: MaterialTextView? = null
+    private var seekbarDistance: SeekBar? = null
+    private var kilometerLayout:ConstraintLayout?=null
+
 
 
     // var for category bottom sheet....
@@ -76,7 +83,8 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
     private var doneButton: MaterialButton? = null
     private var categoryNameList: ArrayList<CategoryDataList> = ArrayList()
     private var categoryIdList: ArrayList<Int> = ArrayList()
-    private var arrow:ImageView?=null
+    private var arrow: ImageView? = null
+
 
     private var categoryIdLst: ArrayList<Int> = ArrayList()
 
@@ -100,12 +108,55 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
         bottomSheetCategory = findViewById<ConstraintLayout>(R.id.bottomSheetCategory)
         bottomSheetBehaviorCategory = BottomSheetBehavior.from(bottomSheetCategory)
 
+        ratingSeekbar = findViewById(R.id.ratingSeekbar)
+        val tickArray:Array<String> = arrayOf("5","4.5","4.0","3.5","Any")
+        ratingSeekbar?.customTickTexts(tickArray)
+        byDistanceTv = findViewById(R.id.byDistanceTv)
+        seekbarDistance = findViewById(R.id.ratingByDistance)
+        kilometerLayout = findViewById(R.id.kilometerLayout)
+
+
+        if (Constants.SHOW_TYPE == "digital") {
+            byDistanceTv?.visibility = View.GONE
+            seekbarDistance?.visibility = View.GONE
+            kilometerLayout?.visibility = View.GONE
+        }
+
+        ratingSeekbar?.onSeekChangeListener = object : OnSeekChangeListener{
+            override fun onSeeking(seekParams: SeekParams?) {
+                Toast.makeText(this@SearchActivity, "${seekParams?.tickText}" , Toast.LENGTH_SHORT)
+                    .show()
+
+            }
+
+            override fun onStartTrackingTouch(seekBar: IndicatorSeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: IndicatorSeekBar?) {
+            }
+
+        }
+        seekbarDistance?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+
+
+        })
+
 
         //Search bottom sheet callback....
         bottomSheetBehavior.setBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when(newState) {
+                when (newState) {
                     BottomSheetBehavior.STATE_COLLAPSED -> {
                         binding?.whiteBgLayout?.visibility = View.GONE
                     }
@@ -188,7 +239,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
     private fun bottomSheetUpDownCategory() {
         if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED)
-                categoryListApi()
+            categoryListApi()
 
         } else {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED)
@@ -311,6 +362,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
 //        datepickerdialog?.getDatePicker()?.setMinDate(System.currentTimeMillis())
 
     }
+
     private fun artistListApi(
         lat: String,
         lng: String,
@@ -379,6 +431,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                         }
                     }
                 }
+
                 override fun onFailure(call: Call<ArtistModel>, t: Throwable) {
                     binding?.loaderLayout?.visibility = View.GONE
                     Toast.makeText(
@@ -389,6 +442,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 }
             })
     }
+
     override fun artistDetailLink(artistID: String) {
 // Calling interface from Artist List adapter to send data from home fragment to ArtistDetail fragment with list.
         shared?.setString(Constants.ARTIST_ID, artistID)
@@ -396,12 +450,14 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
         mainActIntent.putExtra("artistID", artistID)
         startActivity(mainActIntent)
     }
+
     override fun btnClick(artistID: String) {
         shared?.setString(Constants.ARTIST_ID, artistID)
         val mainActIntent = Intent(this@SearchActivity, MainActivity::class.java)
         mainActIntent.putExtra("artistBook", artistID)
         startActivity(mainActIntent)
     }
+
     private fun categoryListApi() {
 
         RetrofitClient.api.categoryListApi(Constants.DataKey.CONTENT_TYPE_VALUE)
@@ -453,6 +509,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
 
             })
     }
+
     // override method from Category Adapter to get category from category bottom sheet and display in search bottom sheet.
     override fun getCheckList(
         categoryName: ArrayList<CategoryDataList>,
@@ -465,7 +522,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
     override fun onBackPressed() {
         if (bottomSheetBehaviorCategory.state == BottomSheetBehavior.STATE_EXPANDED) {
             bottomSheetBehaviorCategory.state = BottomSheetBehavior.STATE_COLLAPSED
-        }else if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+        } else if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         } else {
             finish()

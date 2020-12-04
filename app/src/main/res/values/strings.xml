@@ -245,4 +245,9 @@
     <string name="in_person_show">In-Person Show</string>
     <string name="we_are_setting_up_for_you">We are setting up for you.</string>
     <string name="please_wait">Please wait</string>
+    <string name="by_rating">By Rating</string>
+    <string name="by_distance">By Distance</string>
+    <string name="fifty_kilometer">50km</string>
+    <string name="hundered_kilometer">100km</string>
+    <string name="two_hundered_km">200km</string>
 </resources>
