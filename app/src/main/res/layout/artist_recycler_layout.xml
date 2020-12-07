@@ -54,6 +54,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10sdp"
+                android:maxLines="2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/imgCard" />
 
@@ -101,6 +102,20 @@
                 app:layout_constraintTop_toTopOf="@id/description"
                 app:strokeColor="@color/colorPrimary"
                 app:strokeWidth="0.5dp" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/priceTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/bookBtn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/bookBtn"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="Hourly Eur 20"
+                android:textSize="12sp"
+                android:fontFamily="@font/montserrat_semibold"
+                android:textColor="#5a6779"/>
+
 
 
             <com.google.android.material.textview.MaterialTextView

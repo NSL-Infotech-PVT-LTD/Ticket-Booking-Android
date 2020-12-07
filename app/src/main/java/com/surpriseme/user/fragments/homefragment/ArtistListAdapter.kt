@@ -1,6 +1,7 @@
 package com.surpriseme.user.fragments.homefragment
 
 import android.content.Context
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -120,6 +121,7 @@ class ArtistListAdapter(
         val ratingbar = itemView.findViewById<RatingBar>(R.id.ratingbar)
         val seeArtistProfile = itemView.findViewById<MaterialTextView>(R.id.seeArtistProfile)
         val categories = itemView.findViewById<MaterialTextView>(R.id.categoryTxt)
+        val price = itemView.findViewById<MaterialTextView>(R.id.priceTv)
 
         override fun clear() {}
 
@@ -146,11 +148,34 @@ class ArtistListAdapter(
                 ratingbar.rating = artistModel.rating
 
 
-            var builder = StringBuilder()
-            for (i in 0 until categoryList.size) {
-                builder.append(categoryList[i] + ",")
+
+            categoryList.clear()
+            if (artistModel.category_id_details !=null){
+                for (i in 0 until artistModel.category_id_details.size) {
+                    categoryList.add(artistModel.category_id_details.get(i).category_name)
+                }
             }
-            categories.text = builder.toString()
+
+
+            var s = ""
+
+            if (artistModel.category_id_details !=null) {
+                    val builder = StringBuilder()
+                    for (detail in categoryList) {
+                        builder.append(detail)
+                     s = TextUtils.join(", ",categoryList)
+
+                    }
+                    categories.text = s
+            }
+
+            if (Constants.SHOW_TYPE == context.resources?.getString(R.string.digital)!!) {
+                price.text = context.resources.getString(R.string.hourly) + " " + artistModel.currency + " " + artistModel.digital_price_per_hr
+            } else{
+                price.text = context.resources.getString(R.string.hourly) + " " + artistModel.currency + " " + artistModel.live_price_per_hr
+            }
+
+
 
             itemView.setOnClickListener {
                 artistListFace.artistDetailLink(artistModel.id.toString())

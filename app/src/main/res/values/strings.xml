@@ -250,4 +250,6 @@
     <string name="fifty_kilometer">50km</string>
     <string name="hundered_kilometer">100km</string>
     <string name="two_hundered_km">200km</string>
+    <string name="hourly">Hourly</string>
+    <string name="digital">Digital</string>
 </resources>

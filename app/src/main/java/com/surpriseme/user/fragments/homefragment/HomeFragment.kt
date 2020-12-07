@@ -193,7 +193,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
             override fun loadMoreItems() {
                 isLoading = true
                 currentPage++
-                if (Constants.SHOW_TYPE == "digital") {
+                if (Constants.SHOW_TYPE == context?.resources?.getString(R.string.digital)) {
                     artistListApiWithoutLatlng(search)
                 }else
                 artistListApi(latitude.toString(),longitude.toString(),search)
@@ -265,7 +265,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 artistListAdapter?.clear()
                 binding.artistNotFoundLayout.visibility = View.GONE
 
-                Constants.SHOW_TYPE = "digital"
+                Constants.SHOW_TYPE = context?.resources?.getString(R.string.digital)!!
                 binding.virtualTv.background =
                     ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_blue)
                 binding.inPersonTv.background =
@@ -276,7 +276,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
             R.id.inPersonTv -> {
                 artistListAdapter?.clear()
                 binding.artistNotFoundLayout.visibility = View.GONE
-                Constants.SHOW_TYPE = "live"
+                Constants.SHOW_TYPE = context?.resources?.getString(R.string.live)!!
                 binding.virtualTv.background =
                     ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
                 binding.inPersonTv.background =
@@ -692,7 +692,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
             Handler().postDelayed({
                 popUpWindow.dismiss()
                 artistListApiWithoutLatlng(search)
-                Constants.SHOW_TYPE  = "digital"
+                Constants.SHOW_TYPE  = context?.resources?.getString(R.string.digital)!!
                 binding.virtualTv.background = ContextCompat.getDrawable(ctx,R.drawable.corner_round_5_blue)
                 binding.inPersonTv.background = ContextCompat.getDrawable(ctx,R.drawable.corner_round_5_grey)
                 binding.addressLayout.visibility = View.GONE
@@ -705,7 +705,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
             showTypeLayout.visibility = View.GONE
             Handler().postDelayed({
                 popUpWindow.dismiss()
-                Constants.SHOW_TYPE  = "live"
+                Constants.SHOW_TYPE  = context?.resources?.getString(R.string.live)!!
                 binding.inPersonTv.background = ContextCompat.getDrawable(ctx,R.drawable.corner_round_5_pink)
                 binding.virtualTv.background = ContextCompat.getDrawable(ctx,R.drawable.corner_round_5_grey)
                 artistListApi(locationList[0].latitude,locationList[0].longitude,search)
@@ -762,7 +762,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                                     Handler().postDelayed({
                                         popupShowType()
                                     }, 3000)
-                                } else if (Constants.SHOW_TYPE == "digital") {
+                                } else if (Constants.SHOW_TYPE == context?.resources?.getString(R.string.digital)!!) {
                                     binding.virtualTv.background =
                                         ContextCompat.getDrawable(
                                             ctx,
