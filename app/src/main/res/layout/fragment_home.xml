@@ -61,6 +61,7 @@
                         android:id="@+id/addressLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
                         app:layout_constraintTop_toTopOf="@id/imageCard"
                         app:layout_constraintBottom_toBottomOf="@id/imageCard"
                         app:layout_constraintStart_toEndOf="@id/imageCard"
@@ -68,18 +69,6 @@
                         android:layout_marginEnd="@dimen/_10sdp">
 
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/yourLocationTxt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:text="@string/your_location"
-                            android:textColor="#35353a"
-                            android:textSize="12dp"
-                            android:singleLine="true"
-                            android:fontFamily="@font/montserrat_semibold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/yourLocationInfo"
@@ -89,9 +78,9 @@
                             android:textColor="#8e8e8e"
                             android:textSize="@dimen/_8sdp"
                             android:fontFamily="@font/montserrat_semibold"
-                            app:layout_constraintStart_toStartOf="@+id/yourLocationTxt"
+                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/yourLocationTxt" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -154,6 +143,8 @@
                         android:textSize="@dimen/_10sdp"
                         app:layout_constraintStart_toStartOf="@id/imageCard"
                         app:layout_constraintTop_toBottomOf="@id/imageCard" />
+
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>

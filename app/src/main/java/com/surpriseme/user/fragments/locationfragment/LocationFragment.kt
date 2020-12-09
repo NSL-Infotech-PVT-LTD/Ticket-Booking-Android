@@ -88,6 +88,7 @@ class LocationFragment : Fragment(), View.OnClickListener,
         when (v?.id) {
 
             R.id.backpress -> {
+//                Constants.IS_SWITCH_TO_VIRTUAL = false
 
                 replaceFragment(HomeFragment())
             }

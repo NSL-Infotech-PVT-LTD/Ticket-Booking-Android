@@ -27,7 +27,8 @@
         <activity
             android:name=".activity.searchactivity.SearchActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/searchStyle"/> <!-- testing.netscapelabs@gmail.com -->
+            /> <!-- testing.netscapelabs@gmail.com -->
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_Map_Key_latest" /> <!-- Facebook Integration with test.netscape account -->

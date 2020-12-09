@@ -65,8 +65,8 @@
 
                 <ImageView
                     android:id="@+id/digitalIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="@dimen/_70sdp"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:src="@drawable/ic_digital_coust"
                     app:layout_constraintEnd_toStartOf="@+id/liveIcon"
@@ -99,10 +99,10 @@
 
                 <ImageView
                     android:id="@+id/liveIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="@dimen/_70sdp"
                     android:layout_marginTop="@dimen/_20sdp"
-                    android:src="@drawable/ic_live_coust_img"
+                    android:src="@drawable/live_icon"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/virtualShowTxt"
                     app:layout_constraintTop_toBottomOf="@+id/dialogtext11" />

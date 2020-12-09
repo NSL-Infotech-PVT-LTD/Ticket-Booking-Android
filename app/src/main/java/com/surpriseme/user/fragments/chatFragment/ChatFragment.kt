@@ -49,6 +49,9 @@ class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceiv
     private var mReceiverImageView: ImageView? = null
     private var mReceiverNameMtv: MaterialTextView? = null
 
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_payment)
@@ -129,7 +132,8 @@ class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceiv
                     }
             }
             R.id.chatBackpress -> {
-                fragmentManager?.popBackStack()
+//                fragmentManager?.popBackStack()
+                finish()
             }
         }
     }

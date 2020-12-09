@@ -58,12 +58,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/imgCard" />
 
-            <com.google.android.material.textview.MaterialTextView
+            <TextView
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:inputType="textCapSentences"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:text="@string/diljit"
                 android:textColor="#687c98"
                 android:textSize="@dimen/_14sdp"
@@ -71,7 +70,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/categoryTxt" />
 
-            <com.google.android.material.textview.MaterialTextView
+            <TextView
                 android:id="@+id/description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -85,25 +84,26 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/name" />
 
-            <com.google.android.material.button.MaterialButton
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/bookBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/_12sdp"
+                android:paddingVertical="@dimen/_4sdp"
                 android:layout_marginEnd="@dimen/_8sdp"
                 android:text="@string/book"
                 android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/_10sdp"
-                android:fontFamily="@font/montserrat_medium"
-                app:backgroundTint="@color/white"
-                app:cornerRadius="@dimen/_12sdp"
+                android:textSize="12sp"
+                android:background="@drawable/book_btn_bg"
+                android:fontFamily="@font/montserrat_bold"
                 app:layout_constraintBottom_toBottomOf="@id/description"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/description"
                 app:layout_constraintTop_toTopOf="@id/description"
-                app:strokeColor="@color/colorPrimary"
-                app:strokeWidth="0.5dp" />
 
-            <com.google.android.material.textview.MaterialTextView
+                />
+
+            <TextView
                 android:id="@+id/priceTv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -112,13 +112,13 @@
                 app:layout_constraintTop_toBottomOf="@id/bookBtn"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:text="Hourly Eur 20"
-                android:textSize="12sp"
+                android:textSize="10dp"
                 android:fontFamily="@font/montserrat_semibold"
                 android:textColor="#5a6779"/>
 
 
 
-            <com.google.android.material.textview.MaterialTextView
+            <TextView
                 android:id="@+id/seeArtistProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

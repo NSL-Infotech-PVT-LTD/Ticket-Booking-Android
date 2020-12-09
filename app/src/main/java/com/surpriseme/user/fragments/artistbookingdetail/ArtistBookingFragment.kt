@@ -2,6 +2,7 @@ package com.surpriseme.user.fragments.artistbookingdetail
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -45,6 +46,7 @@ import java.util.regex.Pattern
 class ArtistBookingFragment : Fragment(), View.OnClickListener,
     YouTubePlayer.OnInitializedListener {
 
+    private var video_url = ""
     private var img_url: String = ""
     private var img_url1: String = ""
     private lateinit var binding: FragmentArtistBookingBinding
@@ -143,7 +145,8 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                  transaction?.commit()
              }
             R.id.backpress -> {
-                fragmentManager?.popBackStack()
+                if (Constants.IS_ADDED_TO_BACKSTACK) fragmentManager?.popBackStack() else requireActivity().finish()
+
             }
             R.id.chatStartIcon -> {
 
@@ -215,23 +218,28 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                 if (artistModel.category_id_details != null) {
                                     for (i in 0 until artistModel.category_id_details.size)
                                         addChip(
-                                            artistModel.category_id_details[i],
+                                            artistModel.category_id_details[i].category_name,
                                             binding.chipGroup
                                         )
                                 }
-                                if (artistModel.shows_video !="" || artistModel.shows_video !=null) {
+                                if (artistModel.shows_video !=null
+                                    && !artistModel.shows_video!!.contains(".mp4")) {
                                     val videoUrl = artistModel.shows_video
                                     binding.youtubePlayIcon.visibility = View.VISIBLE
                                     binding.thumbnail.visibility = View.VISIBLE
-                                    extractYoutubeId(videoUrl.toString())
+                                    extractYoutubeId(videoUrl!!)
                                     binding.noVideoUploadedTxt.visibility = View.GONE
+                                } else if (artistModel.shows_video !=null && artistModel.shows_video!!.contains(".mp4")) {
+                                    video_url ="https://dev.netscapelabs.com/surpriseme/public/uploads/customer/videos/"+artistModel.shows_video
+                                    binding.noVideoUploadedTxt.visibility = View.GONE
+                                    binding.youtubePlayIcon.visibility = View.GONE
+                                    binding.thumbnail.visibility = View.GONE
                                 } else {
-
                                     binding.noVideoUploadedTxt.visibility = View.VISIBLE
                                     binding.youtubePlayIcon.visibility = View.GONE
                                     binding.thumbnail.visibility = View.GONE
-
                                 }
+
 
 
                                 imagePath =
@@ -242,7 +250,7 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                     .onlyScaleDown()
                                     .into(binding.profileImg)
                                 binding.profileName.text = artistModel.name
-                                binding.livePriceText.text = artistModel.live_price_per_hr
+                                binding.livePriceText.text = artistModel.live_price_per_hr.toString()
                                 if (artistModel.digital_price_per_hr != null)
                                     binding.digitalPriceText.text =
                                         artistModel.digital_price_per_hr.toString()
@@ -317,13 +325,13 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
         val lChip = Chip(ctx)
         lChip.text = pItem
         lChip.isClickable = false
-        lChip.textSize = 13F
+        lChip.textSize = 10f
+        lChip.textEndPadding = 8f
+        lChip.textStartPadding = 8f
 // lChip.chipStrokeColor = resources.getColorStateList(R.color.colorAccent)
 // lChip.chipStrokeWidth = 1F
-        lChip.setEnsureMinTouchTargetSize(false)
-        lChip.setTextColor(ContextCompat.getColor(ctx, R.color.white))
-        lChip.chipBackgroundColor = ContextCompat.getColorStateList(ctx, R.color.grey_color)
-// following lines are for the demo
+        lChip.setTextColor(ContextCompat.getColor(ctx, R.color.black))
+        lChip.chipBackgroundColor = ContextCompat.getColorStateList(ctx, R.color.greyLighter)
         pChipGroup.addView(lChip as View)
 
     }
@@ -351,13 +359,13 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
     }
 
     private fun extractYoutubeId(url: String): String? {
-        var videoid: String? = null
+        var videoid: String? = url
         val pattern =
             "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%\u200C\u200B2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*"
 
         val compiledPattern: Pattern = Pattern.compile(pattern)
         val matcher: Matcher =
-            compiledPattern.matcher(url!!) //url is youtube url for which you want to extract the id.
+            compiledPattern.matcher(url) //url is youtube url for which you want to extract the id.
 
         if (matcher.find()) {
             videoid = matcher.group()
@@ -376,12 +384,9 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
         img_url1 =
             "https://img.youtube.com/vi/$videoid/0.jpg"
 
-//
-//
-//
         Picasso.get().load(img_url1)
 
-            .resize(300, 300)
+            .resize(4000, 1500)
             .onlyScaleDown().into(binding.thumbnail)
 // binding.upload.visibility = View.GONE
         return videoid

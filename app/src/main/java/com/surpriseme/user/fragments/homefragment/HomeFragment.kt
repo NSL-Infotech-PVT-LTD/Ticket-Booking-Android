@@ -3,6 +3,7 @@ package com.surpriseme.user.fragments.homefragment
 import android.Manifest
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.app.Activity.RESULT_OK
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
@@ -13,6 +14,7 @@ import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -75,46 +77,88 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
     private lateinit var shared: PrefrenceShared
     private var artistList: ArrayList<DataUserArtistList> = ArrayList()
     private var latitude = 0.0
-    private  var longitude = 0.0
+    private var longitude = 0.0
     private var search = ""
-    private var isFirstTime = true
     private var isInvalidAuth = false
     private var artistListAdapter: ArtistListAdapter? = null
-    private lateinit var layoutManager:LinearLayoutManager
+    private lateinit var layoutManager: LinearLayoutManager
     private var isLastPage = false
     private var isLoading = false
     private var currentPage: Int = 1
     private var totalPage = 0
-    private var showType = ""
-    private var locationFragment: LocationFragment?=null
-    var locationList: ArrayList<LocationDataList> = ArrayList()
-
-
+    private var locationList: ArrayList<LocationDataList> = ArrayList()
+    private var categoryList:ArrayList<Int> = ArrayList()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         ctx = context
 
     }
-
     override fun onStart() {
         super.onStart()
 
+        locationListApi()
 
-//        if (Constants.SHOW_TYPE == "live") {
+//        if (Constants.SHOW_TYPE == "live" && (locationList.isEmpty())) {
 ////            binding.yourLocationInfo.text = shared.getString(Constants.ADDRESS)
-//            artistListApi(
-//                shared.getString(Constants.LATITUDE),
-//                shared.getString(Constants.LONGITUDE),
-//                search
-//            )
-//        } else {
+//
+//            binding.addressLayout.visibility = View.GONE
+//            binding.virtualTv.background =
+//                ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_blue)
+//            binding.inPersonTv.background =
+//                ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+//            binding.addressLayout.visibility = View.GONE
 //            artistListApiWithoutLatlng(search)
+//        } else {
+//            binding.addressLayout.visibility = View.VISIBLE
+//            binding.virtualTv.background =
+//                ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+//            binding.inPersonTv.background =
+//                ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_pink)
+//            artistListApi(locationList[0].latitude,locationList[0].longitude,search)
+//            Toast.makeText(ctx,"" + ctx.resources.getString(R.string.no_address_right_now_switching_to_virtual),Toast.LENGTH_SHORT).show()
+//        }
+//
+//        if (Constants.SHOW_TYPE =="") {
+//            binding.virtualTv.background =
+//                ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+//            binding.inPersonTv.background =
+//                ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+//            binding.addressLayout.visibility = View.GONE
+//        }else {
+//            if (Constants.SHOW_TYPE == ctx.resources.getString(R.string.digital)) {
+//                binding.yourLocationInfo.text = shared.getString(Constants.ADDRESS)
+//                binding.addressLayout.visibility = View.GONE
+//                binding.virtualTv.background =
+//                    ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_blue)
+//                binding.inPersonTv.background =
+//                    ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+//                binding.addressLayout.visibility = View.GONE
+////            artistListApiWithoutLatlng(search)
+//            } else {
+//
+//                if (locationList.isEmpty()) {
+//
+//                    binding.addressLayout.visibility = View.GONE
+//                    binding.virtualTv.background =
+//                        ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_blue)
+//                    binding.inPersonTv.background =
+//                        ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+////                artistListApiWithoutLatlng(search)
+//                } else {
+//                    binding.yourLocationInfo.text = shared.getString(Constants.ADDRESS)
+//                    binding.addressLayout.visibility = View.VISIBLE
+//                    binding.virtualTv.background =
+//                        ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_blue)
+//                    binding.inPersonTv.background =
+//                        ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+////                artistListApi(locationList[0].latitude,locationList[0].longitude,search)
+//                }
+//
+//            }
 //        }
 
 
-
-        locationListApi()
 //        if (Constants.SHOW_TYPE == "") {
 //            binding.virtualTv.background =
 //                ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
@@ -158,16 +202,13 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         val view = binding.root
         shared = PrefrenceShared(ctx)
-
-
 //            locationListApi()
-
 //        setUpGClient()
-
-        if (shared.getString(Constants.DataKey.USER_IMAGE) !="") {
-            Picasso.get().load(shared.getString(Constants.DataKey.USER_IMAGE)).placeholder(R.drawable.profile_pholder)
+        if (shared.getString(Constants.DataKey.USER_IMAGE) != "") {
+            Picasso.get().load(shared.getString(Constants.DataKey.USER_IMAGE))
+                .placeholder(R.drawable.profile_pholder)
                 .resize(4000, 1500).into(binding.dashUserImg)
-        }else {
+        } else {
             binding.dashUserImg.setImageDrawable(
                 ContextCompat.getDrawable(
                     ctx,
@@ -186,17 +227,19 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         layoutManager = LinearLayoutManager(ctx)
         binding.artistRecycler.layoutManager = layoutManager
         binding.artistRecycler.setHasFixedSize(true)
-        artistListAdapter = ArtistListAdapter(ctx, ArrayList(), this@HomeFragment, this@HomeFragment)
+        artistListAdapter =
+            ArtistListAdapter(ctx, ArrayList(), this@HomeFragment, this@HomeFragment)
         binding.artistRecycler.adapter = artistListAdapter
 
-        binding.artistRecycler.addOnScrollListener(object : PaginationScrollListener(layoutManager) {
+        binding.artistRecycler.addOnScrollListener(object :
+            PaginationScrollListener(layoutManager) {
             override fun loadMoreItems() {
                 isLoading = true
                 currentPage++
                 if (Constants.SHOW_TYPE == context?.resources?.getString(R.string.digital)) {
                     artistListApiWithoutLatlng(search)
-                }else
-                artistListApi(latitude.toString(),longitude.toString(),search)
+                } else
+                    artistListApi(latitude.toString(), longitude.toString(), search)
             }
 
             override fun isLastPage(): Boolean {
@@ -236,7 +279,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
 //    }
 
 
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 //        super.onActivityResult(requestCode, resultCode, data)
 //        if (resultCode == RESULT_OK) {
 //            if (requestCode == REQUEST_CHECK_SETTINGS_GPS) {
@@ -274,6 +317,9 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 artistListApiWithoutLatlng(search)
             }
             R.id.inPersonTv -> {
+
+                    Constants.IS_SWITCH_TO_VIRTUAL = false
+
                 artistListAdapter?.clear()
                 binding.artistNotFoundLayout.visibility = View.GONE
                 Constants.SHOW_TYPE = context?.resources?.getString(R.string.live)!!
@@ -284,11 +330,17 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 binding.addressLayout.visibility = View.VISIBLE
 
                 if (Constants.SAVED_LOCATION) {
-                    binding.yourLocationTxt.text = shared.getString(Constants.NAME)
                     binding.yourLocationInfo.text = shared.getString(Constants.ADDRESS)
-                    artistListApi(shared.getString(Constants.LATITUDE),shared.getString(Constants.LONGITUDE),search)
+                    artistListApi(
+                        shared.getString(Constants.LATITUDE),
+                        shared.getString(Constants.LONGITUDE),
+                        search
+                    )
                 } else {
-                   locationListApi()
+                    val fragment = LocationFragment()
+                    val transaction = fragmentManager?.beginTransaction()
+                    transaction?.replace(R.id.frameContainer, fragment)
+                    transaction?.commit()
                 }
 
             }
@@ -305,12 +357,12 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
     private fun artistListApi(lat: String, lng: String, search: String) {
 
         if (currentPage == 1)
-        binding.loaderLayout.visibility = View.VISIBLE
+            binding.loaderLayout.visibility = View.VISIBLE
 
         RetrofitClient.api.artistListApi(
             shared.getString(Constants.DataKey.AUTH_VALUE),
-            Constants.DataKey.CONTENT_TYPE_VALUE, "", lat, lng, search,currentPage.toString()
-        )
+            Constants.DataKey.CONTENT_TYPE_VALUE, "", lat, lng, search, currentPage.toString())
+
             .enqueue(object : Callback<ArtistModel> {
                 override fun onResponse(call: Call<ArtistModel>, response: Response<ArtistModel>) {
                     binding.loaderLayout.visibility = View.GONE
@@ -378,6 +430,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 }
             })
     }
+
     private fun artistListApiWithoutLatlng(search: String) {
 
         if (currentPage == 1)
@@ -385,8 +438,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
 
         RetrofitClient.api.artistListApi(
             shared.getString(Constants.DataKey.AUTH_VALUE),
-             Constants.DataKey.CONTENT_TYPE_VALUE, "",search,currentPage.toString()
-        )
+            Constants.DataKey.CONTENT_TYPE_VALUE, "", search, currentPage.toString())
             .enqueue(object : Callback<ArtistModel> {
                 override fun onResponse(call: Call<ArtistModel>, response: Response<ArtistModel>) {
                     binding.loaderLayout.visibility = View.GONE
@@ -455,6 +507,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
     // Calling interface from Artist List adapter to send data from home fragment to ArtistDetail fragment with list on Item view click.
     override fun artistDetailLink(artistID: String) {
         shared.setString(Constants.ARTIST_ID, artistID)
+        Constants.IS_ADDED_TO_BACKSTACK = true
         val fragment = ArtistBookingFragment()
         val bundle = Bundle()
         bundle.putString("artistID", artistID)
@@ -625,7 +678,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
 //
 //    }
 
-    private  fun  invalidAuthPopUp() {
+    private fun invalidAuthPopUp() {
 
         val layoutInflater: LayoutInflater =
             ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -651,19 +704,19 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         ok.setOnClickListener {
             if (isInvalidAuth) {
                 popUpWindowReport.dismiss()
-                val intent = Intent(ctx,LoginActivity::class.java)
+                val intent = Intent(ctx, LoginActivity::class.java)
                 startActivity(intent)
                 requireActivity().finishAffinity()
             } else {
                 popUpWindowReport.dismiss()
             }
-
         }
     }
 
-    private  fun  popupShowType() {
+    private fun popupShowType() {
 
-        val layoutInflater : LayoutInflater = ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val layoutInflater: LayoutInflater =
+            ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
         val popUp: View = layoutInflater.inflate(R.layout.popup_show_type, null)
         val popUpWindow = PopupWindow(
@@ -692,25 +745,34 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
             Handler().postDelayed({
                 popUpWindow.dismiss()
                 artistListApiWithoutLatlng(search)
-                Constants.SHOW_TYPE  = context?.resources?.getString(R.string.digital)!!
-                binding.virtualTv.background = ContextCompat.getDrawable(ctx,R.drawable.corner_round_5_blue)
-                binding.inPersonTv.background = ContextCompat.getDrawable(ctx,R.drawable.corner_round_5_grey)
+                Constants.SHOW_TYPE = ctx.resources.getString(R.string.digital)
+                binding.virtualTv.background =
+                    ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_blue)
+                binding.inPersonTv.background =
+                    ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
                 binding.addressLayout.visibility = View.GONE
-            },3000)
-
-
+            }, 3000)
         }
-        live.setOnClickListener{
+        live.setOnClickListener {
             liveLayout.visibility = View.VISIBLE
             showTypeLayout.visibility = View.GONE
             Handler().postDelayed({
                 popUpWindow.dismiss()
-                Constants.SHOW_TYPE  = context?.resources?.getString(R.string.live)!!
-                binding.inPersonTv.background = ContextCompat.getDrawable(ctx,R.drawable.corner_round_5_pink)
-                binding.virtualTv.background = ContextCompat.getDrawable(ctx,R.drawable.corner_round_5_grey)
-                artistListApi(locationList[0].latitude,locationList[0].longitude,search)
-                binding.addressLayout.visibility = View.VISIBLE
-            },3000)
+                Constants.SHOW_TYPE = ctx.resources.getString(R.string.live)
+                binding.inPersonTv.background =
+                    ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_pink)
+                binding.virtualTv.background =
+                    ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+                if (locationList.size > 0) {
+                    artistListApi(locationList[0].latitude, locationList[0].longitude, search)
+                    binding.addressLayout.visibility = View.VISIBLE
+                } else {
+                    val fragment = LocationFragment()
+                    val transaction = fragmentManager?.beginTransaction()
+                    transaction?.replace(R.id.frameContainer, fragment)
+                    transaction?.commit()
+                }
+            }, 3000)
 
         }
     }
@@ -733,20 +795,14 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                             locationList = response.body()?.data!!
                             if (locationList.isNotEmpty()) {
 
-
                                 if (Constants.SAVED_LOCATION) {
-                                    binding.yourLocationTxt.text = shared.getString(Constants.NAME)
+
                                     binding.yourLocationInfo.text =
                                         shared.getString(Constants.ADDRESS)
-//                                    artistListApi(shared.getString(Constants.LATITUDE),shared.getString(Constants.LONGITUDE),search)
                                 } else {
-                                    binding.yourLocationTxt.text = locationList[0].name
+
                                     binding.yourLocationInfo.text = locationList[0].street_address
-//                                    artistListApi(locationList[0].latitude,locationList[0].longitude,search)
                                 }
-
-
-
                                 if (Constants.SHOW_TYPE == "") {
                                     binding.virtualTv.background =
                                         ContextCompat.getDrawable(
@@ -758,11 +814,10 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                                             ctx,
                                             R.drawable.corner_round_5_grey
                                         )
-                                    binding.addressLayout.visibility = View.GONE
                                     Handler().postDelayed({
                                         popupShowType()
                                     }, 3000)
-                                } else if (Constants.SHOW_TYPE == context?.resources?.getString(R.string.digital)!!) {
+                                } else if (Constants.SHOW_TYPE == ctx.resources.getString(R.string.digital)) {
                                     binding.virtualTv.background =
                                         ContextCompat.getDrawable(
                                             ctx,
@@ -777,32 +832,87 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                                     artistListApiWithoutLatlng(search)
                                 } else {
 
-                                    binding.virtualTv.background =
-                                        ContextCompat.getDrawable(
-                                            ctx,
-                                            R.drawable.corner_round_5_grey
-                                        )
-                                    binding.inPersonTv.background =
-                                        ContextCompat.getDrawable(
-                                            ctx,
-                                            R.drawable.corner_round_5_pink
-                                        )
-                                    binding.addressLayout.visibility = View.VISIBLE
-                                    if (Constants.SAVED_LOCATION) {
-                                        artistListApi(shared.getString(Constants.LATITUDE),shared.getString(Constants.LONGITUDE),search)
+                                    if (locationList.size > 0) {
 
+                                        binding.addressLayout.visibility = View.VISIBLE
+                                        binding.virtualTv.background =
+                                            ContextCompat.getDrawable(
+                                                ctx,
+                                                R.drawable.corner_round_5_grey
+                                            )
+                                        binding.inPersonTv.background =
+                                            ContextCompat.getDrawable(
+                                                ctx,
+                                                R.drawable.corner_round_5_pink
+                                            )
+                                        artistListApi(
+                                            locationList[0].latitude,
+                                            locationList[0].longitude,
+                                            search
+                                        )
                                     } else {
-                                        artistListApi(locationList[0].latitude,locationList[0].longitude,search)
+                                        binding.addressLayout.visibility = View.GONE
+                                        binding.virtualTv.background =
+                                            ContextCompat.getDrawable(
+                                                ctx,
+                                                R.drawable.corner_round_5_blue
+                                            )
+                                        binding.inPersonTv.background =
+                                            ContextCompat.getDrawable(
+                                                ctx,
+                                                R.drawable.corner_round_5_grey
+                                            )
+                                        artistListApiWithoutLatlng(search)
                                     }
                                 }
-
                             } else {
+                                if (Constants.SHOW_TYPE != "") {
 
-                                val fragment = LocationFragment()
-                                val transaction = fragmentManager?.beginTransaction()
-                                transaction?.replace(R.id.frameContainer, fragment)
-                                transaction?.commit()
+                                    if (Constants.SHOW_TYPE == ctx.resources.getString(R.string.digital)) {
+                                        binding.virtualTv.background =
+                                            ContextCompat.getDrawable(
+                                                ctx,
+                                                R.drawable.corner_round_5_blue
+                                            )
+                                        binding.inPersonTv.background =
+                                            ContextCompat.getDrawable(
+                                                ctx,
+                                                R.drawable.corner_round_5_grey
+                                            )
+                                        binding.addressLayout.visibility = View.GONE
+                                        artistListApiWithoutLatlng(search)
 
+                                    } else {
+
+                                        binding.virtualTv.background =
+                                            ContextCompat.getDrawable(
+                                                ctx,
+                                                R.drawable.corner_round_5_blue
+                                            )
+                                        binding.inPersonTv.background =
+                                            ContextCompat.getDrawable(
+                                                ctx,
+                                                R.drawable.corner_round_5_grey
+                                            )
+                                        binding.addressLayout.visibility = View.GONE
+                                        Constants.SHOW_TYPE = ctx.resources.getString(R.string.digital)
+
+                                           if(Constants.IS_SWITCH_TO_VIRTUAL){
+                                               Toast.makeText(
+                                                   ctx,
+                                                   "" + ctx.resources.getString(R.string.no_address_right_now_switching_to_virtual),
+                                                   Toast.LENGTH_LONG
+                                               ).show()
+
+                                           }
+
+                                        artistListApiWithoutLatlng(search)
+                                    }
+                                } else {
+                                    Handler().postDelayed({
+                                        popupShowType()
+                                    }, 3000)
+                                }
                             }
                         }
                     } else {

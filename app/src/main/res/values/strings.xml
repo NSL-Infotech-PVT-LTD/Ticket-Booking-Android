@@ -183,7 +183,7 @@
     <string name="booking_date">Booking Date</string>
     <string name="location">Location</string>
     <string name="payment">Payment</string>
-    <string name="live">Live</string>
+    <string name="live">live</string>
     <string name="pending">Pending</string>
     <string name="not_paid">Not Paid</string>
     <string name="accepted">Accepted</string>
@@ -251,5 +251,6 @@
     <string name="hundered_kilometer">100km</string>
     <string name="two_hundered_km">200km</string>
     <string name="hourly">Hourly</string>
-    <string name="digital">Digital</string>
+    <string name="digital">digital</string>
+    <string name="no_address_right_now_switching_to_virtual">No address found,Switching to virtual</string>
 </resources>

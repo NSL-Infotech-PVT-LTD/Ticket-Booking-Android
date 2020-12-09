@@ -14,15 +14,15 @@
         <item name="colorControlActivated">@color/yellowChat</item>
     </style>
 
-    <style name="chatScreen" parent="Theme.AppCompat">
+    <style name="chatScreen" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorControlNormal">@color/yellowChat</item>
         <item name="colorControlActivated">@color/redBtnBg</item>
     </style>
-    <style name="searchStyle" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimaryDark">@color/blue_signup</item>
-        <item name="colorPrimary">@color/blue_signup</item>
-        <item name="colorAccent">@color/blue_signup</item>
-    </style>
+<!--    <style name="searchStyle" parent="Theme.MaterialComponents.Light.NoActionBar">-->
+<!--        <item name="colorPrimaryDark">@color/blue_signup</item>-->
+<!--        <item name="colorPrimary">@color/blue_signup</item>-->
+<!--        <item name="colorAccent">@color/blue_signup</item>-->
+<!--    </style>-->
 
 
 </resources>

@@ -6,8 +6,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragments.artistbookingdetail.ArtistBookingFragment"
-        android:paddingBottom="@dimen/_50sdp">
+        tools:context=".fragments.artistbookingdetail.ArtistBookingFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -87,43 +86,31 @@
                         app:layout_constraintTop_toTopOf="@id/youtubeView" />
 
 
-                    <ImageView
-                        android:id="@+id/availableIcon"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:src="@drawable/available_icon"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/youtubeView" />
-
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="wrap_content"
+                    <HorizontalScrollView
+                        android:id="@+id/viewHorizontal"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_5sdp"
-                        android:fontFamily="@font/montserrat_bold"
-                        android:text="@string/artist_available"
-                        android:textColor="#42aa5c"
-                        android:textSize="@dimen/_12sdp"
-                        app:layout_constraintStart_toEndOf="@+id/availableIcon"
-                        app:layout_constraintTop_toTopOf="@+id/availableIcon" />
-
-                    <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/chipGroup"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:layout_marginBottom="@dimen/_10sdp"
-                        android:backgroundTint="@color/grey_color"
-                        android:orientation="vertical"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_5sdp"
-                        app:chipSpacingVertical="@dimen/_3sdp"
+                        android:scrollbars="none"
+                        android:paddingHorizontal="@dimen/_20sdp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/availableIcon" />
+                        app:layout_constraintTop_toBottomOf="@+id/youtubeView"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        >
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/chipGroup"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:textColor="@color/white"
+                            app:singleLine="true"
+                            app:chipMinTouchTargetSize="0dp"
+                            app:chipSpacing="0dp"
+                            />
+
+                    </HorizontalScrollView>
+
+
 
                     <ImageView
                         android:id="@+id/profileImg"
@@ -134,7 +121,7 @@
                         android:scaleType="centerCrop"
                         android:src="@drawable/user_pholder_updated"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/chipGroup" />
+                        app:layout_constraintTop_toBottomOf="@+id/viewHorizontal" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/profileName"

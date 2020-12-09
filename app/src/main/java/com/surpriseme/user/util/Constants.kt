@@ -84,6 +84,8 @@ object Constants {
     var COMING_FROM_DETAIL = false
     var SAVE_BOOKING_LIST:ArrayList<BookingArtistDetailModel> = ArrayList()
     var SHOW_TYPE = ""
+    var IS_SWITCH_TO_VIRTUAL = true
+    var IS_ADDED_TO_BACKSTACK =false
 
 
     object ApiKey {
@@ -125,11 +127,8 @@ object Constants {
         const val SHOW_TYPE = "show_type"
         const val PAGE = "page"
         const val LANG = "lang"
-
-
-
-
-
+        const val RATING = "rating"
+        const val RADIUS = "radius"
     }
 
     object DataKey {

@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.R
 import com.surpriseme.user.databinding.FragmentNotificationBinding
 import com.surpriseme.user.activity.mainactivity.MainActivity
@@ -37,6 +38,7 @@ class NotificationFragment : Fragment(),NotificationListAdapter.NotificationDeta
     private var notificationList:ArrayList<NotificationListDataModel> = ArrayList()
     private var ctx:Context?=null
     private var mNotificationID=""
+    private var backpress:MaterialTextView?=null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -55,16 +57,17 @@ class NotificationFragment : Fragment(),NotificationListAdapter.NotificationDeta
         //Hide Bottom Navigation for Notification Screen.....
         ((ctx as MainActivity)).hideBottomNavigation()
 
-        init()
+        init(view!!)
 
 
         return view
     }
-    private fun init() {
+    private fun init(view:View) {
 
         // calling notification list api....
         notificationListApi()
-        binding?.backpress?.setOnClickListener {
+        backpress = view.findViewById(R.id.backpress)
+        backpress?.setOnClickListener {
             // backpress code....
             fragmentManager?.popBackStack()
         }

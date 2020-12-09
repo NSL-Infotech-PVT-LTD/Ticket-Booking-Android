@@ -168,7 +168,7 @@
                         android:fontFamily="@font/montserrat_semibold"/>
 
                     <com.warkiz.widget.IndicatorSeekBar
-                        android:id="@+id/ratingSeekbar"
+                        android:id="@+id/seekbarRating"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_20sdp"
@@ -178,25 +178,25 @@
                         app:isb_min="1"
                         app:isb_r2l="false"
                         android:scrollIndicators="none"
-                        app:isb_progress="1"
+                        app:isb_progress="5"
                         app:isb_seek_smoothly="true"
                         app:isb_ticks_count="5"
                         app:isb_progress_value_float="true"
                         app:isb_tick_marks_size="13dp"
-                        app:isb_tick_marks_drawable="@drawable/round_blue_bg"
+                        app:isb_tick_marks_drawable="@drawable/round_black"
                         app:isb_show_tick_texts="true"
                         app:isb_tick_texts_size="15sp"
-                        app:isb_tick_texts_color="@color/blue_signup"
-                        app:isb_thumb_color="@color/blue_signup"
+                        app:isb_tick_texts_color="@color/black"
+                        app:isb_thumb_color="@color/colorPrimary"
                         app:isb_thumb_size="20dp"
                         app:isb_show_thumb_text="true"
                         app:isb_show_indicator="rounded_rectangle"
                         app:isb_indicator_color="@color/transparent"
                         app:isb_indicator_text_color="@color/transparent"
                         app:isb_indicator_text_size="18sp"
-                        app:isb_track_background_color="@color/blue_signup"
+                        app:isb_track_background_color="@color/grey_color"
                         app:isb_track_background_size="2dp"
-                        app:isb_track_progress_color="@color/blue_signup"
+                        app:isb_track_progress_color="@color/black"
                         app:isb_track_progress_size="4dp"
                         app:layout_constraintStart_toStartOf="@id/filterTxt"
                         app:isb_only_thumb_draggable="false"/>
@@ -206,7 +206,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/by_distance"
-                        app:layout_constraintTop_toBottomOf="@+id/ratingSeekbar"
+                        app:layout_constraintTop_toBottomOf="@+id/seekbarRating"
                         app:layout_constraintStart_toStartOf="@id/filterTxt"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:textColor="@color/black"
@@ -214,7 +214,7 @@
                         android:fontFamily="@font/montserrat_semibold"/>
 
                     <SeekBar
-                        android:id="@+id/ratingByDistance"
+                        android:id="@+id/seekbarDistance"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:thumbTint="@color/blue_signup"
@@ -232,9 +232,9 @@
                         android:id="@+id/kilometerLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@+id/ratingByDistance"
+                        app:layout_constraintTop_toBottomOf="@+id/seekbarDistance"
                         app:layout_constraintStart_toStartOf="@id/filterTxt"
-                        app:layout_constraintEnd_toEndOf="@id/ratingByDistance">
+                        app:layout_constraintEnd_toEndOf="@id/seekbarDistance">
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/fiftyKmTv"
@@ -299,6 +299,7 @@
                         app:layout_constraintStart_toStartOf="@id/filterTxt">
 
                         <RadioButton
+                            android:id="@+id/radioLowToHigh"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/price_low_to_high"
@@ -306,17 +307,21 @@
                             android:paddingHorizontal="@dimen/_20sdp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_12sdp"
+                            android:checked="true"
+                            android:button="@drawable/radio_check_bg"
                             android:drawablePadding="@dimen/_20sdp"
                             android:layoutDirection="rtl"
                             android:drawableEnd="@drawable/ic_low_to_high"
                             />
 
                         <RadioButton
+                            android:id="@+id/radioHighToLow"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/price_high_to_low"
                             android:gravity="center"
                             android:layoutDirection="rtl"
+                            android:button="@drawable/radio_check_bg"
                             android:paddingHorizontal="@dimen/_20sdp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_12sdp"

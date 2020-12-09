@@ -5,8 +5,10 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.RatingBar
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
@@ -115,13 +117,13 @@ class ArtistListAdapter(
 
         val image = itemView.findViewById<ImageView>(R.id.image)
 
-        val name = itemView.findViewById<MaterialTextView>(R.id.name)
-        val description = itemView.findViewById<MaterialTextView>(R.id.description)
-        val bookBtn = itemView.findViewById<MaterialButton>(R.id.bookBtn)
+        val name = itemView.findViewById<TextView>(R.id.name)
+        val description = itemView.findViewById<TextView>(R.id.description)
+        val bookBtn = itemView.findViewById<MaterialTextView>(R.id.bookBtn)
         val ratingbar = itemView.findViewById<RatingBar>(R.id.ratingbar)
-        val seeArtistProfile = itemView.findViewById<MaterialTextView>(R.id.seeArtistProfile)
-        val categories = itemView.findViewById<MaterialTextView>(R.id.categoryTxt)
-        val price = itemView.findViewById<MaterialTextView>(R.id.priceTv)
+        val seeArtistProfile = itemView.findViewById<TextView>(R.id.seeArtistProfile)
+        val categories = itemView.findViewById<TextView>(R.id.categoryTxt)
+        val price = itemView.findViewById<TextView>(R.id.priceTv)
 
         override fun clear() {}
 
