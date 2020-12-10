@@ -816,7 +816,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                                         )
                                     Handler().postDelayed({
                                         popupShowType()
-                                    }, 3000)
+                                    }, 1000)
                                 } else if (Constants.SHOW_TYPE == ctx.resources.getString(R.string.digital)) {
                                     binding.virtualTv.background =
                                         ContextCompat.getDrawable(
@@ -911,7 +911,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                                 } else {
                                     Handler().postDelayed({
                                         popupShowType()
-                                    }, 3000)
+                                    }, 1000)
                                 }
                             }
                         }

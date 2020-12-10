@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">SurpriseMeUser</string>
-    <string name="places_api_key">AIzaSyAeRjBp9uCEHLe-dIdsGVKegO9KzsmHmwA</string>
+<!--    <string name="places_api_key">AIzaSyAeRjBp9uCEHLe-dIdsGVKegO9KzsmHmwA</string>-->
+<!--    <string name="places_api_key">AIzaSyCRpD56NTTmuzvDUUBgpSjbUgyrA71bOM</string>-->
+    <string name="places_api_key">AIzaSyA8xsvoYmsGtITtzvU90jkK3OHArVBAinI</string>
     <string name="google_Map_Key">AIzaSyAkWmuRRj9I9d5fyr4RqM61QDuIwOAZzvA</string>
     <string name="google_Map_Key_latest">AIzaSyDqU3uVjJ1hn71Gi98EJNEESQxuMPnbq8E</string>
     <string name="youtube_api_key">AIzaSyAB8u2xJzND_aHiLd4Q56_1c1Op4Kda9T0</string>

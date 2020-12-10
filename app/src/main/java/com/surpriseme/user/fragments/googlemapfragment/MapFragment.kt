@@ -9,8 +9,10 @@ import android.location.Geocoder
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,8 +30,12 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.textview.MaterialTextView
+import com.google.firebase.firestore.GeoPoint
 import com.surpriseme.user.R
 import com.surpriseme.user.databinding.FragmentMapBinding
 import com.surpriseme.user.fragments.locationfragment.LocationDataList
@@ -38,18 +44,23 @@ import com.surpriseme.user.fragments.locationfragment.UpdateAddressModel
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
+import kotlinx.android.synthetic.main.fragment_map.*
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.IOException
+import java.nio.channels.UnresolvedAddressException
 import java.util.*
+import kotlin.collections.ArrayList
 
 
-class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener,
-    GoogleApiClient.ConnectionCallbacks,
-    GoogleApiClient.OnConnectionFailedListener,
-    LocationListener {
+class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener, GoogleMap.OnCameraMoveListener
+//    GoogleApiClient.ConnectionCallbacks,
+//    GoogleApiClient.OnConnectionFailedListener,
+//    LocationListener
+{
 
     private lateinit var binding: FragmentMapBinding
     private lateinit var shared: PrefrenceShared
@@ -58,6 +69,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener,
     private lateinit var tbackpress: MaterialTextView
     private lateinit var centerLatlng: LatLng
     private var googleApiClient: GoogleApiClient? = null
+
 
     // variables for hit api....
     private var name = ""
@@ -79,6 +91,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener,
     // var to get intent while update address....
     private lateinit var locationDataList: LocationDataList
     private var addressID = ""
+    private var location = ""
 
 
     override fun onAttach(context: Context) {
@@ -103,24 +116,32 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener,
         tbackpress = view.findViewById(R.id.backpress)
         tbackpress.setOnClickListener(this)
 
-        if (Constants.WantToUpdateAddress) {
-            locationDataList = arguments?.getSerializable("addressList") as LocationDataList
-            if (locationDataList != null) {
-                latitude = locationDataList.latitude.toDouble()
-                longitude = locationDataList.longitude.toDouble()
-                addressID = locationDataList.id.toString()
-                name = locationDataList.name
-                if (name!=null) {
-                    binding.otherTypeEdt.setText(name)
-                    displayAddressType()
-                }
+        if (Constants.WantToAddLocation) {
+            latitude = arguments?.getDouble("lat")!!
+            longitude = arguments?.getDouble("lng")!!
+        } else if (Constants.WantToUpdateAddress) {
 
-            }
-        } else if (Constants.WantOtherLocation) {
-            latitude = arguments?.getString("latitude")?.toDouble()!!
-            longitude = arguments?.getString("longitude")?.toDouble()!!
+                latitude = arguments?.getDouble("lat")!!
+                longitude = arguments?.getDouble("lng")!!
+
         }
-        binding.otherTypeEdt.addTextChangedListener(object :TextWatcher{
+
+
+//        if (Constants.WantToUpdateAddress) {
+//            location = arguments?.getString("place")!!
+//            if (location != null) {
+//                getLocationFromAddress(ctx,location)
+////                latitude = location.latitude.toDouble()
+////                longitude = locationDataList.longitude.toDouble()
+////                addressID = locationDataList.id.toString()
+////                name = locationDataList.name
+//
+//            }
+//        } else if (Constants.WantOtherLocation) {
+//            latitude = arguments?.getString("latitude")?.toDouble()!!
+//            longitude = arguments?.getString("longitude")?.toDouble()!!
+//        }
+        binding.otherTypeEdt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
@@ -141,19 +162,34 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener,
     private fun displayAddressType() {
         when (name) {
             Constants.HOME_ADDRESS -> {
-                binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.colorPrimary))
+                binding.homeBtn.setBackgroundColor(
+                    ContextCompat.getColor(
+                        ctx,
+                        R.color.colorPrimary
+                    )
+                )
                 binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
                 binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
             }
             Constants.WORK_ADDRESS -> {
                 binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
-                binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.colorPrimary))
+                binding.workBtn.setBackgroundColor(
+                    ContextCompat.getColor(
+                        ctx,
+                        R.color.colorPrimary
+                    )
+                )
                 binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
             }
             else -> {
                 binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
                 binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
-                binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.colorPrimary))
+                binding.otherBtn.setBackgroundColor(
+                    ContextCompat.getColor(
+                        ctx,
+                        R.color.colorPrimary
+                    )
+                )
             }
         }
 
@@ -206,77 +242,140 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener,
                 )
                 == PackageManager.PERMISSION_GRANTED
             ) {
-                buildGoogleApiClient();
+//                buildGoogleApiClient();
                 mMap.setMyLocationEnabled(true)
             }
         } else {
-            buildGoogleApiClient();
-            mMap.setMyLocationEnabled(true);
+//            buildGoogleApiClient();
+//            mMap.setMyLocationEnabled(true);
         }
+        val geocoder: Geocoder?
+        val addresses: List<Address>?
+        geocoder = Geocoder(ctx, Locale.getDefault())
+        try {
+            addresses = geocoder.getFromLocation(latitude, longitude, 1)
+            val address = (addresses as MutableList<Address>?)?.get(0)
+            var locality = ""
+            var addCheckLocality = ""
+            if (address != null) {
+                var subLocality = address.subLocality
+                addCheckLocality = address.locality
 
-        mMap.setOnCameraChangeListener { p0 ->
-            centerLatlng = p0?.target!!
-
-            val geocoder: Geocoder?
-            val addresses: List<Address>?
-            geocoder = Geocoder(ctx, Locale.getDefault())
-            try {
-                addresses = geocoder.getFromLocation(
-                    centerLatlng.latitude,
-                    centerLatlng.longitude,
-                    1
-                )
-                val address = (addresses as MutableList<Address>?)?.get(0)
-                var locality = ""
-                var checkLocality = ""
-                if (address != null) {
-                    var subLocality = address.subLocality
-                    checkLocality = address.locality
-                    if (subLocality == null) {
-                        subLocality = ""
-                    }
-                    if (checkLocality == null)
-                        checkLocality = ""
-
-                    if (subLocality == "" || checkLocality =="") {
-                        locality =
-                            address.featureName + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
-                    }else {
-                        locality =
-                            subLocality + "," + address.featureName + "," + address.locality + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
-                    }
-
-                    binding.mapAddressTxt.text = locality
-                    streetAddress = locality
-                    city = locality
-                    state = address.adminArea.toString()
-                    zip = address.postalCode.toString()
-                    country = address.countryName.toString()
-                    latitude = address.latitude
-                    longitude = address.longitude
-
-
-
-                    mMap.clear()
-
-                } else {
-                    Toast.makeText(ctx, "No Location Found", Toast.LENGTH_SHORT).show()
+                if (subLocality == null) {
+                    subLocality = ""
                 }
-            } catch (e: Exception) {
+                if (addCheckLocality == null)
+                    addCheckLocality = ""
+
+                if (subLocality == "" || addCheckLocality == "" ) {
+
+                    locality =
+                        address.featureName + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
+                } else {
+                    locality =
+                        subLocality + "," + address.featureName + "," + address.locality + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
+                }
+
+                binding.mapAddressTxt.text = locality
+                mMap.setOnCameraChangeListener(null)
 
             }
-        }  // end of get location while moving camera....
+            val markerOptions = MarkerOptions()
+            markerOptions.position(Constants.LATLNG!!)
+            markerOptions.title(address?.locality)
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_drop_icon))
+            mCurrLocationMarker = mMap.addMarker(markerOptions)
+
+            //move map camera
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(Constants.LATLNG))
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(12f))
+        } catch (e: java.lang.Exception) {
+
+        }
+//        mMap.setOnCameraMoveStartedListener { reason: Int ->
+//            when (reason) {
+//                GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE -> {
+//                    Log.d("camera", "The user gestured on the map.")
+//                }
+//                GoogleMap.OnCameraMoveStartedListener
+//                    .REASON_API_ANIMATION -> {
+//                    Log.d("camera", "The user tapped something on the map.")
+//                }
+//                GoogleMap.OnCameraMoveStartedListener
+//                    .REASON_DEVELOPER_ANIMATION -> {
+//                    Log.d("camera", "The app moved the camera.")
+//                }
+//            }
+//        }
+//            mMap.setOnCameraChangeListener { p0 ->
+//
+//                if(p0?.target?.latitude == 0.0){
+//                    centerLatlng  = Constants.LATLNG!!
+//                }else
+//                    centerLatlng = p0?.target!!
+//
+//                val geocoder: Geocoder?
+//                val addresses: List<Address>?
+//                geocoder = Geocoder(ctx, Locale.getDefault())
+//                try {
+//                    addresses = geocoder.getFromLocation(
+//                        centerLatlng.latitude,
+//                        centerLatlng.longitude,
+//                        1
+//                    )
+//                    val address = (addresses as MutableList<Address>?)?.get(0)
+//                    var locality = ""
+//                    var checkLocality = ""
+//                    if (address != null) {
+//                        var subLocality = address.subLocality
+//                        checkLocality = address.locality
+//                        if (subLocality == null) {
+//                            subLocality = ""
+//                        }
+//                        if (checkLocality == null)
+//                            checkLocality = ""
+//
+//                        if (subLocality == "" || checkLocality == "") {
+//                            locality =
+//                                address.featureName + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
+//                        } else {
+//                            locality =
+//                                subLocality + "," + address.featureName + "," + address.locality + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
+//                        }
+//
+//                        binding.mapAddressTxt.text = locality
+//                        streetAddress = locality
+//                        city = locality
+//                        state = address.adminArea.toString()
+//                        zip = address.postalCode.toString()
+//                        country = address.countryName.toString()
+//                        latitude = address.latitude
+//                        longitude = address.longitude
+//
+//
+//
+//                        mMap.clear()
+//
+//                    } else {
+//                        Toast.makeText(ctx, "No Location Found", Toast.LENGTH_SHORT).show()
+//                    }
+//                } catch (e: Exception) {
+//
+//                }
+//            }  // end of get location while moving camera....
+
+
 
     }
 
-    @Synchronized
-    protected fun buildGoogleApiClient() {
-        mGoogleApiClient = GoogleApiClient.Builder(activity!!)
-            .addConnectionCallbacks(this)
-            .addOnConnectionFailedListener(this)
-            .addApi(LocationServices.API).build()
-        mGoogleApiClient!!.connect()
-    }
+//    @Synchronized
+//    protected fun buildGoogleApiClient() {
+//        mGoogleApiClient = GoogleApiClient.Builder(requireActivity())
+//            .addConnectionCallbacks(this)
+//            .addOnConnectionFailedListener(this)
+//            .addApi(LocationServices.API).build()
+//        mGoogleApiClient!!.connect()
+//    }
 
     override fun onClick(v: View?) {
         when (v?.id) {
@@ -291,7 +390,12 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener,
             R.id.homeBtn -> {
                 name = Constants.HOME_ADDRESS
                 isOtherAddress = false
-                binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.colorPrimary))
+                binding.homeBtn.setBackgroundColor(
+                    ContextCompat.getColor(
+                        ctx,
+                        R.color.colorPrimary
+                    )
+                )
                 binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
                 binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
 
@@ -299,17 +403,27 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener,
             R.id.workBtn -> {
                 name = Constants.WORK_ADDRESS
                 isOtherAddress = false
-                binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx,R.color.grey_color))
-                binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx,R.color.colorPrimary))
-                binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx,R.color.grey_color))
+                binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
+                binding.workBtn.setBackgroundColor(
+                    ContextCompat.getColor(
+                        ctx,
+                        R.color.colorPrimary
+                    )
+                )
+                binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
 
             }   // end of work button....
             R.id.otherBtn -> {
 
                 isOtherAddress = true
-                binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx,R.color.grey_color))
-                binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx,R.color.grey_color))
-                binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx,R.color.colorPrimary))
+                binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
+                binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
+                binding.otherBtn.setBackgroundColor(
+                    ContextCompat.getColor(
+                        ctx,
+                        R.color.colorPrimary
+                    )
+                )
                 binding.homeBtn.visibility = View.GONE
                 binding.workBtn.visibility = View.GONE
                 binding.otherBtn.visibility = View.GONE
@@ -344,16 +458,12 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener,
                     }
                 } else {
 
-                if (!Constants.WantToUpdateAddress || Constants.WantOtherLocation) {
+                    if (Constants.WantToAddLocation) {
                         createAddressApi()
                     } else {
                         updateAddressList()
                     }
                 }
-
-
-
-
 
 
 //                if (name == "") {
@@ -415,24 +525,30 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener,
                                 val errorMessage = jsonObject.getString(Constants.ERROR)
                                 Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT).show()
                             } catch (e: JSONException) {
-                                Toast.makeText(ctx, "" + Constants.SOMETHING_WENT_WRONG, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    ctx,
+                                    "" + Constants.SOMETHING_WENT_WRONG,
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         }
                     }
                 }
+
                 override fun onFailure(call: Call<CreateLocationModel>, t: Throwable) {
                     binding.loaderLayout.visibility = View.GONE
                     Toast.makeText(ctx, "" + t.message, Toast.LENGTH_SHORT).show()
                 }
             })
     }
+
     // Update Address Api....
     private fun updateAddressList() {
         binding.loaderLayout.visibility = View.VISIBLE
         RetrofitClient.api.updateAddressApi(
             shared.getString(Constants.DataKey.AUTH_VALUE),
             Constants.DataKey.CONTENT_TYPE_VALUE,
-            addressID,
+            Constants.addressID,
             name,
             streetAddress,
             city,
@@ -451,7 +567,11 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener,
                     if (response.body() != null) {
                         if (response.isSuccessful) {
 
-                            Toast.makeText(ctx, "" + response.body()?.data?.Message.toString(), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                ctx,
+                                "" + response.body()?.data?.Message.toString(),
+                                Toast.LENGTH_SHORT
+                            ).show()
                             val fragment = LocationFragment()
                             val transaction = fragmentManager?.beginTransaction()
                             transaction?.replace(R.id.frameContainer, fragment)
@@ -465,79 +585,137 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener,
                                 val errorMessage = jsonObject.getString(Constants.ERROR)
                                 Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT).show()
                             } catch (e: JSONException) {
-                                Toast.makeText(ctx, "" + e.message.toString(), Toast.LENGTH_SHORT).show()
+                                Toast.makeText(ctx, "" + e.message.toString(), Toast.LENGTH_SHORT)
+                                    .show()
                             }
                         }
                     }
                 }
+
                 override fun onFailure(call: Call<UpdateAddressModel>, t: Throwable) {
                     binding.loaderLayout.visibility = View.GONE
-                    Toast.makeText(ctx,"" + t.message.toString(),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
                 }
             })
     }
 
-    override fun onConnected(bundle: Bundle?) {
-        mLocationRequest = LocationRequest()
-        mLocationRequest!!.interval = 1000
-        mLocationRequest!!.fastestInterval = 1000
-        mLocationRequest!!.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
-        if (ContextCompat.checkSelfPermission(
-                ctx,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-            == PackageManager.PERMISSION_GRANTED
-        ) {
-            LocationServices.FusedLocationApi.requestLocationUpdates(
-                mGoogleApiClient,
-                mLocationRequest,
-                this
-            )
-        }
+    override fun onCameraMove() {
 
+                    centerLatlng  = Constants.LATLNG!!
+
+                val geocoder: Geocoder?
+                val addresses: List<Address>?
+                geocoder = Geocoder(ctx, Locale.getDefault())
+                try {
+                    addresses = geocoder.getFromLocation(
+                        centerLatlng.latitude,
+                        centerLatlng.longitude,
+                        1
+                    )
+                    val address = (addresses as MutableList<Address>?)?.get(0)
+                    var locality = ""
+                    var checkLocality = ""
+                    if (address != null) {
+                        var subLocality = address.subLocality
+                        checkLocality = address.locality
+                        if (subLocality == null) {
+                            subLocality = ""
+                        }
+                        if (checkLocality == null)
+                            checkLocality = ""
+
+                        if (subLocality == "" || checkLocality == "") {
+                            locality =
+                                address.featureName + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
+                        } else {
+                            locality =
+                                subLocality + "," + address.featureName + "," + address.locality + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
+                        }
+
+                        binding.mapAddressTxt.text = locality
+                        streetAddress = locality
+                        city = locality
+                        state = address.adminArea.toString()
+                        zip = address.postalCode.toString()
+                        country = address.countryName.toString()
+                        latitude = address.latitude
+                        longitude = address.longitude
+
+
+
+                        mMap.clear()
+
+                    } else {
+                        Toast.makeText(ctx, "No Location Found", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+
+                }
     }
-
-    override fun onConnectionSuspended(p0: Int) {
-    }
-
-    override fun onConnectionFailed(p0: ConnectionResult) {
-    }
-
-    override fun onPause() {
-        super.onPause()
-        googleApiClient?.stopAutoManage(activity!!)
-        googleApiClient?.disconnect()
-    }
-
-    override fun onLocationChanged(location: Location?) {
-
-        val latLng: LatLng
-        mLastLocation = location
-        if (mCurrLocationMarker != null) {
-            mCurrLocationMarker!!.remove()
-        }
-
-        if ((Constants.WantToUpdateAddress) || (Constants.WantOtherLocation)) {
-            latLng = LatLng(latitude,longitude)
-        } else {
-            latLng = LatLng(location?.latitude!!,location.longitude)
-        }
-
-        val markerOptions = MarkerOptions()
-        markerOptions.position(latLng)
-        markerOptions.title("Current Position")
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-        mCurrLocationMarker = mMap.addMarker(markerOptions)
-
-        //move map camera
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng))
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(11F))
-
-        //stop location updates
-        if (mGoogleApiClient != null) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this)
-        }
-
-    }
+//
+//    override fun onConnected(bundle: Bundle?) {
+//        mLocationRequest = LocationRequest()
+//        mLocationRequest!!.interval = 1000
+//        mLocationRequest!!.fastestInterval = 1000
+//        mLocationRequest!!.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+//        if (ContextCompat.checkSelfPermission(
+//                ctx,
+//                Manifest.permission.ACCESS_FINE_LOCATION
+//            )
+//            == PackageManager.PERMISSION_GRANTED
+//        ) {
+//            LocationServices.FusedLocationApi.requestLocationUpdates(
+//                mGoogleApiClient,
+//                mLocationRequest,
+//                this
+//            )
+//        }
+//
+//    }
+//
+//    override fun onConnectionSuspended(p0: Int) {
+//    }
+//
+//    override fun onConnectionFailed(p0: ConnectionResult) {
+//    }
+//
+//    override fun onPause() {
+//        super.onPause()
+//        googleApiClient?.stopAutoManage(requireActivity())
+//        googleApiClient?.disconnect()
+//    }
+//
+//    override fun onLocationChanged(location: Location?) {
+//
+//        val latLng: LatLng
+//        mLastLocation = location
+//        if (mCurrLocationMarker != null) {
+//            mCurrLocationMarker!!.remove()
+//        }
+//
+//        latLng = LatLng(latitude,longitude)
+//
+////        if ((Constants.WantToUpdateAddress) || (Constants.WantOtherLocation)) {
+////            latLng = LatLng(latitude, longitude)
+////        } else {
+////            latLng = LatLng(location?.latitude!!, location.longitude)
+////        }
+//
+//        val markerOptions = MarkerOptions()
+//        markerOptions.position(latLng)
+//        markerOptions.title("Current Position")
+//        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+//        mCurrLocationMarker = mMap.addMarker(markerOptions)
+//
+//        //move map camera
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng))
+//        mMap.animateCamera(CameraUpdateFactory.zoomTo(11F))
+//
+//        //stop location updates
+//        if (mGoogleApiClient != null) {
+//            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this)
+//        }
+//
+//    }
 
 }

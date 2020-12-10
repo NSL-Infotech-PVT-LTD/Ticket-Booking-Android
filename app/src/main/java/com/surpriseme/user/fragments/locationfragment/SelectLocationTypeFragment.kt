@@ -72,7 +72,7 @@ class SelectLocationTypeFragment : Fragment(), View.OnClickListener {
         when (v?.id) {
             R.id.currentLocationBtn -> {
                 Constants.WantToUpdateAddress = false
-                Constants.WantOtherLocation = false
+                Constants.WantToAddLocation = false
                 replaceFragment(MapFragment())
             }
             R.id.selectOtherLocationBtn -> {
@@ -125,7 +125,7 @@ class SelectLocationTypeFragment : Fragment(), View.OnClickListener {
 
                         val fragment = MapFragment()
                         Constants.WantToUpdateAddress = false
-                        Constants.WantOtherLocation = true
+                        Constants.WantToAddLocation = true
                         val bundle = Bundle()
                         bundle.putString("latitude",latitude.toString())
                         bundle.putString("longitude",longitude.toString())

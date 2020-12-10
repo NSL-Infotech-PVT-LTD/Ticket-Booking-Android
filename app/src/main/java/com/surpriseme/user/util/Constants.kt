@@ -1,5 +1,6 @@
 package com.surpriseme.user.util
 
+import com.google.android.gms.maps.model.LatLng
 import com.surpriseme.user.fragments.bookingfragment.BookingArtistDetailModel
 
 object Constants {
@@ -49,7 +50,7 @@ object Constants {
     var LONGITUDE = "LONGITUDE"
     var NAME = ""
     var WantToUpdateAddress = false
-    var WantOtherLocation = false
+    var WantToAddLocation = false
     const val RECOVERY_REQUEST = 1
     const val LIVE_SHOW_BOOKING = "Live Show Booking"
     const val DIGITAL_SHOW_BOOKING = "Digital Show Booking"
@@ -86,6 +87,8 @@ object Constants {
     var SHOW_TYPE = ""
     var IS_SWITCH_TO_VIRTUAL = true
     var IS_ADDED_TO_BACKSTACK =false
+    var LATLNG:LatLng?=null
+    var addressID = ""
 
 
     object ApiKey {
