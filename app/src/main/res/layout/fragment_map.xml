@@ -32,33 +32,43 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
-            <fragment xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/map"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/mapLayout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_200sdp"
-                app:layout_constraintTop_toBottomOf="@id/toolbarCard"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:context=".MapsActivity" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbarCard">
+
+                <fragment xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:context=".MapsActivity" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <ImageView
                 android:id="@+id/pinDropIcon"
-                android:layout_width="@dimen/_60sdp"
-                android:layout_height="@dimen/_60sdp"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
                 android:adjustViewBounds="true"
                 android:src="@drawable/pin_drop_icon"
-                app:layout_constraintBottom_toBottomOf="@id/map"
-                app:layout_constraintEnd_toEndOf="@id/map"
-                app:layout_constraintStart_toStartOf="@id/map"
-                app:layout_constraintTop_toTopOf="@id/map" />
+                app:layout_constraintBottom_toBottomOf="@id/mapLayout"
+                app:layout_constraintEnd_toEndOf="@id/mapLayout"
+                app:layout_constraintStart_toStartOf="@id/mapLayout"
+                app:layout_constraintTop_toTopOf="@id/mapLayout" />
 
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:fillViewport="true"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/map">
+                app:layout_constraintTop_toBottomOf="@id/mapLayout">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -71,16 +81,27 @@
                         android:layout_marginHorizontal="@dimen/_20sdp"
                         android:layout_marginTop="@dimen/_20sdp"
                         android:background="@drawable/boxcardview"
+                        android:fontFamily="@font/montserrat_semibold"
                         android:gravity="center_vertical"
                         android:hint="@string/your_location"
                         android:imeOptions="actionDone"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_35sdp"
                         android:textColor="#66667E"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:paddingHorizontal="@dimen/_10sdp"
                         android:textSize="@dimen/_10sdp"
+                        android:maxLines="2"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/editAddressIcon"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/ic_edit_24"
+                        app:layout_constraintEnd_toEndOf="@id/mapAddressTxt"
+                        app:layout_constraintTop_toTopOf="@id/mapAddressTxt"
+                        app:layout_constraintBottom_toBottomOf="@id/mapAddressTxt"/>
 
                     <EditText
                         android:id="@+id/flatEdt"
@@ -89,13 +110,13 @@
                         android:layout_marginHorizontal="@dimen/_20sdp"
                         android:layout_marginTop="@dimen/_20sdp"
                         android:background="@drawable/boxcardview"
+                        android:fontFamily="@font/montserrat_semibold"
                         android:gravity="center_vertical"
                         android:hint="@string/house_number_flat"
                         android:imeOptions="actionDone"
                         android:paddingHorizontal="@dimen/_10sdp"
-                        android:textColor="#66667e"
-                        android:fontFamily="@font/montserrat_semibold"
                         android:singleLine="true"
+                        android:textColor="#66667e"
                         android:textSize="@dimen/_10sdp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -108,13 +129,13 @@
                         android:layout_marginHorizontal="@dimen/_20sdp"
                         android:layout_marginTop="@dimen/_20sdp"
                         android:background="@drawable/boxcardview"
+                        android:fontFamily="@font/montserrat_semibold"
                         android:gravity="center_vertical"
                         android:hint="@string/landmark"
                         android:imeOptions="actionDone"
                         android:paddingHorizontal="@dimen/_10sdp"
                         android:singleLine="true"
                         android:textColor="#66667E"
-                        android:fontFamily="@font/montserrat_semibold"
                         android:textSize="@dimen/_10sdp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -133,13 +154,13 @@
                             android:id="@+id/homeBtn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_bold"
                             android:text="@string/home"
                             android:textAllCaps="false"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_10sdp"
                             app:backgroundTint="@color/grey_color"
                             app:cornerRadius="@dimen/_20sdp"
-                            android:fontFamily="@font/montserrat_bold"
                             app:layout_constraintEnd_toStartOf="@+id/workBtn"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -148,11 +169,11 @@
                             android:id="@+id/workBtn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_bold"
                             android:text="@string/work"
                             android:textAllCaps="false"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_10sdp"
-                            android:fontFamily="@font/montserrat_bold"
                             app:backgroundTint="@color/grey_color"
                             app:cornerRadius="@dimen/_20sdp"
                             app:layout_constraintEnd_toStartOf="@id/otherBtn"
@@ -163,13 +184,13 @@
                             android:id="@+id/otherBtn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_bold"
                             android:text="@string/other"
                             android:textAllCaps="false"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_10sdp"
                             app:backgroundTint="@color/grey_color"
                             app:cornerRadius="@dimen/_20sdp"
-                            android:fontFamily="@font/montserrat_bold"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/workBtn"
                             app:layout_constraintTop_toTopOf="@+id/homeBtn" />
@@ -211,11 +232,11 @@
                         android:layout_height="@dimen/_50sdp"
                         android:layout_marginHorizontal="@dimen/_30sdp"
                         android:layout_marginBottom="@dimen/_10sdp"
+                        android:fontFamily="@font/montserrat_bold"
                         android:text="@string/save_address"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12sdp"
-                        android:fontFamily="@font/montserrat_bold"
                         app:cornerRadius="@dimen/_20sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -226,9 +247,10 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
 
-            <include layout="@layout/loader_layout"
+            <include
                 android:id="@+id/loaderLayout"
-                android:visibility="gone"/>
+                layout="@layout/loader_layout"
+                android:visibility="gone" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

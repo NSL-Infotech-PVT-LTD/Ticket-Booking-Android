@@ -54,7 +54,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/_20sdp"
             android:layout_marginHorizontal="@dimen/_20sdp"
-            android:layout_marginBottom="@dimen/_70sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -142,21 +142,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/addAddressBtn"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_50sdp"
-            android:layout_marginHorizontal="@dimen/_40sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:text="@string/add_address"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_10sdp"
-            app:cornerRadius="@dimen/_20sdp"
-            android:fontFamily="@font/montserrat_bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+
 
         <include layout="@layout/loader_layout"
             android:id="@+id/loaderLayout"

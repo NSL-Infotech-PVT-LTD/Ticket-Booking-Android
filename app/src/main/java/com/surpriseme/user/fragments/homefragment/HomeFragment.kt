@@ -329,13 +329,8 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                     ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_pink)
                 binding.addressLayout.visibility = View.VISIBLE
 
-                if (Constants.SAVED_LOCATION) {
-                    binding.yourLocationInfo.text = shared.getString(Constants.ADDRESS)
-                    artistListApi(
-                        shared.getString(Constants.LATITUDE),
-                        shared.getString(Constants.LONGITUDE),
-                        search
-                    )
+                if (locationList.isNotEmpty()) {
+                    artistListApi(locationList[0].latitude,locationList[0].longitude,search)
                 } else {
                     val fragment = LocationFragment()
                     val transaction = fragmentManager?.beginTransaction()

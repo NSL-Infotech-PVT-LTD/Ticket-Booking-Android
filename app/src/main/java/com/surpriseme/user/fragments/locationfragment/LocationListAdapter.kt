@@ -5,14 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RadioButton
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.R
 import com.surpriseme.user.util.Constants
+import java.util.logging.Handler
 
 class LocationListAdapter(private val context: Context, private val locationList: ArrayList<LocationDataList>,private val dispAddToDashboard: DisplayAddToDashboard,
 private val deleteAddress: DeleteAddress,private val editLocation: EditAddress) :RecyclerView.Adapter<LocationListAdapter.LocationViewHolder>() {
+
+    var adpPosition = -1
 
     inner class LocationViewHolder(itemView:View) : RecyclerView.ViewHolder(itemView) {
 
@@ -21,6 +25,7 @@ private val deleteAddress: DeleteAddress,private val editLocation: EditAddress) 
         val editAddress = itemView.findViewById<ImageView>(R.id.addressEditIcon)!!
         val deleteAddress = itemView.findViewById<ImageView>(R.id.addressDeleteIcon)!!
         val address = itemView.findViewById<MaterialTextView>(R.id.addressTxt)!!
+        val radioButton = itemView.findViewById<RadioButton>(R.id.radioBtn)!!
 
 
     }
@@ -65,6 +70,10 @@ private val deleteAddress: DeleteAddress,private val editLocation: EditAddress) 
                 holder.addressTypeTxt.text = model.name
             }
             }
+
+            if (Constants.adpPosition == holder.adapterPosition) {
+                holder.radioButton.isChecked = true
+            }
             holder.address.text = model.street_address
 
             holder.editAddress.setOnClickListener {
@@ -76,8 +85,13 @@ private val deleteAddress: DeleteAddress,private val editLocation: EditAddress) 
                 deleteAddress.deleteAdd(model.id.toString())
             }
 
+            holder.radioButton.isChecked = Constants.adpPosition ==position
             holder.itemView.setOnClickListener {
                 // Item view click to send address to dashboard, Click implemented on LocationFragment....
+                holder.radioButton.isChecked = true
+
+                Constants.adpPosition = holder.adapterPosition
+                notifyDataSetChanged()
                 if (model.street_address!=null)
                 dispAddToDashboard.dispAddressDashboard(model.street_address, model.latitude,model.longitude, model.name)
             }

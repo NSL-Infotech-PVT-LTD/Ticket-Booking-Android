@@ -89,6 +89,7 @@ object Constants {
     var IS_ADDED_TO_BACKSTACK =false
     var LATLNG:LatLng?=null
     var addressID = ""
+    var adpPosition = -1
 
 
     object ApiKey {

@@ -1,8 +1,10 @@
 package com.surpriseme.user.fragments.googlemapfragment
 
 import android.Manifest
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
@@ -30,10 +32,12 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.textview.MaterialTextView
 import com.google.firebase.firestore.GeoPoint
 import com.surpriseme.user.R
@@ -56,7 +60,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener, GoogleMap.OnCameraMoveListener
+class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
 //    GoogleApiClient.ConnectionCallbacks,
 //    GoogleApiClient.OnConnectionFailedListener,
 //    LocationListener
@@ -69,6 +73,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener, Google
     private lateinit var tbackpress: MaterialTextView
     private lateinit var centerLatlng: LatLng
     private var googleApiClient: GoogleApiClient? = null
+    private var locationName = ""
+
 
 
     // variables for hit api....
@@ -80,6 +86,11 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener, Google
     private var country = ""
     private var latitude = 0.0
     private var longitude = 0.0
+    // var for Place sdk....
+    private val AUTOCOMPLETE_REQUEST_CODE = 1
+    private var latlng:LatLng?=null
+    private var lat:Double = 0.0
+    private var lng:Double = 0.0
 
     private val ERROR_DIALOG_REQUEST = 9001
     var mLastLocation: Location? = null
@@ -110,21 +121,35 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener, Google
         val view = binding.root
         shared = PrefrenceShared(ctx)
 
+        Places.initialize(ctx, ctx.resources.getString(R.string.places_api_key))
+        val placesClient = Places.createClient(ctx)
+
         if (isServicesOk()) {
-            init()
+            init(view)
         }
         tbackpress = view.findViewById(R.id.backpress)
         tbackpress.setOnClickListener(this)
+        binding.mapLayout.setOnClickListener {
+            mMap.setOnCameraChangeListener(object :GoogleMap.OnCameraChangeListener{
+                override fun onCameraChange(p0: CameraPosition?) {
+                    Toast.makeText(ctx,"camera move",Toast.LENGTH_SHORT).show()
+                }
+
+            })
+        }
 
         if (Constants.WantToAddLocation) {
             latitude = arguments?.getDouble("lat")!!
             longitude = arguments?.getDouble("lng")!!
+            locationName = arguments?.getString("locationName")!!
         } else if (Constants.WantToUpdateAddress) {
 
                 latitude = arguments?.getDouble("lat")!!
                 longitude = arguments?.getDouble("lng")!!
+            locationName = arguments?.getString("locationName")!!
 
         }
+        displayAddressType(locationName)
 
 
 //        if (Constants.WantToUpdateAddress) {
@@ -159,8 +184,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener, Google
         return view
     }
 
-    private fun displayAddressType() {
-        when (name) {
+    private fun displayAddressType(locationName:String) {
+        when (locationName) {
             Constants.HOME_ADDRESS -> {
                 binding.homeBtn.setBackgroundColor(
                     ContextCompat.getColor(
@@ -213,13 +238,16 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener, Google
 
     }
 
-    private fun init() {
+    private fun init(view: View) {
+
 
         binding.homeBtn.setOnClickListener(this)
         binding.workBtn.setOnClickListener(this)
         binding.otherBtn.setOnClickListener(this)
         binding.saveAddressBtn.setOnClickListener(this)
         binding.closeIcon.setOnClickListener(this)
+        binding.editAddressIcon.setOnClickListener(this)
+
 
         initializingGoogleMap()
 
@@ -235,7 +263,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener, Google
 
         mMap = googleMap
 
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(
                     ctx,
                     Manifest.permission.ACCESS_FINE_LOCATION
@@ -277,19 +305,35 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener, Google
                 }
 
                 binding.mapAddressTxt.text = locality
+                if (binding.mapAddressTxt.text.length == 0) {
+                    binding.editAddressIcon.visibility = View.GONE
+                }else {
+                    binding.editAddressIcon.visibility = View.VISIBLE
+                }
                 mMap.setOnCameraChangeListener(null)
 
             }
-            val markerOptions = MarkerOptions()
-            markerOptions.position(Constants.LATLNG!!)
-            markerOptions.title(address?.locality)
-            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_drop_icon))
-            mCurrLocationMarker = mMap.addMarker(markerOptions)
+//            val markerOptions = MarkerOptions()
+//            markerOptions.position(Constants.LATLNG!!)
+//            markerOptions.title(address?.locality)
+//            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_drop_icon))
+//            mCurrLocationMarker = mMap.addMarker(markerOptions)
 
-            //move map camera
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(Constants.LATLNG))
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(12f))
+//            //move map camera
+//            mMap.moveCamera(CameraUpdateFactory.newLatLng(Constants.LATLNG))
+//            mMap.animateCamera(CameraUpdateFactory.zoomTo(12f))
+//            mMap.setOnCameraChangeListener(null)
+
+
+            val latLngBounds = LatLngBounds.Builder()
+                .include(Constants.LATLNG)
+                .build()
+            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 5))
+
+
         } catch (e: java.lang.Exception) {
+
+            Toast.makeText(ctx,"" + e.message.toString(),Toast.LENGTH_SHORT).show()
 
         }
 //        mMap.setOnCameraMoveStartedListener { reason: Int ->
@@ -307,64 +351,67 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener, Google
 //                }
 //            }
 //        }
-//            mMap.setOnCameraChangeListener { p0 ->
-//
-//                if(p0?.target?.latitude == 0.0){
-//                    centerLatlng  = Constants.LATLNG!!
-//                }else
-//                    centerLatlng = p0?.target!!
-//
-//                val geocoder: Geocoder?
-//                val addresses: List<Address>?
-//                geocoder = Geocoder(ctx, Locale.getDefault())
-//                try {
-//                    addresses = geocoder.getFromLocation(
-//                        centerLatlng.latitude,
-//                        centerLatlng.longitude,
-//                        1
-//                    )
-//                    val address = (addresses as MutableList<Address>?)?.get(0)
-//                    var locality = ""
-//                    var checkLocality = ""
-//                    if (address != null) {
-//                        var subLocality = address.subLocality
-//                        checkLocality = address.locality
-//                        if (subLocality == null) {
-//                            subLocality = ""
-//                        }
-//                        if (checkLocality == null)
-//                            checkLocality = ""
-//
-//                        if (subLocality == "" || checkLocality == "") {
-//                            locality =
-//                                address.featureName + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
-//                        } else {
-//                            locality =
-//                                subLocality + "," + address.featureName + "," + address.locality + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
-//                        }
-//
-//                        binding.mapAddressTxt.text = locality
-//                        streetAddress = locality
-//                        city = locality
-//                        state = address.adminArea.toString()
-//                        zip = address.postalCode.toString()
-//                        country = address.countryName.toString()
-//                        latitude = address.latitude
-//                        longitude = address.longitude
-//
-//
-//
-//                        mMap.clear()
-//
-//                    } else {
-//                        Toast.makeText(ctx, "No Location Found", Toast.LENGTH_SHORT).show()
-//                    }
-//                } catch (e: Exception) {
-//
-//                }
-//            }  // end of get location while moving camera....
 
+            mMap.setOnCameraChangeListener { p0 ->
 
+                if (p0?.target!!.latitude == 0.0)
+                    centerLatlng = Constants.LATLNG!!
+                else
+                    centerLatlng = p0.target!!
+
+                val geocoder: Geocoder?
+                val addresses: List<Address>?
+                geocoder = Geocoder(ctx, Locale.getDefault())
+                try {
+                    addresses = geocoder.getFromLocation(
+                        centerLatlng.latitude,
+                        centerLatlng.longitude,
+                        1
+                    )
+                    val address = (addresses as MutableList<Address>?)?.get(0)
+                    var locality = ""
+                    var checkLocality = ""
+                    if (address != null) {
+                        var subLocality = address.subLocality
+                        checkLocality = address.locality
+                        if (subLocality == null) {
+                            subLocality = ""
+                        }
+                        if (checkLocality == null)
+                            checkLocality = ""
+
+                        if (subLocality == "" || checkLocality == "") {
+                            locality =
+                                address.featureName + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
+                        } else {
+                            locality =
+                                subLocality + "," + address.featureName + "," + address.locality + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
+                        }
+
+                        binding.mapAddressTxt.text = locality
+                        streetAddress = locality
+                        city = locality
+                        state = address.adminArea.toString()
+                        zip = address.postalCode.toString()
+                        country = address.countryName.toString()
+                        latitude = address.latitude
+                        longitude = address.longitude
+
+                        if (binding.mapAddressTxt.text.length == 0) {
+                            binding.editAddressIcon.visibility = View.GONE
+                        }else {
+                            binding.editAddressIcon.visibility = View.VISIBLE
+                        }
+
+                        mMap.clear()
+
+                    } else {
+                        Toast.makeText(ctx, "No Location Found", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+
+                }
+            }  // end of get location while moving camera....
 
     }
 
@@ -481,8 +528,58 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener, Google
 //                }
 
             }   // end of Save Address Button....
+            R.id.editAddressIcon -> {
+
+                Constants.WantToUpdateAddress = false
+                val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)
+                val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                    .build(ctx)
+                startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
+                binding.editAddressIcon.visibility = View.GONE
+            }
 
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+                    data?.let {
+                        val place = Autocomplete.getPlaceFromIntent(data)
+                        latlng = place.latLng
+                        Constants.LATLNG = latlng
+                        Constants.WantToAddLocation = false
+                        Constants.WantToUpdateAddress = true
+                        lat = latlng?.latitude!!
+                        lng = latlng?.longitude!!
+//                        Log.i(TAG, "Place: ${place.name}, ${place.id}")
+                        val fragment = MapFragment()
+                        val bundle = Bundle()
+                        bundle.putDouble("lat",lat)
+                        bundle.putDouble("lng",lng)
+                        fragment.arguments = bundle
+                        val transaction = fragmentManager?.beginTransaction()
+                        transaction?.replace(R.id.frameContainer,fragment)
+                        transaction?.commit()
+
+                    }
+                }
+                AutocompleteActivity.RESULT_ERROR -> {
+
+                    data?.let {
+                        val status = Autocomplete.getStatusFromIntent(data)
+//                        Log.i(TAG, status.statusMessage)
+                        Toast.makeText(ctx,"" + status.statusMessage.toString(),Toast.LENGTH_SHORT).show()
+                    }
+                }
+                Activity.RESULT_CANCELED -> {
+                    // The user canceled the operation.
+                }
+            }
+            return
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     // Create Address Api....
@@ -509,7 +606,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener, Google
                     response: Response<CreateLocationModel>
                 ) {
                     binding.loaderLayout.visibility = View.GONE
-                    displayAddressType()
                     if (response.body() != null) {
                         if (response.isSuccessful) {
                             val fragment = LocationFragment()
@@ -599,59 +695,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener, Google
             })
     }
 
-    override fun onCameraMove() {
 
-                    centerLatlng  = Constants.LATLNG!!
-
-                val geocoder: Geocoder?
-                val addresses: List<Address>?
-                geocoder = Geocoder(ctx, Locale.getDefault())
-                try {
-                    addresses = geocoder.getFromLocation(
-                        centerLatlng.latitude,
-                        centerLatlng.longitude,
-                        1
-                    )
-                    val address = (addresses as MutableList<Address>?)?.get(0)
-                    var locality = ""
-                    var checkLocality = ""
-                    if (address != null) {
-                        var subLocality = address.subLocality
-                        checkLocality = address.locality
-                        if (subLocality == null) {
-                            subLocality = ""
-                        }
-                        if (checkLocality == null)
-                            checkLocality = ""
-
-                        if (subLocality == "" || checkLocality == "") {
-                            locality =
-                                address.featureName + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
-                        } else {
-                            locality =
-                                subLocality + "," + address.featureName + "," + address.locality + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
-                        }
-
-                        binding.mapAddressTxt.text = locality
-                        streetAddress = locality
-                        city = locality
-                        state = address.adminArea.toString()
-                        zip = address.postalCode.toString()
-                        country = address.countryName.toString()
-                        latitude = address.latitude
-                        longitude = address.longitude
-
-
-
-                        mMap.clear()
-
-                    } else {
-                        Toast.makeText(ctx, "No Location Found", Toast.LENGTH_SHORT).show()
-                    }
-                } catch (e: Exception) {
-
-                }
-    }
+}
 //
 //    override fun onConnected(bundle: Bundle?) {
 //        mLocationRequest = LocationRequest()
@@ -718,4 +763,3 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener, Google
 //
 //    }
 
-}

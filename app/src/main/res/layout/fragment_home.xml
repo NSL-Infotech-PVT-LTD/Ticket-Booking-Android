@@ -60,7 +60,7 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/addressLayout"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/_30sdp"
                         android:layout_marginStart="@dimen/_5sdp"
                         app:layout_constraintTop_toTopOf="@id/imageCard"
                         app:layout_constraintBottom_toBottomOf="@id/imageCard"
@@ -73,14 +73,16 @@
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/yourLocationInfo"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="0dp"
                             android:singleLine="true"
                             android:textColor="#8e8e8e"
                             android:textSize="@dimen/_8sdp"
+                            android:gravity="center_vertical"
                             android:fontFamily="@font/montserrat_semibold"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

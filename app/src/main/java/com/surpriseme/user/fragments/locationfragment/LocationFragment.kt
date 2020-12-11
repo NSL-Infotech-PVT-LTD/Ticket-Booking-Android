@@ -3,13 +3,11 @@ package com.surpriseme.user.fragments.locationfragment
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.os.Handler
+import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -22,10 +20,11 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.R
-import com.surpriseme.user.databinding.FragmentLocationBinding
 import com.surpriseme.user.activity.mainactivity.MainActivity
+import com.surpriseme.user.databinding.FragmentLocationBinding
 import com.surpriseme.user.fragments.googlemapfragment.MapFragment
 import com.surpriseme.user.fragments.homefragment.HomeFragment
 import com.surpriseme.user.retrofit.RetrofitClient
@@ -54,15 +53,16 @@ class LocationFragment : Fragment(), View.OnClickListener,
     private var lat:Double = 0.0
     private var lng:Double = 0.0
     private var address = ""
+    private var locationName = ""
 
     private val AUTOCOMPLETE_REQUEST_CODE = 1
     private var latlng:LatLng?=null
+    private var addAddressBtn:MaterialButton?=null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         ctx = context
         ((ctx as MainActivity)).locationFragmentContext(this@LocationFragment)
-
     }
 
     override fun onCreateView(
@@ -74,9 +74,15 @@ class LocationFragment : Fragment(), View.OnClickListener,
         val view = binding.root
         shared = PrefrenceShared(ctx)
 
+        requireActivity().getWindow()?.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+
         tbackpress = view.findViewById(R.id.backpress) // Toolbar back arrow click listner....
         tbackpress.setOnClickListener(this) //  Initializing the Toolbar
-        binding.addAddressBtn.setOnClickListener(this) //  Initializing the Add Address Button click
+
+        addAddressBtn = view.findViewById(R.id.addAddressBtn)
+        addAddressBtn?.visibility = View.VISIBLE
+        addAddressBtn?.setOnClickListener(this) //  Initializing the Add Address Button click
 
 
         Places.initialize(ctx, ctx.resources.getString(R.string.places_api_key))
@@ -113,12 +119,15 @@ class LocationFragment : Fragment(), View.OnClickListener,
             }
             R.id.addAddressBtn -> {
                 Constants.WantToUpdateAddress = false
-                val fields = listOf(Place.Field.ID, Place.Field.NAME,Place.Field.LAT_LNG,Place.Field.ADDRESS)
+                val fields = listOf(
+                    Place.Field.ID,
+                    Place.Field.NAME,
+                    Place.Field.LAT_LNG,
+                    Place.Field.ADDRESS
+                )
                 val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
                     .build(ctx)
                 startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
-
-
             }
             R.id.refresh -> {
                 binding.noDataFound.visibility = View.GONE
@@ -144,11 +153,11 @@ class LocationFragment : Fragment(), View.OnClickListener,
 //                        Log.i(TAG, "Place: ${place.name}, ${place.id}")
                         val fragment = MapFragment()
                         val bundle = Bundle()
-                        bundle.putDouble("lat",lat)
-                        bundle.putDouble("lng",lng)
+                        bundle.putDouble("lat", lat)
+                        bundle.putDouble("lng", lng)
                         fragment.arguments = bundle
                         val transaction = fragmentManager?.beginTransaction()
-                        transaction?.replace(R.id.frameContainer,fragment)
+                        transaction?.replace(R.id.frameContainer, fragment)
                         transaction?.commit()
 
                     }
@@ -158,7 +167,11 @@ class LocationFragment : Fragment(), View.OnClickListener,
                     data?.let {
                         val status = Autocomplete.getStatusFromIntent(data)
 //                        Log.i(TAG, status.statusMessage)
-                        Toast.makeText(ctx,"" + status.statusMessage.toString(),Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            ctx,
+                            "" + status.statusMessage.toString(),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
                 Activity.RESULT_CANCELED -> {
@@ -242,20 +255,23 @@ class LocationFragment : Fragment(), View.OnClickListener,
             })
     }   // End of location list api....
 
-    override fun dispAddressDashboard(address: String,lat:String,lng:String, name:String) {
+    override fun dispAddressDashboard(address: String, lat: String, lng: String, name: String) {
 
-        Constants.SAVED_LOCATION = true
-        addressDashboard = address
-        latitude = lat
-        longitude = lng
-        shared.setString(Constants.ADDRESS, addressDashboard)
-        shared.setString(Constants.LATITUDE, latitude)
-        shared.setString(Constants.NAME, name)
+        Handler().postDelayed({
+            Constants.SAVED_LOCATION = true
+            addressDashboard = address
+            latitude = lat
+            longitude = lng
+            shared.setString(Constants.ADDRESS, addressDashboard)
+            shared.setString(Constants.LATITUDE, latitude)
+            shared.setString(Constants.NAME, name)
 
-        val fragment = HomeFragment()
-        val transaction = fragmentManager?.beginTransaction()
-        transaction?.replace(R.id.frameContainer, fragment)
-        transaction?.commit()
+            val fragment = HomeFragment()
+            val transaction = fragmentManager?.beginTransaction()
+            transaction?.replace(R.id.frameContainer, fragment)
+            transaction?.commit()
+        }, 500)
+
     }
 
     private fun deleteAddressApi(id: String) {
@@ -288,7 +304,8 @@ class LocationFragment : Fragment(), View.OnClickListener,
                                 val errorMessage = jsonObject.getString(Constants.ERROR)
                                 Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT).show()
                             } catch (e: JSONException) {
-                                Toast.makeText(ctx, "" + e.message.toString(), Toast.LENGTH_SHORT).show()
+                                Toast.makeText(ctx, "" + e.message.toString(), Toast.LENGTH_SHORT)
+                                    .show()
                             }
                         }
                     }
@@ -340,16 +357,21 @@ class LocationFragment : Fragment(), View.OnClickListener,
 
     override fun updateAddress(locationDataList: LocationDataList) {
 
-        Constants.LATLNG = LatLng(locationDataList.latitude.toDouble(),locationDataList.longitude.toDouble())
+        Constants.LATLNG = LatLng(
+            locationDataList.latitude.toDouble(),
+            locationDataList.longitude.toDouble()
+        )
         Constants.addressID = locationDataList.id.toString()
+        locationName = locationDataList.name
         Constants.WantToAddLocation = false
         Constants.WantToUpdateAddress = true
         latitude = locationDataList.latitude
         longitude = locationDataList.longitude
         val fragment = MapFragment()
         val bundle = Bundle()
-        bundle.putDouble("lat",latitude.toDouble())
-        bundle.putDouble("lng",longitude.toDouble())
+        bundle.putDouble("lat", latitude.toDouble())
+        bundle.putDouble("lng", longitude.toDouble())
+        bundle.putString("locationName",locationName)
         fragment.arguments = bundle
         val transaction = fragmentManager?.beginTransaction()
         transaction?.replace(R.id.frameContainer, fragment)
