@@ -209,17 +209,17 @@
                         android:paddingHorizontal="@dimen/_10sdp"
                         android:singleLine="true"
                         android:textSize="@dimen/_10sdp"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/landmarkEdt" />
+                        app:layout_constraintTop_toBottomOf="@+id/typeLayout" />
 
                     <ImageView
                         android:id="@+id/closeIcon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_close"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         app:layout_constraintBottom_toTopOf="@id/otherTypeEdt"
                         app:layout_constraintEnd_toEndOf="@id/otherTypeEdt"
                         app:layout_constraintStart_toEndOf="@id/otherTypeEdt"
@@ -238,10 +238,12 @@
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12sdp"
                         app:cornerRadius="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        app:layout_goneMarginTop="@dimen/_20sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/typeLayout"
+                        app:layout_constraintTop_toBottomOf="@+id/otherTypeEdt"
                         app:layout_constraintVertical_bias="0.9" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,12 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.R
 import com.surpriseme.user.util.Constants
+import com.surpriseme.user.util.PrefrenceShared
 import java.util.logging.Handler
 
-class LocationListAdapter(private val context: Context, private val locationList: ArrayList<LocationDataList>,private val dispAddToDashboard: DisplayAddToDashboard,
+class LocationListAdapter(private var shared:PrefrenceShared ,private val context: Context, private val locationList: ArrayList<LocationDataList>,private val dispAddToDashboard: DisplayAddToDashboard,
 private val deleteAddress: DeleteAddress,private val editLocation: EditAddress) :RecyclerView.Adapter<LocationListAdapter.LocationViewHolder>() {
 
-    var adpPosition = -1
+    private var adpPosition = shared.getInt("myValue")
+
 
     inner class LocationViewHolder(itemView:View) : RecyclerView.ViewHolder(itemView) {
 
@@ -71,7 +73,7 @@ private val deleteAddress: DeleteAddress,private val editLocation: EditAddress) 
             }
             }
 
-            if (Constants.adpPosition == holder.adapterPosition) {
+            if (adpPosition == holder.adapterPosition) {
                 holder.radioButton.isChecked = true
             }
             holder.address.text = model.street_address
@@ -85,12 +87,14 @@ private val deleteAddress: DeleteAddress,private val editLocation: EditAddress) 
                 deleteAddress.deleteAdd(model.id.toString())
             }
 
-            holder.radioButton.isChecked = Constants.adpPosition ==position
+            holder.radioButton.isChecked = adpPosition ==position
             holder.itemView.setOnClickListener {
                 // Item view click to send address to dashboard, Click implemented on LocationFragment....
                 holder.radioButton.isChecked = true
 
-                Constants.adpPosition = holder.adapterPosition
+//                Constants.adpPosition = holder.adapterPosition
+                adpPosition = holder.adapterPosition
+                shared?.setInt("myValue",adpPosition)
                 notifyDataSetChanged()
                 if (model.street_address!=null)
                 dispAddToDashboard.dispAddressDashboard(model.street_address, model.latitude,model.longitude, model.name)

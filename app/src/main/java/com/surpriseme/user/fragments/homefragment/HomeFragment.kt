@@ -216,6 +216,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 )
             )
         }
+
         binding.viewProfile.setOnClickListener(this)
         binding.addressLayout.setOnClickListener(this)
         binding.searchEdt.setOnClickListener(this)

@@ -134,7 +134,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                 override fun onCameraChange(p0: CameraPosition?) {
                     Toast.makeText(ctx,"camera move",Toast.LENGTH_SHORT).show()
                 }
-
             })
         }
 
@@ -195,6 +194,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                 )
                 binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
                 binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
+                binding.otherTypeEdt.visibility = View.GONE
+                binding.closeIcon.visibility = View.GONE
             }
             Constants.WORK_ADDRESS -> {
                 binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
@@ -205,16 +206,15 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                     )
                 )
                 binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
+                binding.otherTypeEdt.visibility = View.GONE
+                binding.closeIcon.visibility = View.GONE
             }
             else -> {
                 binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
                 binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
-                binding.otherBtn.setBackgroundColor(
-                    ContextCompat.getColor(
-                        ctx,
-                        R.color.colorPrimary
-                    )
-                )
+                binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.colorPrimary))
+                binding.otherTypeEdt.visibility = View.VISIBLE
+                binding.otherTypeEdt.setText(locationName)
             }
         }
 
@@ -437,27 +437,23 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
             R.id.homeBtn -> {
                 name = Constants.HOME_ADDRESS
                 isOtherAddress = false
-                binding.homeBtn.setBackgroundColor(
-                    ContextCompat.getColor(
-                        ctx,
-                        R.color.colorPrimary
-                    )
-                )
+                binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.colorPrimary))
                 binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
                 binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
+                binding.otherTypeEdt.visibility = View.GONE
+                binding.closeIcon.visibility = View.GONE
+                binding.otherTypeEdt.text.clear()
 
             }   // end of home button....
             R.id.workBtn -> {
                 name = Constants.WORK_ADDRESS
                 isOtherAddress = false
                 binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
-                binding.workBtn.setBackgroundColor(
-                    ContextCompat.getColor(
-                        ctx,
-                        R.color.colorPrimary
-                    )
-                )
+                binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.colorPrimary))
                 binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
+                binding.otherTypeEdt.visibility = View.GONE
+                binding.closeIcon.visibility = View.GONE
+                binding.otherTypeEdt.text.clear()
 
             }   // end of work button....
             R.id.otherBtn -> {
@@ -465,23 +461,20 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                 isOtherAddress = true
                 binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
                 binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
-                binding.otherBtn.setBackgroundColor(
-                    ContextCompat.getColor(
-                        ctx,
-                        R.color.colorPrimary
-                    )
-                )
-                binding.homeBtn.visibility = View.GONE
-                binding.workBtn.visibility = View.GONE
-                binding.otherBtn.visibility = View.GONE
+                binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.colorPrimary))
                 binding.otherTypeEdt.visibility = View.VISIBLE
                 binding.closeIcon.visibility = View.VISIBLE
+                binding.otherTypeEdt.setText(locationName)
+//                binding.homeBtn.visibility = View.GONE
+//                binding.workBtn.visibility = View.GONE
+//                binding.otherBtn.visibility = View.GONE
+
 
             }   // end of other button....
             R.id.closeIcon -> {
-                binding.homeBtn.visibility = View.VISIBLE
-                binding.workBtn.visibility = View.VISIBLE
-                binding.otherBtn.visibility = View.VISIBLE
+//                binding.homeBtn.visibility = View.VISIBLE
+//                binding.workBtn.visibility = View.VISIBLE
+//                binding.otherBtn.visibility = View.VISIBLE
                 binding.otherTypeEdt.visibility = View.GONE
                 binding.closeIcon.visibility = View.GONE
             }

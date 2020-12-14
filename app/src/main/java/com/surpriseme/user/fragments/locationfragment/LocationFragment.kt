@@ -65,6 +65,7 @@ class LocationFragment : Fragment(), View.OnClickListener,
         ((ctx as MainActivity)).locationFragmentContext(this@LocationFragment)
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -215,7 +216,7 @@ class LocationFragment : Fragment(), View.OnClickListener,
                                 binding.noDataFound.visibility = View.GONE
                                 binding.refresh.visibility = View.GONE
                                 val locationListAdapter =
-                                    LocationListAdapter(
+                                    LocationListAdapter(shared,
                                         ctx,
                                         locationList,
                                         this@LocationFragment,
@@ -265,7 +266,6 @@ class LocationFragment : Fragment(), View.OnClickListener,
             shared.setString(Constants.ADDRESS, addressDashboard)
             shared.setString(Constants.LATITUDE, latitude)
             shared.setString(Constants.NAME, name)
-
             val fragment = HomeFragment()
             val transaction = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.frameContainer, fragment)

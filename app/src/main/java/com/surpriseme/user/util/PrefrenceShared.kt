@@ -15,9 +15,22 @@ class PrefrenceShared(val context: Context) {
         editor1?.apply()
     }
 
+    fun setInt(key1: String?, value1: Int?) {
+        val prefs1 = context?.getSharedPreferences("abc", Context.MODE_PRIVATE)
+//        val prefs1 = PreferenceManager.getDefaultSharedPreferences(context)
+        val editor1 = prefs1?.edit()
+        editor1?.putInt(key1, value1!!)
+        editor1?.apply()
+    }
+
     fun getString(key1: String): String {
         val prefs1 = context?.getSharedPreferences("abc", Context.MODE_PRIVATE)
         return prefs1?.getString(key1, "")!!
+    }
+
+    fun getInt(key1: String): Int {
+        val prefs1 = context?.getSharedPreferences("abc", Context.MODE_PRIVATE)
+        return prefs1?.getInt(key1, -1)!!
     }
 
 
