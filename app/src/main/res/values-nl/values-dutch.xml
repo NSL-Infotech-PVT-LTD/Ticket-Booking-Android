@@ -36,8 +36,6 @@
     <string name="username">Username</string>
     <string name="confirm_pass">Confirm Password</string>
     <string name="register_now">Register Now</string>
-    <string name="facebook_app_id">688614105089365</string>
-    <string name="fb_login_protocol_scheme">fb688614105089365</string>
     <string name="please_fill_require_field">Please fill the require field</string>
     <string name="password_not_match">Password not match</string>
     <string name="con_Text">Continue</string>
@@ -45,7 +43,8 @@
     <string name="home">Home</string>
     <string name="booking">Booking</string>
     <string name="chat">Chat</string>
-
+    <string name="facebook_app_id">1078382892582555</string>
+    <string name="fb_login_protocol_scheme">fb1078382892582555</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="your_location">Your Location</string>
     <string name="view_profile">View Profile</string>

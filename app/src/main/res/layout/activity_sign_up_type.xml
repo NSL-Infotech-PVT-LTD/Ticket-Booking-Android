@@ -85,6 +85,7 @@
                             android:gravity="center"
                             android:text="@string/signup_with_email"
                             android:textAllCaps="false"
+                            android:paddingHorizontal="@dimen/_10sdp"
                             android:fontFamily="@font/montserrat_medium"
                             android:textColor="@color/colorPrimary"
                             android:textSize="12sp"
@@ -116,15 +117,16 @@
                             app:layout_constraintTop_toBottomOf="@+id/signUpEmailBtn" />
 
                         <com.facebook.login.widget.LoginButton
-                            android:id="@+id/signUpFbBtn"
+                            android:id="@+id/loginButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginTop="30dp"
                             android:layout_marginBottom="30dp"
-                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/orTxt"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/orTxt" />
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toTopOf="@id/backToLoginBtn" />
 
 
 
@@ -169,7 +171,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/signUpFbBtn"
+                            app:layout_constraintTop_toBottomOf="@id/loginButton"
                             app:layout_constraintVertical_bias="1"
                             app:strokeColor="@color/grey_color"
                             app:strokeWidth="@dimen/_1sdp" />

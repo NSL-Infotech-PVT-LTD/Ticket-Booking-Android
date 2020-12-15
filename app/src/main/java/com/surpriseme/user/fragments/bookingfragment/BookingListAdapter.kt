@@ -29,6 +29,8 @@ class BookingListAdapter(
     private val VIEW_TYPE_LOADING = 0
     private val VIEW_TYPE_NORMAL = 1
     private var isLoaderVisible = false
+    private var mType =""
+    private var mStatus =""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
 
@@ -132,9 +134,56 @@ class BookingListAdapter(
                 description.text = bookingModel.rate_detail.review
             }
 
-            type.text = bookingModel.type        // Display type of booking
-            status.text =
-                context.resources.getString(R.string.status) + " " + bookingModel.status    // Display Status of booking
+            mType = bookingModel.type
+
+            if (mType == context.resources.getString(R.string.digital)) {
+                mType = context.resources.getString(R.string.virtual)
+            } else {
+                mType = context.resources.getString(R.string.in_person)
+            }
+            type.text = mType        // Display type of booking
+
+            mStatus = bookingModel.status
+
+            if (mStatus == context.resources.getString(R.string.pending)) {
+                mStatus = context.resources.getString(R.string.Pending)
+                status.background = ContextCompat.getDrawable(context,R.drawable.status_yellow_bg)
+                status.text = mStatus    // Display Status of booking
+            } else if (mStatus == context.resources.getString(R.string.rejected)) {
+                mStatus = context.resources.getString(R.string.Rejected)
+                status.background = ContextCompat.getDrawable(context,R.drawable.status_red_bg)
+                status.text = mStatus    // Display Status of booking
+
+            } else if (mStatus == context.resources.getString(R.string.cancel)) {
+                mStatus = context.resources.getString(R.string.Cancel)
+                status.background = ContextCompat.getDrawable(context,R.drawable.status_red_bg)
+                status.text = mStatus    // Display Status of booking
+            } else if (mStatus == context.resources.getString(R.string.accepted)) {
+                mStatus = context.resources.getString(R.string.Accepted)
+                status.background = ContextCompat.getDrawable(context,R.drawable.status_green_bg)
+                status.text = mStatus    // Display Status of booking
+            } else if (mStatus == context.resources.getString(R.string.confirmed)) {
+                mStatus = context.resources.getString(R.string.Confirmed)
+                status.background = ContextCompat.getDrawable(context,R.drawable.status_green_bg)
+                status.text = mStatus    // Display Status of booking
+            } else if (mStatus == context.resources.getString(R.string.processing)) {
+                mStatus = context.resources.getString(R.string.Processing)
+                status.background = ContextCompat.getDrawable(context,R.drawable.status_yellow_bg)
+                status.text = mStatus    // Display Status of booking
+            } else if (mStatus == context.resources.getString(R.string.completed_review)) {
+                mStatus = context.resources.getString(R.string.Completed)
+                status.background = ContextCompat.getDrawable(context,R.drawable.status_green_bg)
+                status.text = mStatus    // Display Status of booking
+            } else if (mStatus == context.resources.getString(R.string.payment_failed)) {
+                mStatus = context.resources.getString(R.string.Failed)
+                status.background = ContextCompat.getDrawable(context,R.drawable.status_red_bg)
+                status.text = mStatus    // Display Status of booking
+            } else if (mStatus == context.resources.getString(R.string.report)) {
+                mStatus = context.resources.getString(R.string.Report)
+                status.background = ContextCompat.getDrawable(context,R.drawable.status_red_bg)
+                status.text = mStatus    // Display Status of booking
+            }
+
 
             // Display date at top of card....
             var date = bookingModel.date

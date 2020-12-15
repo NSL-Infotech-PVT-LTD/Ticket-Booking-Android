@@ -85,16 +85,21 @@
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/statusMtv"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_5sdp"
                         android:singleLine="true"
-                        android:textColor="#070707"
+                        android:background="@drawable/status_bg"
+                        android:textColor="@color/white"
                         android:fontFamily="@font/montserrat_bold"
                         android:textSize="@dimen/_10sdp"
+                        android:text="cancel"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="20dp"
+                        android:paddingVertical="4dp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         app:layout_constraintBottom_toBottomOf="@+id/typeMtv"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/typeMtv"
                         app:layout_constraintTop_toTopOf="@id/typeMtv" />
 
 

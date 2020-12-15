@@ -1,20 +1,23 @@
 package com.surpriseme.user.activity.signuptype
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.facebook.*
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
-import com.squareup.picasso.Picasso
 import com.surpriseme.user.R
-import com.surpriseme.user.databinding.ActivitySignUpTypeBinding
 import com.surpriseme.user.activity.signup.SignUpActivity
+import com.surpriseme.user.databinding.ActivitySignUpTypeBinding
 import com.surpriseme.user.util.PrefrenceShared
 import kotlinx.android.synthetic.main.activity_sign_up_type.*
 import org.json.JSONException
+import java.net.URL
 import java.util.*
 
 
@@ -38,34 +41,34 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun inIt() {
+
+        callbackManager = CallbackManager.Factory.create()
         signUpEmailBtn.setOnClickListener(this)
-        signUpFbBtn.setOnClickListener(this)
+        binding.loginButton.setOnClickListener(this)
         backToLoginBtn.setOnClickListener(this)
         initSecond()
-
-
     }
 
 //    // Facebook
     fun initSecond() {
-        binding.signUpFbBtn.setReadPermissions(
-            Arrays.asList("email", "public_profile")
-        )
+        binding.loginButton.setReadPermissions(Arrays.asList("email", "public_profile"))
 
         accessTokenTracker = object : AccessTokenTracker() {
             // This method is invoked everytime access token changes
-            override fun onCurrentAccessTokenChanged(oldAccessToken: AccessToken?, currentAccessToken: AccessToken
+            override fun onCurrentAccessTokenChanged(
+                oldAccessToken: AccessToken?, currentAccessToken: AccessToken?
             ) {
 // currentAccessToken is null if the user is logged out
-                useLoginInformation(currentAccessToken)
+                if (currentAccessToken !=null) {
+                    useLoginInformation(currentAccessToken)
+                }
 
             }
         }
     }
 
-//    //Facebook
+    //Facebook
     private fun OnClickHandle() {
-        callbackManager = CallbackManager.Factory.create()
 
         LoginManager.getInstance().logInWithReadPermissions(this, listOf("email", "public_profile"))
 
@@ -75,9 +78,13 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
                 override fun onSuccess(loginResult: LoginResult) {
 // Retrieving access token using the LoginResult
                     val accessToken = loginResult.accessToken
+//                    val isLoggedIn = accessToken != null && !accessToken.isExpired
+
                 }
 
-                override fun onCancel() {}
+                override fun onCancel() {
+                }
+
                 override fun onError(error: FacebookException) {}
             })
     }
@@ -99,7 +106,11 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
                     val name = `object`.getString("name")
                     val email = `object`.getString("email")
                     val id = `object`.getString("id")
-                    val image = `object`.getString("public_picture")
+                    val image = `object`.getJSONObject("picture").getJSONObject("data").getString("url")
+
+
+
+
                     shared?.setString("name", name)
                 } catch (e: JSONException) {
                     e.printStackTrace()
@@ -125,31 +136,22 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
             callbackManager?.onActivityResult(requestCode, resultCode, data)
 
         super.onActivityResult(requestCode, resultCode, data)
-
-
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
-
             R.id.signUpEmailBtn -> {
                 // sign up with email...
                 val intent = Intent(this@SignUpTypeActivity, SignUpActivity::class.java)
                 startActivity(intent)
             }
-            R.id.signUpFbBtn -> {
-
+            R.id.loginButton -> {
                 // sign up with facebok....
                 OnClickHandle()
-
             }
             R.id.backToLoginBtn -> {
                 finish()
             }
-
-
-
         }
     }
-
 }

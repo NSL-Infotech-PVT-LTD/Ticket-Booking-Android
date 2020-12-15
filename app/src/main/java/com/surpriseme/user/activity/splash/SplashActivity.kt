@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.WindowManager
 import android.widget.ImageView
+import com.facebook.FacebookSdk
+import com.facebook.appevents.AppEventsLogger
 import com.squareup.picasso.Picasso
 import com.surpriseme.user.R
 import com.surpriseme.user.activity.chooselanguage.ChooseLanguageActivity
@@ -29,6 +31,8 @@ class SplashActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_splash)
         shared = PrefrenceShared(this@SplashActivity)
+//        FacebookSdk.sdkInitialize(getApplicationContext())
+//        AppEventsLogger.activateApp(this@SplashActivity)
         init()
 
     }
