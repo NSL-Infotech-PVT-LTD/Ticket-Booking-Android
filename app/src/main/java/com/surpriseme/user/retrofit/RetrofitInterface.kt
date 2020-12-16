@@ -1,6 +1,7 @@
 package com.surpriseme.user.retrofit
 
 
+import android.widget.ImageView
 import com.surpriseme.user.activity.login.Loginmodel
 import com.surpriseme.user.activity.signup.RegisterModel
 import com.surpriseme.user.activity.forgotpassword.ResetPasswordModel
@@ -18,6 +19,7 @@ import com.surpriseme.user.fragments.viewprofile.ViewProfileModel
 import com.surpriseme.user.fragments.notificationfragment.NotificationListModel
 import com.surpriseme.user.fragments.notificationfragment.NotificationStatusModel
 import com.surpriseme.user.activity.searchactivity.CategoryModel
+import com.surpriseme.user.activity.signuptype.RegisterWithFbModel
 import com.surpriseme.user.data.model.*
 import com.surpriseme.user.fragments.bookingslotfragment.SlotModel
 import com.surpriseme.user.fragments.chatFragment.ChatByIdModel
@@ -50,6 +52,15 @@ interface RetrofitInterface {
         @Query(Constants.ApiKey.DEVICE_TOKEN) device_Token: String,
         @Query(Constants.ApiKey.LANG) lang: String
     ): Call<RegisterModel>
+
+    @POST(Constants.REGISTER_WITH_FB)
+    fun registerWithFB(@Query(Constants.ApiKey.NAME) name: String,
+    @Query(Constants.ApiKey.EMAIL) email: String,
+    @Query(Constants.ApiKey.FB_ID) fb_id:String,
+    @Query(Constants.ApiKey.DEVICE_TYPE) device_Type: String,
+    @Query(Constants.ApiKey.DEVICE_TOKEN) device_Token: String,
+    @Query(Constants.ApiKey.LANG) lang: String,
+    @Query(Constants.ApiKey.IMAGE) imageView: String) : Call<RegisterWithFbModel>
 
     @POST(Constants.RESET_PASSWORD)
     fun resetPasswordApi(@Query(Constants.ApiKey.EMAIL) email: String): Call<ResetPasswordModel>

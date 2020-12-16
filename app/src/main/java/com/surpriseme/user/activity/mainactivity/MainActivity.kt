@@ -5,14 +5,15 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.surpriseme.user.R
 import com.surpriseme.user.fragments.artistbookingdetail.ArtistBookingFragment
-import com.surpriseme.user.fragments.bookingdetailfragment.BookingDetailFragment
 import com.surpriseme.user.fragments.bookingfragment.BookingFragment
 import com.surpriseme.user.fragments.chatFragment.ChatFragment
 import com.surpriseme.user.fragments.chatListfragment.ChatListFragment
@@ -24,9 +25,11 @@ import com.surpriseme.user.util.Constants
 import kotlinx.android.synthetic.main.activity_main.*
 import net.alhazmy13.mediapicker.Image.ImagePicker
 
+
 class MainActivity : AppCompatActivity() {
 
-//    private var doubleBackToExitPressedOnce: Boolean = false
+    val TAG_FRAGMENT = "TAG_FRAGMEN"
+    private var doubleBackToExitPressedOnce: Boolean = false
     private lateinit var profileFragment:ProfileFragment
     private lateinit var locationFragment:LocationFragment
     private lateinit var artistBookingFragment:ArtistBookingFragment
@@ -67,8 +70,8 @@ class MainActivity : AppCompatActivity() {
        if (intent.hasExtra("chatId")) {
             val chatID = intent.getStringExtra("chatId")
             if (chatID !=null) {
-                val intent = Intent(this , ChatFragment::class.java)
-                intent.putExtra("chatId",chatID)
+                val intent = Intent(this, ChatFragment::class.java)
+                intent.putExtra("chatId", chatID)
 
                 startActivity(intent)
             }
@@ -150,22 +153,31 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onBackPressed() {
 
-//    override fun onBackPressed() {
-//
+        if (Constants.PROFILE_FRAGMENT) {
+            profileFragment.updateProfilePopup()
+        } else {
+            super.onBackPressed()
+        }
+
+//        if (getFragmentManager().getBackStackEntryCount() > 0) {
+//            if (Constants.PROFILE_FRAGMENT) {
+//                profileFragment.updateProfilePopup()
+//            } else {
+//                getFragmentManager().popBackStack()
+//            }
+//        } else {
+//            Toast.makeText(this@MainActivity,"Backpress pressed",Toast.LENGTH_SHORT).show()
+//            super.onBackPressed();
+//        }
 //        if (doubleBackToExitPressedOnce)
 //            super.onBackPressed()
 //        doubleBackToExitPressedOnce = true
-//
-//        Toast.makeText(
-//            applicationContext,
-//            "" + Constants.PLEASE_CLICK_BACK_AGAIN_To_EXIT,
-//            Toast.LENGTH_SHORT
-//        )
-//            .show()
-//        Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
-//
-//    }
+
+        Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
+
+    }
 
     fun hideBottomNavigation() {
         bottomNav.visibility = View.GONE
@@ -181,7 +193,8 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        val permissionLocation = ContextCompat.checkSelfPermission(this,
+        val permissionLocation = ContextCompat.checkSelfPermission(
+            this,
             Manifest.permission.ACCESS_FINE_LOCATION
         )
         if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
@@ -213,10 +226,10 @@ class MainActivity : AppCompatActivity() {
     fun profileFragmentContext(fragment: ProfileFragment) {
         this.profileFragment = fragment
     }
-    fun artistBookingContext(fragment:ArtistBookingFragment){
+    fun artistBookingContext(fragment: ArtistBookingFragment){
         this.artistBookingFragment = fragment
     }
-    fun locationFragmentContext(fragment:LocationFragment){
+    fun locationFragmentContext(fragment: LocationFragment){
         this.locationFragment = fragment
     }
 

@@ -116,17 +116,23 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/signUpEmailBtn" />
 
-                        <com.facebook.login.widget.LoginButton
-                            android:id="@+id/loginButton"
+                        <ImageView
+                            android:id="@+id/fbImage"
+                            android:layout_width="@dimen/_50sdp"
+                            android:layout_height="@dimen/_50sdp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/orTxt"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/fbLogin"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="30dp"
-                            android:layout_marginBottom="30dp"
                             app:layout_constraintTop_toBottomOf="@id/orTxt"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintBottom_toTopOf="@id/backToLoginBtn" />
+                            app:layout_constraintBottom_toTopOf="@id/backToLoginBtn"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:text="Facebook Login"/>
 
 
 
@@ -171,7 +177,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/loginButton"
+                            app:layout_constraintTop_toBottomOf="@id/fbLogin"
                             app:layout_constraintVertical_bias="1"
                             app:strokeColor="@color/grey_color"
                             app:strokeWidth="@dimen/_1sdp" />
@@ -196,6 +202,10 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
+
+                <include layout="@layout/loader_layout"
+                    android:id="@+id/loaderLayout"
+                    android:visibility="gone"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

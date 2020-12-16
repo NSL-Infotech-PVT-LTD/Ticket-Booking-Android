@@ -34,6 +34,7 @@ object Constants {
     const val CUSTOMER_REVIEW = "customer/getartistrating"
     const val CARD_LIST = "customer/cards/list"
     const val CHANGE_LANGUAGE = "customer/update/lang"
+    const val REGISTER_WITH_FB = "customer/register/fb"
     const val ISREMEMBER = "ISREMEMBER"
 
 
@@ -89,7 +90,14 @@ object Constants {
     var IS_ADDED_TO_BACKSTACK =false
     var LATLNG:LatLng?=null
     var addressID = ""
-    var adpPosition = -1
+    var PROFILE_FRAGMENT = false  // Used to handle backpress, while user on profile fragment then popup will display
+    // by main activity backpress....
+
+    var FB_ID = ""
+    var FB_NAME = ""
+    var FB_EMAIL = ""
+    var FB_IMAGE = ""
+
 
 
 
@@ -134,6 +142,8 @@ object Constants {
         const val LANG = "lang"
         const val RATING = "rating"
         const val RADIUS = "radius"
+        const val FB_ID = "fb_id"
+
     }
 
     object DataKey {

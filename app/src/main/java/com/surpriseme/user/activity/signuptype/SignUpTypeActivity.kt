@@ -1,6 +1,8 @@
 package com.surpriseme.user.activity.signuptype
 
 import android.content.Intent
+import com.facebook.FacebookSdk
+import com.facebook.appevents.AppEventsLogger
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -11,12 +13,22 @@ import androidx.databinding.DataBindingUtil
 import com.facebook.*
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
+import com.google.gson.JsonObject
+import com.squareup.picasso.Picasso
 import com.surpriseme.user.R
+import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.activity.signup.SignUpActivity
 import com.surpriseme.user.databinding.ActivitySignUpTypeBinding
+import com.surpriseme.user.retrofit.RetrofitClient
+import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
 import kotlinx.android.synthetic.main.activity_sign_up_type.*
+import kotlinx.android.synthetic.main.chat_list_layout.*
 import org.json.JSONException
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.net.URL
 import java.util.*
 
@@ -24,34 +36,37 @@ import java.util.*
 class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivitySignUpTypeBinding
-    private val EMAIL = "email"
     private var callbackManager: CallbackManager?=null
     private var accessTokenTracker:AccessTokenTracker?=null
     private var shared:PrefrenceShared?=null
+    private var fbName = ""
+    private var fbEmail = ""
+    private var fbImage = ""
+    private var fbID = ""
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_sign_up_type)
 
-        binding = DataBindingUtil.setContentView(
-            this@SignUpTypeActivity,
-            R.layout.activity_sign_up_type
-        )
+        binding = DataBindingUtil.setContentView(this@SignUpTypeActivity, R.layout.activity_sign_up_type)
         shared = PrefrenceShared(this@SignUpTypeActivity)
         inIt()
     }
 
     private fun inIt() {
 
-        callbackManager = CallbackManager.Factory.create()
+
         signUpEmailBtn.setOnClickListener(this)
-        binding.loginButton.setOnClickListener(this)
+        binding.fbLogin.setOnClickListener(this)
         backToLoginBtn.setOnClickListener(this)
         initSecond()
     }
 
 //    // Facebook
     fun initSecond() {
-        binding.loginButton.setReadPermissions(Arrays.asList("email", "public_profile"))
+
+//        binding.fbLogin.setReadPermissions(Arrays.asList("email", "public_profile"))
 
         accessTokenTracker = object : AccessTokenTracker() {
             // This method is invoked everytime access token changes
@@ -69,6 +84,8 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
 
     //Facebook
     private fun OnClickHandle() {
+
+        callbackManager = CallbackManager.Factory.create()
 
         LoginManager.getInstance().logInWithReadPermissions(this, listOf("email", "public_profile"))
 
@@ -103,25 +120,37 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
 
 //OnCompleted is invoked once the GraphRequest is successful
                 try {
-                    val name = `object`.getString("name")
-                    val email = `object`.getString("email")
-                    val id = `object`.getString("id")
-                    val image = `object`.getJSONObject("picture").getJSONObject("data").getString("url")
+                     fbName = `object`.getString("name")
+                     fbEmail = `object`.getString("email")
+                     fbID = `object`.getString("id")
+                     fbImage = `object`.getJSONObject("picture").getJSONObject("data").getString("url")
+                    Picasso.get().load(fbImage).resize(4000,1500)
+                        .onlyScaleDown()
+                        .into(binding.fbImage)
 
+                    shared?.setString(Constants.FB_ID,fbID)
+                    shared?.setString(Constants.FB_NAME,fbName)
+                    shared?.setString(Constants.FB_EMAIL,fbEmail)
+                    shared?.setString(Constants.FB_IMAGE,fbImage)
 
-
-
-                    shared?.setString("name", name)
                 } catch (e: JSONException) {
                     e.printStackTrace()
                 }
             }
 // We set parameters to the GraphRequest using a Bundle.
-        val parameters = Bundle()
-        parameters.putString("fields", "id,name,email,picture.width(200)")
-        request.parameters = parameters
+
+        if (fbID !="") {
+
+            // register with FB api....
+            registerWithFbApi()
+
+        } else {
+            val parameters = Bundle()
+            parameters.putString("fields", "id,name,email,picture.width(200)")
+            request.parameters = parameters
 // Initiate the GraphRequest
-        request.executeAsync()
+            request.executeAsync()
+        }
     }
 
     // Facebook
@@ -134,7 +163,6 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (callbackManager !=null)
             callbackManager?.onActivityResult(requestCode, resultCode, data)
-
         super.onActivityResult(requestCode, resultCode, data)
     }
 
@@ -152,6 +180,61 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
             R.id.backToLoginBtn -> {
                 finish()
             }
+            R.id.fbLogin -> {
+                OnClickHandle()
+            }
+
         }
+    }
+
+    // Register api with facebook
+    private fun registerWithFbApi() {
+        binding.loaderLayout.visibility = View.VISIBLE
+        RetrofitClient.api.registerWithFB(fbName,fbEmail,fbID,Constants.DataKey.DEVICE_TYPE_VALUE,Constants.DataKey.DEVICE_TOKEN_VALUE,"en"
+        ,fbImage)
+            .enqueue(object :Callback<RegisterWithFbModel> {
+                override fun onResponse(
+                    call: Call<RegisterWithFbModel>,
+                    response: Response<RegisterWithFbModel>
+                ) {
+                    binding.loaderLayout.visibility = View.GONE
+                    if (response.isSuccessful) {
+                        if (response.body() !=null) {
+
+                            shared?.setString(
+                                Constants.DataKey.AUTH_VALUE,
+                                Constants.BEARER + response.body()?.data?.token!!
+                            )   // To save Auth token
+                            shared?.setString(Constants.DataKey.USER_ID,response.body()?.data?.user?.id.toString())    // To Save User ID
+//                            shared.setString(Constants.DataKey.OLD_PASS_VALUE, password)                                       // To save User Password
+                            shared?.setString(
+                                Constants.DataKey.USER_IMAGE,  // To Save User Image
+                                Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + response.body()?.data?.user?.image)
+                            val mainActIntent = Intent(this@SignUpTypeActivity, MainActivity::class.java)
+                            startActivity(mainActIntent)
+                            finishAffinity()
+                        }
+                    } else {
+                        val jsonObject:JSONObject
+                        if (response.errorBody() !=null) {
+                            try {
+                                jsonObject = JSONObject(response.errorBody()?.string()!!)
+                                val errorMessage = jsonObject.getString(Constants.ERROR)
+                                Toast.makeText(this@SignUpTypeActivity,"" + errorMessage,Toast.LENGTH_SHORT).show()
+                            } catch (e:JSONException) {
+                                Toast.makeText(this@SignUpTypeActivity,"" + e.message.toString(),Toast.LENGTH_SHORT).show()
+                            }
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<RegisterWithFbModel>, t: Throwable) {
+                    binding.loaderLayout.visibility = View.GONE
+                    Toast.makeText(this@SignUpTypeActivity,"" + t.message.toString(),Toast.LENGTH_SHORT).show()
+
+                }
+
+            })
     }
 }

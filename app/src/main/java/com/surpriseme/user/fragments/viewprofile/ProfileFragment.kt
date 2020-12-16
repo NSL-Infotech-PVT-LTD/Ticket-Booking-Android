@@ -72,6 +72,7 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
 
         val view = binding.root
         shared = PrefrenceShared(ctx)
+        Constants.PROFILE_FRAGMENT = true
 
         ((ctx as MainActivity)).hideBottomNavigation()
 
@@ -261,7 +262,7 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
             })
 
     }
-    private fun updateProfilePopup() {
+    fun updateProfilePopup() {
 
         val layoutInflater: LayoutInflater =
             ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -292,6 +293,7 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
         no.setOnClickListener {
             popUpWindowReport.dismiss()
             fragmentManager?.popBackStack()
+            Constants.PROFILE_FRAGMENT = false
         }
     }
     private fun logoutPop() {

@@ -30,6 +30,8 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var checkValidEmail: CheckValidEmail
     private lateinit var shared: PrefrenceShared
     private var backpress:MaterialTextView?=null
+    private var fbName = ""
+    private var fbEmail = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +49,15 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
         backToLoginBtn.setOnClickListener(this)
         backpress = findViewById(R.id.backpress)
         backpress?.setOnClickListener(this)
+        fbName = intent.getStringExtra("fbName")!!
+        fbEmail = intent.getStringExtra("fbEmail")!!
+        if (fbName !="") {
+            useredt.setText(fbName)
+        }
+        if (fbEmail !="") {
+            emailEdt.setText(fbEmail)
+        }
+
 
     }
 
