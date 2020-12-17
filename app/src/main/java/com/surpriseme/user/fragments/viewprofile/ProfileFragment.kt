@@ -50,11 +50,8 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
     private var userImage: MultipartBody.Part? = null
     private var toolProfileTxt:MaterialTextView?=null
     private var toolBackpress:MaterialTextView?=null
+    private var currency = ""
 
-
-
-    //    private var loaderLayout: FrameLayout? = null
-    private var userModel: UserViewProfile? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -76,7 +73,6 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
 
         ((ctx as MainActivity)).hideBottomNavigation()
 
-        getProfileApi()
         inIt(view)
 
         return view
@@ -99,6 +95,19 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
         binding.usernameEdt.isEnabled = false
         binding.emailEdt.isEnabled = false
         binding.profileImage.isEnabled = false
+
+        // display value to the views ....
+        if (shared.getString(Constants.DataKey.USER_IMAGE) !="") {
+            Picasso.get().load(shared.getString(Constants.DataKey.USER_IMAGE)).resize(4000,1500)
+                .onlyScaleDown()
+                .into(binding.profileImage)
+        }
+        if (shared.getString(Constants.DataKey.USER_NAME) !="") {
+            binding.usernameEdt.setText(shared.getString(Constants.DataKey.USER_NAME))
+        }
+        if (shared.getString(Constants.DataKey.USER_EMAIL) !="") {
+            binding.emailEdt.setText(shared.getString(Constants.DataKey.USER_EMAIL))
+        }
 
     }
 
@@ -130,12 +139,12 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
                     binding.usernameEdt.requestFocus()
                 } else {
                     // update profile api
-                    updateProfileApi()
+                    updateProfileApi(currency)
                 }
             }
             R.id.cameraIcon -> {
 
-                Permission.checkPermissionForImageCamera(activity!!,this@ProfileFragment)
+                Permission.checkPermissionForImageCamera(requireActivity(),this@ProfileFragment)
 
             }
             R.id.changePasswordText -> {
@@ -154,13 +163,14 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
     }
 
 
-    private fun updateProfileApi() {
+    private fun updateProfileApi(currency:String) {
 
         binding.loaderLayout.visibility = View.VISIBLE
 
         val requestBodyMap: HashMap<String, RequestBody> = HashMap()
         requestBodyMap[Constants.ApiKey.NAME] =
-            RequestBody.create(MediaType.parse("multipart/form-data"), username);
+            RequestBody.create(MediaType.parse("multipart/form-data"), username)
+        requestBodyMap[Constants.ApiKey.CURRENCY] = RequestBody.create(MediaType.parse("multipart/form-data"),currency)
 
         RetrofitClient.api.updateProfileApi(shared.getString(Constants.DataKey.AUTH_VALUE),requestBodyMap,userImage)
             .enqueue(object :Callback<UpdateProfileModel> {
@@ -209,59 +219,7 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
 
     }
 
-    private fun getProfileApi() {
-        binding.loaderLayout.visibility = View.VISIBLE
-        RetrofitClient.api.getProfileApi(shared.getString(Constants.DataKey.AUTH_VALUE))
-            .enqueue(object : Callback<ViewProfileModel> {
-                override fun onResponse(
-                    call: Call<ViewProfileModel>,
-                    response: Response<ViewProfileModel>
-                ) {
-                    binding.loaderLayout.visibility = View.GONE
-                    if (response.body() != null) {
-                        if (response.isSuccessful) {
 
-                            userModel = response.body()?.data?.user
-
-                            if (userModel != null) {
-
-
-                                Picasso.get().load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + userModel?.image)
-                                    .resize(4000, 1500)
-                                    .placeholder(R.drawable.profile_pholder)
-                                    .onlyScaleDown()
-                                    .into(binding.profileImage)
-                                shared.setString(Constants.DataKey.USER_IMAGE,Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + userModel?.image)
-
-                                binding.usernameEdt.setText(userModel?.name)
-                                binding.emailEdt.setText(userModel?.email)
-                            }
-                        }
-                    } else {
-                        val jsonObject: JSONObject
-                        if (response.errorBody() != null) {
-                            try {
-                                jsonObject = JSONObject(response.errorBody()!!.string())
-                                val errorMessage = jsonObject.getString(Constants.ERROR)
-                                Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT).show()
-                            } catch (e: JSONException) {
-                                Toast.makeText(
-                                    ctx,
-                                    "" + Constants.SOMETHING_WENT_WRONG,
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<ViewProfileModel>, t: Throwable) {
-                    binding.loaderLayout.visibility = View.GONE
-                    Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
-                }
-            })
-
-    }
     fun updateProfilePopup() {
 
         val layoutInflater: LayoutInflater =
@@ -332,7 +290,7 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
     }
 
     override fun onImagePermissionSuccess() {
-        ImagePicker.Builder(activity!!)
+        ImagePicker.Builder(requireActivity())
             .mode(ImagePicker.Mode.CAMERA_AND_GALLERY)
             .compressLevel(ImagePicker.ComperesLevel.HARD)
             .directory(ImagePicker.Directory.DEFAULT)
@@ -357,6 +315,5 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
         )
 
     }
-
 
 }

@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     val TAG_FRAGMENT = "TAG_FRAGMEN"
     private var doubleBackToExitPressedOnce: Boolean = false
-    private lateinit var profileFragment:ProfileFragment
+    private var profileFragment:ProfileFragment?=null
     private lateinit var locationFragment:LocationFragment
     private lateinit var artistBookingFragment:ArtistBookingFragment
 
@@ -156,7 +156,7 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
 
         if (Constants.PROFILE_FRAGMENT) {
-            profileFragment.updateProfilePopup()
+            profileFragment?.updateProfilePopup()
         } else {
             super.onBackPressed()
         }
@@ -214,7 +214,7 @@ class MainActivity : AppCompatActivity() {
 
                 val mPath: ArrayList<String> = data.getStringArrayListExtra(ImagePicker.EXTRA_IMAGE_PATH)!!
 
-                profileFragment.getImageBitmap(mPath)
+                profileFragment?.getImageBitmap(mPath)
 
             } else {
 
@@ -222,6 +222,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+
+
     // Craate context for Profile Fragment ....
     fun profileFragmentContext(fragment: ProfileFragment) {
         this.profileFragment = fragment
@@ -232,6 +235,7 @@ class MainActivity : AppCompatActivity() {
     fun locationFragmentContext(fragment: LocationFragment){
         this.locationFragment = fragment
     }
+
 
     interface SendImageBitmap {
         fun getImageBitmap(mPaths: List<String?>?)

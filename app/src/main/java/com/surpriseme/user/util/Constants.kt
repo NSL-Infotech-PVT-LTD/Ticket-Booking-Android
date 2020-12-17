@@ -35,6 +35,7 @@ object Constants {
     const val CARD_LIST = "customer/cards/list"
     const val CHANGE_LANGUAGE = "customer/update/lang"
     const val REGISTER_WITH_FB = "customer/register/fb"
+    const val CURRENCIES = "currencies"
     const val ISREMEMBER = "ISREMEMBER"
 
 
@@ -143,6 +144,7 @@ object Constants {
         const val RATING = "rating"
         const val RADIUS = "radius"
         const val FB_ID = "fb_id"
+        const val CURRENCY = "currency"
 
     }
 
@@ -151,7 +153,9 @@ object Constants {
         const val CONTENT_TYPE_VALUE = "application/x-www-form-urlencoded"
         const val DEVICE_TOKEN_VALUE = "1254"
         const val DEVICE_TYPE_VALUE = "android"
-        val USER_IMAGE = "USER_IMAGE"
+        val USER_IMAGE = "USER_IMAGE"  // is used to store Customer Profile Image....
+        var USER_NAME = "USER_NAME" // is used to store Customer User name....
+        var USER_EMAIL = "USER_EMAIL" // is used to store customer User email....
         var ARTIST_ID_VALUE = "ARTIST_ID_VALUE"
         var USER_ID = "USER_ID"
         var OLD_PASS_VALUE = "OLD_PASS_VALUE"

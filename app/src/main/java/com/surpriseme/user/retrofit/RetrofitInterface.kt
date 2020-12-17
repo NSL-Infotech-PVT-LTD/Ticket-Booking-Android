@@ -24,6 +24,7 @@ import com.surpriseme.user.data.model.*
 import com.surpriseme.user.fragments.bookingslotfragment.SlotModel
 import com.surpriseme.user.fragments.chatFragment.ChatByIdModel
 import com.surpriseme.user.fragments.chatListfragment.ChatListModel
+import com.surpriseme.user.fragments.homefragment.CurrencyListModel
 import com.surpriseme.user.fragments.notificationfragment.NotificationReadModel
 import com.surpriseme.user.fragments.paymentfragment.BookingStatusModel
 import com.surpriseme.user.fragments.reviewfragment.ReviewModel
@@ -75,6 +76,10 @@ interface RetrofitInterface {
         @PartMap fields: HashMap<String, RequestBody>,
         @Part files: MultipartBody.Part?
     ): Call<UpdateProfileModel>
+
+    @POST(Constants.UPDATE_PROFILE)
+    fun updateProfileApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+    @Query(Constants.ApiKey.CURRENCY) currency:String) : Call<UpdateProfileModel>
 
 
     // Artist list for home screen with lat, long....
@@ -318,5 +323,10 @@ interface RetrofitInterface {
         @Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
         @Query("card_id") artistID: String
     ): Call<DeleteCard>
+
+    @GET(Constants.CURRENCIES)
+    fun currencyList(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String) : Call<CurrencyListModel>
+
+
 
 }

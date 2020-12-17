@@ -68,6 +68,20 @@
 
                     </com.google.android.material.card.MaterialCardView>
 
+                    <TextView
+                        android:id="@+id/bookingIdTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="@+id/imageCard"
+                        app:layout_constraintStart_toEndOf="@+id/imageCard"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:background="@drawable/type_drawable"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:paddingHorizontal="@dimen/_10sdp"
+                        android:paddingVertical="@dimen/_4sdp"
+                        android:textColor="#687c98"
+                        android:textSize="@dimen/_10sdp"/>
+
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/typeMtv"
                         android:layout_width="wrap_content"
@@ -75,13 +89,9 @@
                         android:layout_marginStart="10dp"
                         android:background="@drawable/type_drawable"
                         android:inputType="textCapSentences"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:paddingHorizontal="@dimen/_10sdp"
-                        android:paddingVertical="@dimen/_4sdp"
-                        android:textColor="#687c98"
-                        android:textSize="@dimen/_10sdp"
-                        app:layout_constraintStart_toEndOf="@+id/imageCard"
-                        app:layout_constraintTop_toTopOf="@id/imageCard" />
+                        android:layout_marginTop="@dimen/_5sdp"
+                        app:layout_constraintStart_toStartOf="@id/bookingIdTv"
+                        app:layout_constraintTop_toBottomOf="@id/bookingIdTv" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/statusMtv"
@@ -143,39 +153,10 @@
                         app:layout_constraintStart_toStartOf="@id/name"
                         app:layout_constraintTop_toBottomOf="@+id/dateTxt" />
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/addressTxt"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/_5sdp"
-                        android:textColor="#91a1b7"
-                        android:textSize="@dimen/_10sdp"
-                        android:maxLines="2"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@id/name"
-                        app:layout_constraintTop_toBottomOf="@+id/timeTxt" />
 
-                    <RatingBar
-                        android:id="@+id/ratingbar"
-                        style="@style/Widget.AppCompat.RatingBar.Small"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:stepSize="1"
-                        android:theme="@style/RatingBar"
-                        app:layout_constraintStart_toStartOf="@id/name"
-                        app:layout_constraintTop_toBottomOf="@id/addressTxt" />
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/descTxt"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:maxLines="3"
-                        android:padding="@dimen/_5sdp"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_10sdp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/ratingbar" />
+
+
 
 
                     <com.google.android.material.textview.MaterialTextView
@@ -190,7 +171,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@id/name"
-                        app:layout_constraintTop_toBottomOf="@+id/descTxt" />
+                        app:layout_constraintTop_toBottomOf="@+id/timeTxt" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>

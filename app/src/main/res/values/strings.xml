@@ -271,5 +271,7 @@
     <string name="Processing">Processing</string>
     <string name="completed_review">completed_review</string>
     <string name="Completed">Completed</string>
+    <string name="choose_your_currency">Choose Your <b>Currency</b></string>
+    <string name="invalid_auth">Invalid Auth</string>
 
 </resources>

@@ -13,7 +13,7 @@ data class DataViewProfile(
 data class UserViewProfile(
     val category_id: List<Any>,
     val category_id_details: List<Any>,
-    val currency: Any,
+    var currency: Any,
     val description: Any,
     val digital_price_per_hr: Any,
     val email: String,

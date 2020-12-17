@@ -108,11 +108,8 @@ class BookingListAdapter(
         val dateTxt = itemview.findViewById<MaterialTextView>(R.id.dateTxt)
         val timeTxt = itemview.findViewById<MaterialTextView>(R.id.timeTxt)
         val seeFullDetail = itemview.findViewById<MaterialTextView>(R.id.seeFullDetailMtv)
-        val categoriesChips = itemview.findViewById<ChipGroup>(R.id.chipGroup)
-        val address = itemview.findViewById<MaterialTextView>(R.id.addressTxt)
-        val rating = itemview.findViewById<RatingBar>(R.id.ratingbar)
-        val description = itemview.findViewById<MaterialTextView>(R.id.descTxt)
         val dateMtv = itemview.findViewById<MaterialTextView>(R.id.dateMtv)
+        val bookingId = itemview.findViewById<MaterialTextView>(R.id.bookingIdTv)
 
         override fun clear() {}
 
@@ -121,20 +118,9 @@ class BookingListAdapter(
 
             val bookingModel = bookingList[position]
 
-            if (bookingModel.status == Constants.COMPLETE_REVIEW) {
-                rating.visibility = View.VISIBLE
-                description.visibility = View.VISIBLE
-            } else {
-                rating.visibility = View.GONE
-                description.visibility = View.GONE
-            }
-
-            if (bookingModel.rate_detail != null) {
-                rating.rating = bookingModel.rate_detail.rate.toFloat()
-                description.text = bookingModel.rate_detail.review
-            }
-
             mType = bookingModel.type
+
+            bookingId.text = bookingModel.id.toString()
 
             if (mType == context.resources.getString(R.string.digital)) {
                 mType = context.resources.getString(R.string.virtual)
@@ -223,7 +209,6 @@ class BookingListAdapter(
 
                 //        holder.timeTxt.text = fromTime + " " +  toTime
                 timeTxt.text = "$fromTime to $toTime"
-                address.text = bookingModel.address
 
 //                if (bookingModel.artist_detail?.category_id_details?.size!! > 0) {
 //                    for (i in 0 until bookingModel.artist_detail.category_id_details.size)

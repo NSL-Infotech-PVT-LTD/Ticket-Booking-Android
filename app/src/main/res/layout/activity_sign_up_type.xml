@@ -116,13 +116,6 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/signUpEmailBtn" />
 
-                        <ImageView
-                            android:id="@+id/fbImage"
-                            android:layout_width="@dimen/_50sdp"
-                            android:layout_height="@dimen/_50sdp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/orTxt"/>
-
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/fbLogin"
                             android:layout_width="wrap_content"
@@ -203,11 +196,15 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
-                <include layout="@layout/loader_layout"
-                    android:id="@+id/loaderLayout"
-                    android:visibility="gone"/>
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
+
+        <include layout="@layout/loader_layout"
+            android:id="@+id/loaderLayout"
+            android:visibility="gone"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>
