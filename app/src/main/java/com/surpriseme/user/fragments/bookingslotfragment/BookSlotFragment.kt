@@ -109,11 +109,7 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
 
                     for (i in 0 until selectedSlotList.size) {
 
-
-
                         if (selectedSlotList[i].isBooked) {
-
-
                             list.add(selectedSlotList[i])
                             list[0].hour
 
@@ -135,23 +131,6 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
                                 mFromTime = mFromTime.split("pm")[0]
                                 mToTime = mToTime.split("am")[0]
                             }
-
-//                            if (mFromTime.contains("am")) {
-//                                mFromTime = mFromTime.split("am")[0]
-//                                mToTime = mToTime.split("am")[0]
-//
-//                            }else if (mFromTime.contains("am") && mFromTime.contains("pm") ) {
-//                                mFromTime = mFromTime.split("am")[0]
-//                                mToTime = mToTime.split("pm")[0]
-//
-//                            }else if (mFromTime.contains("pm") && mFromTime.contains("am") ) {
-//                                mFromTime = mFromTime.split("pm")[0]
-//                                mToTime = mToTime.split("am")[0]
-//
-//                            } else {
-//                                mFromTime = mFromTime.split("pm")[0]
-//                                mToTime = mToTime.split("pm")[0]
-//                            }
 
                         }
                     }
@@ -175,7 +154,7 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
         binding.timeSlotRecycler.layoutManager = layoutManager
 //        val timeArray:ArrayList<SelectTimeModel> = ArrayList()
 
-        fakeList.add(SlotDataModel("0", "", "00:00 am - 01:00 am", 0, false))
+        fakeList.add(SlotDataModel("0", "", "12:00 am - 01:00 am", 0, false))
         fakeList.add(SlotDataModel("0", "", "01:00 am - 02:00 am", 0, false))
         fakeList.add(SlotDataModel("0", "", "02:00 am - 03:00 am", 0, false))
         fakeList.add(SlotDataModel("0", "", "03:00 am - 04:00 am", 0, false))
@@ -198,7 +177,7 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
         fakeList.add(SlotDataModel("0", "", "08:00 pm - 09:00 pm", 0, false))
         fakeList.add(SlotDataModel("0", "", "09:00 pm - 10:00 pm", 0, false))
         fakeList.add(SlotDataModel("0", "", "10:00 pm - 11:00 pm", 0, false))
-        fakeList.add(SlotDataModel("0", "", "11:00 pm - 00:00 am", 0, false))
+        fakeList.add(SlotDataModel("0", "", "11:00 pm - 12:00 am", 0, false))
 
         bookingSlotApi()
     }
@@ -326,14 +305,14 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
 
                             if (slotList.isNotEmpty()) {
                                 for (element in response.body()?.data!!) {
-                                    val sdf = SimpleDateFormat("hh:mm:ss")
+                                    val sdf = SimpleDateFormat("HH:mm:ss")
                                     val fromSdf = SimpleDateFormat("hh:mm aa")
                                     val fromConvert = sdf.parse(element.hour)
                                     val fromTime = fromSdf.format(fromConvert!!)
 
                                     for (i in 0 until fakeList.size) {
                                         val split = fakeList[i].hour.split(" - ")
-                                        if (split[0] == fromTime || (split[0] == "00:00 am" && fromTime == "12:00 am")) {
+                                        if (split[0] == fromTime.toLowerCase()) {
                                             fakeList[i].booked = element.booked
                                             fakeList[i].date = element.date
                                             fakeList[i].hour = fakeList[i].hour

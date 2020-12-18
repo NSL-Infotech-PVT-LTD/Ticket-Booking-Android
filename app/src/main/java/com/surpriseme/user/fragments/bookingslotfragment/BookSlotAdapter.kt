@@ -73,59 +73,29 @@ class BookSlotAdapter(
         holder.itemView.setOnClickListener {
 
             if (!list[position].isBooked) {
-                addToList.add(list[position])
-                if (addToList.size < 2) {
+
+                if (addToList.size > 0) {
+                    addToList.clear()
+                    slotPosition = position
+                    checkSlot(position, holder)
+                } else {
+                    lowPosition = position
+                    addToList.add(list[position])
                     holder.itemView.background =
                         ContextCompat.getDrawable(context, R.drawable.slot_green)
                     list[position].isBooked = true
                     selectDate.date(addToList)
 
-                } else if (addToList.size > 1) {
-                    if (list[position - 1].isBooked == false && list[position + 1].isBooked == false) {
-                        addToList.remove(list[position])
-                        Toast.makeText(context, "You cant select this slot", Toast.LENGTH_SHORT)
-                            .show()
-                    } else {
-                        holder.itemView.background =
-                            ContextCompat.getDrawable(context, R.drawable.slot_green)
-                        list[position].isBooked = true
-                        selectDate.date(addToList)
-                    }
                 }
-
             } else if (list[position].isBooked) {
-                holder.itemView.background = ContextCompat.getDrawable(context, R.drawable.slot_bg)
-                list[position].isBooked = false
-                addToList.remove(list[position])
-                selectDate.date(addToList)
+                addToList.clear()
+                if (slotPosition != null && position in position..slotPosition!! && list[position].date.isNotEmpty() && list[position].booked == "0") {
+                    for (i in position until slotPosition!!+1) {
+                        list[i].isBooked = false
+                    }
+                    notifyDataSetChanged()
+                }
             }
-//            bookSlot.slotPosition(position)
-//            rowPosition = position
-//            selectedSlot.add(rowPosition)
-//
-//            addToList.add(list[position])
-//            Toast.makeText(context,"" + list[position].toString(),Toast.LENGTH_SHORT).show()
-//            if (addToList.size <2) {
-//                addToList[position].isBooked =true
-//                holder.timeTxt.background =
-//                    ContextCompat.getDrawable(context, R.drawable.slot_green)
-//            } else {
-//                if (list[position -1].booked =="0" || list[position -1].date.isEmpty()
-//                    || list[position +1].booked =="0" || list[position +1].date.isEmpty() ) {
-//                    Toast.makeText(context, "You Cant select this time slot",Toast.LENGTH_SHORT).show()
-//                } else {
-//                    addToList[position].isBooked = true
-//                    holder.timeTxt.background =
-//                        ContextCompat.getDrawable(context, R.drawable.slot_green)
-//                }
-//            }
-
-
-//            if (slotPosition == null) {
-//                isClear = false
-//                holder.timeTxt.background =
-//                    ContextCompat.getDrawable(context, R.drawable.slot_green)
-//            }
 
         }
 
@@ -153,10 +123,6 @@ class BookSlotAdapter(
             e.printStackTrace()
         }
 
-//        if (setFromTime != null && setToTime != null)
-//            selectDate.date(setFromTime!!, setToTime!!)
-//
-
 
         if (isClear) {
             slotPosition = null
@@ -171,18 +137,40 @@ class BookSlotAdapter(
                     list[i].isBooked = false
                 }
 
-//
-
-
             }
         } else if (slotPosition != null && position in lowPosition!!..slotPosition!! && list[position].date.isNotEmpty() && list[position].booked == "0") {
-            list[position].isBooked = true
-            holder.itemView.background = ContextCompat.getDrawable(context, R.drawable.slot_green)
+            if (list[position].isBooked){
+                addToList.add(list[position])
+                selectDate.date(addToList)
+                holder.itemView.background =
+                    ContextCompat.getDrawable(context, R.drawable.slot_green)
+            } else
+                holder.itemView.background = ContextCompat.getDrawable(context, R.drawable.slot_bg)
 
         }
 
     }
 
+    private fun checkSlot(position: Int, holder: BookSlotViewHolder) {
+
+        slotPosition = position
+        if (slotPosition!! < lowPosition!!) {
+            slotPosition = slotPosition!! + lowPosition!!
+            lowPosition = slotPosition!! - lowPosition!!
+            slotPosition = slotPosition!! - lowPosition!!
+        }
+
+        if (slotPosition != null && position in lowPosition!!..slotPosition!! && list[position].date.isNotEmpty() && list[position].booked == "0") {
+            for (i in lowPosition!! until slotPosition!!+1) {
+                list[i].isBooked = true
+
+            }
+            notifyDataSetChanged()
+
+        } else {
+            Toast.makeText(context, "You cant select this slot", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     override fun getItemCount(): Int {
         return list.size

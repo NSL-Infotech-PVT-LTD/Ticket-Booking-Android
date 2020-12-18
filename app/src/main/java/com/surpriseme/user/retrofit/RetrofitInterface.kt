@@ -28,6 +28,7 @@ import com.surpriseme.user.fragments.homefragment.CurrencyListModel
 import com.surpriseme.user.fragments.notificationfragment.NotificationReadModel
 import com.surpriseme.user.fragments.paymentfragment.BookingStatusModel
 import com.surpriseme.user.fragments.reviewfragment.ReviewModel
+import com.surpriseme.user.fragments.selectdateofbookingfragment.CalendarDateListModel
 import com.surpriseme.user.util.Constants
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -55,13 +56,15 @@ interface RetrofitInterface {
     ): Call<RegisterModel>
 
     @POST(Constants.REGISTER_WITH_FB)
-    fun registerWithFB(@Query(Constants.ApiKey.NAME) name: String,
-    @Query(Constants.ApiKey.EMAIL) email: String,
-    @Query(Constants.ApiKey.FB_ID) fb_id:String,
-    @Query(Constants.ApiKey.DEVICE_TYPE) device_Type: String,
-    @Query(Constants.ApiKey.DEVICE_TOKEN) device_Token: String,
-    @Query(Constants.ApiKey.LANG) lang: String,
-    @Query(Constants.ApiKey.IMAGE) imageView: String) : Call<RegisterWithFbModel>
+    fun registerWithFB(
+        @Query(Constants.ApiKey.NAME) name: String,
+        @Query(Constants.ApiKey.EMAIL) email: String,
+        @Query(Constants.ApiKey.FB_ID) fb_id: String,
+        @Query(Constants.ApiKey.DEVICE_TYPE) device_Type: String,
+        @Query(Constants.ApiKey.DEVICE_TOKEN) device_Token: String,
+        @Query(Constants.ApiKey.LANG) lang: String,
+        @Query(Constants.ApiKey.IMAGE) imageView: String
+    ): Call<RegisterWithFbModel>
 
     @POST(Constants.RESET_PASSWORD)
     fun resetPasswordApi(@Query(Constants.ApiKey.EMAIL) email: String): Call<ResetPasswordModel>
@@ -78,8 +81,10 @@ interface RetrofitInterface {
     ): Call<UpdateProfileModel>
 
     @POST(Constants.UPDATE_PROFILE)
-    fun updateProfileApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
-    @Query(Constants.ApiKey.CURRENCY) currency:String) : Call<UpdateProfileModel>
+    fun updateProfileApi(
+        @Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+        @Query(Constants.ApiKey.CURRENCY) currency: String
+    ): Call<UpdateProfileModel>
 
 
     // Artist list for home screen with lat, long....
@@ -93,6 +98,7 @@ interface RetrofitInterface {
         @Query(Constants.ApiKey.SEARCH) search: String,
         @Query(Constants.ApiKey.PAGE) page: String
     ): Call<ArtistModel>
+
     // Artist list for home screen without lag, long....
     @POST(Constants.CUSTOMER_ARTIST_LIST)
     fun artistListApi(
@@ -118,8 +124,8 @@ interface RetrofitInterface {
         @Query(Constants.ApiKey.TO_DATE) to_date: String,
         @Query(Constants.ApiKey.SORT_BY) sort_by: String,
         @Query(Constants.ApiKey.SHOW_TYPE) show_type: String,
-        @Query(Constants.ApiKey.RATING) rating:String,
-        @Query(Constants.ApiKey.RADIUS) radius:String
+        @Query(Constants.ApiKey.RATING) rating: String,
+        @Query(Constants.ApiKey.RADIUS) radius: String
     ): Call<ArtistModel>
 
     // Artist list for Search activity without lat, long....
@@ -135,8 +141,8 @@ interface RetrofitInterface {
         @Query(Constants.ApiKey.TO_DATE) to_date: String,
         @Query(Constants.ApiKey.SORT_BY) sort_by: String,
         @Query(Constants.ApiKey.SHOW_TYPE) show_type: String,
-        @Query(Constants.ApiKey.RATING) rating:String,
-        @Query(Constants.ApiKey.RADIUS) radius:String
+        @Query(Constants.ApiKey.RATING) rating: String,
+        @Query(Constants.ApiKey.RADIUS) radius: String
     ): Call<ArtistModel>
 
     //Customer Booking List...
@@ -325,8 +331,13 @@ interface RetrofitInterface {
     ): Call<DeleteCard>
 
     @GET(Constants.CURRENCIES)
-    fun currencyList(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String) : Call<CurrencyListModel>
+    fun currencyList(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String): Call<CurrencyListModel>
 
+    @POST(Constants.CALENDAR_DATE_LIST)
+    fun calendarDateList(
+        @Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+        @Query(Constants.ApiKey.ARTIST_ID) artistID: String
+    ): Call<CalendarDateListModel>
 
 
 }

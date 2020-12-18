@@ -36,9 +36,11 @@ object Constants {
     const val CHANGE_LANGUAGE = "customer/update/lang"
     const val REGISTER_WITH_FB = "customer/register/fb"
     const val CURRENCIES = "currencies"
+    const val CALENDAR_DATE_LIST = "customer/bookslot/list-date"
+
+
+
     const val ISREMEMBER = "ISREMEMBER"
-
-
     const val PLEASE_CLICK_BACK_AGAIN_To_EXIT = "Please click BACK again to exit"
     const val TIME_OUT = "Time Out"
     const val HOME_ADDRESS = "Home"

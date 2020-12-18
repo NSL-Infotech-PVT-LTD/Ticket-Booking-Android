@@ -111,6 +111,10 @@ dependencies {
 // seekbar with dot for filter
     implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
 
+    // multi date picker
+    implementation project(path: ':library')
+
+
 
 
 }
