@@ -21,6 +21,8 @@
     <color name="offwhiteContrast">#99ffffff</color>
     <color name="greyFadeout">#0FBFC2C6</color>
     <color name="greyLighter">#f1f1f1</color>
+    <color name="greyLight">#e2e2e2</color>
+
     <color name="transparent">#19D7D7D7</color>
     <color name="transparentPopup">#BFD7D7D7</color>
     <color name="black">#000000</color>
@@ -43,7 +45,7 @@
     <color name="chatPurple">#36396E</color>
     <color name="btnback">#E8E8E8</color>
     <color name="liveColorbg">#0090EC</color>
-
+    <color name="fb">#4267B2</color>
 
 
 </resources>

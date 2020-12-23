@@ -85,11 +85,11 @@
                         android:gravity="center_vertical"
                         android:hint="@string/your_location"
                         android:imeOptions="actionDone"
+                        android:maxLines="2"
                         android:paddingStart="@dimen/_10sdp"
                         android:paddingEnd="@dimen/_35sdp"
                         android:textColor="#66667E"
                         android:textSize="@dimen/_10sdp"
-                        android:maxLines="2"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -99,20 +99,27 @@
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:src="@drawable/ic_edit_24"
+                        app:layout_constraintBottom_toBottomOf="@id/mapAddressTxt"
                         app:layout_constraintEnd_toEndOf="@id/mapAddressTxt"
-                        app:layout_constraintTop_toTopOf="@id/mapAddressTxt"
-                        app:layout_constraintBottom_toBottomOf="@id/mapAddressTxt"/>
+                        app:layout_constraintTop_toTopOf="@id/mapAddressTxt" />
+
+                    <TextView
+                        android:id="@+id/additionalTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:text="@string/additional_details"
+                        app:layout_constraintStart_toStartOf="@+id/mapAddressTxt"
+                        app:layout_constraintTop_toBottomOf="@+id/mapAddressTxt" />
 
                     <EditText
                         android:id="@+id/flatEdt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginHorizontal="@dimen/_20sdp"
-                        android:layout_marginTop="@dimen/_20sdp"
                         android:background="@drawable/boxcardview"
                         android:fontFamily="@font/montserrat_semibold"
                         android:gravity="center_vertical"
-                        android:hint="@string/house_number_flat"
                         android:imeOptions="actionDone"
                         android:paddingHorizontal="@dimen/_10sdp"
                         android:singleLine="true"
@@ -120,18 +127,25 @@
                         android:textSize="@dimen/_10sdp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/mapAddressTxt" />
+                        app:layout_constraintTop_toBottomOf="@id/additionalTxt" />
+
+                    <TextView
+                        android:id="@+id/landmarkTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:text="@string/landmark"
+                        app:layout_constraintStart_toStartOf="@+id/mapAddressTxt"
+                        app:layout_constraintTop_toBottomOf="@+id/flatEdt" />
 
                     <EditText
                         android:id="@+id/landmarkEdt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginHorizontal="@dimen/_20sdp"
-                        android:layout_marginTop="@dimen/_20sdp"
                         android:background="@drawable/boxcardview"
                         android:fontFamily="@font/montserrat_semibold"
                         android:gravity="center_vertical"
-                        android:hint="@string/landmark"
                         android:imeOptions="actionDone"
                         android:paddingHorizontal="@dimen/_10sdp"
                         android:singleLine="true"
@@ -139,7 +153,7 @@
                         android:textSize="@dimen/_10sdp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/flatEdt" />
+                        app:layout_constraintTop_toBottomOf="@id/landmarkTxt" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/typeLayout"
@@ -210,20 +224,20 @@
                         android:singleLine="true"
                         android:textSize="@dimen/_10sdp"
                         android:visibility="visible"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/closeIcon"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/typeLayout" />
 
                     <ImageView
                         android:id="@+id/closeIcon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="15dp"
                         android:src="@drawable/ic_close"
                         android:visibility="visible"
-                        app:layout_constraintBottom_toTopOf="@id/otherTypeEdt"
-                        app:layout_constraintEnd_toEndOf="@id/otherTypeEdt"
-                        app:layout_constraintStart_toEndOf="@id/otherTypeEdt"
-                        app:layout_constraintTop_toTopOf="@id/otherTypeEdt" />
+                        app:layout_constraintEnd_toEndOf="@+id/otherTypeEdt"
+                        app:layout_constraintTop_toTopOf="@+id/otherTypeEdt"
+                        app:layout_constraintBottom_toBottomOf="@+id/otherTypeEdt"/>
 
 
                     <com.google.android.material.button.MaterialButton
@@ -231,6 +245,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_50sdp"
                         android:layout_marginHorizontal="@dimen/_30sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
                         android:layout_marginBottom="@dimen/_10sdp"
                         android:fontFamily="@font/montserrat_bold"
                         android:text="@string/save_address"
@@ -238,13 +253,12 @@
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12sdp"
                         app:cornerRadius="@dimen/_20sdp"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        app:layout_goneMarginTop="@dimen/_20sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/otherTypeEdt"
-                        app:layout_constraintVertical_bias="0.9" />
+                        app:layout_constraintVertical_bias="0.9"
+                        app:layout_goneMarginTop="@dimen/_20sdp" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>

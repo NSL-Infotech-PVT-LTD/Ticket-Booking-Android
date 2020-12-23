@@ -88,7 +88,8 @@
                             android:paddingHorizontal="@dimen/_10sdp"
                             android:fontFamily="@font/montserrat_medium"
                             android:textColor="@color/colorPrimary"
-                            android:textSize="12sp"
+                            android:textSize="13sp"
+                            android:textAlignment="center"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/areYouNewTxt" />
@@ -96,7 +97,7 @@
                         <ImageView
                             android:layout_width="@dimen/_30sdp"
                             android:layout_height="@dimen/_30sdp"
-                            android:layout_marginStart="@dimen/_40sdp"
+                            android:layout_marginStart="20dp"
                             android:src="@drawable/email_drawable"
                             app:layout_constraintBottom_toBottomOf="@+id/signUpEmailBtn"
                             app:layout_constraintStart_toStartOf="@id/signUpEmailBtn"
@@ -107,7 +108,7 @@
                             android:id="@+id/orTxt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_15sdp"
                             android:gravity="center"
                             android:text="@string/or"
                             android:textColor="#35353a"
@@ -116,18 +117,46 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/signUpEmailBtn" />
 
-                        <com.google.android.material.button.MaterialButton
+<!--                        <com.google.android.material.button.MaterialButton-->
+<!--                            android:id="@+id/fbLogin"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            app:layout_constraintTop_toBottomOf="@id/orTxt"-->
+<!--                            app:layout_constraintStart_toStartOf="parent"-->
+<!--                            app:layout_constraintEnd_toEndOf="parent"-->
+<!--                            app:layout_constraintBottom_toTopOf="@id/backToLoginBtn"-->
+<!--                            android:layout_marginTop="@dimen/_5sdp"-->
+<!--                            android:text="Facebook Login"/>-->
+
+                        <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/fbLogin"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_40sdp"
+                            android:layout_marginHorizontal="@dimen/_20sdp"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:background="@drawable/signup_with_email"
+                            android:backgroundTint="@color/fb"
+                            android:gravity="center"
+                            android:text="@string/fblogin"
+                            android:textAllCaps="false"
+                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:fontFamily="@font/montserrat_medium"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
+                            android:textAlignment="center"
                             app:layout_constraintTop_toBottomOf="@id/orTxt"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintBottom_toTopOf="@id/backToLoginBtn"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:text="Facebook Login"/>
+                            app:layout_constraintBottom_toTopOf="@id/backToLoginBtn" />
 
-
+                        <ImageView
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_marginStart="20dp"
+                            android:src="@drawable/fb_logo"
+                            app:layout_constraintBottom_toBottomOf="@+id/fbLogin"
+                            app:layout_constraintStart_toStartOf="@id/fbLogin"
+                            app:layout_constraintTop_toTopOf="@id/fbLogin" />
 
 
                         <!--            <com.google.android.material.button.MaterialButton-->
@@ -156,16 +185,16 @@
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/backToLoginBtn"
                             android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_40sdp"
+                            android:layout_height="@dimen/_50sdp"
                             android:layout_marginTop="@dimen/_30sdp"
                             android:layout_marginBottom="@dimen/_20sdp"
                             android:backgroundTint="@color/white"
-                            android:paddingHorizontal="@dimen/_30sdp"
+                            android:paddingHorizontal="30dp"
                             android:text="@string/back_to_login"
                             android:textAllCaps="false"
                             android:textColor="#5a5a5a"
                             android:textSize="@dimen/_12sdp"
-                            app:cornerRadius="@dimen/_15sdp"
+                            app:cornerRadius="@dimen/_35sdp"
                             android:fontFamily="@font/montserrat_semibold"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"

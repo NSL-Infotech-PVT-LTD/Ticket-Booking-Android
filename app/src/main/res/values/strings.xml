@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">SurpriseMeUser</string>
-<!--    <string name="places_api_key">AIzaSyAeRjBp9uCEHLe-dIdsGVKegO9KzsmHmwA</string>-->
-<!--    <string name="places_api_key">AIzaSyCRpD56NTTmuzvDUUBgpSjbUgyrA71bOM</string>-->
+    <!--    <string name="places_api_key">AIzaSyAeRjBp9uCEHLe-dIdsGVKegO9KzsmHmwA</string>-->
+    <!--    <string name="places_api_key">AIzaSyCRpD56NTTmuzvDUUBgpSjbUgyrA71bOM</string>-->
     <string name="facebook_app_id">1078382892582555</string>
     <string name="fb_login_protocol_scheme">fb1078382892582555</string>
     <string name="places_api_key">AIzaSyA8xsvoYmsGtITtzvU90jkK3OHArVBAinI</string>
@@ -17,6 +17,7 @@
     <string name="splash_dummy_text">Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem ipsum has been the industry\'s standard dummy text ever.</string>
     <string name="welcome">Welcome</string>
     <string name="sign_in_to_continue">Sign In to Continue</string>
+    <string name="change">Change</string>
     <string name="e_mail_address">E-mail Address</string>
     <string name="type_here">type here…</string>
     <string name="password">Password</string>
@@ -39,8 +40,8 @@
     <string name="username">Username</string>
     <string name="confirm_pass">Confirm Password</string>
     <string name="register_now">Register Now</string>
-<!--    <string name="facebook_app_id">688614105089365</string>-->
-<!--    <string name="fb_login_protocol_scheme">fb688614105089365</string>-->
+    <!--    <string name="facebook_app_id">688614105089365</string>-->
+    <!--    <string name="fb_login_protocol_scheme">fb688614105089365</string>-->
     <string name="please_fill_require_field">Please fill the require field</string>
     <string name="password_not_match">Password not match</string>
     <string name="con_Text">Continue</string>
@@ -90,6 +91,8 @@
     <string name="you_may_edit_booking">You may edit the booking slot, before payment process.</string>
     <string name="drake">Drake</string>
     <string name="booking_detail">Booking Detail</string>
+    <string name="booking_details">Booking Details</string>
+
     <string name="see_profile">See Profile</string>
     <string name="please_select_address_type">Please select address type</string>
     <string name="artist_available">Artist Available</string>
@@ -188,15 +191,19 @@
     <string name="booking_date">Booking Date</string>
     <string name="location">Location</string>
     <string name="payment">Payment</string>
-    <string name="live">Live</string>
+    <string name="live">live</string>
+    <string name="Live">Live</string>
     <string name="pending">pending</string>
     <string name="not_paid">Not Paid</string>
     <string name="accepted">accepted</string>
     <string name="rejected">rejected</string>
     <string name="confirm">Confirm</string>
-    <string name="paid">Paid</string>
+    <string name="confirmed">Confirmed</string>
+    <string name="paid">Paid: </string>
     <string name="processing">processing</string>
+    <string name="Processing">Processing</string>
     <string name="complete">Complete</string>
+    <string name="Completed">Completed</string>
     <string name="reason">Reason :- \n \n</string>
     <string name="report">report</string>
     <string name="are_you_sure_want_to_cancel">Are you sure you want to cancel?</string>
@@ -262,18 +269,23 @@
     <string name="failed">failed</string>
     <string name="Failed">Failed</string>
     <string name="Report">Report</string>
-    <string name="confirmed">confirmed</string>
     <string name="Confirmed">Confirmed</string>
     <string name="Pending">Pending</string>
     <string name="Rejected">Rejected</string>
     <string name="Cancel">Cancel</string>
     <string name="Accepted">Accepted</string>
-    <string name="Processing">Processing</string>
     <string name="completed_review">completed_review</string>
-    <string name="Completed">Completed</string>
     <string name="choose_your_currency">Choose Your <b>Currency</b></string>
     <string name="invalid_auth">Invalid Auth</string>
     <string name="available">Available</string>
     <string name="unavailable">Unavailable</string>
+    <string name="fblogin">Signup with facebook</string>
+    <string name="category">Category</string>
+    <string name="additional_details">Additional Details</string>
+    <string name="instagram_account">Instagram Account</string>
+    <string name="youtube_account">Youtube Account</string>
+    <string name="rate_your_artist">Rate your artist</string>
+    <string name="read_more">Read More</string>
+    <string name="rate_and_review"><![CDATA[Rate & Review]]></string>
 
 </resources>

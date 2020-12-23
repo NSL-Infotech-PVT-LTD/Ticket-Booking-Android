@@ -13,7 +13,7 @@
         android:visibility="visible"
         android:clickable="true"
         android:focusable="true"
-        android:background="@color/loaderBg">
+        android:background="@color/white">
 
         <com.wang.avi.AVLoadingIndicatorView
             android:id="@+id/progressBar"

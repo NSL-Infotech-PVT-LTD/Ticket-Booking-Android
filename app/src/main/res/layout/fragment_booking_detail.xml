@@ -3,10 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <FrameLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/bookingDetailContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
+
         tools:context=".fragments.bookingdetailfragment.BookingDetailFragment">
 
         <ScrollView
@@ -16,6 +18,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
+                android:background="@color/white"
+
                 android:layout_height="wrap_content">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,6 +47,21 @@
                         android:src="@drawable/ic_white_back"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/chatTv"
+                        android:layout_width="@dimen/_60sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:text="@string/chat"
+                        android:gravity="center_vertical"
+                        android:textSize="@dimen/_12sdp"
+                        android:textColor="@color/white"
+                        android:drawablePadding="5dp"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:drawableStart="@drawable/chatt"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/backpress"
+                        app:layout_constraintBottom_toBottomOf="@id/backpress"/>
 
 
                     <ImageView
@@ -93,7 +112,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="@dimen/_18sdp">
+                        android:layout_marginTop="@dimen/_20sdp">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
@@ -109,23 +128,41 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent" />
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/liveDigitalTv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/live"
-                            android:fontFamily="@font/montserrat_bold"
-                            android:drawablePadding="@dimen/_5sdp"
-                            android:background="@drawable/live_digital_bg"
-                            android:inputType="textCapSentences"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:layout_marginEnd="@dimen/_10sdp"
-                            android:textColor="@color/white"
-                            android:paddingHorizontal="@dimen/_10sdp"
-                            android:textSize="@dimen/_8sdp"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:paddingVertical="@dimen/_2sdp"/>
+<!--                        <com.google.android.material.textview.MaterialTextView-->
+<!--                            android:id="@+id/liveDigitalTv"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="@string/live"-->
+<!--                            android:fontFamily="@font/montserrat_bold"-->
+<!--                            android:drawablePadding="@dimen/_5sdp"-->
+<!--                            android:background="@drawable/live_digital_bg"-->
+<!--                            android:inputType="textCapSentences"-->
+<!--                            app:layout_constraintEnd_toEndOf="parent"-->
+<!--                            app:layout_constraintTop_toTopOf="parent"-->
+<!--                            android:layout_marginEnd="@dimen/_10sdp"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            android:paddingHorizontal="@dimen/_10sdp"-->
+<!--                            android:textSize="@dimen/_8sdp"-->
+<!--                            android:layout_marginTop="@dimen/_5sdp"-->
+<!--                            android:paddingVertical="@dimen/_2sdp"/>-->
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/showTypeTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAllCaps="true"
+                                android:background="@drawable/corner_round_5_blue"
+                                android:textColor="@color/white"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:layout_marginEnd="@dimen/_10sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:paddingHorizontal="@dimen/_3sdp"
+                                android:paddingVertical="2dp"
+                                android:textSize="10dp"
+                                android:drawablePadding="5dp"
+                                android:gravity="center"
+                                android:drawableStart="@drawable/ic_online_prediction_24"/>
 
 <!--                            android:drawableStart="@drawable/grey_round"-->
 
@@ -150,6 +187,70 @@
                         app:layout_constraintTop_toBottomOf="@+id/imageCard"
                         android:layout_marginTop="@dimen/_10sdp"/>
 
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/rateReviewLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_30sdp"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toBottomOf="@+id/profileName">
+
+                        <TextView
+                            android:id="@+id/rateTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="5"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            app:layout_constraintHorizontal_bias="0.4"
+                            android:textColor="@color/white"
+                            android:gravity="center"
+                            android:textSize="@dimen/_8sdp"
+                            android:background="@drawable/rate_text_bg"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="2dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"/>
+
+                        <RatingBar
+                            android:id="@+id/ratingbar"
+                            style="@style/Widget.AppCompat.RatingBar.Small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:rating="3"
+                            android:stepSize="1"
+                            android:layout_marginStart="5dp"
+                            android:theme="@style/RatingBar"
+                            app:layout_constraintStart_toEndOf="@+id/rateTv"
+                            app:layout_constraintTop_toTopOf="@id/rateTv"
+                            app:layout_constraintBottom_toBottomOf="@id/rateTv"/>
+
+                        <TextView
+                            android:id="@+id/reviewTv"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            app:layout_constraintTop_toBottomOf="@id/ratingbar"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:fontFamily="@font/montserrat_regular"
+                            app:layout_constraintEnd_toStartOf="@+id/readMoreTv"
+                            android:singleLine="true" />
+
+                        <TextView
+                            android:id="@+id/readMoreTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/read_more"
+                            android:paddingHorizontal="@dimen/_5sdp"
+                            app:layout_constraintStart_toEndOf="@+id/reviewTv"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/reviewTv"
+                            android:textColor="@color/blue_signup"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
 
@@ -159,7 +260,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_10sdp"
                         android:src="@drawable/dotted_view_line"
-                        app:layout_constraintTop_toBottomOf="@+id/profileName"
+                        app:layout_constraintTop_toBottomOf="@+id/rateReviewLayout"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginHorizontal="@dimen/_50sdp" />
 
@@ -255,11 +356,9 @@
                         app:layout_constraintStart_toStartOf="@id/statusTxt"
                         android:layout_marginTop="@dimen/_5sdp"
                         app:cornerRadius="@dimen/_10sdp"
-                        android:gravity="center"
-                        android:fontFamily="@font/montserrat_bold"
+                        android:fontFamily="@font/montserrat_medium"
                         android:textSize="@dimen/_10sdp"
-                        android:textColor="@color/white"
-                        android:paddingHorizontal="@dimen/_20sdp"
+                        android:textColor="#5a6779"
                         android:paddingVertical="@dimen/_5sdp"
                         android:textAllCaps="false"/>
 
@@ -283,16 +382,13 @@
                         app:layout_constraintStart_toStartOf="@id/paymentTxt"
                         android:layout_marginTop="@dimen/_5sdp"
                         app:cornerRadius="@dimen/_10sdp"
-                        android:fontFamily="@font/montserrat_bold"
-                        android:paddingHorizontal="@dimen/_20sdp"
+                        android:textColor="#5a6779"
+                        android:fontFamily="@font/montserrat_medium"
                         android:paddingVertical="@dimen/_5sdp"
                         android:textSize="@dimen/_10sdp"
-                        android:gravity="center"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_marginBottom="@dimen/_50sdp"
                         android:textAllCaps="false"/>
-
-
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -309,17 +405,14 @@
                     app:layout_constraintEnd_toEndOf="parent">
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/chatBtn"
+                        android:id="@+id/actionBtn"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_50sdp"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginBottom="@dimen/_10sdp"
-                        android:text="@string/chat"
-                        app:icon="@drawable/chat_icon"
-                        app:iconSize="@dimen/_20sdp"
-                        app:iconGravity="textStart"
+                        android:text="@string/pay_now"
                         android:textAllCaps="false"
                         android:visibility="gone"
                         android:textSize="@dimen/_12sdp"
@@ -327,12 +420,12 @@
                         app:cornerRadius="@dimen/_16sdp" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/actionBtn"
+                        android:id="@+id/cancelBtn"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_50sdp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/chatBtn"
+                        app:layout_constraintTop_toBottomOf="@+id/actionBtn"
                         android:text="@string/cancel"
                         android:textAllCaps="false"
                         android:visibility="gone"
@@ -366,8 +459,11 @@
                     android:id="@+id/loaderLayout"
                     android:visibility="gone"/>
 
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
-    </FrameLayout>
+        <include layout="@layout/rate_review_layout" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

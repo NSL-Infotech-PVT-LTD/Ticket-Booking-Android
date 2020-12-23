@@ -37,6 +37,7 @@ object Constants {
     const val REGISTER_WITH_FB = "customer/register/fb"
     const val CURRENCIES = "currencies"
     const val CALENDAR_DATE_LIST = "customer/bookslot/list-date"
+    const val LOGOUT = "logout"
 
 
 
@@ -100,6 +101,12 @@ object Constants {
     var FB_NAME = ""
     var FB_EMAIL = ""
     var FB_IMAGE = ""
+    var ADDITIONAL_DETAILS = "ADDITIONAL_DETAILS"
+    var LANDMARK = "LANDMARK"
+    var CURRENCY = ""
+    var FB_TOKEN = "FBTOKEN"
+    var PAYMENT_FAILED = "payment_failed"
+    var COMPLETE = "complete"
 
 
 

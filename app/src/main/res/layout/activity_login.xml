@@ -19,7 +19,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -31,14 +30,35 @@
 
         <ImageView
             android:id="@+id/img_sign"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_100sdp"
+            android:layout_width="@dimen/_140sdp"
+            android:layout_height="@dimen/_140sdp"
             android:layout_marginTop="@dimen/_20sdp"
             android:src="@drawable/splash_log"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/translate_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:src="@drawable/ic_translate"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toStartOf="@id/changetext"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/changetext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:layout_marginTop="@dimen/_20sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <TextView
             android:id="@+id/welcomeTxt"
             android:layout_width="match_parent"

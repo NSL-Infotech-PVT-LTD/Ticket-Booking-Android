@@ -2,7 +2,7 @@ package com.surpriseme.user.fragments.artistbookingdetail
 
 data class ArtistDetailModel(
     val code: Int,
-    val `data`: ArtistDataModel,
+    val data: ArtistDataModel,
     val status: Boolean
 )
 
@@ -30,16 +30,17 @@ data class ArtistDataModel(
     val mobile: String,
     val name: String,
     val params: Any,
-    val rating: Int,
+    val rating: Double,
     val role: Role,
-    val shows_image: List<Any>,
-    val shows_image_1: String,
-    val shows_image_2: String,
-    val shows_image_3: String,
-    val shows_image_4: String,
+    val shows_image: ArrayList<String>?=null,
+    val shows_image_1: String?,
+    val shows_image_2: String?,
+    val shows_image_3: String?,
+    val shows_image_4: String?,
     val shows_video: String?=null,
-    val social_link_insta: String,
-    val social_link_youtube: String,
+    val shows_video_thumbnail: String?=null,
+    val social_link_insta: String?=null,
+    val social_link_youtube: String?=null,
     val status: String,
     val stripe_account_id: String,
     val stripe_id: Any,

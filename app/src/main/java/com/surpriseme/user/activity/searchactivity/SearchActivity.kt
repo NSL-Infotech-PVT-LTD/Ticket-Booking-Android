@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
@@ -110,7 +112,8 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
         shared = PrefrenceShared(this@SearchActivity)
         latitude = shared?.getString(Constants.LATITUDE)!!
         longitude = shared?.getString(Constants.LONGITUDE)!!
-        if (Constants.SHOW_TYPE == getString(R.string.digital)) {
+        showType = Constants.SHOW_TYPE
+        if (showType == getString(R.string.digital)) {
             byDistanceTv?.visibility = View.GONE
             seekbarDistance?.visibility = View.GONE
         } else {
@@ -140,12 +143,42 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
             ArtistListAdapter(applicationContext, ArrayList(), this@SearchActivity, this@SearchActivity)
         binding?.searchRecycler?.adapter = artistListAdapter
 
+        binding?.searchEdt?.addTextChangedListener(object :TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                binding?.noDataFound?.visibility = View.GONE
+                binding?.searchLayout?.visibility = View.VISIBLE
+
+                search = binding?.searchEdt?.text.toString().trim()
+                artistListAdapter?.clear()
+
+
+                if (Constants.SHOW_TYPE == getString(R.string.digital)) {
+                    artistListApiWithoutLatlng(search)
+                } else {
+                    artistListApi(shared?.getString(Constants.LATITUDE)!!,shared?.getString(Constants.LONGITUDE)!!, search)
+                }
+
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                binding?.noDataFound?.visibility = View.GONE
+                binding?.searchLayout?.visibility = View.VISIBLE
+            }
+
+
+        })
+
         binding?.searchRecycler?.addOnScrollListener(object :
             PaginationScrollListener(layoutManager) {
             override fun loadMoreItems() {
                 isLoading = true
                 currentPage++
-                if (Constants.SHOW_TYPE == getString(R.string.digital)) {
+                if (showType == getString(R.string.digital)) {
                     artistListApiWithoutLatlng(search)
                 } else {
                     artistListApi(shared?.getString(Constants.LATITUDE)!!,shared?.getString(Constants.LONGITUDE)!!, search)
@@ -182,7 +215,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
         kilometerLayout = findViewById(R.id.kilometerLayout)
 
 
-        if (Constants.SHOW_TYPE == getString(R.string.digital)) {
+        if (showType == getString(R.string.digital)) {
             showType = getString(R.string.digital)
             byDistanceTv?.visibility = View.GONE
             seekbarDistance?.visibility = View.GONE
@@ -278,7 +311,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
 
 
         hideKeyboard = HideKeyBoard()
-        binding?.refresh?.setOnClickListener(this)
+
         binding?.filterIcon?.setOnClickListener(this)
         closeBtn?.setOnClickListener(this)
         chooseCategory?.setOnClickListener(this)
@@ -343,7 +376,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 longitude = shared?.getString(Constants.LONGITUDE)!!
 //                artistListApi(latitude, longitude, search)
                 binding?.noDataFound?.visibility = View.GONE
-                binding?.refresh?.visibility = View.GONE
+
             }
             R.id.filterIcon -> {
                 binding?.whiteBgLayout?.visibility = View.VISIBLE
@@ -353,7 +386,6 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 //bottomSheetUpDownCategory()
                 binding?.whiteBgLayout?.visibility = View.GONE
                 bottomSheetUpDownCategory()
-                binding?.refresh?.visibility = View.GONE
                 binding?.noDataFound?.visibility = View.GONE
             }
             R.id.chooseCategoryTxt -> {
@@ -377,7 +409,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
             R.id.applySearchBtn -> {
                 bottomSheetUpDownCategory()
 
-                if (Constants.SHOW_TYPE == getString(R.string.digital)) {
+                if (showType == getString(R.string.digital)) {
                     from_Date = fromDateTxt?.text.toString().trim()
                     to_Date = toDateTxt?.text.toString().trim()
                     if (from_Date == getString(R.string.from) && to_Date == getString(R.string.to)) {
@@ -454,13 +486,14 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
 
     private fun artistListApi(lat: String, lng: String, search: String) {
 
+//        var array = arrayOf(1)
         if (currentPage == 1)
             binding?.loaderLayout?.visibility = View.VISIBLE
 
         RetrofitClient.api.artistListApi(
             shared?.getString(Constants.DataKey.AUTH_VALUE)!!,
             Constants.DataKey.CONTENT_TYPE_VALUE, "",currentPage.toString(),
-            lat, lng, search,categoryIdList,from_Date,to_Date,sortBy,showType,byRating,byDistance
+            lat, lng, search,categoryIdList.toString(),from_Date,to_Date,sortBy,showType,byRating,byDistance
         )
             .enqueue(object : Callback<ArtistModel> {
                 override fun onResponse(call: Call<ArtistModel>, response: Response<ArtistModel>) {
@@ -499,7 +532,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
 
                             } else {
                                 binding?.noDataFound?.visibility = View.VISIBLE
-                                binding?.refresh?.visibility = View.VISIBLE
+
                                 binding?.searchLayout?.visibility = View.GONE
 
                             }
@@ -542,7 +575,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
         RetrofitClient.api.artistListApi(
             shared?.getString(Constants.DataKey.AUTH_VALUE)!!,
             Constants.DataKey.CONTENT_TYPE_VALUE,"",search,currentPage.toString(),
-            categoryIdList,from_Date,to_Date,sortBy,showType,byRating,byDistance
+            categoryIdList.toString(),from_Date,to_Date,sortBy,showType,byRating,byDistance
         )
             .enqueue(object : Callback<ArtistModel> {
                 override fun onResponse(call: Call<ArtistModel>, response: Response<ArtistModel>) {
@@ -577,10 +610,11 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                                 }, 1500)
                                 binding?.searchRecycler?.adapter = artistListAdapter
                                 binding?.searchLayout?.visibility = View.VISIBLE
+                                binding?.noDataFound?.visibility = View.GONE
+                                binding?.searchLayout?.visibility = View.VISIBLE
 
                             } else {
                                 binding?.noDataFound?.visibility = View.VISIBLE
-                                binding?.refresh?.visibility = View.VISIBLE
                                 binding?.searchLayout?.visibility = View.GONE
                             }
                         }
@@ -606,83 +640,6 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 }
             })
     }
-//    private fun artistListApi(
-//        search: String,
-//        from_Date: String,
-//        to_Date: String
-//    ) {
-//
-//        binding?.loaderLayout?.visibility = View.VISIBLE
-//        RetrofitClient.api.artistListApi(
-//            shared?.getString(Constants.DataKey.AUTH_VALUE)!!,
-//            Constants.DataKey.CONTENT_TYPE_VALUE,
-//            "",
-//             shared?.getString(Constants.LATITUDE)!!,
-//            shared?.getString(Constants.LONGITUDE)!!,
-//            search,
-//            categoryIdList,
-//            from_Date,
-//            to_Date,
-//            sortBy,
-//            showType
-//        )
-//            .enqueue(object : Callback<ArtistModel> {
-//                override fun onResponse(call: Call<ArtistModel>, response: Response<ArtistModel>) {
-//                    binding?.loaderLayout?.visibility = View.GONE
-//                    if (response.body() != null) {
-//                        if (response.isSuccessful) {
-//                            // after api successfull do your stuff....
-//                            artistList.clear()
-//                            artistList = response.body()?.data?.data!!
-//                            if (artistList.isNotEmpty()) {
-//                                binding?.noDataFound?.visibility = View.GONE
-//                                binding?.refresh?.visibility = View.GONE
-//                                val adapter = ArtistListAdapter(
-//                                    this@SearchActivity,
-//                                    artistList,
-//                                    this@SearchActivity,
-//                                    this@SearchActivity
-//                                )
-//                                binding?.searchRecycler?.adapter = adapter
-//                                binding?.searchLayout?.visibility = View.VISIBLE
-//                            } else {
-//                                binding?.noDataFound?.visibility = View.VISIBLE
-//                                binding?.refresh?.visibility = View.VISIBLE
-//                                binding?.searchLayout?.visibility = View.GONE
-//                            }
-//                        }
-//                    } else {
-//                        val jsonObject: JSONObject
-//                        if (response.errorBody() != null) {
-//                            try {
-//                                jsonObject = JSONObject(response.errorBody()?.string()!!)
-//                                val errorMessage = jsonObject.getString(Constants.ERRORS)
-//                                Toast.makeText(
-//                                    this@SearchActivity,
-//                                    "" + errorMessage,
-//                                    Toast.LENGTH_SHORT
-//                                ).show()
-//                            } catch (e: JSONException) {
-//                                Toast.makeText(
-//                                    this@SearchActivity,
-//                                    "" + e.message.toString(),
-//                                    Toast.LENGTH_SHORT
-//                                ).show()
-//                            }
-//                        }
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call<ArtistModel>, t: Throwable) {
-//                    binding?.loaderLayout?.visibility = View.GONE
-//                    Toast.makeText(
-//                        this@SearchActivity,
-//                        "" + t.message.toString(),
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                }
-//            })
-//    }
 
     override fun artistDetailLink(artistID: String) {
 // Calling interface from Artist List adapter to send data from home fragment to ArtistDetail fragment with list.

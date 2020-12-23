@@ -48,7 +48,7 @@ class ChatListFragment : Fragment(), ChatListAdapter.GoToChat {
         binding =  DataBindingUtil.inflate(inflater,R.layout.fragment_list_chat,container,false)
         val view = binding!!.root
         shared = PrefrenceShared(ctx!!)
-        activity!!.window.statusBarColor = ContextCompat.getColor(activity!!,R.color.colorPrimary)
+        requireActivity().window.statusBarColor = ContextCompat.getColor(requireActivity(),R.color.colorPrimary)
         init()
 
         return view
@@ -75,24 +75,33 @@ class ChatListFragment : Fragment(), ChatListAdapter.GoToChat {
                     if (response.body() !=null) {
                         if (response.isSuccessful) {
                             chatList.clear()
-                            chatList = response.body()?.data?.list!!
-                            if (chatList !=null){
-                            if (chatList.isNotEmpty()) {
+                            /**
+                             * @author pardeep.sharma@netscapelabs.com
+                             * @param handle the null check
+                             */
+                            if (response.body()?.data?.list != null) {
+                                chatList = response.body()?.data?.list!!
 
-                                binding?.noArtistIcon?.visibility = View.GONE
-                                binding?.noArtistFound?.visibility = View.GONE
 
-                                val chatListAdapter =
-                                    ChatListAdapter(ctx!!, chatList, this@ChatListFragment)
-                                binding?.chatListRecycler?.adapter = chatListAdapter
-                                binding?.chatContainer?.visibility = View.VISIBLE
-                            } else {
-                                binding?.chatContainer?.visibility = View.GONE
+                                if (chatList.isNotEmpty()) {
+
+                                    binding?.noArtistIcon?.visibility = View.GONE
+                                    binding?.noArtistFound?.visibility = View.GONE
+
+                                    val chatListAdapter =
+                                        ChatListAdapter(ctx!!, chatList, this@ChatListFragment)
+                                    binding?.chatListRecycler?.adapter = chatListAdapter
+                                    binding?.chatContainer?.visibility = View.VISIBLE
+                                } else {
+                                    binding?.chatContainer?.visibility = View.GONE
+                                }
+                            }else{
+                                binding?.noArtistText?.visibility = View.VISIBLE
                             }
-                        } else {
+                        }else {
                                 Toast.makeText(ctx,"Something went Wrong",Toast.LENGTH_SHORT).show()
                             }
-                        }
+
                     } else {
                         val jsonObject:JSONObject
                         if (response.errorBody() !=null) {

@@ -113,6 +113,11 @@ dependencies {
 
     // multi date picker
     implementation project(path: ':library')
+    //circle indicator ....
+    implementation 'me.relex:circleindicator:2.1.4@aar'
+
+    // exo player
+    implementation 'com.google.android.exoplayer:exoplayer:2.10.4'
 
 
 

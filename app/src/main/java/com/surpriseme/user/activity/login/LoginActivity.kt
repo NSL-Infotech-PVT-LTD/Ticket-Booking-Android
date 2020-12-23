@@ -13,6 +13,7 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.iid.InstanceIdResult
 import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.R
+import com.surpriseme.user.activity.chooselanguage.ChooseLanguageActivity
 import com.surpriseme.user.activity.signuptype.SignUpTypeActivity
 import com.surpriseme.user.activity.forgotpassword.ForgotPasswordActivity
 import com.surpriseme.user.retrofit.RetrofitClient
@@ -45,6 +46,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             .addOnSuccessListener(this,
                 OnSuccessListener<InstanceIdResult> { instanceIdResult ->
                     fbtoken = instanceIdResult.token
+                    shared.setString(Constants.FB_TOKEN,fbtoken)
                 })
     }
 
@@ -63,6 +65,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         loginButton.setOnClickListener(this)
         forgetTxt.setOnClickListener(this)
         accountYetTxt.setOnClickListener(this)
+        changetext.setOnClickListener(this)
 
         shared()
         loaderLayout = findViewById(R.id.loaderLayout)
@@ -86,6 +89,11 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             R.id.accountYetTxt -> {
                 val intent = Intent(this@LoginActivity, SignUpTypeActivity::class.java)
                 startActivity(intent)
+            }
+            R.id.changetext -> {
+                val intent = Intent(this@LoginActivity, ChooseLanguageActivity::class.java)
+                startActivity(intent)
+                finish()
             }
         }
     }

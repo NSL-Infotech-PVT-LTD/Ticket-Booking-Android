@@ -81,6 +81,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
     private val REQUEST_CHECK_SETTINGS_GPS = 0x1
     private val REQUEST_ID_MULTIPLE_PERMISSIONS = 0x2
     private var address = ""
+    var currencyvalue=""
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var ctx: Context
@@ -109,7 +110,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
     private var popUpWindowCurrency: PopupWindow? = null
     private var invalidAuth: InvalidAuth? = null
 
-
+   private var isCheck = false
     override fun onAttach(context: Context) {
         super.onAttach(context)
         ctx = context
@@ -119,12 +120,14 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
     override fun onStart() {
         super.onStart()
 
-//        if (!isGetProfileStarted)
         getProfileApi()
-//        else
         Handler().postDelayed({
-            locationListApi()
-        }, 1000)
+            if (shared.getString(Constants.CURRENCY) ==""){
+                popupSelectCurrency()
+            } else {
+                locationListApi()
+            }
+        },2000)
 
     }
 
@@ -173,18 +176,6 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 return isLoading
             }
         })
-//        Handler().postDelayed({
-//            if (Constants.SAVED_LOCATION) {
-//                binding.yourLocationInfo.text = shared.getString(Constants.ADDRESS)
-//                artistListApi(
-//                    shared.getString(Constants.LATITUDE),
-//                    shared.getString(Constants.LONGITUDE),
-//                    search
-//                )
-//            }
-//
-//        }, 2000)
-
 
         return view
     }
@@ -272,6 +263,183 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         transaction?.commit()
     }
 
+    // Get Profile Api....
+    private fun getProfileApi() {
+        binding.loaderLayout.visibility = View.VISIBLE
+        RetrofitClient.api.getProfileApi(shared.getString(Constants.DataKey.AUTH_VALUE))
+            .enqueue(object : Callback<ViewProfileModel> {
+                override fun onResponse(
+                    call: Call<ViewProfileModel>,
+                    response: Response<ViewProfileModel>
+                ) {
+                    binding.loaderLayout.visibility = View.GONE
+                    if (response.body() != null) {
+                        if (response.isSuccessful) {
+
+                            userModel = response.body()?.data?.user
+
+                            if (userModel != null) {
+
+                                userImage =
+                                    Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + userModel?.image
+                                userName = userModel?.name.toString()
+                                userEmail = userModel?.email.toString()
+                                Picasso.get().load(userImage)
+                                    .resize(4000, 1500)
+                                    .placeholder(R.drawable.profile_pholder)
+                                    .onlyScaleDown()
+                                    .into(binding.dashUserImg)
+
+                                shared.setString(
+                                    Constants.DataKey.USER_IMAGE,
+                                    Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL
+                                            + userModel?.image
+                                ) // is  used to store user image.
+                                shared.setString(
+                                    Constants.DataKey.USER_NAME,
+                                    userModel?.name
+                                ) // is used to store user name.
+                                shared.setString(
+                                    Constants.DataKey.USER_EMAIL,
+                                    userModel?.email
+                                ) // is used to store user email.
+
+                            }
+                        }
+                    } else {
+                        val jsonObject: JSONObject
+                        if (response.errorBody() != null) {
+                            try {
+                                jsonObject = JSONObject(response.errorBody()!!.string())
+                                val errorMessage = jsonObject.getString(Constants.ERROR)
+                                Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT).show()
+                            } catch (e: JSONException) {
+                                Toast.makeText(
+                                    ctx,
+                                    "" + Constants.SOMETHING_WENT_WRONG,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ViewProfileModel>, t: Throwable) {
+                    binding.loaderLayout.visibility = View.GONE
+                    Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
+                }
+            })
+
+    }
+    // location list api....
+    private fun locationListApi() {
+
+        binding.loaderLayout.visibility = View.VISIBLE
+
+        RetrofitClient.api.addressListApi(shared.getString(Constants.DataKey.AUTH_VALUE))
+            .enqueue(object : Callback<LocationListModel> {
+                override fun onResponse(
+                    call: Call<LocationListModel>,
+                    response: Response<LocationListModel>
+                ) {
+                    binding.loaderLayout.visibility = View.GONE
+                    if (response.body() != null) {
+                        if (response.isSuccessful) {
+
+                            locationList.clear()
+                            locationList = response.body()?.data!!
+                            if (locationList.isNotEmpty()) {
+
+                                if (Constants.SAVED_LOCATION) {
+                                    binding.yourLocationInfo.text =
+                                        shared.getString(Constants.ADDRESS)
+                                } else {
+                                    binding.yourLocationInfo.text = locationList[0].street_address
+                                }
+                            }
+                            if (Constants.SHOW_TYPE == "") {
+                                binding.virtualTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+                                binding.inPersonTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+
+                                Handler().postDelayed({
+                                    popupShowType()
+                                },1000)
+
+                            } else if (Constants.SHOW_TYPE == ctx.resources.getString(R.string.digital)) {
+                                binding.virtualTv.background =
+                                    ContextCompat.getDrawable(
+                                        ctx,
+                                        R.drawable.corner_round_5_blue
+                                    )
+                                binding.inPersonTv.background =
+                                    ContextCompat.getDrawable(
+                                        ctx,
+                                        R.drawable.corner_round_5_grey
+                                    )
+                                binding.addressLayout.visibility = View.GONE
+                                artistListApiWithoutLatlng(search)
+                            } else {
+                                if (locationList.size > 0) {
+
+                                    binding.addressLayout.visibility = View.VISIBLE
+                                    binding.virtualTv.background =
+                                        ContextCompat.getDrawable(
+                                            ctx,
+                                            R.drawable.corner_round_5_grey
+                                        )
+                                    binding.inPersonTv.background =
+                                        ContextCompat.getDrawable(
+                                            ctx,
+                                            R.drawable.corner_round_5_pink
+                                        )
+                                    artistListApi(
+                                        locationList[0].latitude,
+                                        locationList[0].longitude,
+                                        search
+                                    )
+                                } else {
+                                    binding.addressLayout.visibility = View.GONE
+                                    binding.virtualTv.background =
+                                        ContextCompat.getDrawable(
+                                            ctx,
+                                            R.drawable.corner_round_5_blue
+                                        )
+                                    binding.inPersonTv.background =
+                                        ContextCompat.getDrawable(
+                                            ctx,
+                                            R.drawable.corner_round_5_grey
+                                        )
+                                    artistListApiWithoutLatlng(search)
+                                }
+                            }
+
+                        }
+                    } else {
+                        // When Api will not successfull then error to display in json
+                        val jsonObject: JSONObject
+                        if (response.errorBody() != null) {
+                            try {
+                                jsonObject = JSONObject(response.errorBody()?.string()!!)
+                                val errorMessage = jsonObject.getString(Constants.ERROR)
+                                Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT).show()
+                            } catch (e: JSONException) {
+                                Toast.makeText(ctx, "" + e.message.toString(), Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<LocationListModel>, t: Throwable) {
+                    binding.loaderLayout.visibility = View.GONE
+                    if (t is SocketTimeoutException)
+                        Toast.makeText(ctx, "" + Constants.TIME_OUT, Toast.LENGTH_SHORT).show()
+                    else
+                        Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
+                }
+            })
+    }   // End of location list api....
+    // artist list api with latitude, longitude....
     private fun artistListApi(lat: String, lng: String, search: String) {
 
         if (currentPage == 1)
@@ -337,6 +505,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
             })
     }
 
+    // artist list api without latitude, longitude....
     private fun artistListApiWithoutLatlng(search: String) {
 
         if (currentPage == 1)
@@ -506,7 +675,6 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
     }
 
     // popup will display to select currency.
-
     private fun popupSelectCurrency() {
 
         val layoutInflater: LayoutInflater =
@@ -527,8 +695,18 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         popUpWindowCurrency?.isOutsideTouchable = false
 
         currencyRecycler = popUp.findViewById(R.id.recyclerCurrency)
+
         val proceedBtn = popUp.findViewById<MaterialButton>(R.id.proceedBtn)
         val back = popUp.findViewById<TextView>(R.id.back)
+
+
+
+//        popUpWindowCurrency?.setOnDismissListener {
+//            Handler().postDelayed({
+//                popupShowType()
+//            }, 1000)
+//        }
+
 
         val layoutManager = LinearLayoutManager(ctx)
         currencyRecycler?.layoutManager = layoutManager
@@ -537,245 +715,14 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         // calling Currency List api....
         currencyListApi()
 
+        proceedBtn.setOnClickListener {
+            popUpWindowCurrency?.dismiss()
+            // hit Update profile api to save currency ....
 
-    }
+            updateProfileApi(currencyvalue)
+            shared.setString(Constants.CURRENCY,currencyvalue)
 
-    private fun locationListApi() {
-
-        binding.loaderLayout.visibility = View.VISIBLE
-
-        RetrofitClient.api.addressListApi(shared.getString(Constants.DataKey.AUTH_VALUE))
-            .enqueue(object : Callback<LocationListModel> {
-                override fun onResponse(
-                    call: Call<LocationListModel>,
-                    response: Response<LocationListModel>
-                ) {
-                    binding.loaderLayout.visibility = View.GONE
-                    if (response.body() != null) {
-                        if (response.isSuccessful) {
-
-                            locationList.clear()
-                            locationList = response.body()?.data!!
-                            if (locationList.isNotEmpty()) {
-
-                                if (Constants.SAVED_LOCATION) {
-
-                                    binding.yourLocationInfo.text =
-                                        shared.getString(Constants.ADDRESS)
-                                } else {
-
-                                    binding.yourLocationInfo.text = locationList[0].street_address
-                                }
-                                if (Constants.SHOW_TYPE == "") {
-                                    binding.virtualTv.background =
-                                        ContextCompat.getDrawable(
-                                            ctx,
-                                            R.drawable.corner_round_5_grey
-                                        )
-                                    binding.inPersonTv.background =
-                                        ContextCompat.getDrawable(
-                                            ctx,
-                                            R.drawable.corner_round_5_grey
-                                        )
-                                    Handler().postDelayed({
-                                        popupShowType()
-                                    }, 1000)
-                                } else if (Constants.SHOW_TYPE == ctx.resources.getString(R.string.digital)) {
-                                    binding.virtualTv.background =
-                                        ContextCompat.getDrawable(
-                                            ctx,
-                                            R.drawable.corner_round_5_blue
-                                        )
-                                    binding.inPersonTv.background =
-                                        ContextCompat.getDrawable(
-                                            ctx,
-                                            R.drawable.corner_round_5_grey
-                                        )
-                                    binding.addressLayout.visibility = View.GONE
-                                    artistListApiWithoutLatlng(search)
-                                } else {
-
-                                    if (locationList.size > 0) {
-
-                                        binding.addressLayout.visibility = View.VISIBLE
-                                        binding.virtualTv.background =
-                                            ContextCompat.getDrawable(
-                                                ctx,
-                                                R.drawable.corner_round_5_grey
-                                            )
-                                        binding.inPersonTv.background =
-                                            ContextCompat.getDrawable(
-                                                ctx,
-                                                R.drawable.corner_round_5_pink
-                                            )
-                                        artistListApi(
-                                            locationList[0].latitude,
-                                            locationList[0].longitude,
-                                            search
-                                        )
-                                    } else {
-                                        binding.addressLayout.visibility = View.GONE
-                                        binding.virtualTv.background =
-                                            ContextCompat.getDrawable(
-                                                ctx,
-                                                R.drawable.corner_round_5_blue
-                                            )
-                                        binding.inPersonTv.background =
-                                            ContextCompat.getDrawable(
-                                                ctx,
-                                                R.drawable.corner_round_5_grey
-                                            )
-                                        artistListApiWithoutLatlng(search)
-                                    }
-                                }
-                            } else {
-                                if (Constants.SHOW_TYPE != "") {
-
-                                    if (Constants.SHOW_TYPE == ctx.resources.getString(R.string.digital)) {
-                                        binding.virtualTv.background =
-                                            ContextCompat.getDrawable(
-                                                ctx,
-                                                R.drawable.corner_round_5_blue
-                                            )
-                                        binding.inPersonTv.background =
-                                            ContextCompat.getDrawable(
-                                                ctx,
-                                                R.drawable.corner_round_5_grey
-                                            )
-                                        binding.addressLayout.visibility = View.GONE
-                                        artistListApiWithoutLatlng(search)
-
-                                    } else {
-
-                                        binding.virtualTv.background =
-                                            ContextCompat.getDrawable(
-                                                ctx,
-                                                R.drawable.corner_round_5_blue
-                                            )
-                                        binding.inPersonTv.background =
-                                            ContextCompat.getDrawable(
-                                                ctx,
-                                                R.drawable.corner_round_5_grey
-                                            )
-                                        binding.addressLayout.visibility = View.GONE
-                                        Constants.SHOW_TYPE =
-                                            ctx.resources.getString(R.string.digital)
-
-                                        if (Constants.IS_SWITCH_TO_VIRTUAL) {
-                                            Toast.makeText(
-                                                ctx,
-                                                "" + ctx.resources.getString(R.string.no_address_right_now_switching_to_virtual),
-                                                Toast.LENGTH_LONG
-                                            ).show()
-
-                                        }
-
-                                        artistListApiWithoutLatlng(search)
-                                    }
-                                } else {
-                                    Handler().postDelayed({
-                                        popupShowType()
-                                    }, 1000)
-                                }
-                            }
-                        }
-                    } else {
-                        // When Api will not successfull then error to display in json
-                        val jsonObject: JSONObject
-                        if (response.errorBody() != null) {
-                            try {
-                                jsonObject = JSONObject(response.errorBody()?.string()!!)
-                                val errorMessage = jsonObject.getString(Constants.ERROR)
-                                Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT).show()
-                            } catch (e: JSONException) {
-                                Toast.makeText(ctx, "" + e.message.toString(), Toast.LENGTH_SHORT)
-                                    .show()
-                            }
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<LocationListModel>, t: Throwable) {
-                    binding.loaderLayout.visibility = View.GONE
-                    if (t is SocketTimeoutException)
-                        Toast.makeText(ctx, "" + Constants.TIME_OUT, Toast.LENGTH_SHORT).show()
-                    else
-                        Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
-                }
-            })
-    }   // End of location list api....
-
-    // Get Profile Api....
-    private fun getProfileApi() {
-        binding.loaderLayout.visibility = View.VISIBLE
-        RetrofitClient.api.getProfileApi(shared.getString(Constants.DataKey.AUTH_VALUE))
-            .enqueue(object : Callback<ViewProfileModel> {
-                override fun onResponse(
-                    call: Call<ViewProfileModel>,
-                    response: Response<ViewProfileModel>
-                ) {
-                    binding.loaderLayout.visibility = View.GONE
-                    if (response.body() != null) {
-                        if (response.isSuccessful) {
-
-                            isGetProfileStarted = true
-
-                            userModel = response.body()?.data?.user
-
-                            if (userModel != null) {
-
-
-                                userImage =
-                                    Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + userModel?.image
-                                userName = userModel?.name.toString()
-                                userEmail = userModel?.email.toString()
-                                Picasso.get().load(userImage)
-                                    .resize(4000, 1500)
-                                    .placeholder(R.drawable.profile_pholder)
-                                    .onlyScaleDown()
-                                    .into(binding.dashUserImg)
-
-                                shared.setString(
-                                    Constants.DataKey.USER_IMAGE,
-                                    Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL
-                                            + userModel?.image
-                                ) // is  used to store user image.
-                                shared.setString(
-                                    Constants.DataKey.USER_NAME,
-                                    userModel?.name
-                                ) // is used to store user name.
-                                shared.setString(
-                                    Constants.DataKey.USER_EMAIL,
-                                    userModel?.email
-                                ) // is used to store user email.
-                                if (userModel?.currency == null || userModel?.currency == "")
-                                    popupSelectCurrency()
-
-                            }
-                        }
-                    } else {
-                        val jsonObject: JSONObject
-                        if (response.errorBody() != null) {
-                            try {
-                                jsonObject = JSONObject(response.errorBody()!!.string())
-                                val errorMessage = jsonObject.getString(Constants.ERROR)
-                                Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT).show()
-                            } catch (e: JSONException) {
-                                Toast.makeText(
-                                    ctx,
-                                    "" + Constants.SOMETHING_WENT_WRONG,
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<ViewProfileModel>, t: Throwable) {
-                    binding.loaderLayout.visibility = View.GONE
-                    Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
-                }
-            })
+        }
 
     }
 
@@ -819,13 +766,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
 
                 override fun currencyClick(currency: String) {
 
-                    popUpWindowCurrency?.dismiss()
-                    // hit Update profile api to save currency ....
-
-                    updateProfileApi(currency)
-                    Handler().postDelayed({
-                        locationListApi()
-                    }, 1000)
+                 currencyvalue=currency
 
                 }
 
@@ -847,13 +788,10 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                     if (response.body() != null) {
                         if (response.isSuccessful) {
                             shared.setString(
-                                Constants.DataKey.USER_IMAGE,
-                                Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL +
-                                        response.body()?.data?.user?.image
-                            )
-                            val intent = Intent(ctx, MainActivity::class.java)
-                            startActivity(intent)
-                            activity?.finish()
+                                Constants.DataKey.USER_IMAGE, Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + response.body()?.data?.user?.image)
+                            Handler().postDelayed({
+                                locationListApi()
+                            }, 1000)
 
                         }
                     } else {

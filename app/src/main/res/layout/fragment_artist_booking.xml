@@ -6,10 +6,13 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         tools:context=".fragments.artistbookingdetail.ArtistBookingFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
+            android:background="@color/white"
+
             android:layout_height="match_parent">
 
             <androidx.cardview.widget.CardView
@@ -67,7 +70,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_200sdp"
                         android:scaleType="centerCrop"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:src="@drawable/user_pholder_updated"
                         app:layout_constraintBottom_toBottomOf="@+id/youtubeView"
                         app:layout_constraintEnd_toEndOf="@+id/youtubeView"
@@ -111,32 +114,44 @@
                     </HorizontalScrollView>
 
 
-
-                    <ImageView
-                        android:id="@+id/profileImg"
-                        android:layout_width="@dimen/_60sdp"
-                        android:layout_height="@dimen/_60sdp"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/user_pholder_updated"
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/profileImgCard"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/viewHorizontal" />
+                        app:layout_constraintTop_toBottomOf="@+id/viewHorizontal"
+                        app:cardCornerRadius="5dp"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_20sdp">
+
+                        <ImageView
+                            android:id="@+id/profileImg"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/user_pholder_updated"
+                            />
+
+                    </androidx.cardview.widget.CardView>
+
+
+
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/profileName"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
                         android:fontFamily="@font/montserrat_bold"
                         android:inputType="textCapSentences"
                         android:singleLine="true"
                         android:textColor="#32333a"
-                        android:textSize="@dimen/_16sdp"
+                        android:textSize="@dimen/_18sdp"
+                        app:fontFamily="@font/montserrat_bold"
                         app:layout_constraintEnd_toStartOf="@+id/bookBtn"
-                        app:layout_constraintStart_toEndOf="@id/profileImg"
-                        app:layout_constraintTop_toTopOf="@id/profileImg" />
+                        app:layout_constraintStart_toEndOf="@id/profileImgCard"
+                        app:layout_constraintTop_toTopOf="@id/profileImgCard" />
 
 
                     <RatingBar
@@ -156,40 +171,40 @@
                         android:id="@+id/seeReviewTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginStart="5dp"
                         android:fontFamily="@font/montserrat_semibold"
                         android:padding="@dimen/_5sdp"
                         android:text="@string/see_review"
                         android:textColor="#139dff"
-                        android:textSize="12dp"
+                        android:textSize="10dp"
                         app:layout_constraintBottom_toBottomOf="@id/ratingbar"
                         app:layout_constraintStart_toEndOf="@id/ratingbar"
                         app:layout_constraintTop_toTopOf="@id/ratingbar" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/bookBtn"
-                        android:layout_width="@dimen/_60sdp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:text="@string/book"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="@dimen/_10sdp"
-                        app:backgroundTint="@color/white"
-                        app:cornerRadius="@dimen/_10sdp"
+                        android:paddingHorizontal="@dimen/_12sdp"
+                        android:paddingVertical="4dp"
+                        android:background="@drawable/artist_book_btn_bg"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sdp"
+                        android:textAllCaps="true"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/profileImg"
-                        app:strokeColor="@color/colorPrimary"
-                        app:strokeWidth="@dimen/_1sdp" />
-
+                        app:fontFamily="@font/montserrat_semibold"
+                        app:layout_constraintTop_toTopOf="@id/profileImgCard"
+                        />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/showFieldLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_20sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:background="@drawable/dotted_view_square"
-                        app:layout_constraintTop_toBottomOf="@+id/profileImg">
+                        android:layout_marginTop="@dimen/_30sdp"
+                        app:layout_constraintTop_toBottomOf="@+id/profileImgCard">
 
                         <TextView
                             android:id="@+id/bookingPriceTxt"
@@ -204,15 +219,35 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/showTypeTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/virtual"
+                            android:textAllCaps="true"
+                            android:background="@drawable/corner_round_5_blue"
+                            android:textColor="@color/white"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:paddingHorizontal="@dimen/_3sdp"
+                            android:paddingVertical="2dp"
+                            android:textSize="10dp"
+                            android:drawablePadding="5dp"
+                            android:gravity="center"
+                            android:drawableStart="@drawable/ic_online_prediction_24"/>
+
                         <ImageView
                             android:id="@+id/dottedLineImg"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_5sdp"
+                            android:layout_height="@dimen/_3sdp"
                             android:layout_marginEnd="@dimen/_20sdp"
                             android:background="@drawable/dotted_view_line"
-                            app:layout_constraintTop_toBottomOf="@id/bookingPriceTxt" />
+                            app:layout_constraintTop_toBottomOf="@id/bookingPriceTxt"
+                            android:layout_marginTop="5dp"/>
 
                         <ImageView
+                            android:id="@+id/inPersonIcon"
                             android:layout_width="@dimen/_10sdp"
                             android:layout_height="@dimen/_10sdp"
                             android:layout_marginStart="@dimen/_5sdp"
@@ -229,7 +264,7 @@
                             android:layout_marginStart="@dimen/_25sdp"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:fontFamily="@font/montserrat_semibold"
-                            android:text="@string/live_show"
+                            android:text="@string/in_person_show"
                             android:textColor="#36396e"
                             android:textSize="@dimen/_10sdp"
                             app:layout_constraintStart_toStartOf="parent"
@@ -258,8 +293,10 @@
                                 <ImageView
                                     android:id="@+id/liveticket"
                                     android:layout_width="18dp"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="18dp"
                                     android:src="@drawable/ticket"
+                                    android:layout_marginStart="5dp"
+                                    app:layout_constraintTop_toTopOf="parent"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintStart_toStartOf="parent" />
 
@@ -282,11 +319,11 @@
                                     android:layout_marginStart="@dimen/_5sdp"
                                     android:layout_marginEnd="@dimen/_5sdp"
                                     android:layout_marginBottom="@dimen/_5sdp"
-
                                     android:singleLine="true"
                                     android:text="@string/price_demo"
+                                    android:fontFamily="@font/montserrat_semibold"
                                     android:textColor="@color/colorPrimary"
-                                    android:textSize="@dimen/_12sdp"
+                                    android:textSize="@dimen/_10sdp"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toEndOf="@id/liveticket"
@@ -295,13 +332,6 @@
                             </androidx.constraintlayout.widget.ConstraintLayout>
                         </androidx.cardview.widget.CardView>
 
-                        <ImageView
-                            android:id="@+id/dottedLineImg1"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_5sdp"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:background="@drawable/dotted_view_line"
-                            app:layout_constraintTop_toBottomOf="@id/liveShowCard" />
 
                         <ImageView
                             android:layout_width="@dimen/_10sdp"
@@ -318,13 +348,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_25sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_20sdp"
                             android:fontFamily="@font/montserrat_semibold"
-                            android:text="@string/digital_show"
+                            android:text="@string/virtual_show"
                             android:textColor="#36396e"
                             android:textSize="@dimen/_10sdp"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/dottedLineImg1" />
+                            app:layout_constraintTop_toBottomOf="@+id/liveShowTxt" />
 
                         <!-- digital show price card -->
                         <androidx.cardview.widget.CardView
@@ -349,8 +379,10 @@
                                 <ImageView
                                     android:id="@+id/digitalTicket"
                                     android:layout_width="18dp"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/ticket"
+                                    android:layout_height="18dp"
+                                    android:src="@drawable/virtual_ticket"
+                                    android:layout_marginStart="5dp"
+                                    app:layout_constraintTop_toTopOf="parent"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintStart_toStartOf="parent" />
 
@@ -373,11 +405,11 @@
                                     android:layout_marginStart="@dimen/_5sdp"
                                     android:layout_marginEnd="@dimen/_5sdp"
                                     android:layout_marginBottom="@dimen/_5sdp"
-
+                                    android:fontFamily="@font/montserrat_semibold"
                                     android:singleLine="true"
                                     android:text="@string/price_demo"
                                     android:textColor="@color/colorPrimary"
-                                    android:textSize="@dimen/_12sdp"
+                                    android:textSize="@dimen/_10sdp"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toEndOf="@id/digitalTicket"
@@ -413,6 +445,7 @@
                         android:id="@+id/horizontalView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/dottedLineImg2">
@@ -424,8 +457,8 @@
 
                             <ImageView
                                 android:id="@+id/img1"
-                                android:layout_width="@dimen/_100sdp"
-                                android:layout_height="@dimen/_100sdp"
+                                android:layout_width="@dimen/_50sdp"
+                                android:layout_height="@dimen/_50sdp"
                                 android:scaleType="centerCrop"
                                 android:src="@drawable/user_pholder_updated"
                                 android:visibility="gone"
@@ -434,8 +467,8 @@
 
                             <ImageView
                                 android:id="@+id/img2"
-                                android:layout_width="@dimen/_100sdp"
-                                android:layout_height="@dimen/_100sdp"
+                                android:layout_width="@dimen/_50sdp"
+                                android:layout_height="@dimen/_50sdp"
                                 android:layout_marginStart="@dimen/_10sdp"
                                 android:scaleType="centerCrop"
                                 android:src="@drawable/user_pholder_updated"
@@ -445,8 +478,8 @@
 
                             <ImageView
                                 android:id="@+id/img3"
-                                android:layout_width="@dimen/_100sdp"
-                                android:layout_height="@dimen/_100sdp"
+                                android:layout_width="@dimen/_50sdp"
+                                android:layout_height="@dimen/_50sdp"
                                 android:layout_marginStart="@dimen/_10sdp"
                                 android:scaleType="centerCrop"
                                 android:src="@drawable/user_pholder_updated"
@@ -456,8 +489,8 @@
 
                             <ImageView
                                 android:id="@+id/img4"
-                                android:layout_width="@dimen/_100sdp"
-                                android:layout_height="@dimen/_100sdp"
+                                android:layout_width="@dimen/_50sdp"
+                                android:layout_height="@dimen/_50sdp"
                                 android:layout_marginStart="@dimen/_10sdp"
                                 android:scaleType="centerCrop"
                                 android:src="@drawable/user_pholder_updated"
@@ -469,117 +502,161 @@
 
                     </HorizontalScrollView>
 
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/socialMediaTxt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_20sdp"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:text="@string/social_media_handles"
-                        android:textSize="@dimen/_14sdp"
-                        android:textColor="#36396e"
-                        android:fontFamily="@font/montserrat_bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/horizontalView" />
-
-                    <ImageView
-                        android:id="@+id/dottedLineImg3"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/socialMediaLayout"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_5sdp"
+                        android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_20sdp"
-                        android:background="@drawable/dotted_view_line"
-                        app:layout_constraintTop_toBottomOf="@id/socialMediaTxt" />
+                        app:layout_constraintTop_toBottomOf="@+id/horizontalView">
 
-                    <ImageView
-                        android:id="@+id/mediaIcon"
-                        android:layout_width="@dimen/_10sdp"
-                        android:layout_height="@dimen/_10sdp"
-                        android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:src="@drawable/user_pholder_updated"
-                        app:layout_constraintStart_toStartOf="@id/socialMediaTxt"
-                        app:layout_constraintTop_toBottomOf="@+id/dottedLineImg3" />
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/socialMediaTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:text="@string/social_media_handles"
+                            android:textSize="@dimen/_14sdp"
+                            android:textColor="#36396e"
+                            android:fontFamily="@font/montserrat_bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/mediaTxt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:text="@string/media"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:textColor="#36396e"
-                        android:textSize="@dimen/_12sdp"
-                        app:layout_constraintStart_toEndOf="@+id/mediaIcon"
-                        app:layout_constraintTop_toTopOf="@+id/mediaIcon" />
+                        <ImageView
+                            android:id="@+id/dottedLineImg3"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_5sdp"
+                            android:layout_marginHorizontal="@dimen/_20sdp"
+                            android:background="@drawable/dotted_view_line"
+                            app:layout_constraintTop_toBottomOf="@id/socialMediaTxt" />
 
-                    <TextView
-                        android:id="@+id/mediaText"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:maxLines="2"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:textColor="#0396ff"
-                        android:textSize="@dimen/_10sdp"
-                        app:layout_constraintEnd_toStartOf="@id/youtubeIcon"
-                        app:layout_constraintStart_toStartOf="@+id/mediaTxt"
-                        app:layout_constraintTop_toBottomOf="@+id/mediaTxt" />
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/instaLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@+id/socialMediaTxt"
+                            >
 
-                    <ImageView
-                        android:id="@+id/youtubeIcon"
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:src="@drawable/youtube_icon"
-                        app:layout_constraintBottom_toBottomOf="@id/mediaIcon"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/mediaIcon" />
+                            <ImageView
+                                android:id="@+id/instaImg"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_50sdp"
+                                android:src="@drawable/insta_img"
+                                app:layout_constraintTop_toTopOf="parent"/>
+                            <ImageView
+                                android:id="@+id/instaIcon"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:src="@drawable/insta_icon"
+                                app:layout_constraintStart_toStartOf="@id/instaImg"
+                                app:layout_constraintTop_toTopOf="@id/instaImg"
+                                app:layout_constraintBottom_toBottomOf="@id/instaImg"
+                                android:layout_marginStart="10dp"/>
+                            <TextView
+                                android:id="@+id/instagramTxt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/instagram_account"
+                                app:layout_constraintTop_toTopOf="@id/instaIcon"
+                                app:layout_constraintBottom_toBottomOf="@id/instaIcon"
+                                app:layout_constraintStart_toEndOf="@+id/instaIcon"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/montserrat_regular"
+                                android:textSize="@dimen/_10sdp"/>
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="15dp"
+                                app:layout_constraintEnd_toStartOf="@+id/instaViewProfileTxt"
+                                android:background="@color/white"
+                                android:layout_marginEnd="20dp"
+                                app:layout_constraintTop_toTopOf="@id/instaImg"
+                                app:layout_constraintBottom_toBottomOf="@id/instaImg"/>
+
+                            <TextView
+                                android:id="@+id/instaViewProfileTxt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:text="@string/view_profile"
+                                android:gravity="center"
+                                android:layout_marginVertical="5dp"
+                                app:layout_constraintTop_toTopOf="@id/instaImg"
+                                app:layout_constraintBottom_toBottomOf="@id/instaImg"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginEnd="@dimen/_20sdp"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/montserrat_regular"
+                                android:textSize="@dimen/_10sdp"/>
 
 
-                    <ImageView
-                        android:id="@+id/mediaIconInsta"
-                        android:layout_width="@dimen/_10sdp"
-                        android:layout_height="@dimen/_10sdp"
-                        android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:src="@drawable/user_pholder_updated"
-                        app:layout_constraintStart_toStartOf="@id/socialMediaTxt"
-                        app:layout_constraintTop_toBottomOf="@+id/mediaText" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/mediaTxtInsta"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:text="@string/media"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp"
-                        app:layout_constraintStart_toEndOf="@+id/mediaIconInsta"
-                        app:layout_constraintTop_toTopOf="@+id/mediaIconInsta" />
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/youtubeLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/instaLayout">
 
-                    <TextView
-                        android:id="@+id/mediaTextInsta"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:maxLines="2"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:textColor="#0396ff"
-                        android:textSize="@dimen/_10sdp"
-                        app:layout_constraintEnd_toStartOf="@+id/instaIcon"
-                        app:layout_constraintStart_toStartOf="@+id/mediaTxtInsta"
-                        app:layout_constraintTop_toBottomOf="@+id/mediaTxtInsta" />
+                            <ImageView
+                                android:id="@+id/youtubeImg"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_50sdp"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:src="@drawable/youtube_img"/>
 
-                    <ImageView
-                        android:id="@+id/instaIcon"
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:src="@drawable/insta_icon"
-                        app:layout_constraintBottom_toBottomOf="@id/mediaIconInsta"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/mediaIconInsta" />
+                            <ImageView
+                                android:id="@+id/youtubeIcon"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:src="@drawable/youtube_icon"
+                                app:layout_constraintStart_toStartOf="@id/youtubeImg"
+                                app:layout_constraintTop_toTopOf="@id/youtubeImg"
+                                app:layout_constraintBottom_toBottomOf="@id/youtubeImg"
+                                android:layout_marginStart="10dp"/>
+
+                            <TextView
+                                android:id="@+id/youtubeTxt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/youtube_account"
+                                app:layout_constraintTop_toTopOf="@id/youtubeImg"
+                                app:layout_constraintBottom_toBottomOf="@id/youtubeImg"
+                                app:layout_constraintStart_toEndOf="@+id/youtubeIcon"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/montserrat_regular"
+                                android:textSize="@dimen/_10sdp"/>
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="15dp"
+                                app:layout_constraintEnd_toStartOf="@+id/youtubeViewProfileTxt"
+                                android:background="@color/white"
+                                android:layout_marginEnd="20dp"
+                                app:layout_constraintTop_toTopOf="@id/youtubeImg"
+                                app:layout_constraintBottom_toBottomOf="@id/youtubeImg"/>
+
+                            <TextView
+                                android:id="@+id/youtubeViewProfileTxt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_marginVertical="5dp"
+                                android:text="@string/view_profile"
+                                android:gravity="center"
+                                app:layout_constraintTop_toTopOf="@id/youtubeImg"
+                                app:layout_constraintBottom_toBottomOf="@id/youtubeImg"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginEnd="@dimen/_20sdp"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/montserrat_regular"
+                                android:textSize="@dimen/_10sdp"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/aboutTxt"
@@ -592,7 +669,7 @@
                         android:textSize="@dimen/_14sdp"
                         android:textColor="#36396e"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/mediaTextInsta" />
+                        app:layout_constraintTop_toBottomOf="@+id/socialMediaLayout" />
 
                     <ImageView
                         android:id="@+id/dottedLineImg4"
@@ -646,7 +723,45 @@
             <include layout="@layout/loader_layout"
                 android:id="@+id/loaderLayout"
                 android:visibility="gone"/>
+            <RelativeLayout
+                android:id="@+id/largeImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/black"
+                android:visibility="gone">
 
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_200sdp"
+                    android:visibility="gone"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/profile_pholder" />
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_200sdp"
+                    android:layout_centerInParent="true">
+
+                </androidx.viewpager.widget.ViewPager>
+
+                <me.relex.circleindicator.CircleIndicator
+                    android:id="@+id/indicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_below="@id/pager"
+                    app:ci_drawable="@drawable/selected_dot" />
+
+                <ImageView
+                    android:id="@+id/close"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:padding="@dimen/_10sdp"
+                    android:src="@drawable/ic_close_48" />
+
+            </RelativeLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

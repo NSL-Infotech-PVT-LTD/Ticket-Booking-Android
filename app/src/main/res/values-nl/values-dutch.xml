@@ -39,6 +39,7 @@
     <string name="please_fill_require_field">Please fill the require field</string>
     <string name="password_not_match">Password not match</string>
     <string name="con_Text">Continue</string>
+    <string name="change">verandering</string>
     <string name="please_enter_valid_email">Voer een geldig emailadres in</string>
     <string name="home">Home</string>
     <string name="booking">Booking</string>

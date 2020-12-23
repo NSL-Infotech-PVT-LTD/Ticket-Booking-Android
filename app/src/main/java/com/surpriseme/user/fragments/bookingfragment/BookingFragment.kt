@@ -66,7 +66,6 @@ class BookingFragment : Fragment(), View.OnClickListener, BookingListAdapter.See
 
         adapter = BookingListAdapter(ctx, ArrayList(), this@BookingFragment)
         binding.bookingRecycler.adapter = adapter
-
         binding.bookingRecycler.addOnScrollListener(object :
             PaginationScrollListener(layoutManager) {
             override fun loadMoreItems() {

@@ -120,7 +120,7 @@ class BookingListAdapter(
 
             mType = bookingModel.type
 
-            bookingId.text = bookingModel.id.toString()
+            bookingId.text = "#" + " " + bookingModel.id.toString()
 
             if (mType == context.resources.getString(R.string.digital)) {
                 mType = context.resources.getString(R.string.virtual)

@@ -45,6 +45,13 @@ interface RetrofitInterface {
         @Query(Constants.ApiKey.DEVICE_TYPE) device_Type: String
     ): Call<Loginmodel>
 
+    @POST(Constants.LOGOUT)
+    fun logout(
+        @Header(Constants.ApiKey.AUTHORIZATION ) authorization:String,
+        @Query(Constants.ApiKey.DEVICE_TOKEN) device_Token: String,
+        @Query(Constants.ApiKey.DEVICE_TYPE) device_Type: String
+    ): Call<Loginmodel>
+
     @POST(Constants.REGISTER)
     fun registerApi(
         @Query(Constants.ApiKey.NAME) name: String,
@@ -119,7 +126,7 @@ interface RetrofitInterface {
         @Query(Constants.ApiKey.LATITUDE) latitude: String,
         @Query(Constants.ApiKey.LONGITUDE) longitude: String,
         @Query(Constants.ApiKey.SEARCH) search: String,
-        @Query(Constants.ApiKey.CATEGORY_IDS) categoryList: ArrayList<Int>,
+        @Query(Constants.ApiKey.CATEGORY_IDS) categoryList: String,
         @Query(Constants.ApiKey.FROM_DATE) from_date: String,
         @Query(Constants.ApiKey.TO_DATE) to_date: String,
         @Query(Constants.ApiKey.SORT_BY) sort_by: String,
@@ -136,7 +143,7 @@ interface RetrofitInterface {
         @Query(Constants.ApiKey.LIMIT) limit: String,
         @Query(Constants.ApiKey.SEARCH) search: String,
         @Query(Constants.ApiKey.PAGE) page: String,
-        @Query(Constants.ApiKey.CATEGORY_IDS) categoryList: ArrayList<Int>,
+        @Query(Constants.ApiKey.CATEGORY_IDS) categoryList: String,
         @Query(Constants.ApiKey.FROM_DATE) from_date: String,
         @Query(Constants.ApiKey.TO_DATE) to_date: String,
         @Query(Constants.ApiKey.SORT_BY) sort_by: String,

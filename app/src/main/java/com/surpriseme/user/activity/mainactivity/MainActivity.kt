@@ -38,35 +38,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        bottomNav.menu.findItem(R.id.navHome).setTitle("")
-//        bottomNav.menu.findItem(R.id.navHome).icon = ContextCompat.getDrawable(this@MainActivity,R.drawable.home_icon)
-//        bottomNav.menu.findItem(R.id.navBooking).setTitle(R.string.booking)
-//        bottomNav.menu.findItem(R.id.navBooking).icon = null
-//        bottomNav.menu.findItem(R.id.navChat).setTitle(R.string.chat)
-//        bottomNav.menu.findItem(R.id.navChat).icon = null
-
-//        if (intent.hasExtra("bookingModel")) {
-//            val model = intent.getSerializableExtra("bookingModel")
-//            val bundle = Bundle()
-//            val fragment = BookingDetailFragment()
-//            bundle.putSerializable("bookingModel", model)
-//            fragment.arguments = bundle
-//            val transaction = supportFragmentManager.beginTransaction()
-//            transaction.replace(R.id.frameContainer,fragment)
-//            transaction.commit()
-//        } else if (intent.hasExtra("bookingId")) {
-//            val bookingID = intent.getStringExtra("bookingId")
-//            if (bookingID != null) {
-//                val bundle = Bundle()
-//                bundle.putString("bookingId", bookingID)
-//                val fragment = BookingDetailFragment()
-//                fragment.arguments = bundle
-//                val transaction = supportFragmentManager.beginTransaction()
-//                transaction.replace(R.id.frameContainer, fragment)
-//                transaction.commit()
-//            }
-//        }else
-//
        if (intent.hasExtra("chatId")) {
             val chatID = intent.getStringExtra("chatId")
             if (chatID !=null) {

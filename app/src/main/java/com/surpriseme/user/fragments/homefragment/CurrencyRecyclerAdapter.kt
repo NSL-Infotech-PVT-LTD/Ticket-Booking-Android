@@ -30,22 +30,18 @@ val currencyAdpClick: CurrencyAdpClick) :RecyclerView.Adapter<CurrencyAdapter.Cu
         val model = currencyList[position]
         holder.currencyName.text = model.currency
 
-        if (adpPosition == holder.adapterPosition) {
-            holder.currencyRadio.isChecked = true
-        }
 
         holder.currencyRadio.isChecked = adpPosition == position
 
-        holder.itemView.setOnClickListener {
+        holder.currencyRadio.setOnClickListener {
 
-            holder.currencyRadio.isChecked = true
+//            holder.currencyRadio.isChecked = true
             adpPosition = holder.adapterPosition
             shared.setInt("myCurrencyAdp",adpPosition)
             notifyDataSetChanged()
             currencyAdpClick.currencyClick(model.currency)
 
         }
-
     }
 
     override fun getItemCount(): Int {

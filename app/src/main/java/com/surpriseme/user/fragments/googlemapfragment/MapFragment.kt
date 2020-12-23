@@ -74,6 +74,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
     private lateinit var centerLatlng: LatLng
     private var googleApiClient: GoogleApiClient? = null
     private var locationName = ""
+    private var additionalDetails:String?=null
+    private var landmark:String?=null
 
 
 
@@ -125,8 +127,16 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
         val placesClient = Places.createClient(ctx)
 
         if (isServicesOk()) {
-            init(view)
+            init()
         }
+
+        if (shared.getString(Constants.ADDITIONAL_DETAILS) !="") {
+            binding.flatEdt.setText(shared.getString(Constants.ADDITIONAL_DETAILS))
+        }
+        if (shared.getString(Constants.LANDMARK) !="") {
+            binding.landmarkEdt.setText(shared.getString(Constants.LANDMARK))
+        }
+        name = ctx.resources.getString(R.string.other)
         tbackpress = view.findViewById(R.id.backpress)
         tbackpress.setOnClickListener(this)
         binding.mapLayout.setOnClickListener {
@@ -150,21 +160,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
         }
         displayAddressType(locationName)
 
-
-//        if (Constants.WantToUpdateAddress) {
-//            location = arguments?.getString("place")!!
-//            if (location != null) {
-//                getLocationFromAddress(ctx,location)
-////                latitude = location.latitude.toDouble()
-////                longitude = locationDataList.longitude.toDouble()
-////                addressID = locationDataList.id.toString()
-////                name = locationDataList.name
-//
-//            }
-//        } else if (Constants.WantOtherLocation) {
-//            latitude = arguments?.getString("latitude")?.toDouble()!!
-//            longitude = arguments?.getString("longitude")?.toDouble()!!
-//        }
         binding.otherTypeEdt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -180,12 +175,48 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
 
         })
 
+        // save text while write addition details....
+        binding.flatEdt.addTextChangedListener(object :TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                additionalDetails = binding.flatEdt.text.toString().trim()
+                shared.setString(Constants.ADDITIONAL_DETAILS,additionalDetails)
+
+            }
+
+        })
+
+        binding.landmarkEdt.addTextChangedListener(object :TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                landmark = binding.landmarkEdt.text.toString().trim()
+                shared.setString(Constants.LANDMARK,landmark)
+
+            }
+
+        })
+
         return view
     }
 
     private fun displayAddressType(locationName:String) {
         when (locationName) {
             Constants.HOME_ADDRESS -> {
+                name = "Home"
                 binding.homeBtn.setBackgroundColor(
                     ContextCompat.getColor(
                         ctx,
@@ -198,6 +229,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                 binding.closeIcon.visibility = View.GONE
             }
             Constants.WORK_ADDRESS -> {
+                name = "Work"
                 binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
                 binding.workBtn.setBackgroundColor(
                     ContextCompat.getColor(
@@ -238,8 +270,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
 
     }
 
-    private fun init(view: View) {
-
+    private fun init() {
 
         binding.homeBtn.setOnClickListener(this)
         binding.workBtn.setOnClickListener(this)
@@ -247,7 +278,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
         binding.saveAddressBtn.setOnClickListener(this)
         binding.closeIcon.setOnClickListener(this)
         binding.editAddressIcon.setOnClickListener(this)
-
 
         initializingGoogleMap()
 
@@ -374,6 +404,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                     if (address != null) {
                         var subLocality = address.subLocality
                         checkLocality = address.locality
+
+
                         if (subLocality == null) {
                             subLocality = ""
                         }
@@ -381,12 +413,14 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                             checkLocality = ""
 
                         if (subLocality == "" || checkLocality == "") {
+
                             locality =
                                 address.featureName + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
                         } else {
                             locality =
                                 subLocality + "," + address.featureName + "," + address.locality + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
                         }
+
 
                         binding.mapAddressTxt.text = locality
                         streetAddress = locality
@@ -397,11 +431,13 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                         latitude = address.latitude
                         longitude = address.longitude
 
+
                         if (binding.mapAddressTxt.text.length == 0) {
                             binding.editAddressIcon.visibility = View.GONE
                         }else {
                             binding.editAddressIcon.visibility = View.VISIBLE
                         }
+
 
                         mMap.clear()
 
@@ -479,15 +515,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                 binding.closeIcon.visibility = View.GONE
             }
             R.id.saveAddressBtn -> {
-                if (name == "" && isOtherAddress == false) {
 
-                    Toast.makeText(
-                        ctx,
-                        "" + getString(R.string.please_select_address_type),
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                } else if (name == "" && isOtherAddress == true) {
+                 if (name == ctx.resources.getString(R.string.other) && isOtherAddress == true) {
                     name = binding.otherTypeEdt.text.toString().trim()
                     if (name == "") {
                         Toast.makeText(
@@ -506,19 +535,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                 }
 
 
-//                if (name == "") {
-//                    Toast.makeText(
-//                        ctx,
-//                        "" + getString(R.string.please_select_address_type),
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                } else if (other == "") {
-//                    Toast.makeText(
-//                        ctx,
-//                        "" + getString(R.string.please_enter_other_address),
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                }
 
             }   // end of Save Address Button....
             R.id.editAddressIcon -> {
@@ -546,11 +562,13 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                         Constants.WantToUpdateAddress = true
                         lat = latlng?.latitude!!
                         lng = latlng?.longitude!!
+
 //                        Log.i(TAG, "Place: ${place.name}, ${place.id}")
                         val fragment = MapFragment()
                         val bundle = Bundle()
                         bundle.putDouble("lat",lat)
                         bundle.putDouble("lng",lng)
+                        bundle.putString("locationName",locationName)
                         fragment.arguments = bundle
                         val transaction = fragmentManager?.beginTransaction()
                         transaction?.replace(R.id.frameContainer,fragment)

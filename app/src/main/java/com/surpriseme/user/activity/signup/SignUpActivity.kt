@@ -49,8 +49,10 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
         backToLoginBtn.setOnClickListener(this)
         backpress = findViewById(R.id.backpress)
         backpress?.setOnClickListener(this)
-        fbName = intent.getStringExtra("fbName")!!
-        fbEmail = intent.getStringExtra("fbEmail")!!
+//        if (intent?.getStringExtra("fbName")!=null && intent?.getStringExtra("fbEmail")!=null) {
+//            fbName = intent?.getStringExtra("fbName")!!
+//            fbEmail = intent?.getStringExtra("fbEmail")!!
+//        }
         if (fbName !="") {
             useredt.setText(fbName)
         }
@@ -133,6 +135,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
                             shared.setString(Constants.DataKey.ARTIST_ID_VALUE,response.body()?.data?.user?.id.toString())    // To Save Artist ID
                             shared.setString(Constants.DataKey.OLD_PASS_VALUE, password)                                       // To save User Password
                             val intent = Intent(this@SignUpActivity, MainActivity::class.java)
+                            intent.putExtra("currency",true)
                             startActivity(intent)
                             finishAffinity()
                         }

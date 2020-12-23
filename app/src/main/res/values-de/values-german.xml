@@ -17,6 +17,7 @@
     <string name="e_mail_address">E-Mail-Addresse</string>
     <string name="type_here">hier tippen ...</string>
     <string name="password">Passwort</string>
+    <string name="change">Veränderung</string>
     <string name="remember_me">Behalte mich in Erinnerung</string>
     <string name="forget_password">Passwort vergessen?</string>
     <string name="login">Anmeldung</string>
@@ -191,7 +192,7 @@
     <string name="confirm">Confirm</string>
     <string name="paid">Paid</string>
     <string name="processing">Processing</string>
-    <string name="complete">Complete</string>
+    <string name="complete">complete</string>
     <string name="reason">Reason :- \n \n</string>
     <string name="report">Report</string>
     <string name="are_you_sure_want_to_cancel">Are you sure you want to cancel?</string>

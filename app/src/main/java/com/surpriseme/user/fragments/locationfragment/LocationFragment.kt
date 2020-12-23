@@ -156,6 +156,7 @@ class LocationFragment : Fragment(), View.OnClickListener,
                         val bundle = Bundle()
                         bundle.putDouble("lat", lat)
                         bundle.putDouble("lng", lng)
+                        bundle.putString("locationName",locationName)
                         fragment.arguments = bundle
                         val transaction = fragmentManager?.beginTransaction()
                         transaction?.replace(R.id.frameContainer, fragment)
@@ -265,6 +266,7 @@ class LocationFragment : Fragment(), View.OnClickListener,
             longitude = lng
             shared.setString(Constants.ADDRESS, addressDashboard)
             shared.setString(Constants.LATITUDE, latitude)
+            shared.setString(Constants.LONGITUDE, longitude)
             shared.setString(Constants.NAME, name)
             val fragment = HomeFragment()
             val transaction = fragmentManager?.beginTransaction()

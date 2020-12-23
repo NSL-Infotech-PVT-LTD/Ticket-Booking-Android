@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.textview.MaterialTextView
 import com.squareup.picasso.Picasso
@@ -21,6 +23,7 @@ import com.surpriseme.user.activity.SettingsActivity
 import com.surpriseme.user.data.model.UpdateProfileModel
 import com.surpriseme.user.databinding.FragmentProfileBinding
 import com.surpriseme.user.activity.login.LoginActivity
+import com.surpriseme.user.activity.login.Loginmodel
 import com.surpriseme.user.fragments.changepasswordfragment.ChangePasswordFragment
 import com.surpriseme.user.fragments.homefragment.HomeFragment
 import com.surpriseme.user.activity.mainactivity.MainActivity
@@ -129,6 +132,10 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
                 binding.profileImage.isEnabled = true
                 binding.usernameEdt.requestFocus()
                 binding.updateprofilebtn.visibility = View.VISIBLE
+                binding.passwordprofileLayout.visibility = View.GONE
+                binding.aboutprofileLayout.visibility = View.GONE
+                binding.logoutLayout.visibility = View.GONE
+
             }
             R.id.updateprofilebtn -> {
 
@@ -141,6 +148,11 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
                     // update profile api
                     updateProfileApi(currency)
                 }
+                Handler().postDelayed({
+                    binding.passwordprofileLayout.visibility = View.VISIBLE
+                    binding.aboutprofileLayout.visibility = View.VISIBLE
+                    binding.logoutLayout.visibility = View.VISIBLE
+                },1000)
             }
             R.id.cameraIcon -> {
 
@@ -165,7 +177,7 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
 
     private fun updateProfileApi(currency:String) {
 
-        binding.loaderLayout.visibility = View.VISIBLE
+
 
         val requestBodyMap: HashMap<String, RequestBody> = HashMap()
         requestBodyMap[Constants.ApiKey.NAME] =
@@ -178,7 +190,7 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
                     call: Call<UpdateProfileModel>,
                     response: Response<UpdateProfileModel>
                 ) {
-                    binding.loaderLayout.visibility = View.GONE
+
                     if (response.body() !=null) {
                         if (response.isSuccessful) {
 
@@ -205,7 +217,7 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
                     }
                 }
                 override fun onFailure(call: Call<UpdateProfileModel>, t: Throwable) {
-                    binding.loaderLayout.visibility = View.GONE
+                   Toast.makeText(ctx,"" + t.message.toString(),Toast.LENGTH_SHORT).show()
                 }
             })
     }
@@ -277,11 +289,8 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
         val cancelTv: MaterialTextView = popUp.findViewById(R.id.cancel)
 
         yes.setOnClickListener {
-            shared.clearShared()
-            Constants.SHOW_TYPE = ""
-            val loginActivity = Intent(ctx, LoginActivity ::class.java)
-            startActivity(loginActivity)
-            activity?.finishAffinity()
+            logout()
+            popUpWindowReport.dismiss()
         }
 
         cancelTv.setOnClickListener {
@@ -313,6 +322,46 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
                 MediaType.parse("image/*"), file
             )
         )
+
+    }
+
+    private fun logout() {
+
+        binding.loaderLayout.visibility=View.VISIBLE
+        RetrofitClient.api.logout(shared.getString(Constants.DataKey.AUTH_VALUE),shared.getString(Constants.FB_TOKEN),Constants.DataKey.DEVICE_TYPE_VALUE)
+            .enqueue(object : Callback<Loginmodel> {
+                override fun onResponse(call: Call<Loginmodel>, response: Response<Loginmodel>) {
+// progressDialog.dismiss()
+                    binding.loaderLayout.visibility=View.GONE
+
+                    if (response.body() != null) {
+                        if (response.isSuccessful) {
+                            if (response.body() !=null) {
+                                Toast.makeText(ctx, "" + response.body()!!.data.message, Toast.LENGTH_LONG).show()
+                                shared.clearShared()
+                                Constants.SHOW_TYPE = ""
+                                val intent = Intent(ctx, LoginActivity::class.java)
+                                startActivity(intent)
+                                requireActivity().finishAffinity()
+
+                            }
+                        } else {
+                            Toast.makeText(ctx, response.body()!!.data.message, Toast.LENGTH_LONG)
+                                .show()
+                        }
+
+                    }
+
+
+                }
+
+                override fun onFailure(call: Call<Loginmodel>, t: Throwable) {
+                    binding.loaderLayout.visibility=View.GONE
+
+
+                }
+            })
+
 
     }
 
