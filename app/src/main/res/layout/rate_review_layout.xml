@@ -28,18 +28,18 @@
 
         <ImageView
             android:id="@+id/close"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:src="@drawable/ic_cancel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_margin="@dimen/_10sdp"/>
+            android:layout_margin="@dimen/_20sdp"/>
 
         <ImageView
             android:id="@+id/starImg"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
-            android:src="@drawable/splash_log"
+            android:src="@drawable/rate_start"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/view"
@@ -66,7 +66,7 @@
             android:src="@drawable/drake"
             app:layout_constraintTop_toBottomOf="@id/rateReviewTxt"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_20sdp"/>
 
         <TextView
@@ -86,10 +86,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/rateReviewImg"
-            android:padding="@dimen/_10sdp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="@dimen/_50sdp"
             android:background="@drawable/review_tv_bg"
             android:layout_marginHorizontal="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_10sdp">
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0"
+            android:layout_marginBottom="40dp"
+            >
 
 
             <TextView
@@ -111,6 +118,7 @@
                 android:stepSize="1"
                 android:layout_marginStart="5dp"
                 android:theme="@style/RatingBar"
+                android:layout_marginTop="10dp"
                 app:layout_constraintStart_toStartOf="@id/rateReviewTv"
                 app:layout_constraintTop_toBottomOf="@+id/rateReviewTv" />
         </androidx.constraintlayout.widget.ConstraintLayout>

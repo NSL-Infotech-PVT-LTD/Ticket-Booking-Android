@@ -82,7 +82,6 @@ class BookingFragment : Fragment(), View.OnClickListener, BookingListAdapter.See
                 return isLoading
             }
         })
-        bookingListApi()
 
         return view
     }
@@ -114,11 +113,8 @@ class BookingFragment : Fragment(), View.OnClickListener, BookingListAdapter.See
     }
 
     private fun bookingListApi() {
-        if (currentPage == 1) {
-            binding.loaderLayout.visibility = View.VISIBLE
-        } else
-            binding.loaderLayout.visibility = View.GONE
 
+        binding.loaderLayout.visibility = View.VISIBLE
         RetrofitClient.api.customerBookingListApi(
             shared.getString(Constants.DataKey.AUTH_VALUE),
             Constants.DataKey.CONTENT_TYPE_VALUE, "", currentPage.toString()
@@ -192,8 +188,8 @@ class BookingFragment : Fragment(), View.OnClickListener, BookingListAdapter.See
     override fun fullDetail(bookingID: String) {
         Constants.BOOKING = true
         Constants.NOTIFICATION = false
-        val intent = Intent(ctx,BookingDetailFragment::class.java)
-        intent.putExtra("bookingId",bookingID)
+        val intent = Intent(ctx, BookingDetailFragment::class.java)
+        intent.putExtra("bookingId", bookingID)
         startActivity(intent)
 
     }

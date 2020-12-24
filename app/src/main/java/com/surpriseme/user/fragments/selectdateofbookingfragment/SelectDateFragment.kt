@@ -42,6 +42,8 @@ class SelectDateFragment : Fragment(), View.OnClickListener {
     private var calenderList:ArrayList<Calendar> = ArrayList()
     private val sdf = SimpleDateFormat("yyyy-MM-dd")
     private var artistID = ""
+    private var showTypeTv:MaterialTextView?=null
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -57,6 +59,14 @@ class SelectDateFragment : Fragment(), View.OnClickListener {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_select_date, container, false)
         val view = binding.root
         shared = PrefrenceShared(ctx)
+
+        showTypeTv = view.findViewById(R.id.showTypeTv)
+        showTypeTv?.visibility = View.VISIBLE
+        if (Constants.SHOW_TYPE == ctx.resources.getString(R.string.digital)) {
+            showTypeTv?.text = ctx.resources.getString(R.string.virtual)
+        } else {
+            showTypeTv?.text = ctx.resources.getString(R.string.in_person)
+        }
 
         init(view)
 
@@ -80,47 +90,49 @@ class SelectDateFragment : Fragment(), View.OnClickListener {
 
             override fun onDayClick(eventDay: EventDay) {
 
+                if(calenderList.contains(eventDay.calendar)) {
 
-                val cal: Calendar = eventDay.calendar
-                val year = cal[Calendar.YEAR]
-                var month = cal[Calendar.MONTH]
-                month += 1
-                val dayOfMonth = cal[Calendar.DAY_OF_MONTH]
-                var newDateStr = ""
-                var weekDay = ""
+
+                    val cal: Calendar = eventDay.calendar
+                    val year = cal[Calendar.YEAR]
+                    var month = cal[Calendar.MONTH]
+                    month += 1
+                    val dayOfMonth = cal[Calendar.DAY_OF_MONTH]
+                    var newDateStr = ""
+                    var weekDay = ""
 //Toast.makeText(ctx,"" + year.toString() +"\n" + month.toString() +"" + dayOfMonth.toString(),Toast.LENGTH_SHORT).show()
-                val sDate = " $year-$month-$dayOfMonth"
-                val sdf = SimpleDateFormat("yyyy-mm-dd")
-                val dateToFormat = sdf.parse(sDate)
-                val finalDate = sdf.format(dateToFormat)
+                    val sDate = " $year-$month-$dayOfMonth"
+                    val sdf = SimpleDateFormat("yyyy-mm-dd")
+                    val dateToFormat = sdf.parse(sDate)
+                    val finalDate = sdf.format(dateToFormat)
 
-                try {
-                    val dateStr = sDate
+                    try {
+                        val dateStr = sDate
 
-                    val curFormater = SimpleDateFormat("yyyy-MM-dd")
-                    val dateObj = curFormater.parse(dateStr)
-                    val postFormater = SimpleDateFormat("dd MMMM , yyyy")
-                    newDateStr = postFormater.format(dateObj!!)
-                    weekDay = SimpleDateFormat("EEEE", Locale.ENGLISH).format(dateObj)
+                        val curFormater = SimpleDateFormat("yyyy-MM-dd")
+                        val dateObj = curFormater.parse(dateStr)
+                        val postFormater = SimpleDateFormat("dd MMMM , yyyy")
+                        newDateStr = postFormater.format(dateObj!!)
+                        weekDay = SimpleDateFormat("EEEE", Locale.ENGLISH).format(dateObj)
 
-                } catch (e: ParseException) {
-                    Toast.makeText(ctx, "" + e.message.toString(), Toast.LENGTH_SHORT).show()
-                }
+                    } catch (e: ParseException) {
+                        Toast.makeText(ctx, "" + e.message.toString(), Toast.LENGTH_SHORT).show()
+                    }
 
-                if (finalDate.isEmpty()) {
+                    if (finalDate.isEmpty()) {
 
-                } else {
-                    val bundle = Bundle()
-                    bundle.putString("selectedDate", finalDate)
-                    bundle.putString("displayDate", newDateStr)
-                    bundle.putString("weekday", weekDay)
-                    val fragment = BookSlotFragment()
-                    fragment.arguments = bundle
-                    val transaction = fragmentManager?.beginTransaction()
-                    transaction?.replace(R.id.frameContainer, fragment)
-                    transaction?.addToBackStack("selectDateFragmement")
-                    transaction?.commit()
-                }
+                    } else {
+                        val bundle = Bundle()
+                        bundle.putString("selectedDate", finalDate)
+                        bundle.putString("displayDate", newDateStr)
+                        bundle.putString("weekday", weekDay)
+                        val fragment = BookSlotFragment()
+                        fragment.arguments = bundle
+                        val transaction = fragmentManager?.beginTransaction()
+                        transaction?.replace(R.id.frameContainer, fragment)
+                        transaction?.addToBackStack("selectDateFragmement")
+                        transaction?.commit()
+                    }
 //                val sdfParse = SimpleDateFormat("yyyy-MM-dd")
 //                val sdf = SimpleDateFormat("dd MMMM yyyy, EEEE")
 //                date = sdfParse.parse(finalDate)
@@ -136,7 +148,7 @@ class SelectDateFragment : Fragment(), View.OnClickListener {
 //                haskey[finalDate] = arrayListOf()
 
 
-
+                }
             }
 
         })

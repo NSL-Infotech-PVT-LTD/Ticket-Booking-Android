@@ -35,8 +35,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var checkValidEmail: CheckValidEmail
     private lateinit var shared: PrefrenceShared
     private var fbtoken: String = ""
-    private var loaderLayout:ConstraintLayout?=null
-    private var prefManager:PrefManger?=null
+    private var loaderLayout: ConstraintLayout? = null
+    private var prefManager: PrefManger? = null
 
 
     override fun onStart() {
@@ -46,7 +46,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             .addOnSuccessListener(this,
                 OnSuccessListener<InstanceIdResult> { instanceIdResult ->
                     fbtoken = instanceIdResult.token
-                    shared.setString(Constants.FB_TOKEN,fbtoken)
+
                 })
     }
 
@@ -112,7 +112,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         } else if (password.isEmpty()) {
             passwordEdt.error = getString(R.string.please_fill_require_field)
             passwordEdt.requestFocus()
-        } else if (password.length <8) {
+        } else if (password.length < 8) {
             passwordEdt.error = getString(R.string.password_should_atleast_eight_character)
             passwordEdt.requestFocus()
         } else {
@@ -151,25 +151,33 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                                 Constants.DataKey.AUTH_VALUE,
                                 Constants.BEARER + response.body()?.data?.token!!
                             )   // To save Auth token
-                            shared.setString(Constants.DataKey.USER_ID,response.body()?.data?.user?.id.toString())    // To Save User ID
-                            shared.setString(Constants.DataKey.OLD_PASS_VALUE, password)                                       // To save User Password
-                            if (response.body()?.data?.user?.image != null)
                             shared.setString(
-                                Constants.DataKey.USER_IMAGE,  // To Save User Image
-                                Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL +
-                                        response.body()?.data?.user?.image
-                            )
+                                Constants.DataKey.USER_ID,
+                                response.body()?.data?.user?.id.toString()
+                            )    // To Save User ID
+                            shared.setString(
+                                Constants.DataKey.OLD_PASS_VALUE,
+                                password
+                            )                                       // To save User Password
+                            if (response.body()?.data?.user?.image != null)
+                                shared.setString(
+                                    Constants.DataKey.USER_IMAGE,  // To Save User Image
+                                    Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL +
+                                            response.body()?.data?.user?.image
+                                )
+                            shared.setString(Constants.FB_TOKEN, fbtoken)
 
 
 
                             if (prefManager!!.getBoolean1(Constants.ISREMEMBER)) {
                                 prefManager!!.setString1(
                                     "username",
-                                   email
+                                    email
                                 )
                                 prefManager!!.setString1(
                                     "password",
-password                                )
+                                    password
+                                )
                             } else {
                                 prefManager!!.setString1("username", "")
                                 prefManager!!.setString1("password", "")
@@ -184,9 +192,17 @@ password                                )
                             try {
                                 jsonObject = JSONObject(response.errorBody()!!.string())
                                 val errorMessage = jsonObject.getString(Constants.ERROR)
-                                Snackbar.make(loginContainer,"" + errorMessage,BaseTransientBottomBar.LENGTH_SHORT).show()
+                                Snackbar.make(
+                                    loginContainer,
+                                    "" + errorMessage,
+                                    BaseTransientBottomBar.LENGTH_SHORT
+                                ).show()
                             } catch (e: JSONException) {
-                                Snackbar.make(loginContainer,"" + e.message.toString(),BaseTransientBottomBar.LENGTH_SHORT).show()
+                                Snackbar.make(
+                                    loginContainer,
+                                    "" + e.message.toString(),
+                                    BaseTransientBottomBar.LENGTH_SHORT
+                                ).show()
                             }
                         }
                     }

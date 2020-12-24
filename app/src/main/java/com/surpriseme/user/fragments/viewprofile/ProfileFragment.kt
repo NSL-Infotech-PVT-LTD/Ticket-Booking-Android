@@ -176,9 +176,6 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
 
 
     private fun updateProfileApi(currency:String) {
-
-
-
         val requestBodyMap: HashMap<String, RequestBody> = HashMap()
         requestBodyMap[Constants.ApiKey.NAME] =
             RequestBody.create(MediaType.parse("multipart/form-data"), username)
@@ -230,7 +227,6 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
         transaction?.commit()
 
     }
-
 
     fun updateProfilePopup() {
 
@@ -285,8 +281,8 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
         popUpWindowReport.isTouchable = false
         popUpWindowReport.isOutsideTouchable = false
 
-        val yes: MaterialTextView = popUp.findViewById(R.id.yes)
-        val cancelTv: MaterialTextView = popUp.findViewById(R.id.cancel)
+        val yes: TextView = popUp.findViewById(R.id.yes)
+        val cancelTv: TextView = popUp.findViewById(R.id.cancel)
 
         yes.setOnClickListener {
             logout()
@@ -331,7 +327,6 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
         RetrofitClient.api.logout(shared.getString(Constants.DataKey.AUTH_VALUE),shared.getString(Constants.FB_TOKEN),Constants.DataKey.DEVICE_TYPE_VALUE)
             .enqueue(object : Callback<Loginmodel> {
                 override fun onResponse(call: Call<Loginmodel>, response: Response<Loginmodel>) {
-// progressDialog.dismiss()
                     binding.loaderLayout.visibility=View.GONE
 
                     if (response.body() != null) {
@@ -341,9 +336,8 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
                                 shared.clearShared()
                                 Constants.SHOW_TYPE = ""
                                 val intent = Intent(ctx, LoginActivity::class.java)
-                                startActivity(intent)
-                                requireActivity().finishAffinity()
-
+                                ctx.startActivity(intent)
+                                activity?.finishAffinity()
                             }
                         } else {
                             Toast.makeText(ctx, response.body()!!.data.message, Toast.LENGTH_LONG)

@@ -126,7 +126,7 @@ class ChatListFragment : Fragment(), ChatListAdapter.GoToChat {
     // override method from ChatListAdapter to get receiver_id, then receiver_id will send to chatFragment for one to one chat....
     override fun chatId(chatid: String, rImage:String,rName:String) {
         this.mChatId = chatid
-
+        Constants.IS_CHAT_SESSION = true
         val intent = Intent(ctx , ChatFragment::class.java)
         intent.putExtra("chatId",chatid)
         intent.putExtra("receiverImage",rImage)

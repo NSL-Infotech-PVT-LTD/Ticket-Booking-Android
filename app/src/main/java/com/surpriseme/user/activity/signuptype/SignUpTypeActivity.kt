@@ -9,6 +9,9 @@ import androidx.databinding.DataBindingUtil
 import com.facebook.*
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.iid.InstanceIdResult
 import com.surpriseme.user.R
 import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.activity.signup.SignUpActivity
@@ -36,6 +39,20 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
     private var fbID:String? = null
     private var fbDataModel: FbDataModel? = null
 
+
+
+    private var fbtoken = ""
+
+    override fun onStart() {
+        super.onStart()
+
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnSuccessListener(this,
+                OnSuccessListener<InstanceIdResult> { instanceIdResult ->
+                    fbtoken = instanceIdResult.token
+
+                })
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -174,7 +191,7 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
             fbEmail,
             fbID!!,
             Constants.DataKey.DEVICE_TYPE_VALUE,
-            Constants.DataKey.DEVICE_TOKEN_VALUE,
+            fbtoken,
             "en",
             fbImage
         )
@@ -201,6 +218,7 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
                                 Constants.DataKey.USER_IMAGE,  // To Save User Image
                                 Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + response.body()?.data?.user?.image
                             )
+                            shared?.setString(Constants.FB_TOKEN, fbtoken)
 //                            isFbRegistered = true
                             val mainActIntent =
                                 Intent(this@SignUpTypeActivity, MainActivity::class.java)

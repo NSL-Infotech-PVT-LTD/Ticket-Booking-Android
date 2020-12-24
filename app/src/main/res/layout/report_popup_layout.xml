@@ -25,15 +25,40 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/crossIcon"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:background="@drawable/cross_icon"
-                app:layout_constraintTop_toTopOf="parent"
+
+            <TextView
+                android:id="@+id/cancelReportTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel"
+                android:minWidth="50dp"
                 app:layout_constraintStart_toStartOf="parent"
-                android:src="@drawable/ic_close"
-                android:layout_margin="@dimen/_5sdp"/>
+                app:layout_constraintTop_toTopOf="parent"
+                android:background="@drawable/report_popup_btn_bg"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="5dp"
+                android:gravity="center"
+                android:fontFamily="@font/montserrat_regular"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:id="@+id/submitTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/done"
+                android:minWidth="@dimen/_50sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/cancelReportTv"
+                android:background="@drawable/report_popup_btn_bg"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="5dp"
+                android:gravity="center"
+                android:fontFamily="@font/montserrat_regular"
+                android:layout_marginEnd="8dp"
+                android:textColor="@color/white"/>
+
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/reportArtistTxt"
@@ -41,20 +66,20 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/crossIcon"
+                app:layout_constraintTop_toBottomOf="@id/cancelReportTv"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:text="@string/report_artist"
                 android:gravity="center"
+                android:fontFamily="@font/montserrat_regular"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp"
                 />
 
 
-
             <Spinner
                 android:id="@+id/reportSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_50sdp"
+                android:layout_height="50dp"
                 app:layout_constraintStart_toStartOf="parent"
                 android:spinnerMode="dialog"
                 android:background="@drawable/boxcardview"
@@ -84,19 +109,7 @@
                 android:layout_marginBottom="@dimen/_30sdp"
                 app:layout_constraintTop_toBottomOf="@id/reportSpinner" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/submitBtn"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:text="@string/done"
-                android:textSize="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_2sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="@dimen/_10sdp"
-                app:layout_constraintTop_toTopOf="parent"
-                android:backgroundTint="@color/colorPrimary"
-                android:textAllCaps="false"
-                android:textColor="@color/white"/>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

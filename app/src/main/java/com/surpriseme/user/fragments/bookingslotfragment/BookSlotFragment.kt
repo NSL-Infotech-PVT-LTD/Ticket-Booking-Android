@@ -1,6 +1,7 @@
 package com.surpriseme.user.fragments.bookingslotfragment
 
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
@@ -16,11 +17,14 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.R
+import com.surpriseme.user.activity.payment.PaymentActivity
 import com.surpriseme.user.databinding.FragmentBookSlotBinding
 import com.surpriseme.user.fragments.bookingfragment.BookingFragment
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
+import kotlinx.android.synthetic.main.fragment_book_slot.*
+import kotlinx.android.synthetic.main.popup_select_currency.view.*
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -46,6 +50,8 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
     val fakeList: ArrayList<SlotDataModel> = ArrayList()
     private var selectedSlotList: ArrayList<SlotDataModel> = ArrayList()
     private var backpress:MaterialTextView?=null
+    private var showType = ""
+    private val bookingId =""
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -91,6 +97,12 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
             weekday = arguments?.getString("weekday")!!
             binding.weekDayText.text = weekday
         }
+
+        if (Constants.SHOW_TYPE == ctx.resources.getString(R.string.digital)) {
+            showType = ctx.resources.getString(R.string.digital)
+        } else {
+            showType = ctx.resources.getString(R.string.live)
+        }
         initializeRecycler()
     }
 
@@ -100,43 +112,7 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
 
             R.id.proceedToCheckoutBtn -> {
 
-                // calling Booking Create Api....
-                if (shared.getString(Constants.DataKey.USER_ID) == artistID) {
-
-                    Toast.makeText(ctx, "" + Constants.DataKey.USER_ID, Toast.LENGTH_LONG).show()
-                } else {
-                    val list: ArrayList<SlotDataModel> = ArrayList()
-
-                    for (i in 0 until selectedSlotList.size) {
-
-                        if (selectedSlotList[i].isBooked) {
-                            list.add(selectedSlotList[i])
-                            list[0].hour
-
-                            val fromTime = list[0].hour
-                            val toTime = list[list.size - 1].hour
-                            mFromTime = fromTime.split("-")[0]   // gettimg fromTime from List
-                            mToTime = toTime.split("-")[1]     // // gettimg toTime from List
-
-                            if (mFromTime.contains("am") && mToTime.contains("am")) {
-                                mFromTime = mFromTime.split("am")[0]
-                                mToTime = mToTime.split("am")[0]
-                            } else if (mFromTime.contains("am") && mToTime.contains("pm")) {
-                                mFromTime = mFromTime.split("am")[0]
-                                mToTime = mToTime.split("pm")[0]
-                            } else if (mFromTime.contains("pm") && mToTime.contains("pm")) {
-                                mFromTime = mFromTime.split("pm")[0]
-                                mToTime = mToTime.split("pm")[0]
-                            } else if (mFromTime.contains("pm") && mToTime.contains("am")){
-                                mFromTime = mFromTime.split("pm")[0]
-                                mToTime = mToTime.split("am")[0]
-                            }
-
-                        }
-                    }
-
-                    bookingCreateApi()
-                }
+                    popupBookingConfirm()
             }
             R.id.clearAllBtn -> {
                 adapter?.settSlotClear(true)
@@ -188,7 +164,7 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
         RetrofitClient.api.bookingCreateApi(
             shared.getString(Constants.DataKey.AUTH_VALUE),
             Constants.DataKey.CONTENT_TYPE_VALUE,
-            Constants.BOOKING_TYPE,
+            showType,
             date,
             mFromTime,
             mToTime,
@@ -204,7 +180,10 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
                     if (response.body() != null) {
                         if (response.isSuccessful) {
                             // Display Popup Message when Api Successfully created booking....
-                            alertPopUp(response.body()?.data?.message!!)
+                            val intent = Intent(ctx,PaymentActivity::class.java)
+                             response.body()?.data?.address?.id.toString()
+                            intent.putExtra("bookingid", bookingId)
+                            startActivity(intent)
                             list.clear()
                         }
                     } else {
@@ -234,9 +213,11 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
 
         selectedSlotList = slotList
         if (selectedSlotList.isNotEmpty()) {
-            binding.proceedToCheckoutBtn.setBackgroundColor(ContextCompat.getColor(ctx,R.color.colorPrimary))
+            binding.proceedToCheckoutBtn.background = ContextCompat.getDrawable(ctx,R.drawable.proceed_to_check_selected)
+
         }else  {
-            binding.proceedToCheckoutBtn.setBackgroundColor(ContextCompat.getColor(ctx,R.color.grey_color))
+            binding.proceedToCheckoutBtn.background = ContextCompat.getDrawable(ctx,R.drawable.proceed_to_check_unselected)
+
         }
 
     }
@@ -272,6 +253,77 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
             transaction?.commit()
 
         }
+    }
+
+    private fun popupBookingConfirm() {
+
+        val layoutInflater: LayoutInflater =
+            ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+        val popUp: View = layoutInflater.inflate(R.layout.booking_confirm_layout, null)
+        val windowBookingConfirm = PopupWindow(
+            popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
+            ConstraintLayout.LayoutParams.MATCH_PARENT, true
+        )
+        windowBookingConfirm.showAtLocation(popUp, Gravity.CENTER, 0, 0)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            windowBookingConfirm.elevation = 10f
+        }
+        windowBookingConfirm.isTouchable = false
+        windowBookingConfirm.isOutsideTouchable = false
+
+        val confirmTv: MaterialTextView = popUp.findViewById(R.id.confirmTv)
+        val cancelTv: MaterialTextView = popUp.findViewById(R.id.cancelTv)
+
+        confirmTv.setOnClickListener {
+            // calling Booking Create Api....
+            windowBookingConfirm.dismiss()
+            if (shared.getString(Constants.DataKey.USER_ID) == artistID) {
+
+                Toast.makeText(ctx, "" + Constants.DataKey.USER_ID, Toast.LENGTH_LONG).show()
+            } else {
+                val list: ArrayList<SlotDataModel> = ArrayList()
+
+                for (i in 0 until selectedSlotList.size) {
+
+                    if (selectedSlotList[i].isBooked) {
+                        list.add(selectedSlotList[i])
+                        list[0].hour
+
+                        val fromTime = list[0].hour
+                        val toTime = list[list.size - 1].hour
+                        mFromTime = fromTime.split("-")[0]   // gettimg fromTime from List
+                        mToTime = toTime.split("-")[1]     // // gettimg toTime from List
+
+                        if (mFromTime.contains("am") && mToTime.contains("am")) {
+                            mFromTime = mFromTime.split("am")[0]
+                            mToTime = mToTime.split("am")[0]
+                        } else if (mFromTime.contains("am") && mToTime.contains("pm")) {
+                            mFromTime = mFromTime.split("am")[0]
+                            mToTime = mToTime.split("pm")[0]
+                        } else if (mFromTime.contains("pm") && mToTime.contains("pm")) {
+                            mFromTime = mFromTime.split("pm")[0]
+                            mToTime = mToTime.split("pm")[0]
+                        } else if (mFromTime.contains("pm") && mToTime.contains("am")){
+                            mFromTime = mFromTime.split("pm")[0]
+                            mToTime = mToTime.split("am")[0]
+                        }
+
+                    }
+                }
+
+                bookingCreateApi()
+            }
+
+        }
+
+        cancelTv.setOnClickListener {
+            windowBookingConfirm.dismiss()
+        }
+
+
     }
 
     override fun slotPosition(position: Int) {

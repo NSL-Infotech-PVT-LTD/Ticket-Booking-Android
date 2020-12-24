@@ -34,6 +34,7 @@ import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.databinding.FragmentArtistBookingBinding
 import com.surpriseme.user.fragments.chatFragment.ChatFragment
 import com.surpriseme.user.fragments.reviewfragment.ReviewFragment
+import com.surpriseme.user.fragments.selectdateofbookingfragment.SelectDateFragment
 import com.surpriseme.user.fragments.wayofbookingfragment.WayOfBookingFragment
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
@@ -129,7 +130,7 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.bookBtn -> {
-                val fragment = WayOfBookingFragment()
+                val fragment = SelectDateFragment()
                 val transaction = fragmentManager?.beginTransaction()
                 transaction?.replace(R.id.frameContainer, fragment)
                 transaction?.addToBackStack("wayOfBookingFragment")
@@ -178,11 +179,16 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                  transaction?.commit()
              }
             R.id.backpress -> {
-                if (Constants.IS_ADDED_TO_BACKSTACK) fragmentManager?.popBackStack() else requireActivity().finish()
+
+                if (Constants.IS_CHAT_SESSION) {
+                    requireActivity().finish()
+                } else
+                    fragmentManager?.popBackStack()
 
             }
             R.id.chatStartIcon -> {
 
+                Constants.IS_CHAT_SESSION = false
                 val intent = Intent(ctx , ChatFragment::class.java)
                 intent.putExtra("chatId",artistID)
                 intent.putExtra("receiverImage",artistImage)

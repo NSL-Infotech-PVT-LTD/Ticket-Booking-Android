@@ -38,6 +38,7 @@ class ReasonSpinnerAdapter(val ctx: Context, val list: ArrayList<String>) : Arra
         )
 
         view.spinnerTxt.setText(list.get(position))
+        parent.addView(view)
 
         return view
     }

@@ -29,7 +29,7 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener {
 
     private var binding:ActivityPaymentBinding?=null
     private var shared:PrefrenceShared?=null
-    var bookingId=""
+    private var bookingId=""
     private var list:ArrayList<DataX> = ArrayList()
 
 
@@ -38,7 +38,7 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener {
 //        setContentView(R.layout.activity_payment)
         binding = DataBindingUtil.setContentView(this@PaymentActivity,R.layout.activity_payment)
 
-        bookingId = intent.getStringExtra("bookingid")
+        bookingId = intent.getStringExtra("bookingid")!!
         init()
         binding?.idealPaymentTxt!!.setOnClickListener {
             val intent = Intent(this@PaymentActivity, IdealPayment ::class.java)

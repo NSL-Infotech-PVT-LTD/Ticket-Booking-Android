@@ -63,6 +63,26 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/showTypeTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/virtual"
+            android:textAllCaps="true"
+            android:background="@drawable/corner_round_5_blue"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="20dp"
+            android:visibility="gone"
+            android:paddingHorizontal="@dimen/_3sdp"
+            android:paddingVertical="2dp"
+            android:textSize="10dp"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:drawableStart="@drawable/ic_online_prediction_24"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

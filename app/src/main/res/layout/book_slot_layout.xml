@@ -8,15 +8,15 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/timeTxt"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_40sdp"
+        android:layout_height="@dimen/_30sdp"
         android:gravity="center"
-        android:textSize="@dimen/_10sdp"
+        android:textSize="@dimen/_9sdp"
         android:textColor="@color/black"
         android:singleLine="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:background="@drawable/slot_bg"
-        android:fontFamily="@font/montserrat_regular"
+        android:fontFamily="@font/montserrat_semibold"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

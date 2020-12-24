@@ -80,8 +80,13 @@ class CalendarDayAdapter extends ArrayAdapter<Date> {
                     Typeface.NORMAL, R.drawable.background_transparent);
             return;
         }
+        if (isCurrentMonthDay(day) && !isSelectedDay(day)) {
+            DayColorsUtils.setDayColors(dayLabel,R.color.black,
+                    Typeface.NORMAL, R.drawable.disable_bg);
+            return;
+        }
 
-        // Setting view for all SelectedDays
+//        // Setting view for all SelectedDays
         if (isSelectedDay(day)) {
             Stream.of(mCalendarPageAdapter.getSelectedDays())
                     .filter(selectedDay -> selectedDay.getCalendar().equals(day))
@@ -90,21 +95,21 @@ class CalendarDayAdapter extends ArrayAdapter<Date> {
             DayColorsUtils.setSelectedDayColors(dayLabel, mCalendarProperties);
             return;
         }
-
-        // Setting disabled days color
+//
+//        // Setting disabled days color
         if (!isActiveDay(day)) {
             DayColorsUtils.setDayColors(dayLabel, mCalendarProperties.getDisabledDaysLabelsColor(),
                     Typeface.NORMAL, R.drawable.background_transparent);
             return;
         }
-
-        // Setting custom label color for event day
+//
+//        // Setting custom label color for event day
         if (isEventDayWithLabelColor(day)) {
             DayColorsUtils.setCurrentMonthDayColors(day, mToday, dayLabel, mCalendarProperties);
             return;
         }
-
-        // Setting current month day color
+//
+//        // Setting current month day color
         DayColorsUtils.setCurrentMonthDayColors(day, mToday, dayLabel, mCalendarProperties);
     }
 

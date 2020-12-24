@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.textview.MaterialTextView
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.iid.InstanceIdResult
 import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.R
 import com.surpriseme.user.activity.login.LoginActivity
@@ -32,6 +35,19 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
     private var backpress:MaterialTextView?=null
     private var fbName = ""
     private var fbEmail = ""
+    private var fbtoken = ""
+
+    override fun onStart() {
+        super.onStart()
+
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnSuccessListener(this,
+                OnSuccessListener<InstanceIdResult> { instanceIdResult ->
+                    fbtoken = instanceIdResult.token
+
+                })
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -119,7 +135,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
             email,
             password,
             Constants.DataKey.DEVICE_TYPE_VALUE,
-            Constants.DataKey.DEVICE_TOKEN_VALUE,
+           fbtoken,
             "en"
         )
             .enqueue(object : Callback<RegisterModel> {
@@ -133,7 +149,8 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
 
                             shared.setString(Constants.DataKey.AUTH_VALUE, Constants.BEARER + response.body()?.data?.token!!)   // To save Auth token
                             shared.setString(Constants.DataKey.ARTIST_ID_VALUE,response.body()?.data?.user?.id.toString())    // To Save Artist ID
-                            shared.setString(Constants.DataKey.OLD_PASS_VALUE, password)                                       // To save User Password
+                            shared.setString(Constants.DataKey.OLD_PASS_VALUE, password)
+                            shared.setString(Constants.FB_TOKEN, fbtoken)// To save User Password
                             val intent = Intent(this@SignUpActivity, MainActivity::class.java)
                             intent.putExtra("currency",true)
                             startActivity(intent)

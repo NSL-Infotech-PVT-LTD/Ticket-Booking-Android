@@ -67,6 +67,7 @@
     <string name="alert">Alert!</string>
     <string name="do_you_want_to_logout">Do you want to logout?</string>
     <string name="cancel">cancel</string>
+    <string name="Cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="search_for_artist_singer">Search for Artist, Singer etc.</string>
     <string name="book_artist_you_listen">Book Artist You  Listen</string>
@@ -198,14 +199,18 @@
     <string name="accepted">accepted</string>
     <string name="rejected">rejected</string>
     <string name="confirm">Confirm</string>
-    <string name="confirmed">Confirmed</string>
+    <string name="confirmed">confirmed</string>
     <string name="paid">Paid: </string>
     <string name="processing">processing</string>
     <string name="Processing">Processing</string>
     <string name="complete">Complete</string>
     <string name="Completed">Completed</string>
-    <string name="reason">Reason :- \n \n</string>
+    <string name="reason">Reason:</string>
+    <string name="Reason">Reason: </string>
     <string name="report">report</string>
+    <string name="Report">Report</string>
+    <string name="unable_to_call">unable to call</string>
+    <string name="denyied">denyied</string>
     <string name="are_you_sure_want_to_cancel">Are you sure you want to cancel?</string>
     <string name="no_booking_right_now">No Booking Right Now</string>
     <string name="unable_to_find_booking_on_this_page">Unable to find booking on this page</string>
@@ -268,11 +273,9 @@
     <string name="payment_failed">payment_failed</string>
     <string name="failed">failed</string>
     <string name="Failed">Failed</string>
-    <string name="Report">Report</string>
     <string name="Confirmed">Confirmed</string>
     <string name="Pending">Pending</string>
     <string name="Rejected">Rejected</string>
-    <string name="Cancel">Cancel</string>
     <string name="Accepted">Accepted</string>
     <string name="completed_review">completed_review</string>
     <string name="choose_your_currency">Choose Your <b>Currency</b></string>
@@ -287,5 +290,9 @@
     <string name="rate_your_artist">Rate your artist</string>
     <string name="read_more">Read More</string>
     <string name="rate_and_review"><![CDATA[Rate & Review]]></string>
+    <string name="are_you_sure_artist_reached_at_your_location">Are you sure Artist Reach At Your Location ?</string>
+    <string name="yes_reached">Yes, Reached</string>
+    <string name="no_want_to_report">No, Want to Report</string>
+    <string name="booking_confirm_text">Once booking confirmed by you, your booking will go on hold until payment received or click cancel to check slots again !</string>
 
 </resources>

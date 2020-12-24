@@ -41,6 +41,7 @@ import kotlinx.android.synthetic.main.fragment_booking_detail.*
 import kotlinx.android.synthetic.main.popup_select_currency.view.*
 import org.json.JSONException
 import org.json.JSONObject
+import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -70,11 +71,13 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
     // rate review bottom sheet....
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var bottomSheet: View
-    private var close:ImageView?=null
-    private var rateReviewImg:CircleImageView?=null
-    private var rateReviewName:TextView?=null
-    private var reviewTv:TextView?=null
-    private var rateReviewRatingbar:RatingBar?=null
+    private var close: ImageView? = null
+    private var rateReviewImg: CircleImageView? = null
+    private var rateReviewName: TextView? = null
+    private var reviewTv: TextView? = null
+    private var rateReviewRatingbar: RatingBar? = null
+    private var starImg: ImageView? = null
+    private var rateReviewTxt: TextView? = null
 
     // boolean vars to take action according to status....
     private var wantToCancelBooking = false
@@ -100,9 +103,11 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         close = findViewById(R.id.close)
         rateReviewImg = findViewById(R.id.rateReviewImg)
-        rateReviewName= findViewById(R.id.rateReviewName)
-        rateReviewRatingbar= findViewById(R.id.rateReviewRatingbar)
-        reviewTv= findViewById(R.id.rateReviewTv)
+        rateReviewName = findViewById(R.id.rateReviewName)
+        rateReviewRatingbar = findViewById(R.id.rateReviewRatingbar)
+        reviewTv = findViewById(R.id.rateReviewTv)
+        starImg = findViewById(R.id.starImg)
+        rateReviewTxt = findViewById(R.id.rateReviewTxt)
 
         close?.setOnClickListener(this)
 
@@ -112,6 +117,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
         binding.actionBtn.setOnClickListener(this)
         binding.chatTv.setOnClickListener(this)
         binding.readMoreTv.setOnClickListener(this)
+        binding.reasonReadMoreTv.setOnClickListener(this)
 
         bookingId = intent.getStringExtra("bookingId")!!
 
@@ -204,7 +210,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
                     if (wantToCancelBooking)
                         messageToDisplay =
                             resources.getString(R.string.are_you_sure_want_to_cancel)
-                    statusPopUp(messageToDisplay)
+                    statusPopUp()
                     // If Booing status cancel....
 
                 } else if (actionBtn.text == resources.getString(R.string.pay_now)) {
@@ -214,9 +220,9 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
                 } else if (actionBtn.text == resources.getString(R.string.did_artist_reach_at_yout_location)) {
                     // display pop up..
 
-                    if (isArtistReach)
-                        messageToDisplay = resources.getString(R.string.are_yout_sure)
-                    statusPopUp(messageToDisplay)
+//                    if (isArtistReach)
+
+                    statusPopUp()
                 } else if (actionBtn.text == resources.getString(R.string.go_to_Home)) {
                     Constants.COMING_FROM_DETAIL = true
                     finish()
@@ -224,17 +230,46 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
             }
             R.id.readMoreTv -> {
                 bottomSheetUpDownRateReview()
-                // display values to the rate and review bottom sheet....
-                Picasso.get().load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + bookingModel?.artist_detail?.image)
-                    .resize(4000,1500)
-                    .onlyScaleDown()
-                    .placeholder(R.drawable.user_pholder_updated)
-                    .into(rateReviewImg)
-                rateReviewName?.text = bookingModel?.artist_detail?.name
-                reviewTv?.text = bookingModel?.rate_detail?.review
 
-                binding.locationTv.text = bookingModel?.address
-                rateReviewRatingbar?.rating = bookingModel?.rate_detail?.rate?.toFloat()!!
+                // display values to the rate and review bottom sheet....
+                if (bookingModel?.artist_detail != null) {
+
+                    Picasso.get()
+                        .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + bookingModel?.artist_detail?.image)
+                        .resize(4000, 1500)
+                        .onlyScaleDown()
+                        .placeholder(R.drawable.user_pholder_updated)
+                        .into(rateReviewImg)
+                    rateReviewName?.text = bookingModel?.artist_detail?.name
+                }
+                if (bookingModel?.rate_detail != null) {
+                    if (bookingModel?.rate_detail?.review != null) {
+                        reviewTv?.text = bookingModel?.rate_detail?.review
+                    }
+                    if (bookingModel?.rate_detail?.rate != null) {
+                        rateReviewRatingbar?.rating = bookingModel?.rate_detail?.rate?.toFloat()!!
+                    }
+                }
+            }
+            R.id.reasonReadMoreTv -> {
+
+                starImg?.setImageResource(R.drawable.error)
+                rateReviewTxt?.text = resources.getString(R.string.Report)
+                if (bookingModel?.artist_detail != null) {
+
+                    Picasso.get()
+                        .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + bookingModel?.artist_detail?.image)
+                        .resize(4000, 1500)
+                        .onlyScaleDown()
+                        .placeholder(R.drawable.user_pholder_updated)
+                        .into(rateReviewImg)
+                    rateReviewName?.text = bookingModel?.artist_detail?.name
+                }
+                if (bookingModel?.params != null) {
+                    reviewTv?.text = bookingModel?.params?.report
+                }
+                rateReviewRatingbar?.visibility = View.GONE
+                bottomSheetUpDownRateReview()
 
             }
             R.id.close -> {
@@ -249,8 +284,6 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
     private fun bottomSheetUpDownRateReview() {
         if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED)
-
-
         } else {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED)
         }
@@ -389,20 +422,24 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
 
                 } else if (bookingModel.status == Constants.CONFIRMED) {
                     binding.statusTv.text = resources.getString(R.string.Confirmed)
-                    binding.paymentTv.text = resources.getString(R.string.paid) + bookingModel.customer_currency + " " + bookingModel.price
+                    binding.paymentTv.text =
+                        resources.getString(R.string.paid) + bookingModel.customer_currency + " " + bookingModel.price
                     binding.actionBtn.visibility = View.VISIBLE
                     binding.actionBtn.text = resources.getString(R.string.did_artist_reach_at_yout_location)
                 } else if (bookingModel.status == Constants.PROCESSING) {
                     binding.statusTv.text = resources.getString(R.string.Processing)
-                    binding.paymentTv.text = resources.getString(R.string.paid) + bookingModel.customer_currency + " " + bookingModel.price
+                    binding.paymentTv.text =
+                        resources.getString(R.string.paid) + bookingModel.customer_currency + " " + bookingModel.price
                     binding.actionBtn.isEnabled = false
                     binding.actionBtn.visibility = View.VISIBLE
-                    binding.actionBtn.text = resources.getString(R.string.your_artist_start_to_perform)
+                    binding.actionBtn.text =
+                        resources.getString(R.string.your_artist_start_to_perform)
                 } else if (bookingModel.status == Constants.COMPLETE_REVIEW) {
                     binding.statusTv.text = resources.getString(R.string.completed_review)
-                    binding.paymentTv.text = resources.getString(R.string.paid) + bookingModel.customer_currency + " " + bookingModel.price
+                    binding.paymentTv.text =
+                        resources.getString(R.string.paid) + bookingModel.customer_currency + " " + bookingModel.price
                     binding.rateReviewLayout.visibility = View.VISIBLE
-                    if (bookingModel.rate_detail !=null) {
+                    if (bookingModel.rate_detail != null) {
                         binding.rateTv.text = bookingModel.rate_detail.rate.toString()
                         binding.ratingbar.rating = bookingModel.rate_detail.rate.toFloat()
                         binding.reviewTv.text = bookingModel.rate_detail.review
@@ -410,23 +447,37 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
 
                 } else if (bookingModel.status == Constants.REPORT) {
                     binding.statusTv.text = resources.getString(R.string.report)
-                    binding.paymentTv.text = resources.getString(R.string.paid) + bookingModel.customer_currency + " " + bookingModel.price
+                    binding.paymentTv.text =
+                        resources.getString(R.string.paid) + bookingModel.customer_currency + " " + bookingModel.price
                     binding.reasonTv.visibility = View.VISIBLE
                     if (bookingModel.params != null)
-                        binding.reasonTv.text = bookingModel.params.report
+                        binding.reasonLayout.visibility = View.VISIBLE
+                    binding.reasonTv.text =
+                        resources.getString(R.string.reason) + " " + bookingModel.params.report
+                    if (binding.reasonTv.text.length <= 15) {
+                        binding.reasonReadMoreTv.visibility = View.GONE
+                    } else {
+                        binding.reasonReadMoreTv.visibility = View.VISIBLE
+                    }
+
                 } else if (bookingModel.status == Constants.PAYMENT_FAILED) {
                     binding.statusTv.text = resources.getString(R.string.payment_failed)
-                    binding.paymentTv.text = resources.getString(R.string.paid) + " " + bookingModel.customer_currency + " " + bookingModel.price
+                    binding.paymentTv.text =
+                        resources.getString(R.string.paid) + " " + bookingModel.customer_currency + " " + bookingModel.price
                     binding.actionBtn.visibility = View.VISIBLE
                     binding.actionBtn.text = resources.getString(R.string.pay_now)
-                    binding.cancelBtn.visibility = View.VISIBLE
+                    binding.cancelBtn.visibility = View.GONE
+                    binding.cancelTxt.visibility = View.VISIBLE
                 } else if (bookingModel.status == Constants.COMPLETE) {
                     binding.statusTv.text = resources.getString(R.string.Completed)
-                    binding.paymentTv.text = resources.getString(R.string.paid) + " " + bookingModel.customer_currency + " " + bookingModel.price
+                    binding.paymentTv.text =
+                        resources.getString(R.string.paid) + " " + bookingModel.customer_currency + " " + bookingModel.price
                     binding.actionBtn.visibility = View.VISIBLE
                     binding.actionBtn.text = resources.getString(R.string.rate_your_artist)
                 }
 
+
+                binding.locationTv.text = bookingModel?.address
 
                 // Display date at top of card....
                 var date = bookingModel.date
@@ -580,7 +631,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
     }
 
     // when artist reach then popup will display
-    private fun statusPopUp(message: String) {
+    private fun statusPopUp() {
 
         val layoutInflater: LayoutInflater =
             getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -599,30 +650,38 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
         popupWindow.isTouchable = false
         popupWindow.isOutsideTouchable = false
 
-        val no: MaterialTextView = popUp.findViewById(R.id.no)
-        val yes: MaterialTextView = popUp.findViewById(R.id.yes)
-        val messageTv: MaterialTextView = popUp.findViewById(R.id.messageTv)
-        messageTv.text = message
+        val messageTv: TextView = popUp.findViewById(R.id.messageTv)
+        val yesReachedTv: TextView = popUp.findViewById(R.id.yesReachedTv)
+        val noWantToReportTv: TextView = popUp.findViewById(R.id.noWantToReportTv)
+        val cancel: TextView = popUp.findViewById(R.id.cancel)
 
-        yes.setOnClickListener {
+        yesReachedTv.setOnClickListener {
             // dispaly otp popup
-            if (wantToCancelBooking) {
-                bookingStatusApi()
-                popupWindow.dismiss()
-            }
-            if (isArtistReach) {
-                otpPopup()
-            }
+            popupWindow.dismiss()
+            otpPopup()
+//            if (wantToCancelBooking) {
+//                bookingStatusApi()
+//                popupWindow.dismiss()
+//            }
+//            if (isArtistReach) {
+//                otpPopup()
+//            }
         }
 
-        no.setOnClickListener {
-            if (wantToCancelBooking) {
-                popupWindow.dismiss()
-            } else if (isArtistReach) {
-                popupWindow.dismiss()
-                reportPopup()
-            }
+        noWantToReportTv.setOnClickListener {
+            popupWindow.dismiss()
+           reportPopup()
 
+//            if (wantToCancelBooking) {
+//                popupWindow.dismiss()
+//            } else if (isArtistReach) {
+//                popupWindow.dismiss()
+//                reportPopup()
+//            }
+
+        }
+        cancel.setOnClickListener {
+            popupWindow.dismiss()
         }
     }
 
@@ -675,11 +734,11 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
         }
         reportPopupWindow.isTouchable = false
         reportPopupWindow.isOutsideTouchable = false
-        val cross: ImageView = popUp.findViewById(R.id.crossIcon)
-        val submit: MaterialButton = popUp.findViewById(R.id.submitBtn)
-        descriptionTv = popUp.findViewById(R.id.descriptionTxt)
+        val cancel: TextView = popUp.findViewById(R.id.cancelReportTv)
+        val done: TextView = popUp.findViewById(R.id.submitTv)
         reportSpinner = popUp.findViewById(R.id.reportSpinner)
-        reportSpinner?.onItemSelectedListener = this
+        reportSpinner?.onItemSelectedListener = this@BookingDetailFragment
+        descriptionTv = popUp.findViewById(R.id.descriptionTxt)
 
         reasonList.clear()
         reasonList.add(Constants.SELECT_REASON)
@@ -688,11 +747,12 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
         reasonList.add(Constants.ARTIST_NOT_PICKING_CALL)
         reasonList.add(Constants.OTHER)
 
-        val reasonAdapter = ReasonSpinnerAdapter(this, reasonList)
+//        val reasonAdapter = ReasonSpinnerAdapter(this, reasonList)
+        val reasonAdapter = ArrayAdapter<String>(this@BookingDetailFragment,android.R.layout.simple_spinner_item,reasonList)
         reportSpinner?.adapter = reasonAdapter
 
 
-        cross.setOnClickListener {
+        cancel.setOnClickListener {
             if (descriptionTv?.visibility == View.VISIBLE) {
                 descriptionTv?.visibility = View.GONE
                 spinnerValue = Constants.SELECT_REASON
@@ -701,7 +761,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
             }
 
         }
-        submit.setOnClickListener {
+        done.setOnClickListener {
 
             val description = descriptionTv?.text.toString()
 

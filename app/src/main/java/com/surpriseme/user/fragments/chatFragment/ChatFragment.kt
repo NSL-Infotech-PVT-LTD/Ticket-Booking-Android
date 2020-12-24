@@ -1,6 +1,7 @@
 package com.surpriseme.user.fragments.chatFragment
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -74,6 +75,7 @@ class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceiv
         mReceiverImageView =findViewById(R.id.chatImage)
         mReceiverNameMtv =findViewById(R.id.chatName)
         chatBackpress?.setOnClickListener(this)
+        mReceiverImageView?.setOnClickListener(this)
        // ((ctx as MainActivity)).hideBottomNavigation()
 
         binding?.sendBtn?.setOnClickListener(this)
@@ -134,6 +136,21 @@ class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceiv
             R.id.chatBackpress -> {
 //                fragmentManager?.popBackStack()
                 finish()
+            }
+            R.id.chatImage -> {
+//                Constants.IS_ADDED_TO_BACKSTACK = false
+//                val intent = Intent(this@ChatFragment,MainActivity::class.java)
+//                intent.putExtra("artistID", mReceiverId)
+//                startActivity(intent)
+                if (Constants.IS_CHAT_SESSION) {
+                    val intent = Intent(this@ChatFragment, MainActivity::class.java)
+                    intent.putExtra("artistID", mReceiverId)
+                    startActivity(intent)
+                } else {
+                    finish()
+                }
+
+
             }
         }
     }

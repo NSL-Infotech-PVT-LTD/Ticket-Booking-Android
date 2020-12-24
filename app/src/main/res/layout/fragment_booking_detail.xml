@@ -188,70 +188,121 @@
                         android:layout_marginTop="@dimen/_10sdp"/>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/rateReviewLayout"
+                        android:id="@+id/statusLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_30sdp"
-                        android:visibility="gone"
                         app:layout_constraintTop_toBottomOf="@+id/profileName">
 
-                        <TextView
-                            android:id="@+id/rateTv"
-                            android:layout_width="wrap_content"
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/reasonLayout"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="5"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            app:layout_constraintHorizontal_bias="0.4"
-                            android:textColor="@color/white"
-                            android:gravity="center"
-                            android:textSize="@dimen/_8sdp"
-                            android:background="@drawable/rate_text_bg"
-                            android:paddingHorizontal="10dp"
-                            android:paddingVertical="2dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"/>
+                            android:layout_marginHorizontal="@dimen/_30sdp"
+                            android:visibility="gone"
+                           app:layout_constraintTop_toTopOf="parent">
 
-                        <RatingBar
-                            android:id="@+id/ratingbar"
-                            style="@style/Widget.AppCompat.RatingBar.Small"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:rating="3"
-                            android:stepSize="1"
-                            android:layout_marginStart="5dp"
-                            android:theme="@style/RatingBar"
-                            app:layout_constraintStart_toEndOf="@+id/rateTv"
-                            app:layout_constraintTop_toTopOf="@id/rateTv"
-                            app:layout_constraintBottom_toBottomOf="@id/rateTv"/>
+                            <TextView
+                                android:id="@+id/reasonTv"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/reasonReadMoreTv"
+                                android:layout_marginHorizontal="@dimen/_20sdp"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:padding="@dimen/_10sdp"
+                                android:singleLine="true"
+                                android:textSize="10dp"
+                                android:fontFamily="@font/montserrat_regular"
+                                android:textColor="@color/black"
+                                android:background="@color/white"
+                                android:visibility="visible"/>
 
-                        <TextView
-                            android:id="@+id/reviewTv"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintStart_toStartOf="parent"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            app:layout_constraintTop_toBottomOf="@id/ratingbar"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:fontFamily="@font/montserrat_regular"
-                            app:layout_constraintEnd_toStartOf="@+id/readMoreTv"
-                            android:singleLine="true" />
+                            <TextView
+                                android:id="@+id/reasonReadMoreTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:text="@string/read_more"
+                                android:gravity="center"
+                                android:paddingHorizontal="@dimen/_5sdp"
+                                app:layout_constraintStart_toEndOf="@+id/reasonTv"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/reasonTv"
+                                app:layout_constraintBottom_toBottomOf="@id/reasonTv"
+                                android:textColor="@color/blue_signup"
+                                android:textSize="@dimen/_12sdp"
+                                android:visibility="visible"/>
 
-                        <TextView
-                            android:id="@+id/readMoreTv"
-                            android:layout_width="wrap_content"
+
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/rateReviewLayout"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/read_more"
-                            android:paddingHorizontal="@dimen/_5sdp"
-                            app:layout_constraintStart_toEndOf="@+id/reviewTv"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/reviewTv"
-                            android:textColor="@color/blue_signup"/>
+                            android:layout_marginHorizontal="@dimen/_30sdp"
+                            android:visibility="gone"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/rateTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="5"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                app:layout_constraintHorizontal_bias="0.4"
+                                android:textColor="@color/white"
+                                android:gravity="center"
+                                android:textSize="@dimen/_8sdp"
+                                android:background="@drawable/rate_text_bg"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="2dp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"/>
+
+                            <RatingBar
+                                android:id="@+id/ratingbar"
+                                style="@style/Widget.AppCompat.RatingBar.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:rating="3"
+                                android:stepSize="1"
+                                android:layout_marginStart="5dp"
+                                android:theme="@style/RatingBar"
+                                app:layout_constraintStart_toEndOf="@+id/rateTv"
+                                app:layout_constraintTop_toTopOf="@id/rateTv"
+                                app:layout_constraintBottom_toBottomOf="@id/rateTv"/>
+
+                            <TextView
+                                android:id="@+id/reviewTv"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                app:layout_constraintTop_toBottomOf="@id/ratingbar"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:fontFamily="@font/montserrat_regular"
+                                app:layout_constraintEnd_toStartOf="@+id/readMoreTv"
+                                android:singleLine="true" />
+
+                            <TextView
+                                android:id="@+id/readMoreTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/read_more"
+                                android:paddingHorizontal="@dimen/_5sdp"
+                                app:layout_constraintStart_toEndOf="@+id/reviewTv"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/reviewTv"
+                                android:textColor="@color/blue_signup"
+                                android:textSize="@dimen/_12sdp"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 
 
 
@@ -260,7 +311,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_10sdp"
                         android:src="@drawable/dotted_view_line"
-                        app:layout_constraintTop_toBottomOf="@+id/rateReviewLayout"
+                        app:layout_constraintTop_toBottomOf="@+id/statusLayout"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginHorizontal="@dimen/_50sdp" />
 
@@ -434,21 +485,22 @@
                         android:layout_marginHorizontal="@dimen/_30sdp"
                         app:cornerRadius="@dimen/_16sdp" />
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/reasonTv"
+                    <TextView
+                        android:id="@+id/cancelTxt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginHorizontal="@dimen/_20sdp"
-                        android:padding="@dimen/_10sdp"
+                        android:text="@string/Cancel"
+                        android:gravity="center"
+                        android:textSize="@dimen/_12sdp"
+                        android:visibility="gone"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:fontFamily="@font/montserrat_regular"
                         android:textColor="@color/black"
-                        android:background="@color/white"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginBottom="@dimen/_10sdp"
-                        android:visibility="gone"/>
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginHorizontal="@dimen/_30sdp"
+                        app:layout_constraintTop_toBottomOf="@+id/actionBtn"/>
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

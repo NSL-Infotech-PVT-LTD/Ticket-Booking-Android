@@ -107,6 +107,7 @@ object Constants {
     var FB_TOKEN = "FBTOKEN"
     var PAYMENT_FAILED = "payment_failed"
     var COMPLETE = "complete"
+    var IS_CHAT_SESSION = false
 
 
 

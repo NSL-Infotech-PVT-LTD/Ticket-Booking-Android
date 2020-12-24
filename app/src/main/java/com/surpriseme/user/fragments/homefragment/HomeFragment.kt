@@ -51,6 +51,7 @@ import com.surpriseme.user.fragments.locationfragment.LocationFragment
 import com.surpriseme.user.fragments.locationfragment.LocationListAdapter
 import com.surpriseme.user.fragments.locationfragment.LocationListModel
 import com.surpriseme.user.fragments.notificationfragment.NotificationFragment
+import com.surpriseme.user.fragments.selectdateofbookingfragment.SelectDateFragment
 import com.surpriseme.user.fragments.viewprofile.ProfileFragment
 import com.surpriseme.user.fragments.viewprofile.UserViewProfile
 import com.surpriseme.user.fragments.viewprofile.ViewProfileModel
@@ -81,7 +82,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
     private val REQUEST_CHECK_SETTINGS_GPS = 0x1
     private val REQUEST_ID_MULTIPLE_PERMISSIONS = 0x2
     private var address = ""
-    var currencyvalue=""
+    var currencyvalue = ""
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var ctx: Context
@@ -106,11 +107,10 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
     private var currencyList: ArrayList<CurrencyList> = ArrayList()
     private var currencyAdapter: CurrencyAdapter? = null
     private var currencyRecycler: RecyclerView? = null
-    private var isGetProfileStarted = false
     private var popUpWindowCurrency: PopupWindow? = null
     private var invalidAuth: InvalidAuth? = null
 
-   private var isCheck = false
+    private var isCheck = false
     override fun onAttach(context: Context) {
         super.onAttach(context)
         ctx = context
@@ -121,13 +121,6 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         super.onStart()
 
         getProfileApi()
-        Handler().postDelayed({
-            if (shared.getString(Constants.CURRENCY) ==""){
-                popupSelectCurrency()
-            } else {
-                locationListApi()
-            }
-        },2000)
 
     }
 
@@ -176,6 +169,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 return isLoading
             }
         })
+
 
         return view
     }
@@ -304,6 +298,12 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                                     userModel?.email
                                 ) // is used to store user email.
 
+                                if (shared.getString(Constants.CURRENCY) == "") {
+                                    popupSelectCurrency()
+                                } else {
+                                    locationListApi()
+                                }
+
                             }
                         }
                     } else {
@@ -331,6 +331,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
             })
 
     }
+
     // location list api....
     private fun locationListApi() {
 
@@ -346,6 +347,8 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                     if (response.body() != null) {
                         if (response.isSuccessful) {
 
+                            binding.viewProfile.visibility = View.VISIBLE
+
                             locationList.clear()
                             locationList = response.body()?.data!!
                             if (locationList.isNotEmpty()) {
@@ -358,12 +361,11 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                                 }
                             }
                             if (Constants.SHOW_TYPE == "") {
-                                binding.virtualTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
-                                binding.inPersonTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
-
-                                Handler().postDelayed({
-                                    popupShowType()
-                                },1000)
+                                binding.virtualTv.background =
+                                    ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+                                binding.inPersonTv.background =
+                                    ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+                                popupShowType()
 
                             } else if (Constants.SHOW_TYPE == ctx.resources.getString(R.string.digital)) {
                                 binding.virtualTv.background =
@@ -439,6 +441,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 }
             })
     }   // End of location list api....
+
     // artist list api with latitude, longitude....
     private fun artistListApi(lat: String, lng: String, search: String) {
 
@@ -602,7 +605,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
     // Calling interface from Artist List adapter to send data from home fragment to ArtistDetail fragment with list on Book Button Click
     override fun btnClick(artistID: String) {
         shared.setString(Constants.ARTIST_ID, artistID)
-        val fragment = WayOfBookingFragment()
+        val fragment = SelectDateFragment()
         val transaction = fragmentManager?.beginTransaction()
         transaction?.replace(R.id.frameContainer, fragment)
         transaction?.addToBackStack("homeFragment")
@@ -697,8 +700,6 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         currencyRecycler = popUp.findViewById(R.id.recyclerCurrency)
 
         val proceedBtn = popUp.findViewById<MaterialButton>(R.id.proceedBtn)
-        val back = popUp.findViewById<TextView>(R.id.back)
-
 
 
 //        popUpWindowCurrency?.setOnDismissListener {
@@ -710,7 +711,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
 
         val layoutManager = LinearLayoutManager(ctx)
         currencyRecycler?.layoutManager = layoutManager
-        back.setOnClickListener { popUpWindowCurrency?.dismiss() }
+
 
         // calling Currency List api....
         currencyListApi()
@@ -720,7 +721,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
             // hit Update profile api to save currency ....
 
             updateProfileApi(currencyvalue)
-            shared.setString(Constants.CURRENCY,currencyvalue)
+            shared.setString(Constants.CURRENCY, currencyvalue)
 
         }
 
@@ -766,7 +767,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
 
                 override fun currencyClick(currency: String) {
 
-                 currencyvalue=currency
+                    currencyvalue = currency
 
                 }
 
@@ -788,7 +789,9 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                     if (response.body() != null) {
                         if (response.isSuccessful) {
                             shared.setString(
-                                Constants.DataKey.USER_IMAGE, Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + response.body()?.data?.user?.image)
+                                Constants.DataKey.USER_IMAGE,
+                                Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + response.body()?.data?.user?.image
+                            )
                             Handler().postDelayed({
                                 locationListApi()
                             }, 1000)

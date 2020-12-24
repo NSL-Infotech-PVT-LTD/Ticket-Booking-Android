@@ -37,13 +37,14 @@
             android:id="@+id/selectDateTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingEnd="@dimen/_20sdp"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:text="@string/select_date_of_booking"
             app:layout_constraintTop_toBottomOf="@id/toolbarCard"
             app:layout_constraintStart_toStartOf="parent"
-            android:textSize="@dimen/_14sdp"
+            android:textSize="@dimen/_16sdp"
             android:gravity="center"
-            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:textColor="@color/black"
             android:fontFamily="@font/montserrat_bold"/>
 
@@ -58,15 +59,61 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/checkAvailableTxt"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/check_availablity"
             app:layout_constraintTop_toBottomOf="@id/dottedLine"
-            android:layout_marginHorizontal="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:textSize="@dimen/_12sdp"
+            android:layout_marginTop="8dp"
+            android:textSize="12dp"
+            app:layout_constraintStart_toStartOf="@+id/selectDateTxt"
+            app:layout_constraintEnd_toEndOf="@+id/selectDateTxt"
             android:fontFamily="@font/montserrat_semibold"
             android:textColor="@color/black"/>
+
+
+        <TextView
+            android:id="@+id/availableBoxTv"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            app:layout_constraintTop_toBottomOf="@+id/checkAvailableTxt"
+            app:layout_constraintStart_toStartOf="@+id/checkAvailableTxt"
+            android:background="@drawable/available_pink_bg"/>
+        <TextView
+            android:id="@+id/availableTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@+id/availableBoxTv"
+            app:layout_constraintBottom_toBottomOf="@id/availableBoxTv"
+            app:layout_constraintStart_toEndOf="@+id/availableBoxTv"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:text="@string/available"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp"/>
+
+
+        <TextView
+            android:id="@+id/unavailableBoxTv"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginStart="@dimen/_30sdp"
+            app:layout_constraintTop_toTopOf="@+id/availableBoxTv"
+            app:layout_constraintBottom_toBottomOf="@+id/availableBoxTv"
+            app:layout_constraintStart_toEndOf="@+id/availableTv"
+            android:background="@drawable/unavailable_bg"/>
+
+        <TextView
+            android:id="@+id/unavailableTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@+id/unavailableBoxTv"
+            app:layout_constraintBottom_toBottomOf="@id/unavailableBoxTv"
+            app:layout_constraintStart_toEndOf="@+id/unavailableBoxTv"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:text="@string/unavailable"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp"/>
 
         <com.applandeo.materialcalendarview.CalendarView
             android:id="@+id/calendarView"
@@ -76,11 +123,10 @@
             app:headerColor="@color/white"
             app:headerLabelColor="@color/black"
             android:background="@color/white"
-
             app:swipeEnabled="true"
             android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_20sdp"
-            app:layout_constraintTop_toBottomOf="@id/checkAvailableTxt"
+            app:layout_constraintTop_toBottomOf="@id/availableBoxTv"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -228,7 +228,7 @@ interface RetrofitInterface {
         @Query(Constants.ApiKey.FROM_TIME) fromTime: String,
         @Query(Constants.ApiKey.TO_TIME) toTIME: String,
         @Query(Constants.ApiKey.ARTIST_ID) artistID: String,
-        @Query(Constants.ApiKey.ADDRESS) address: String
+        @Query(Constants.ApiKey.ADDRESS) address: String,
     ): Call<BookingCreateModel>
 
     @POST(Constants.CHANGE_PASSWORD)
