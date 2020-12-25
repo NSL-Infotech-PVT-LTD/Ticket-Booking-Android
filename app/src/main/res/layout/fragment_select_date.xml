@@ -45,7 +45,7 @@
             android:textSize="@dimen/_16sdp"
             android:gravity="center"
             android:layout_marginTop="@dimen/_20sdp"
-            android:textColor="@color/black"
+            android:textColor="#36396E"
             android:fontFamily="@font/montserrat_bold"/>
 
         <ImageView
@@ -68,7 +68,7 @@
             app:layout_constraintStart_toStartOf="@+id/selectDateTxt"
             app:layout_constraintEnd_toEndOf="@+id/selectDateTxt"
             android:fontFamily="@font/montserrat_semibold"
-            android:textColor="@color/black"/>
+            android:textColor="#B1B3C7"/>
 
 
         <TextView
@@ -89,7 +89,7 @@
             app:layout_constraintStart_toEndOf="@+id/availableBoxTv"
             android:layout_marginStart="@dimen/_12sdp"
             android:text="@string/available"
-            android:textColor="@color/black"
+            android:textColor="#205072"
             android:textSize="@dimen/_12sdp"/>
 
 
@@ -112,7 +112,7 @@
             app:layout_constraintStart_toEndOf="@+id/unavailableBoxTv"
             android:layout_marginStart="@dimen/_12sdp"
             android:text="@string/unavailable"
-            android:textColor="@color/black"
+            android:textColor="#205072"
             android:textSize="@dimen/_12sdp"/>
 
         <com.applandeo.materialcalendarview.CalendarView
@@ -121,7 +121,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/_15sdp"
             app:headerColor="@color/white"
-            app:headerLabelColor="@color/black"
+            app:headerLabelColor="#205072"
             android:background="@color/white"
             app:swipeEnabled="true"
             android:layout_marginStart="@dimen/_20sdp"

@@ -51,7 +51,7 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
     private var selectedSlotList: ArrayList<SlotDataModel> = ArrayList()
     private var backpress:MaterialTextView?=null
     private var showType = ""
-    private val bookingId =""
+    private var bookingId =""
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -180,8 +180,10 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
                     if (response.body() != null) {
                         if (response.isSuccessful) {
                             // Display Popup Message when Api Successfully created booking....
+                            Constants.IS_BOOKING_DONE = true
+
                             val intent = Intent(ctx,PaymentActivity::class.java)
-                             response.body()?.data?.address?.id.toString()
+                             bookingId= response.body()?.data?.address?.id.toString()
                             intent.putExtra("bookingid", bookingId)
                             startActivity(intent)
                             list.clear()
@@ -298,6 +300,9 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
                         mToTime = toTime.split("-")[1]     // // gettimg toTime from List
 
                         if (mFromTime.contains("am") && mToTime.contains("am")) {
+                            if(mFromTime == "12:00 am "){
+                                mFromTime  = "00:00 am"
+                            }
                             mFromTime = mFromTime.split("am")[0]
                             mToTime = mToTime.split("am")[0]
                         } else if (mFromTime.contains("am") && mToTime.contains("pm")) {

@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import butterknife.OnClick
+import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.R
 import com.surpriseme.user.activity.IdealPayment
 import com.surpriseme.user.activity.SeleckBank
@@ -31,6 +32,7 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener {
     private var shared:PrefrenceShared?=null
     private var bookingId=""
     private var list:ArrayList<DataX> = ArrayList()
+    private var backpress:MaterialTextView?=null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +53,8 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun init() {
         shared= PrefrenceShared(this)
+        backpress = findViewById(R.id.backpress)
+        backpress?.setOnClickListener(this)
         cardget()
         // initialization of views....
         binding?.cardPaymentTxt?.setOnClickListener(this)
@@ -72,11 +76,18 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener {
                     startActivity(intent)
                 }
             }
+            R.id.backpress -> {
+                if (Constants.IS_BOOKING_DONE) {
+                    val intent = Intent(this@PaymentActivity,MainActivity::class.java)
+                    startActivity(intent)
+                    finishAffinity()
+                } else {
+                    finish()
+                }
+            }
 
         }
     }
-
-
 
     private fun cardget() {
 

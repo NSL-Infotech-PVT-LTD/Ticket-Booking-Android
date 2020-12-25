@@ -10,5 +10,6 @@
 
     <color name="defaultColor">#2962FF</color>
     <color name="greyLightColor">#f1f1f1</color>
+    <color name="disablebg">#D8F1E4</color>
     <color name="black">#000000</color>
 </resources>

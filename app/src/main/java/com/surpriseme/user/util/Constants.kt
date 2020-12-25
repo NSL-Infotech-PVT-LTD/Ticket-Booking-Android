@@ -108,6 +108,7 @@ object Constants {
     var PAYMENT_FAILED = "payment_failed"
     var COMPLETE = "complete"
     var IS_CHAT_SESSION = false
+    var IS_BOOKING_DONE = false
 
 
 

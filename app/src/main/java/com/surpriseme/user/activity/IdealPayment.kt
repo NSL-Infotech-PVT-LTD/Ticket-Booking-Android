@@ -47,7 +47,7 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         shared= PrefrenceShared(this)
 
 
-        bookingid = intent.getStringExtra("bookingid")
+        bookingid = intent.getStringExtra("bookingid")!!
         binding.holderedt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -144,7 +144,7 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     }
     private fun paynow(id: String) {
 
-        binding!!.loaderLayout.visibility = View.VISIBLE
+        binding.loaderLayout.visibility = View.VISIBLE
         RetrofitClient.api.payintent(
             shared?.getString(Constants.DataKey.AUTH_VALUE)!!,
             id
@@ -154,7 +154,7 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                     call: Call<PaymentIntent>,
                     response: Response<PaymentIntent>
                 ) {
-                    binding!!.loaderLayout.visibility = View.GONE
+                    binding.loaderLayout.visibility = View.GONE
                     if (response.body() != null) {
                         if (response.isSuccessful) {
 
@@ -218,6 +218,7 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                         intent.putExtra("bookingId",bookingid)
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
+                        finish()
 
                     }
                     else -> {
@@ -227,6 +228,7 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                         intent.putExtra("bookingId",bookingid)
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
+                        finish()
                         // Setup failed/cancelled
                     }
                 }
