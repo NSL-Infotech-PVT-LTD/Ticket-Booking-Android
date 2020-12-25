@@ -38,6 +38,8 @@ object Constants {
     const val CURRENCIES = "currencies"
     const val CALENDAR_DATE_LIST = "customer/bookslot/list-date"
     const val LOGOUT = "logout"
+    const val BOOKING_CANCEL = "customer/change-booking-status"
+    const val RATE_BOOKING = "customer/rate-booking"
 
 
 
@@ -106,9 +108,8 @@ object Constants {
     var CURRENCY = ""
     var FB_TOKEN = "FBTOKEN"
     var PAYMENT_FAILED = "payment_failed"
-    var COMPLETE = "complete"
+    var COMPLETED = "completed"
     var IS_CHAT_SESSION = false
-    var IS_BOOKING_DONE = false
 
 
 
@@ -156,6 +157,8 @@ object Constants {
         const val RADIUS = "radius"
         const val FB_ID = "fb_id"
         const val CURRENCY = "currency"
+        const val RATE = "rate"
+        const val REVIEW = "review"
 
     }
 

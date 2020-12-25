@@ -168,6 +168,9 @@ class BookingListAdapter(
                 mStatus = context.resources.getString(R.string.Report)
                 status.background = ContextCompat.getDrawable(context,R.drawable.status_red_bg)
                 status.text = mStatus    // Display Status of booking
+            } else if (mStatus == context.resources.getString(R.string.completed)) {
+                status.background = ContextCompat.getDrawable(context,R.drawable.status_green_bg)
+                status.text = context.resources.getString(R.string.Completed)    // Display Status of booking
             }
 
 

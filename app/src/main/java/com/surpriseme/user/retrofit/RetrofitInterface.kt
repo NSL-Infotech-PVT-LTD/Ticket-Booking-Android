@@ -5,6 +5,7 @@ import android.widget.ImageView
 import com.surpriseme.user.activity.login.Loginmodel
 import com.surpriseme.user.activity.signup.RegisterModel
 import com.surpriseme.user.activity.forgotpassword.ResetPasswordModel
+import com.surpriseme.user.activity.payment.BookingCancelModel
 import com.surpriseme.user.fragments.artistbookingdetail.ArtistDetailModel
 import com.surpriseme.user.fragments.bookingdetailfragment.BookingDetailModel
 import com.surpriseme.user.fragments.bookingfragment.CustomerBookingListModel
@@ -21,6 +22,7 @@ import com.surpriseme.user.fragments.notificationfragment.NotificationStatusMode
 import com.surpriseme.user.activity.searchactivity.CategoryModel
 import com.surpriseme.user.activity.signuptype.RegisterWithFbModel
 import com.surpriseme.user.data.model.*
+import com.surpriseme.user.fragments.bookingdetailfragment.RateReviewModel
 import com.surpriseme.user.fragments.bookingslotfragment.SlotModel
 import com.surpriseme.user.fragments.chatFragment.ChatByIdModel
 import com.surpriseme.user.fragments.chatListfragment.ChatListModel
@@ -345,6 +347,17 @@ interface RetrofitInterface {
         @Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
         @Query(Constants.ApiKey.ARTIST_ID) artistID: String
     ): Call<CalendarDateListModel>
+
+    @POST(Constants.BOOKING_CANCEL)
+    fun bookingCancelApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+    @Query(Constants.ApiKey.BOOKING_ID) booking_id: String,
+    @Query(Constants.ApiKey.STATUS) status: String) : Call<BookingCancelModel>
+
+    @POST(Constants.RATE_BOOKING)
+    fun rateReviewBookingApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+    @Query(Constants.ApiKey.BOOKING_ID) booking_id: String,
+    @Query(Constants.ApiKey.RATE) rate:String,
+    @Query(Constants.ApiKey.REVIEW) review:String) : Call<RateReviewModel>
 
 
 }

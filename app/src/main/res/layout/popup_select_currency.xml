@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_35sdp"
-        android:layout_marginHorizontal="@dimen/_20sdp"
         app:cardCornerRadius="@dimen/_10sdp"
         app:cardElevation="@dimen/_5sdp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -40,7 +39,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerCurrency"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="@dimen/_300sdp"
                 app:layout_constraintTop_toBottomOf="@+id/chooseCurrencyTv"
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_20sdp"/>

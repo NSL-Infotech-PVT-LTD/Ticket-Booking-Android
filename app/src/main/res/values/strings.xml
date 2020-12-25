@@ -203,7 +203,8 @@
     <string name="paid">Paid: </string>
     <string name="processing">processing</string>
     <string name="Processing">Processing</string>
-    <string name="complete">Complete</string>
+    <string name="complete">complete</string>
+    <string name="completed">completed</string>
     <string name="Completed">Completed</string>
     <string name="reason">Reason:</string>
     <string name="Reason">Reason: </string>
@@ -294,5 +295,9 @@
     <string name="yes_reached">Yes, Reached</string>
     <string name="no_want_to_report">No, Want to Report</string>
     <string name="booking_confirm_text">Once booking confirmed by you, your booking will go on hold until payment received or click cancel to check slots again !</string>
+    <string name="booking_cancel_message">If you click yes your booking will be cancelled from on hold and other customer can book same slot.</string>
+    <string name="later">Later</string>
+    <string name="please_rate_your_artist">"Please rate \n your experience "</string>
+    <string name="do_let_us_know_your_experience">Do let us know your feedback</string>
 
 </resources>

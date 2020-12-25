@@ -511,6 +511,10 @@
                     android:id="@+id/loaderLayout"
                     android:visibility="gone"/>
 
+                <include layout="@layout/rate_review_custom_layout"
+                    android:id="@+id/rateReviewCustomLayout"
+                    android:visibility="gone"/>
+
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

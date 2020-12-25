@@ -91,15 +91,7 @@ class BookingFragment : Fragment(), View.OnClickListener, BookingListAdapter.See
         ((ctx as MainActivity)).showBottomNavigation()
         // Initializing onclick listener to views....
         binding.refresh.setOnClickListener(this)
-        // Initializing the Booking Recycler View....
 
-
-//        if (!Constants.COMING_FROM_DETAIL)
-//        bookingListApi()
-//        else {
-//            adapter = BookingListAdapter(ctx,Constants.SAVE_BOOKING_LIST, this@BookingFragment)
-//            binding.bookingRecycler.adapter = adapter
-//        }
     }
 
     override fun onClick(v: View?) {

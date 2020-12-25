@@ -117,6 +117,8 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
             R.id.clearAllBtn -> {
                 adapter?.settSlotClear(true)
                 list.clear()
+                selectedSlotList.clear()
+                binding.proceedToCheckoutBtn.background = ContextCompat.getDrawable(ctx,R.drawable.proceed_to_check_unselected)
             }
             R.id.backpress -> {
                 fragmentManager?.popBackStack()
@@ -180,7 +182,6 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
                     if (response.body() != null) {
                         if (response.isSuccessful) {
                             // Display Popup Message when Api Successfully created booking....
-                            Constants.IS_BOOKING_DONE = true
 
                             val intent = Intent(ctx,PaymentActivity::class.java)
                              bookingId= response.body()?.data?.address?.id.toString()
@@ -319,7 +320,12 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
                     }
                 }
 
-                bookingCreateApi()
+                if (selectedSlotList.isEmpty()) {
+                    Toast.makeText(ctx,"Please select Any Slot",Toast.LENGTH_SHORT).show()
+                }else {
+                    bookingCreateApi()
+                }
+
             }
 
         }

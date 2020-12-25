@@ -36,6 +36,7 @@ import com.surpriseme.user.fragments.paymentfragment.BookingStatusModel
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
+import com.warkiz.widget.OnSeekChangeListener
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_booking_detail.*
 import kotlinx.android.synthetic.main.popup_select_currency.view.*
@@ -66,7 +67,9 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
     private var bookingModel: BookingDataModel? = null
     private var spinnerValue = ""
     private var reasonList: ArrayList<String> = ArrayList()
-    var descriptionTv: EditText? = null
+    private var descriptionTv: EditText? = null
+    private var submitReviewBtn:MaterialButton?=null
+
 
     // rate review bottom sheet....
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
@@ -83,6 +86,14 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
     private var wantToCancelBooking = false
     private var isArtistReach = false
     private var messageToDisplay = ""
+
+    // Rate Review Custom layout views....
+    private var ratingbarForSmile:RatingBar?=null
+    private var smileIcon:ImageView?=null
+    private var laterTv:TextView?=null
+    private var rateForSmile = "1.0"
+    private var review = ""
+    private var rateReviewEdt:EditText?=null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -108,6 +119,40 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
         reviewTv = findViewById(R.id.rateReviewTv)
         starImg = findViewById(R.id.starImg)
         rateReviewTxt = findViewById(R.id.rateReviewTxt)
+        ratingbarForSmile = findViewById(R.id.ratingbarForSmile)
+        smileIcon = findViewById(R.id.smileIcon)
+        laterTv = findViewById(R.id.laterTv)
+        laterTv?.setOnClickListener(this)
+        submitReviewBtn = findViewById(R.id.submitReviewBtn)
+        submitReviewBtn?.setOnClickListener(this)
+        rateReviewEdt = findViewById(R.id.rateReviewEdt)
+
+
+        // get rating to change smile while give rate your experience...
+
+
+        ratingbarForSmile?.onRatingBarChangeListener = object :RatingBar.OnRatingBarChangeListener{
+            override fun onRatingChanged(ratingBar: RatingBar?, rating: Float, fromUser: Boolean) {
+                rateForSmile = rating.toString()
+
+                if (rateForSmile == "1.0")
+                    smileIcon?.setImageResource(R.drawable.smile_one)
+                else if (rateForSmile == "2.0")
+                    smileIcon?.setImageResource(R.drawable.smile_two)
+                else if (rateForSmile == "3.0")
+                    smileIcon?.setImageResource(R.drawable.smile_three)
+                else if (rateForSmile == "4.0")
+                    smileIcon?.setImageResource(R.drawable.smile_fourth)
+                else if (rateForSmile == "5.0")
+                    smileIcon?.setImageResource(R.drawable.smile_fourth)
+            }
+
+        }
+
+
+
+
+
 
         close?.setOnClickListener(this)
 
@@ -180,7 +225,6 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
                 intent.putExtra("chatId", artistId)
                 intent.putExtra("receiverImage", artistId)
                 intent.putExtra("receiverName", artistId)
-
                 startActivity(intent)
             }
 //            R.id.chatBtn -> {
@@ -226,6 +270,10 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
                 } else if (actionBtn.text == resources.getString(R.string.go_to_Home)) {
                     Constants.COMING_FROM_DETAIL = true
                     finish()
+                } else if (actionBtn.text == resources.getString(R.string.rate_your_artist)) {
+
+                    binding.rateReviewCustomLayout.visibility = View.VISIBLE
+
                 }
             }
             R.id.readMoreTv -> {
@@ -275,11 +323,18 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
             R.id.close -> {
                 bottomSheetUpDownRateReview()
             }
+            R.id.laterTv -> {
+                binding.rateReviewCustomLayout.visibility = View.GONE
+            }
+            R.id.submitReviewBtn -> {
+
+                review = rateReviewEdt?.text.toString()
+                binding.rateReviewCustomLayout.visibility = View.GONE
+                rateReviewBookingApi(bookingId,rateForSmile,review)
+            }
         }
 
-
     }
-
     // Search Bottom Sheet Method....
     private fun bottomSheetUpDownRateReview() {
         if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
@@ -468,10 +523,9 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
                     binding.actionBtn.text = resources.getString(R.string.pay_now)
                     binding.cancelBtn.visibility = View.GONE
                     binding.cancelTxt.visibility = View.VISIBLE
-                } else if (bookingModel.status == Constants.COMPLETE) {
+                } else if (bookingModel.status == Constants.COMPLETED) {
                     binding.statusTv.text = resources.getString(R.string.Completed)
-                    binding.paymentTv.text =
-                        resources.getString(R.string.paid) + " " + bookingModel.customer_currency + " " + bookingModel.price
+                    binding.paymentTv.text = resources.getString(R.string.paid) + " " + bookingModel.customer_currency + " " + bookingModel.price
                     binding.actionBtn.visibility = View.VISIBLE
                     binding.actionBtn.text = resources.getString(R.string.rate_your_artist)
                 }
@@ -511,13 +565,46 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
 
     }
 
+    // Rate and Review Api when booking status would be completed....
+    private fun rateReviewBookingApi(bookingID:String, rate:String,review:String) {
+
+        binding.loaderLayout.visibility = View.VISIBLE
+        RetrofitClient.api.rateReviewBookingApi(shared.getString(Constants.DataKey.AUTH_VALUE),bookingID,rate,review)
+            .enqueue(object :Callback<RateReviewModel> {
+                override fun onResponse(
+                    call: Call<RateReviewModel>,
+                    response: Response<RateReviewModel>
+                ) {
+                    binding.loaderLayout.visibility = View.GONE
+                    if (response.isSuccessful) {
+                        if (response.body() !=null) {
+                            Toast.makeText(this@BookingDetailFragment, "" + response.body()?.data?.message.toString(),Toast.LENGTH_SHORT).show()
+
+                        }
+                    } else {
+                        val jsonobject:JSONObject
+                        if (response.errorBody() !=null) {
+                            jsonobject = JSONObject(response.errorBody()?.string()!!)
+                            val errorMessage = jsonobject.getString(Constants.ERROR)
+                            Toast.makeText(this@BookingDetailFragment,"" + errorMessage,Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<RateReviewModel>, t: Throwable) {
+                    binding.loaderLayout.visibility = View.GONE
+                }
+
+            })
+    }
+
     // Booking Status Api when status cancel....
-    private fun bookingStatusApi() {
-        val status = "cancel"
+    private fun bookingStatusApi(bookingID:String) {
+        val status = "completed_review"
         binding.loaderLayout.visibility = View.VISIBLE
         RetrofitClient.api.bookingStatusApi(
             shared.getString(Constants.DataKey.AUTH_VALUE),
-            bookingId,
+            bookingID,
             status
         )
             .enqueue(object : Callback<BookingStatusModel> {
