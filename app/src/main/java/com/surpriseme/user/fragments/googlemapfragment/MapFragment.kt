@@ -74,9 +74,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
     private lateinit var centerLatlng: LatLng
     private var googleApiClient: GoogleApiClient? = null
     private var locationName = ""
-    private var additionalDetails:String?=null
-    private var landmark:String?=null
-
+    private var additionalDetails: String? = null
+    private var landmark: String? = null
 
 
     // variables for hit api....
@@ -88,11 +87,12 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
     private var country = ""
     private var latitude = 0.0
     private var longitude = 0.0
+
     // var for Place sdk....
     private val AUTOCOMPLETE_REQUEST_CODE = 1
-    private var latlng:LatLng?=null
-    private var lat:Double = 0.0
-    private var lng:Double = 0.0
+    private var latlng: LatLng? = null
+    private var lat: Double = 0.0
+    private var lng: Double = 0.0
 
     private val ERROR_DIALOG_REQUEST = 9001
     var mLastLocation: Location? = null
@@ -130,19 +130,19 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
             init()
         }
 
-        if (shared.getString(Constants.ADDITIONAL_DETAILS) !="") {
+        if (shared.getString(Constants.ADDITIONAL_DETAILS) != "") {
             binding.flatEdt.setText(shared.getString(Constants.ADDITIONAL_DETAILS))
         }
-        if (shared.getString(Constants.LANDMARK) !="") {
+        if (shared.getString(Constants.LANDMARK) != "") {
             binding.landmarkEdt.setText(shared.getString(Constants.LANDMARK))
         }
         name = ctx.resources.getString(R.string.other)
         tbackpress = view.findViewById(R.id.backpress)
         tbackpress.setOnClickListener(this)
         binding.mapLayout.setOnClickListener {
-            mMap.setOnCameraChangeListener(object :GoogleMap.OnCameraChangeListener{
+            mMap.setOnCameraChangeListener(object : GoogleMap.OnCameraChangeListener {
                 override fun onCameraChange(p0: CameraPosition?) {
-                    Toast.makeText(ctx,"camera move",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(ctx, "camera move", Toast.LENGTH_SHORT).show()
                 }
             })
         }
@@ -153,8 +153,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
             locationName = arguments?.getString("locationName")!!
         } else if (Constants.WantToUpdateAddress) {
 
-                latitude = arguments?.getDouble("lat")!!
-                longitude = arguments?.getDouble("lng")!!
+            latitude = arguments?.getDouble("lat")!!
+            longitude = arguments?.getDouble("lng")!!
             locationName = arguments?.getString("locationName")!!
 
         }
@@ -176,7 +176,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
         })
 
         // save text while write addition details....
-        binding.flatEdt.addTextChangedListener(object :TextWatcher{
+        binding.flatEdt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
@@ -187,13 +187,13 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
 
             override fun afterTextChanged(s: Editable?) {
                 additionalDetails = binding.flatEdt.text.toString().trim()
-                shared.setString(Constants.ADDITIONAL_DETAILS,additionalDetails)
+                shared.setString(Constants.ADDITIONAL_DETAILS, additionalDetails)
 
             }
 
         })
 
-        binding.landmarkEdt.addTextChangedListener(object :TextWatcher{
+        binding.landmarkEdt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
@@ -204,7 +204,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
 
             override fun afterTextChanged(s: Editable?) {
                 landmark = binding.landmarkEdt.text.toString().trim()
-                shared.setString(Constants.LANDMARK,landmark)
+                shared.setString(Constants.LANDMARK, landmark)
 
             }
 
@@ -213,7 +213,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
         return view
     }
 
-    private fun displayAddressType(locationName:String) {
+    private fun displayAddressType(locationName: String) {
         when (locationName) {
             Constants.HOME_ADDRESS -> {
                 name = "Home"
@@ -242,11 +242,50 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                 binding.closeIcon.visibility = View.GONE
             }
             else -> {
-                binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
-                binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
-                binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.colorPrimary))
-                binding.otherTypeEdt.visibility = View.VISIBLE
-                binding.otherTypeEdt.setText(locationName)
+                if (Constants.WantToAddLocation) {
+                    binding.homeBtn.setBackgroundColor(
+                        ContextCompat.getColor(
+                            ctx,
+                            R.color.grey_color
+                        )
+                    )
+                    binding.workBtn.setBackgroundColor(
+                        ContextCompat.getColor(
+                            ctx,
+                            R.color.grey_color
+                        )
+                    )
+                    binding.otherBtn.setBackgroundColor(
+                        ContextCompat.getColor(
+                            ctx,
+                            R.color.grey_color
+                        )
+                    )
+                    binding.otherTypeEdt.visibility = View.GONE
+                    binding.closeIcon.visibility = View.GONE
+
+                } else {
+                    binding.homeBtn.setBackgroundColor(
+                        ContextCompat.getColor(
+                            ctx,
+                            R.color.grey_color
+                        )
+                    )
+                    binding.workBtn.setBackgroundColor(
+                        ContextCompat.getColor(
+                            ctx,
+                            R.color.grey_color
+                        )
+                    )
+                    binding.otherBtn.setBackgroundColor(
+                        ContextCompat.getColor(
+                            ctx,
+                            R.color.colorPrimary
+                        )
+                    )
+                    binding.otherTypeEdt.visibility = View.VISIBLE
+                    binding.otherTypeEdt.setText(locationName)
+                }
             }
         }
 
@@ -325,7 +364,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                 if (addCheckLocality == null)
                     addCheckLocality = ""
 
-                if (subLocality == "" || addCheckLocality == "" ) {
+                if (subLocality == "" || addCheckLocality == "") {
 
                     locality =
                         address.featureName + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
@@ -337,7 +376,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                 binding.mapAddressTxt.text = locality
                 if (binding.mapAddressTxt.text.length == 0) {
                     binding.editAddressIcon.visibility = View.GONE
-                }else {
+                } else {
                     binding.editAddressIcon.visibility = View.VISIBLE
                 }
                 mMap.setOnCameraChangeListener(null)
@@ -363,7 +402,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
 
         } catch (e: java.lang.Exception) {
 
-            Toast.makeText(ctx,"" + e.message.toString(),Toast.LENGTH_SHORT).show()
+            Toast.makeText(ctx, "" + e.message.toString(), Toast.LENGTH_SHORT).show()
 
         }
 //        mMap.setOnCameraMoveStartedListener { reason: Int ->
@@ -382,72 +421,72 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
 //            }
 //        }
 
-            mMap.setOnCameraChangeListener { p0 ->
+        mMap.setOnCameraChangeListener { p0 ->
 
-                if (p0?.target!!.latitude == 0.0)
-                    centerLatlng = Constants.LATLNG!!
-                else
-                    centerLatlng = p0.target!!
+            if (p0?.target!!.latitude == 0.0)
+                centerLatlng = Constants.LATLNG!!
+            else
+                centerLatlng = p0.target!!
 
-                val geocoder: Geocoder?
-                val addresses: List<Address>?
-                geocoder = Geocoder(ctx, Locale.getDefault())
-                try {
-                    addresses = geocoder.getFromLocation(
-                        centerLatlng.latitude,
-                        centerLatlng.longitude,
-                        1
-                    )
-                    val address = (addresses as MutableList<Address>?)?.get(0)
-                    var locality = ""
-                    var checkLocality = ""
-                    if (address != null) {
-                        var subLocality = address.subLocality
-                        checkLocality = address.locality
-
-
-                        if (subLocality == null) {
-                            subLocality = ""
-                        }
-                        if (checkLocality == null)
-                            checkLocality = ""
-
-                        if (subLocality == "" || checkLocality == "") {
-
-                            locality =
-                                address.featureName + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
-                        } else {
-                            locality =
-                                subLocality + "," + address.featureName + "," + address.locality + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
-                        }
+            val geocoder: Geocoder?
+            val addresses: List<Address>?
+            geocoder = Geocoder(ctx, Locale.getDefault())
+            try {
+                addresses = geocoder.getFromLocation(
+                    centerLatlng.latitude,
+                    centerLatlng.longitude,
+                    1
+                )
+                val address = (addresses as MutableList<Address>?)?.get(0)
+                var locality = ""
+                var checkLocality = ""
+                if (address != null) {
+                    var subLocality = address.subLocality
+                    checkLocality = address.locality
 
 
-                        binding.mapAddressTxt.text = locality
-                        streetAddress = locality
-                        city = locality
-                        state = address.adminArea.toString()
-                        zip = address.postalCode.toString()
-                        country = address.countryName.toString()
-                        latitude = address.latitude
-                        longitude = address.longitude
-
-
-                        if (binding.mapAddressTxt.text.length == 0) {
-                            binding.editAddressIcon.visibility = View.GONE
-                        }else {
-                            binding.editAddressIcon.visibility = View.VISIBLE
-                        }
-
-
-                        mMap.clear()
-
-                    } else {
-                        Toast.makeText(ctx, "No Location Found", Toast.LENGTH_SHORT).show()
+                    if (subLocality == null) {
+                        subLocality = ""
                     }
-                } catch (e: Exception) {
+                    if (checkLocality == null)
+                        checkLocality = ""
 
+                    if (subLocality == "" || checkLocality == "") {
+
+                        locality =
+                            address.featureName + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
+                    } else {
+                        locality =
+                            subLocality + "," + address.featureName + "," + address.locality + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
+                    }
+
+
+                    binding.mapAddressTxt.text = locality
+                    streetAddress = locality
+                    city = locality
+                    state = address.adminArea.toString()
+                    zip = address.postalCode.toString()
+                    country = address.countryName.toString()
+                    latitude = address.latitude
+                    longitude = address.longitude
+
+
+                    if (binding.mapAddressTxt.text.length == 0) {
+                        binding.editAddressIcon.visibility = View.GONE
+                    } else {
+                        binding.editAddressIcon.visibility = View.VISIBLE
+                    }
+
+
+                    mMap.clear()
+
+                } else {
+                    Toast.makeText(ctx, "No Location Found", Toast.LENGTH_SHORT).show()
                 }
-            }  // end of get location while moving camera....
+            } catch (e: Exception) {
+
+            }
+        }  // end of get location while moving camera....
 
     }
 
@@ -473,7 +512,12 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
             R.id.homeBtn -> {
                 name = Constants.HOME_ADDRESS
                 isOtherAddress = false
-                binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.colorPrimary))
+                binding.homeBtn.setBackgroundColor(
+                    ContextCompat.getColor(
+                        ctx,
+                        R.color.colorPrimary
+                    )
+                )
                 binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
                 binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
                 binding.otherTypeEdt.visibility = View.GONE
@@ -485,7 +529,12 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                 name = Constants.WORK_ADDRESS
                 isOtherAddress = false
                 binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
-                binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.colorPrimary))
+                binding.workBtn.setBackgroundColor(
+                    ContextCompat.getColor(
+                        ctx,
+                        R.color.colorPrimary
+                    )
+                )
                 binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
                 binding.otherTypeEdt.visibility = View.GONE
                 binding.closeIcon.visibility = View.GONE
@@ -497,7 +546,12 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                 isOtherAddress = true
                 binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
                 binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
-                binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.colorPrimary))
+                binding.otherBtn.setBackgroundColor(
+                    ContextCompat.getColor(
+                        ctx,
+                        R.color.colorPrimary
+                    )
+                )
                 binding.otherTypeEdt.visibility = View.VISIBLE
                 binding.closeIcon.visibility = View.VISIBLE
                 binding.otherTypeEdt.setText(locationName)
@@ -516,7 +570,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
             }
             R.id.saveAddressBtn -> {
 
-                 if (name == ctx.resources.getString(R.string.other) && isOtherAddress == true) {
+                if (name == ctx.resources.getString(R.string.other) && isOtherAddress == true) {
                     name = binding.otherTypeEdt.text.toString().trim()
                     if (name == "") {
                         Toast.makeText(
@@ -535,12 +589,16 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                 }
 
 
-
             }   // end of Save Address Button....
             R.id.editAddressIcon -> {
 
                 Constants.WantToUpdateAddress = false
-                val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)
+                val fields = listOf(
+                    Place.Field.ID,
+                    Place.Field.NAME,
+                    Place.Field.LAT_LNG,
+                    Place.Field.ADDRESS
+                )
                 val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
                     .build(ctx)
                 startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
@@ -566,12 +624,12 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
 //                        Log.i(TAG, "Place: ${place.name}, ${place.id}")
                         val fragment = MapFragment()
                         val bundle = Bundle()
-                        bundle.putDouble("lat",lat)
-                        bundle.putDouble("lng",lng)
-                        bundle.putString("locationName",locationName)
+                        bundle.putDouble("lat", lat)
+                        bundle.putDouble("lng", lng)
+                        bundle.putString("locationName", locationName)
                         fragment.arguments = bundle
                         val transaction = fragmentManager?.beginTransaction()
-                        transaction?.replace(R.id.frameContainer,fragment)
+                        transaction?.replace(R.id.frameContainer, fragment)
                         transaction?.commit()
 
                     }
@@ -581,7 +639,11 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                     data?.let {
                         val status = Autocomplete.getStatusFromIntent(data)
 //                        Log.i(TAG, status.statusMessage)
-                        Toast.makeText(ctx,"" + status.statusMessage.toString(),Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            ctx,
+                            "" + status.statusMessage.toString(),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
                 Activity.RESULT_CANCELED -> {
@@ -596,6 +658,9 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
     // Create Address Api....
     private fun createAddressApi() {
 
+        if (name !="Home" && name !="Work") {
+            name = ctx.resources.getString(R.string.other)
+        }
         binding.loaderLayout.visibility = View.VISIBLE
 
         RetrofitClient.api.createAddress(

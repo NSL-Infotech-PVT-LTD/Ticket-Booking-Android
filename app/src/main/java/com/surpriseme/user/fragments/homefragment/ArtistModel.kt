@@ -25,7 +25,7 @@ data class Data(
     val category_id_details: ArrayList<CategoryIdDetail>? = null
     val currency: String = ""
     val description: String = ""
-    val digital_price_per_hr: Int=0
+    val digital_price_per_hr: Double=0.0
     val id: Int=0
     val image: String=""
     val live_price_per_hr: Int=0

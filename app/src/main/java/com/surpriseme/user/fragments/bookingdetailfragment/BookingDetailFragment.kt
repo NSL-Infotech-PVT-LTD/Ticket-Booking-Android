@@ -46,6 +46,7 @@ import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.NumberFormatException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -126,6 +127,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
         submitReviewBtn = findViewById(R.id.submitReviewBtn)
         submitReviewBtn?.setOnClickListener(this)
         rateReviewEdt = findViewById(R.id.rateReviewEdt)
+        binding.profileImg.setOnClickListener(this)
 
 
         // get rating to change smile while give rate your experience...
@@ -149,13 +151,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
 
         }
 
-
-
-
-
-
         close?.setOnClickListener(this)
-
 
         // Views initialization....
         binding.backpress.setOnClickListener(this)
@@ -271,9 +267,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
                     Constants.COMING_FROM_DETAIL = true
                     finish()
                 } else if (actionBtn.text == resources.getString(R.string.rate_your_artist)) {
-
                     binding.rateReviewCustomLayout.visibility = View.VISIBLE
-
                 }
             }
             R.id.readMoreTv -> {
@@ -330,7 +324,18 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
 
                 review = rateReviewEdt?.text.toString()
                 binding.rateReviewCustomLayout.visibility = View.GONE
+                if (rateForSmile !="" && review !="") {
+                    Toast.makeText(this@BookingDetailFragment, "Please give rating",Toast.LENGTH_SHORT).show()
+                } else {
                 rateReviewBookingApi(bookingId,rateForSmile,review)
+                }
+            }
+            R.id.profileImg -> {
+
+                val intent = Intent(this@BookingDetailFragment, MainActivity::class.java)
+                intent.putExtra("artistID", artistId)
+                startActivity(intent)
+
             }
         }
 
@@ -347,10 +352,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
     private fun bookingDetailApi() {
 
         binding.loaderLayout.visibility = View.VISIBLE
-        RetrofitClient.api.bookingDetailApi(
-            shared.getString(Constants.DataKey.AUTH_VALUE),
-            Constants.DataKey.CONTENT_TYPE_VALUE, bookingId
-        )
+        RetrofitClient.api.bookingDetailApi(shared.getString(Constants.DataKey.AUTH_VALUE), Constants.DataKey.CONTENT_TYPE_VALUE, bookingId)
             .enqueue(object : Callback<BookingDetailModel> {
                 override fun onResponse(
                     call: Call<BookingDetailModel>,
@@ -463,11 +465,6 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
                 }
 
                 binding.statusTv.text = "${bookingModel.status}"
-//                if (bookingModel.status == Constants.PENDING)
-//                    wantToCancelBooking = true
-//                if (bookingModel.status == Constants.CONFIRMED)
-//                    isArtistReach = true
-
                 //change satatus of button...
                 if (bookingModel.status == Constants.CANCEL) {
                     binding.statusTv.text = resources.getString(R.string.cancel)
@@ -491,12 +488,22 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
                         resources.getString(R.string.your_artist_start_to_perform)
                 } else if (bookingModel.status == Constants.COMPLETE_REVIEW) {
                     binding.statusTv.text = resources.getString(R.string.completed_review)
-                    binding.paymentTv.text =
-                        resources.getString(R.string.paid) + bookingModel.customer_currency + " " + bookingModel.price
+                    binding.paymentTv.text = getString(R.string.paid) + bookingModel.customer_currency + " " + bookingModel.price
                     binding.rateReviewLayout.visibility = View.VISIBLE
                     if (bookingModel.rate_detail != null) {
-                        binding.rateTv.text = bookingModel.rate_detail.rate.toString()
-                        binding.ratingbar.rating = bookingModel.rate_detail.rate.toFloat()
+                        if (bookingModel.rate_detail.rate !="") {
+                            binding.rateTv.text = bookingModel.rate_detail.rate
+                        }
+                        if (!bookingModel.rate_detail.rate.isEmpty()){
+                            try {
+                                binding.ratingbar.rating = bookingModel.rate_detail.rate.toFloat()
+
+                            }catch (e:NumberFormatException){
+                                e.printStackTrace()
+                            }
+                        } else {
+                            binding.rateReviewLayout.visibility = View.GONE
+                        }
                         binding.reviewTv.text = bookingModel.rate_detail.review
                     }
 
@@ -531,7 +538,9 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
                 }
 
 
-                binding.locationTv.text = bookingModel?.address
+                if (bookingModel.address !=null) {
+                    binding.locationTv.text = bookingModel.address.toString()
+                }
 
                 // Display date at top of card....
                 var date = bookingModel.date

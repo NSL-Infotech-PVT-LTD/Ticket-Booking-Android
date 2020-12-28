@@ -2,6 +2,7 @@ package com.surpriseme.user.activity.payment
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -27,6 +28,7 @@ import com.surpriseme.user.fragments.bookingdetailfragment.BookingDetailFragment
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
+import kotlinx.android.synthetic.main.activity_add_card.*
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -55,15 +57,17 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_card)
         shared= PrefrenceShared(this)
 
+        bookingid = intent.getStringExtra("bookingid")!!
+
         if(intent.getStringExtra("paycard")=="paycard" ){
             binding?.choosePaymentMethodTxt!!.text = getString(R.string.pay_now)
             binding?.loginButton!!.text = getString(R.string.pay_now)
-            bookingid = intent.getStringExtra("bookingid")
+
         }
         else if(intent.getStringExtra("selectcard")=="selectcard"){
-            binding?.choosePaymentMethodTxt!!.text = getString(R.string.addcardd)
-            binding?.loginButton!!.text = getString(R.string.addcardd)
-            bookingid = intent.getStringExtra("bookingid")
+            binding?.choosePaymentMethodTxt?.text = getString(R.string.addcardd)
+            binding?.loginButton?.text = getString(R.string.addcardd)
+
         }
 
         init()
@@ -73,6 +77,7 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
     private fun init() {
         // initialization of views....
         backpress = findViewById(R.id.backpress)
+        backpress?.setOnClickListener(this)
 
         //validations....
         validations()
@@ -90,7 +95,9 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
+
                 accountNumber = s.toString()
+
                 if (accountNumber.length == 16)
                     binding?.expiryEdt?.requestFocus()
 
@@ -211,7 +218,7 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
             applicationContext,
             "pk_test_51HcYaaDVPC7KpoaUBqxarUUagXrI14GRCicyaZt8NztibJ4G9Y7KMtunrcWTg5PDm3PzcuBe1zkFFJiJRt1mXs8s009njabz8l"
         )
-        stripe!!.createCardToken(card,null,null, object : ApiResultCallback<Token> {
+        stripe.createCardToken(card,null,null, object : ApiResultCallback<Token> {
             override fun onError(e: Exception) {
             }
 
@@ -313,16 +320,17 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
                     if (response.body() != null) {
                         if (response.isSuccessful) {
 
-                            Toast.makeText(
-                                this@AddCardActivity,
-                                "" + response.body()!!.data.message,
-                                Toast.LENGTH_LONG
-                            ).show()
-                            val intent =
-                                Intent(this@AddCardActivity, BookingDetailFragment::class.java)
-                            intent.putExtra("bookingId", bookingid)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent)
+                            binding?.paymentDoneLayout?.visibility = View.VISIBLE
+                            Handler().postDelayed({
+                                binding?.paymentDoneLayout?.visibility = View.GONE
+                                Toast.makeText(this@AddCardActivity, "" + response.body()!!.data.message, Toast.LENGTH_LONG).show()
+                                val intent =
+                                    Intent(this@AddCardActivity, BookingDetailFragment::class.java)
+                                intent.putExtra("bookingId", bookingid)
+//                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                startActivity(intent)
+                                finish()
+                            },3000)
 
 
                         }
@@ -332,17 +340,9 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
                             try {
                                 jsonObject = JSONObject(response.errorBody()!!.string())
                                 val errorMessage = jsonObject.getString(Constants.ERRORS)
-                                Toast.makeText(
-                                    this@AddCardActivity,
-                                    "" + errorMessage,
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                Toast.makeText(this@AddCardActivity, "" + errorMessage, Toast.LENGTH_SHORT).show()
                             } catch (e: JSONException) {
-                                Toast.makeText(
-                                    this@AddCardActivity,
-                                    "" + Constants.SOMETHING_WENT_WRONG,
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                Toast.makeText(this@AddCardActivity, "" + Constants.SOMETHING_WENT_WRONG, Toast.LENGTH_SHORT).show()
                             }
 
                         }

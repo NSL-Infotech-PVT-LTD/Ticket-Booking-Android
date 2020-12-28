@@ -13,6 +13,7 @@ import com.applandeo.materialcalendarview.EventDay
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener
 import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.R
+import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.databinding.FragmentSelectDateBinding
 import com.surpriseme.user.fragments.bookingslotfragment.BookSlotFragment
 import com.surpriseme.user.retrofit.RetrofitClient
@@ -59,6 +60,8 @@ class SelectDateFragment : Fragment(), View.OnClickListener {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_select_date, container, false)
         val view = binding.root
         shared = PrefrenceShared(ctx)
+
+        ((ctx as MainActivity)).hideBottomNavigation()
 
         showTypeTv = view.findViewById(R.id.showTypeTv)
         showTypeTv?.visibility = View.VISIBLE

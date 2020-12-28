@@ -223,4 +223,7 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener {
             })
     }
 
+    override fun onBackPressed() {
+        popupBookingCancel()
+    }
 }

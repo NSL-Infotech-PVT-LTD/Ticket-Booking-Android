@@ -46,7 +46,6 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         shared= PrefrenceShared(this)
 
-
         bookingid = intent.getStringExtra("bookingid")!!
         binding.holderedt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -62,12 +61,9 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 }else{
                     binding.paynowbtn.backgroundTintList = getColorStateList(R.color.btnback)
                 }
-
-
             }
 
         })
-
         binding.paynowbtn.setOnClickListener {
             if(binding.choosebankedt.text.toString().equals(getString(R.string.selectbank))){
                 Toast.makeText(this,getString(R.string.selectbank),Toast.LENGTH_LONG).show()
@@ -79,8 +75,6 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                paynow(bookingid)
             }
         }
-
-
 
         var banklist = ArrayList<String>()
         banklist.add("")
@@ -123,23 +117,16 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         val ideal = PaymentMethodCreateParams.Ideal(bankcode)
         var paymentMethodCreateParams = PaymentMethodCreateParams.create(ideal, billingDetails)
 
-
-
         var confirmParams = ConfirmPaymentIntentParams
             .createWithPaymentMethodCreateParams(
-
                 paymentMethodCreateParams  = paymentMethodCreateParams,
                 clientSecret = secret,
                 returnUrl = "surpriseme://stripe-redirect",
-
             )
-
-
 //        confirmParams.paymentMethodCreateParams = paymentMethodCreateParams
         stripe= Stripe(applicationContext, PaymentConfiguration.getInstance(applicationContext).publishableKey)
 
         stripe!!.confirmPayment(this,confirmParams)
-
 
     }
     private fun paynow(id: String) {
@@ -157,10 +144,7 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                     binding.loaderLayout.visibility = View.GONE
                     if (response.body() != null) {
                         if (response.isSuccessful) {
-
                          pay(response.body()!!.data.client_secret)
-
-
                         }
                     } else {
                         val jsonObject: JSONObject
@@ -180,7 +164,6 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
-
                         }
                     }
                 }
@@ -195,11 +178,6 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 }
             })
     }
-
-
-
-
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

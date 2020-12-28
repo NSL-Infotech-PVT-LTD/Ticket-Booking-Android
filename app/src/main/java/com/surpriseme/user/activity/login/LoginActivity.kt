@@ -3,6 +3,7 @@ package com.surpriseme.user.activity.login
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.method.PasswordTransformationMethod
 import android.view.View
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -66,6 +67,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         forgetTxt.setOnClickListener(this)
         accountYetTxt.setOnClickListener(this)
         changetext.setOnClickListener(this)
+        eye_disable.setOnClickListener(this)
+        eye_enable.setOnClickListener(this)
 
         shared()
         loaderLayout = findViewById(R.id.loaderLayout)
@@ -94,6 +97,19 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 val intent = Intent(this@LoginActivity, ChooseLanguageActivity::class.java)
                 startActivity(intent)
                 finish()
+            }
+            R.id.eye_disable -> {
+                passwordEdt!!.transformationMethod = null
+                    eye_enable!!.visibility=View.VISIBLE
+                    eye_disable!!.visibility=View.GONE
+
+            }
+            R.id.eye_enable -> {
+
+                passwordEdt!!.transformationMethod = PasswordTransformationMethod()
+                eye_enable!!.visibility=View.GONE
+                eye_disable!!.visibility=View.VISIBLE
+
             }
         }
     }

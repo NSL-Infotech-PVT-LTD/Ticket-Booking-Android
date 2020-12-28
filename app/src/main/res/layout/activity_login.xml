@@ -178,21 +178,33 @@
                 android:textColor="#c1c1c1"
                 android:fontFamily="@font/montserrat_regular"
                 android:imeOptions="actionDone"
-                app:layout_constraintEnd_toStartOf="@+id/eye"
+                app:layout_constraintEnd_toStartOf="@+id/eye_disable"
                 android:layout_marginEnd="@dimen/_10sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/passicon"
                 app:layout_constraintTop_toBottomOf="@+id/txt_pass" />
 
             <ImageView
-                android:id="@+id/eye"
+                android:id="@+id/eye_disable"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 app:layout_constraintBottom_toBottomOf="@+id/passwordLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/passwordLayout"
-                android:src="@drawable/eye_icon"/>
+                android:src="@drawable/ic_eye_disable"/>
+
+            <ImageView
+                android:id="@+id/eye_enable"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                app:layout_constraintBottom_toBottomOf="@+id/passwordLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="@+id/passwordLayout"
+                android:src="@drawable/ic_eyes_2"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <CheckBox

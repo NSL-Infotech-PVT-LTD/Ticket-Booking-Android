@@ -48,7 +48,7 @@
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginHorizontal="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_20sdp"
-                    android:background="@drawable/search_bg"
+                    android:background="@drawable/activity_search_bg"
                     android:hint="@string/search_for_artist_singer"
                     android:imeOptions="actionDone"
                     android:maxLength="50"

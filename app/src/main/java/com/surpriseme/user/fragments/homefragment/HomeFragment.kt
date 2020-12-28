@@ -57,10 +57,7 @@ import com.surpriseme.user.fragments.viewprofile.UserViewProfile
 import com.surpriseme.user.fragments.viewprofile.ViewProfileModel
 import com.surpriseme.user.fragments.wayofbookingfragment.WayOfBookingFragment
 import com.surpriseme.user.retrofit.RetrofitClient
-import com.surpriseme.user.util.Constants
-import com.surpriseme.user.util.InvalidAuth
-import com.surpriseme.user.util.PaginationScrollListener
-import com.surpriseme.user.util.PrefrenceShared
+import com.surpriseme.user.util.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import okhttp3.MediaType
@@ -109,6 +106,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
     private var currencyRecycler: RecyclerView? = null
     private var popUpWindowCurrency: PopupWindow? = null
     private var invalidAuth: InvalidAuth? = null
+    private var prefManager:PrefManger?=null
 
     private var isCheck = false
     override fun onAttach(context: Context) {
@@ -133,6 +131,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         val view = binding.root
         shared = PrefrenceShared(ctx)
+        prefManager = PrefManger(ctx)
         invalidAuth = InvalidAuth()
 
         binding.viewProfile.setOnClickListener(this)
@@ -298,7 +297,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                                     userModel?.email
                                 ) // is used to store user email.
 
-                                if (shared.getString(Constants.CURRENCY) == "") {
+                                if (prefManager?.getString1(Constants.CURRENCY) == "") {
                                     popupSelectCurrency()
                                 } else {
                                     locationListApi()
@@ -721,7 +720,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
             // hit Update profile api to save currency ....
 
             updateProfileApi(currencyvalue)
-            shared.setString(Constants.CURRENCY, currencyvalue)
+            prefManager?.setString1(Constants.CURRENCY, currencyvalue)
 
         }
 

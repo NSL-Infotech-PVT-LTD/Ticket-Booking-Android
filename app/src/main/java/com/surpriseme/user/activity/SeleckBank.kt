@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import butterknife.OnClick
 import com.surpriseme.user.R
 import com.surpriseme.user.activity.payment.AddCardActivity
 import com.surpriseme.user.data.model.CardGetModel
@@ -26,7 +27,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class SeleckBank : AppCompatActivity(), CardAdapter.ChangeLocale {
+class SeleckBank : AppCompatActivity(), CardAdapter.ChangeLocale, View.OnClickListener {
 
     lateinit var binding: ActivitySeleckBankBinding
     var shared: PrefrenceShared? = null
@@ -37,37 +38,51 @@ class SeleckBank : AppCompatActivity(), CardAdapter.ChangeLocale {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_seleck_bank)
         shared = PrefrenceShared(this)
-        bookingid = intent.getStringExtra("bookingid")
+        bookingid = intent.getStringExtra("bookingid")!!
         binding.cardrecycler.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         val itemDecorator = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
         itemDecorator.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider)!!)
         binding.cardrecycler.addItemDecoration(itemDecorator)
 
-        binding.addcardbtn.setOnClickListener {
-            val intent=Intent(this,AddCardActivity::class.java)
-            intent.putExtra("selectcard","selectcard")
-            intent.putExtra("bookingid",intent.getStringExtra("bookingid"))
-            startActivity(intent)
-        }
+        //initializing onclick listener....
+        binding.backpress.setOnClickListener(this@SeleckBank)
+        binding.addcardbtn.setOnClickListener(this@SeleckBank)
+        binding.paynowbtn.setOnClickListener(this@SeleckBank)
 
-        binding.paynowbtn.setOnClickListener {
-            paynow(card_id)
-        }
+
+
         cardget()
 
     }
 
+    override fun onClick(v: View?) {
+        when(v?.id) {
+            R.id.backpress -> {
+                finish()
+            }
+            R.id.addcardbtn -> {
+                val intent=Intent(this,AddCardActivity::class.java)
+                intent.putExtra("selectcard","selectcard")
+                intent.putExtra("bookingid",bookingid)
+                startActivity(intent)
+            }
+            R.id.paynowbtn -> {
+                paynow(card_id)
+            }
+        }
+    }
+
     private fun cardget() {
 
-        binding!!.loaderLayout.visibility = View.VISIBLE
+        binding.loaderLayout.visibility = View.VISIBLE
         RetrofitClient.api.cardlist(shared?.getString(Constants.DataKey.AUTH_VALUE)!!)
             .enqueue(object : Callback<CardGetModel> {
                 override fun onResponse(
                     call: Call<CardGetModel>,
                     response: Response<CardGetModel>
                 ) {
-                    binding!!.loaderLayout.visibility = View.GONE
+                    binding.loaderLayout.visibility = View.GONE
                     if (response.body() != null) {
                         if (response.isSuccessful) {
                             if (response.body()!!.data.data.isNotEmpty()) {
@@ -104,7 +119,7 @@ class SeleckBank : AppCompatActivity(), CardAdapter.ChangeLocale {
                 }
 
                 override fun onFailure(call: Call<CardGetModel>, t: Throwable) {
-                    binding!!.loaderLayout.visibility = View.GONE
+                    binding.loaderLayout.visibility = View.GONE
                     Toast.makeText(
                         this@SeleckBank,
                         "" + t.message.toString(),
@@ -179,7 +194,7 @@ class SeleckBank : AppCompatActivity(), CardAdapter.ChangeLocale {
                 }
 
                 override fun onFailure(call: Call<PaymentModel>, t: Throwable) {
-                    binding!!.loaderLayout.visibility = View.GONE
+                    binding.loaderLayout.visibility = View.GONE
                     Toast.makeText(
                         this@SeleckBank,
                         "" + t.message.toString(),
@@ -247,7 +262,6 @@ class SeleckBank : AppCompatActivity(), CardAdapter.ChangeLocale {
                 }
             })
     }
-
 
 
 }

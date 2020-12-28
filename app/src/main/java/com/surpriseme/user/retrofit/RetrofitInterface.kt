@@ -137,6 +137,7 @@ interface RetrofitInterface {
         @Query(Constants.ApiKey.RADIUS) radius: String
     ): Call<ArtistModel>
 
+
     // Artist list for Search activity without lat, long....
     @POST(Constants.CUSTOMER_ARTIST_LIST)
     fun artistListApi(

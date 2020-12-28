@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.R
+import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.activity.payment.PaymentActivity
 import com.surpriseme.user.databinding.FragmentBookSlotBinding
 import com.surpriseme.user.fragments.bookingfragment.BookingFragment
@@ -79,6 +81,8 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
         backpress?.setOnClickListener(this)
         artistID = shared.getString(Constants.ARTIST_ID)
 
+        ((ctx as MainActivity)).hideBottomNavigation()
+
         binding.proceedToCheckoutBtn.setOnClickListener(this)
         binding.clearAllBtn.setOnClickListener(this)
 
@@ -111,8 +115,12 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
         when (v?.id) {
 
             R.id.proceedToCheckoutBtn -> {
+                proceedToCheckoutBtn.isEnabled = false
+                popupBookingConfirm()
+                Handler().postDelayed(Runnable {
+                    proceedToCheckoutBtn.isEnabled = true
+                },2000)
 
-                    popupBookingConfirm()
             }
             R.id.clearAllBtn -> {
                 adapter?.settSlotClear(true)
@@ -183,8 +191,8 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
                         if (response.isSuccessful) {
                             // Display Popup Message when Api Successfully created booking....
 
+                            bookingId= response.body()?.data?.address?.id.toString()
                             val intent = Intent(ctx,PaymentActivity::class.java)
-                             bookingId= response.body()?.data?.address?.id.toString()
                             intent.putExtra("bookingid", bookingId)
                             startActivity(intent)
                             list.clear()
@@ -217,45 +225,10 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
         selectedSlotList = slotList
         if (selectedSlotList.isNotEmpty()) {
             binding.proceedToCheckoutBtn.background = ContextCompat.getDrawable(ctx,R.drawable.proceed_to_check_selected)
-
         }else  {
             binding.proceedToCheckoutBtn.background = ContextCompat.getDrawable(ctx,R.drawable.proceed_to_check_unselected)
-
         }
 
-    }
-
-    private fun alertPopUp(message: String) {
-
-        val layoutInflater: LayoutInflater =
-            ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-
-        val popUp: View = layoutInflater.inflate(R.layout.booking_done_popup, null)
-        val popUpWindowReport = PopupWindow(
-            popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
-            ConstraintLayout.LayoutParams.MATCH_PARENT, true
-        )
-        popUpWindowReport.showAtLocation(popUp, Gravity.CENTER, 0, 0)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            popUpWindowReport.elevation = 10f
-        }
-        popUpWindowReport.isTouchable = false
-        popUpWindowReport.isOutsideTouchable = false
-
-        val messageText: MaterialTextView = popUp.findViewById(R.id.messageDispText)
-        messageText.text = message
-        val done: MaterialTextView = popUp.findViewById(R.id.doneTv)
-
-        done.setOnClickListener {
-            popUpWindowReport.dismiss()
-            val fragment = BookingFragment()
-            val transaction = fragmentManager?.beginTransaction()
-            transaction?.replace(R.id.frameContainer, fragment)
-            transaction?.commit()
-
-        }
     }
 
     private fun popupBookingConfirm() {

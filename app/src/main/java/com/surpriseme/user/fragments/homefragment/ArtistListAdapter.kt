@@ -166,15 +166,14 @@ class ArtistListAdapter(
                     for (detail in categoryList) {
                         builder.append(detail)
                      s = TextUtils.join(", ",categoryList)
-
                     }
                     categories.text = s
             }
 
             if (Constants.SHOW_TYPE == context.resources?.getString(R.string.digital)!!) {
-                price.text = context.resources.getString(R.string.hourly) + " " + artistModel.currency + " " + artistModel.digital_price_per_hr
+                price.text = artistModel.currency + " " + artistModel.digital_price_per_hr + context.resources.getString(R.string.hr)
             } else{
-                price.text = context.resources.getString(R.string.hourly) + " " + artistModel.currency + " " + artistModel.live_price_per_hr
+                price.text = artistModel.currency + " " + artistModel.live_price_per_hr + context.resources.getString(R.string.hr)
             }
 
 

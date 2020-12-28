@@ -83,7 +83,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
     private var isCategoryClicked = false
     private var seekbarRating:IndicatorSeekBar?=null
     private var byDistanceTv: MaterialTextView? = null
-    private var seekbarDistance: SeekBar? = null
+    private var seekbarDistance: IndicatorSeekBar? = null
     private var kilometerLayout:ConstraintLayout?=null
     private var byRating = ""
     private var byDistance = ""
@@ -149,25 +149,23 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                binding?.noDataFound?.visibility = View.GONE
-                binding?.searchLayout?.visibility = View.VISIBLE
-
-                search = binding?.searchEdt?.text.toString().trim()
-                artistListAdapter?.clear()
-
-
-                if (Constants.SHOW_TYPE == getString(R.string.digital)) {
-                    artistListApiWithoutLatlng(search)
-                } else {
-                    artistListApi(shared?.getString(Constants.LATITUDE)!!,shared?.getString(Constants.LONGITUDE)!!, search)
-                }
 
 
             }
 
             override fun afterTextChanged(s: Editable?) {
+
+                currentPage =1
                 binding?.noDataFound?.visibility = View.GONE
-                binding?.searchLayout?.visibility = View.VISIBLE
+                search = s.toString()
+
+                    if (Constants.SHOW_TYPE == getString(R.string.digital)) {
+
+                        artistListApiWithoutLatlng(search)
+                    } else {
+
+                        artistListApi(shared?.getString(Constants.LATITUDE)!!,shared?.getString(Constants.LONGITUDE)!!, search)
+                    }
             }
 
 
@@ -212,7 +210,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
         seekbarRating?.customTickTexts(tickArray)
         byDistanceTv = findViewById(R.id.byDistanceTv)
         seekbarDistance = findViewById(R.id.seekbarDistance)
-        kilometerLayout = findViewById(R.id.kilometerLayout)
+
 
 
         if (showType == getString(R.string.digital)) {
@@ -245,21 +243,22 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
             }
 
         }
-        seekbarDistance?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                byDistance = progress.toString()
+
+        seekbarDistance?.onSeekChangeListener = object :OnSeekChangeListener{
+            override fun onSeeking(seekParams: SeekParams?) {
+                byDistance = seekParams?.tickText!!
+                Toast.makeText(this@SearchActivity,"" + byDistance.toString(),Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onStartTrackingTouch(seekBar: IndicatorSeekBar?) {
 
             }
 
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            override fun onStopTrackingTouch(seekBar: IndicatorSeekBar?) {
 
             }
 
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-            }
-
-
-        })
+        }
 
 
         //Search bottom sheet callback....
@@ -635,6 +634,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 }
 
                 override fun onFailure(call: Call<ArtistModel>, t: Throwable) {
+                    binding?.loaderLayout?.visibility = View.GONE
                     Toast.makeText(applicationContext,"" + t.message.toString(),Toast.LENGTH_SHORT).show()
 
                 }

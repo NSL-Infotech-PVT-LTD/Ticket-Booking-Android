@@ -1,12 +1,19 @@
 package com.surpriseme.user.fragments.bookingslotfragment
 
 import android.content.Context
+import android.os.Build
+import android.os.Handler
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupWindow
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.R
 import com.surpriseme.user.util.Constants
@@ -23,6 +30,7 @@ class BookSlotAdapter(
 ) :
     RecyclerView.Adapter<BookSlotAdapter.BookSlotViewHolder>() {
 
+    private var popWindowNotAvailable:PopupWindow?=null
 
     private var fromTime = ""
     private var toTime = ""
@@ -68,32 +76,41 @@ class BookSlotAdapter(
             holder.itemView.background = ContextCompat.getDrawable(context, R.drawable.slot_grey)
         }
 
-        holder.itemView.isEnabled = !(list[position].booked == "1" || list[position].date.isEmpty())
+//        holder.itemView.isEnabled = !(list[position].booked == "1" || list[position].date.isEmpty())
+
 
         holder.itemView.setOnClickListener {
 
-            if (!list[position].isBooked) {
+            if (list[position].date == "") {
+                popupArtistNotAvailable()
+                Handler().postDelayed(Runnable {
+                    popWindowNotAvailable?.dismiss()
+                },1000)
 
-                if (addToList.size > 0) {
-                    addToList.clear()
-                    slotPosition = position
-                    checkSlot(position, holder)
-                } else {
-                    lowPosition = position
-                    addToList.add(list[position])
-                    holder.itemView.background =
-                        ContextCompat.getDrawable(context, R.drawable.slot_green)
-                    list[position].isBooked = true
-                    selectDate.date(addToList)
+            } else {
+                if (!list[position].isBooked) {
 
-                }
-            } else if (list[position].isBooked) {
-                addToList.clear()
-                if (slotPosition != null && position in position..slotPosition!! && list[position].date.isNotEmpty() && list[position].booked == "0") {
-                    for (i in position until slotPosition!!+1) {
-                        list[i].isBooked = false
+                    if (addToList.size > 0) {
+                        addToList.clear()
+                        slotPosition = position
+                        checkSlot(position, holder)
+                    } else {
+                        lowPosition = position
+                        addToList.add(list[position])
+                        holder.itemView.background =
+                            ContextCompat.getDrawable(context, R.drawable.slot_green)
+                        list[position].isBooked = true
+                        selectDate.date(addToList)
+
                     }
-                    notifyDataSetChanged()
+                } else if (list[position].isBooked) {
+                    addToList.clear()
+                    if (slotPosition != null && position in position..slotPosition!! && list[position].date.isNotEmpty() && list[position].booked == "0") {
+                        for (i in position until slotPosition!! + 1) {
+                            list[i].isBooked = false
+                        }
+                        notifyDataSetChanged()
+                    }
                 }
             }
 
@@ -182,5 +199,27 @@ class BookSlotAdapter(
 
     interface BookSlot {
         fun slotPosition(position: Int)
+    }
+
+    // popup will display to select currency.
+    private fun popupArtistNotAvailable() {
+
+        val layoutInflater: LayoutInflater =
+            context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+        val popUp: View = layoutInflater.inflate(R.layout.artist_not_available_pop_layout, null)
+         popWindowNotAvailable = PopupWindow(
+            popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
+            ConstraintLayout.LayoutParams.MATCH_PARENT, true
+        )
+        popWindowNotAvailable?.showAtLocation(popUp, Gravity.CENTER, 0, 0)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            popWindowNotAvailable?.elevation = 10f
+        }
+        popWindowNotAvailable?.isTouchable = false
+        popWindowNotAvailable?.isOutsideTouchable = false
+
     }
 }

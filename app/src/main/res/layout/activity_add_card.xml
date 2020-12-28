@@ -242,6 +242,10 @@
         android:layout_marginBottom="@dimen/_20sdp"/>
 
 
+    <include layout="@layout/payment_done_layout"
+        android:id="@+id/paymentDoneLayout"
+        android:visibility="gone"/>
+
 
     <include
         android:id="@+id/loaderLayout"

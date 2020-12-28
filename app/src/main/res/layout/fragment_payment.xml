@@ -98,7 +98,7 @@
             app:layout_constraintTop_toBottomOf="@+id/otherPaymentModeTxt"
             android:layout_marginTop="@dimen/_10sdp"
             android:gravity="center_vertical"
-            android:drawableEnd="@drawable/round_black"
+            android:drawableEnd="@drawable/round_pink"
             android:paddingHorizontal="@dimen/_20sdp"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:text="@string/ideal"

@@ -82,8 +82,9 @@ class LocationFragment : Fragment(), View.OnClickListener,
         tbackpress.setOnClickListener(this) //  Initializing the Toolbar
 
         addAddressBtn = view.findViewById(R.id.addAddressBtn)
-        addAddressBtn?.visibility = View.VISIBLE
         addAddressBtn?.setOnClickListener(this) //  Initializing the Add Address Button click
+        binding.addAddressBtnLayout.setOnClickListener(this)
+
 
 
         Places.initialize(ctx, ctx.resources.getString(R.string.places_api_key))
@@ -103,7 +104,6 @@ class LocationFragment : Fragment(), View.OnClickListener,
     }
 
     private fun initializeLocationRecycler() {
-        binding.refresh.setOnClickListener(this)
         val layoutManager =
             LinearLayoutManager(ctx)    // Getting Instance of Linear layout manager for recycler view....
         binding.locationRecycler.layoutManager =
@@ -131,9 +131,19 @@ class LocationFragment : Fragment(), View.OnClickListener,
                 startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
             }
             R.id.refresh -> {
-                binding.noDataFound.visibility = View.GONE
-                binding.refresh.visibility = View.GONE
                 locationListApi()
+            }
+            R.id.addAddressBtnLayout -> {
+                Constants.WantToUpdateAddress = false
+                val fields = listOf(
+                    Place.Field.ID,
+                    Place.Field.NAME,
+                    Place.Field.LAT_LNG,
+                    Place.Field.ADDRESS
+                )
+                val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                    .build(ctx)
+                startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
             }
         }
     }
@@ -152,6 +162,7 @@ class LocationFragment : Fragment(), View.OnClickListener,
                         lat = latlng?.latitude!!
                         lng = latlng?.longitude!!
 //                        Log.i(TAG, "Place: ${place.name}, ${place.id}")
+                        Constants.WantToAddLocation = true
                         val fragment = MapFragment()
                         val bundle = Bundle()
                         bundle.putDouble("lat", lat)
@@ -160,6 +171,7 @@ class LocationFragment : Fragment(), View.OnClickListener,
                         fragment.arguments = bundle
                         val transaction = fragmentManager?.beginTransaction()
                         transaction?.replace(R.id.frameContainer, fragment)
+                        transaction?.addToBackStack("locationFragment")
                         transaction?.commit()
 
                     }
@@ -213,9 +225,10 @@ class LocationFragment : Fragment(), View.OnClickListener,
                             locationList = response.body()?.data!!
                             if (locationList.isNotEmpty()) {
 
+                                addAddressBtn?.visibility = View.VISIBLE
+
                                 // When location list will not empty then display location list to Location recycler view....
-                                binding.noDataFound.visibility = View.GONE
-                                binding.refresh.visibility = View.GONE
+
                                 val locationListAdapter =
                                     LocationListAdapter(shared,
                                         ctx,
@@ -229,6 +242,7 @@ class LocationFragment : Fragment(), View.OnClickListener,
                             } else {
                                 // When location list will empty then display No data found and refresh button will display
                                 binding.locationErrorContainer.visibility = View.VISIBLE
+                                addAddressBtn?.visibility = View.GONE
                             }
                         }
                     } else {

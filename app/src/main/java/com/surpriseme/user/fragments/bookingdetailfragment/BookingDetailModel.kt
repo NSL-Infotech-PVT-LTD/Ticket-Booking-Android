@@ -7,56 +7,60 @@ data class BookingDetailModel(
 )
 
 data class BookingDataModel(
-    val address: String,
-    val artist_detail: ArtistDetailBookingDetail,
+    val address:String?=null,
+    val artist_currency: String,
+    val artist_detail: ArtistDetail,
     val artist_id: Int,
     val created_at: String,
+    val customer_currency: String,
     val date: String,
     val from_time: String,
     val id: Int,
-    val price:Int,
-    var artist_currency:String,
-    val customer_currency:String,
     val otp: Int,
-    val params:Report,
-    val payment_mode: Any,
-    val payment_params: Any,
+    val params: Report,
+    val payment_mode: String,
+    val payment_params: PaymentParams,
+    val price: Int,
     val rate_artist: Any,
-    val rate_detail: RateDetail,
+    val rate_detail: RateDetail?,
     val status: String,
     val to_time: String,
     val type: String
 )
-data class RateDetail(
-    val id:Int,
-    val artist_id:Int,
-    val rate:Int,
-    val review:String,
-    val created_by:Int,
-    val created_at:String,
-    val avg_rate: Float
-)
+
 data class Report(
     val report: String = ""
 )
 
-data class ArtistDetailBookingDetail(
-    val category_id_details: ArrayList<Any>,
+data class ArtistDetail(
+    val converted_currency: String,
     val currency: String,
-    var converted_digital_price:String,
-    val converted_live_price:String,
-    val converted_currency:String,
-    val currency_msp:String,
-    val shows_video_thumbnail:String,
+    val currency_msp: String,
     val id: Int,
     val image: String,
     val name: String,
-    val role: RoleBookingDetail,
-    val shows_image: ArrayList<Any>
+    val role: Role,
+    val shows_image: List<Any>,
+    val shows_video_thumbnail: String
 )
 
-data class RoleBookingDetail(
+data class PaymentParams(
+    val amount: Int,
+    val id: String
+)
+
+data class RateDetail(
+    val artist_id: Int,
+    val avg_rate: Int,
+    val created_at: String,
+    val created_by: Int,
+    val id: Int,
+    val rate: String,
+    val review: String
+)
+
+data class Role(
     val id: Int,
     val name: String,
-    val permission: ArrayList<Any>
+    val permission: List<Any>
 )
