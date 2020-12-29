@@ -93,8 +93,12 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
 
         if (Constants.SHOW_TYPE == ctx.resources.getString(R.string.digital)) {
             binding.showTypeTxt.text = ctx.resources.getString(R.string.virtual)
+            binding.virtualShowLayout.visibility = View.VISIBLE
+            binding.inPersonShowLayout.visibility = View.GONE
         } else {
             binding.showTypeTxt.text = ctx.resources.getString(R.string.in_person)
+            binding.inPersonShowLayout.visibility = View.VISIBLE
+            binding.virtualShowLayout.visibility = View.GONE
         }
 
 
@@ -457,14 +461,20 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                             binding.pager.visibility=View.VISIBLE
                                             binding.indicator.visibility=View.VISIBLE
                                             binding.toolbarCard.visibility=View.GONE
-                                            adapterimage =
-                                                ImageViewAdapter(ctx, showimage)
+                                            adapterimage = ImageViewAdapter(ctx, showimage)
                                             binding.pager.adapter = adapterimage
                                             binding.indicator.setViewPager(binding.pager)
 //                                            imageZoomPopup(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.shows_image_4)
                                         }
 
                                 } // End of loop where checking for gallery images.....
+
+                                if (artistModel.shows_image_1 == null && artistModel.shows_image_2 == null
+                                    && artistModel.shows_image_3 == null && artistModel.shows_image_4 == null) {
+                                    binding.galleryTxt.visibility = View.GONE
+                                    binding.dottedLineImg2.visibility = View.GONE
+                                    binding.horizontalView.visibility = View.GONE
+                                }
 //                                binding.mediaText.text = artistModel.social_link_youtube
 //                                binding.mediaTextInsta.text = artistModel.social_link_insta
 
@@ -477,6 +487,14 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                     binding.youtubeLayout.visibility = View.GONE
                                 }
                                 binding.aboutText.text = artistModel.description
+
+                                if (artistModel.rating == 0f || artistModel.rating ==null) {
+                                    binding.ratingbar.visibility = View.GONE
+                                    binding.seeReviewTxt.visibility = View.GONE
+                                } else {
+                                    binding.ratingbar.rating = artistModel.rating
+
+                                }
 
 
                                 /**

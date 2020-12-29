@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.R
@@ -11,10 +12,12 @@ import com.surpriseme.user.R
 class ChooseLanguageAdapter(val context: Context
                             , val languageList:ArrayList<LanguageModel>,
 val lang:ChangeLocale) : RecyclerView.Adapter<ChooseLanguageAdapter.LanguageViewHolder>(){
+    var adpPosition = -1
 
     class LanguageViewHolder(itemView:View) : RecyclerView.ViewHolder(itemView) {
 
         val languageName = itemView.findViewById<MaterialTextView>(R.id.languageNametxt)
+        val radioBtn = itemView.findViewById<RadioButton>(R.id.radioBtn)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LanguageViewHolder {
@@ -26,8 +29,12 @@ val lang:ChangeLocale) : RecyclerView.Adapter<ChooseLanguageAdapter.LanguageView
     override fun onBindViewHolder(holder: LanguageViewHolder, position: Int) {
 
         holder.languageName.setText(languageList[position].lang_name)
+        holder.radioBtn.isChecked = adpPosition == position
 
-        holder.itemView.setOnClickListener {
+        holder.radioBtn.setOnClickListener {
+
+            adpPosition = holder.adapterPosition
+            notifyDataSetChanged()
 
             lang.language(languageList[position].lang_code)
         }

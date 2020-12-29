@@ -180,6 +180,7 @@ class BookingFragment : Fragment(), View.OnClickListener, BookingListAdapter.See
     override fun fullDetail(bookingID: String) {
         Constants.BOOKING = true
         Constants.NOTIFICATION = false
+        Constants.IS_BOOKING_DONE = false
         val intent = Intent(ctx, BookingDetailFragment::class.java)
         intent.putExtra("bookingId", bookingID)
         startActivity(intent)

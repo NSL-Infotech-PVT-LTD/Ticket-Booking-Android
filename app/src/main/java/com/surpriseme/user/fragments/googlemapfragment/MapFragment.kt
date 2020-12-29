@@ -639,11 +639,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                     data?.let {
                         val status = Autocomplete.getStatusFromIntent(data)
 //                        Log.i(TAG, status.statusMessage)
-                        Toast.makeText(
-                            ctx,
-                            "" + status.statusMessage.toString(),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(ctx, "" + status.statusMessage.toString(), Toast.LENGTH_SHORT).show()
                     }
                 }
                 Activity.RESULT_CANCELED -> {
@@ -697,11 +693,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                                 val errorMessage = jsonObject.getString(Constants.ERROR)
                                 Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT).show()
                             } catch (e: JSONException) {
-                                Toast.makeText(
-                                    ctx,
-                                    "" + Constants.SOMETHING_WENT_WRONG,
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                Toast.makeText(ctx, "" + Constants.SOMETHING_WENT_WRONG, Toast.LENGTH_SHORT).show()
                             }
                         }
                     }

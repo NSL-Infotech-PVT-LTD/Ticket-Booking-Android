@@ -227,6 +227,7 @@ class NotificationFragment : Fragment(),NotificationListAdapter.NotificationDeta
         notificationReadApi(mNotificationID)
         Constants.NOTIFICATION = true
         Constants.BOOKING = false
+        Constants.IS_BOOKING_DONE = false
         if (targetModel == Constants.TARGET_MODEL_MESSAGE) {
             val bundle = Bundle()
             val fragment = ChatListFragment()

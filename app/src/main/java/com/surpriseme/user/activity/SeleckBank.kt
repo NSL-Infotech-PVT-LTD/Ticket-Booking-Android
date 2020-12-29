@@ -2,6 +2,7 @@ package com.surpriseme.user.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -140,7 +141,7 @@ class SeleckBank : AppCompatActivity(), CardAdapter.ChangeLocale, View.OnClickLi
 
     private fun paynow(id: String) {
 
-        binding!!.loaderLayout.visibility = View.VISIBLE
+        binding.loaderLayout.visibility = View.VISIBLE
         RetrofitClient.api.paynow(
             shared?.getString(Constants.DataKey.AUTH_VALUE)!!,
             id,
@@ -153,20 +154,31 @@ class SeleckBank : AppCompatActivity(), CardAdapter.ChangeLocale, View.OnClickLi
                     call: Call<PaymentModel>,
                     response: Response<PaymentModel>
                 ) {
-                    binding!!.loaderLayout.visibility = View.GONE
+                    binding.loaderLayout.visibility = View.GONE
                     if (response.body() != null) {
                         if (response.isSuccessful) {
 
-                            Toast.makeText(
-                                this@SeleckBank,
-                                "" + response.body()!!.data.message,
-                                Toast.LENGTH_LONG
-                            ).show()
-                            val intent =
-                                Intent(this@SeleckBank, BookingDetailFragment::class.java)
-                            intent.putExtra("bookingId", bookingid)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent)
+                            binding.paymentDoneLayout.visibility = View.VISIBLE
+                            Constants.IS_BOOKING_DONE = true
+                            Constants.BOOKING = false
+                            Constants.NOTIFICATION = false
+
+
+                            Handler().postDelayed({
+
+                                Toast.makeText(
+                                    this@SeleckBank,
+                                    "" + response.body()!!.data.message,
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                val intent =
+                                    Intent(this@SeleckBank, BookingDetailFragment::class.java)
+                                intent.putExtra("bookingId", bookingid)
+//                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                startActivity(intent)
+                                finish()
+                                binding.paymentDoneLayout.visibility = View.GONE
+                            },2000)
 
 
                         }

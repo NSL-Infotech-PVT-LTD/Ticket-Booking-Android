@@ -144,11 +144,13 @@
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_8sdp"
                         android:text="@string/view_profile"
-                        android:visibility="gone"
-                        android:fontFamily="@font/cabin_medium"
+                        android:visibility="visible"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:fontFamily="@font/cabin_regular"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/_10sdp"
                         app:layout_constraintStart_toStartOf="@id/imageCard"
+                        app:layout_constraintEnd_toEndOf="@id/imageCard"
                         app:layout_constraintTop_toBottomOf="@id/imageCard" />
 
 
@@ -194,15 +196,17 @@
                         android:id="@+id/bookArtistTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_12sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:padding="@dimen/_5sdp"
                         android:text="@string/book_artist_you_listen"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp"
+                        android:textColor="#66667e"
+                        android:textSize="@dimen/_14sdp"
                         android:fontFamily="@font/cabin_bold"
                         app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginStart="@dimen/_20sdp"
-                        app:layout_constraintTop_toBottomOf="@id/searchEdt" />
+                        app:layout_constraintTop_toBottomOf="@id/searchEdt"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginBottom="@dimen/_10sdp"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>

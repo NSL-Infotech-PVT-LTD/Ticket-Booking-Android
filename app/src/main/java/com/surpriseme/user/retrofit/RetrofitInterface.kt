@@ -20,6 +20,8 @@ import com.surpriseme.user.fragments.viewprofile.ViewProfileModel
 import com.surpriseme.user.fragments.notificationfragment.NotificationListModel
 import com.surpriseme.user.fragments.notificationfragment.NotificationStatusModel
 import com.surpriseme.user.activity.searchactivity.CategoryModel
+import com.surpriseme.user.activity.settings.TermAndConditionsModel
+import com.surpriseme.user.activity.settings.UpdateLanguageModel
 import com.surpriseme.user.activity.signuptype.RegisterWithFbModel
 import com.surpriseme.user.data.model.*
 import com.surpriseme.user.fragments.bookingdetailfragment.RateReviewModel
@@ -359,6 +361,23 @@ interface RetrofitInterface {
     @Query(Constants.ApiKey.BOOKING_ID) booking_id: String,
     @Query(Constants.ApiKey.RATE) rate:String,
     @Query(Constants.ApiKey.REVIEW) review:String) : Call<RateReviewModel>
+
+//    @GET(Constants.TERMS_AND_CONDITIONS)
+//    fun termAndConditionsApi(): Call<TermAndConditionsModel>
+
+
+    @GET("config/terms_and_conditions")
+    fun term(): Call<TermAndConditionsModel>
+
+    @GET("config/about_us")
+    fun aboutus(): Call<TermAndConditionsModel>
+
+    @GET("config/privacy_policy")
+    fun privacypolicy(): Call<TermAndConditionsModel>
+
+    @POST(Constants.UPDATE_LANGUAGE)
+    fun updateLanguageApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
+    @Query(Constants.ApiKey.LANG) lang: String) :Call<UpdateLanguageModel>
 
 
 }

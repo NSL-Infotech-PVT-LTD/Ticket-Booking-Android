@@ -23,4 +23,16 @@ object RetrofitClient {
 
         retrofit.create(RetrofitInterface::class.java)
     }
+
+    var retrofit:Retrofit?=null
+    fun getRetrofitInstance(): Retrofit? {
+        if (retrofit == null) {
+            retrofit = Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        }
+        return retrofit
+    }
 }

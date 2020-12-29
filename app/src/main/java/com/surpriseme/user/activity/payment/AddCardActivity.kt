@@ -45,9 +45,9 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
     private var month = ""
     private var year = ""
     private var cvv = ""
-    private var shared:PrefrenceShared?=null
+    private var shared: PrefrenceShared? = null
     private var backpress: MaterialTextView? = null
-    private var bookingid=""
+    private var bookingid = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,18 +55,17 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
 //        setContentView(R.layout.activity_add_card)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_card)
-        shared= PrefrenceShared(this)
+        shared = PrefrenceShared(this)
 
         bookingid = intent.getStringExtra("bookingid")!!
 
-        if(intent.getStringExtra("paycard")=="paycard" ){
+        if (intent.getStringExtra("paycard") == "paycard") {
             binding?.choosePaymentMethodTxt!!.text = getString(R.string.pay_now)
-            binding?.loginButton!!.text = getString(R.string.pay_now)
+            binding?.payNowBtn!!.text = getString(R.string.pay_now)
 
-        }
-        else if(intent.getStringExtra("selectcard")=="selectcard"){
+        } else if (intent.getStringExtra("selectcard") == "selectcard") {
             binding?.choosePaymentMethodTxt?.text = getString(R.string.addcardd)
-            binding?.loginButton?.text = getString(R.string.addcardd)
+            binding?.payNowBtn?.text = getString(R.string.addcardd)
 
         }
 
@@ -85,7 +84,6 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun validations() {
-
 
 
         binding?.accountNumberEdt?.addTextChangedListener(object : TextWatcher {
@@ -164,61 +162,56 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
         })
 
 
-        binding?.loginButton!!.setOnClickListener {
-             validatecard()
+        binding?.payNowBtn!!.setOnClickListener {
+            validatecard()
         }
 
 
     }
 
 
-    private fun validatecard(){
-        if(binding!!.cardHolderEdt.text.toString().isEmpty()){
+    private fun validatecard() {
+        if (binding!!.cardHolderEdt.text.toString().isEmpty()) {
             Toast.makeText(this, getString(R.string.pleaseenteraccount), Toast.LENGTH_SHORT).show()
-        }
-        else if(binding!!.accountNumberEdt.text.toString().isEmpty()){
-            Toast.makeText(this, getString(R.string.pleaseenteraccountnum), Toast.LENGTH_SHORT).show()
-        }
-        else if(binding!!.expiryEdt.text.toString().isEmpty()){
+        } else if (binding!!.accountNumberEdt.text.toString().isEmpty()) {
+            Toast.makeText(this, getString(R.string.pleaseenteraccountnum), Toast.LENGTH_SHORT)
+                .show()
+        } else if (binding!!.expiryEdt.text.toString().isEmpty()) {
             Toast.makeText(this, getString(R.string.pleaseentermonth), Toast.LENGTH_SHORT).show()
-        }
-        else if(binding!!.cvvEdt.text.toString().isEmpty()){
+        } else if (binding!!.cvvEdt.text.toString().isEmpty()) {
             Toast.makeText(this, getString(R.string.pleaseentercvv), Toast.LENGTH_SHORT).show()
-        }
-        else if(binding!!.yearEdt.text.toString().isEmpty()){
+        } else if (binding!!.yearEdt.text.toString().isEmpty()) {
             Toast.makeText(this, getString(R.string.pleaseenteryear), Toast.LENGTH_SHORT).show()
-        }
-        else {
+        } else {
 
 
             val expiryedt = binding!!.expiryEdt.text.toString()
             val yearedt = binding!!.yearEdt.text.toString()
 
-            var year = yearedt.toInt()
-            val month  = expiryedt.toInt()
-          val card = CardParams(
-              binding!!.accountNumberEdt.text.toString(),
-              month,
-              year,
-              binding!!.cvvEdt.text.toString(),
-              binding!!.cardHolderEdt.text.toString()
+            val year = yearedt.toInt()
+            val month = expiryedt.toInt()
+            val card = CardParams(
+                binding!!.accountNumberEdt.text.toString(),
+                month,
+                year,
+                binding!!.cvvEdt.text.toString(),
+                binding!!.cardHolderEdt.text.toString()
 
-          )
-             CreateToken(card)
+            )
+            CreateToken(card)
         }
 
     }
 
 
-
     private fun CreateToken(card: CardParams) {
 
-        binding!!.loaderLayout.visibility =View.VISIBLE
+        binding!!.loaderLayout.visibility = View.VISIBLE
         val stripe = Stripe(
             applicationContext,
             "pk_test_51HcYaaDVPC7KpoaUBqxarUUagXrI14GRCicyaZt8NztibJ4G9Y7KMtunrcWTg5PDm3PzcuBe1zkFFJiJRt1mXs8s009njabz8l"
         )
-        stripe.createCardToken(card,null,null, object : ApiResultCallback<Token> {
+        stripe.createCardToken(card, null, null, object : ApiResultCallback<Token> {
             override fun onError(e: Exception) {
             }
 
@@ -243,7 +236,7 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun cardget(id: String) {
 
-       // binding!!.loaderLayout.visibility = View.VISIBLE
+        // binding!!.loaderLayout.visibility = View.VISIBLE
         RetrofitClient.api.cardadd(shared?.getString(Constants.DataKey.AUTH_VALUE)!!, id)
             .enqueue(object : Callback<CardAddModel> {
                 override fun onResponse(
@@ -300,7 +293,6 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-
     private fun paynow(id: String) {
 
         // binding!!.loaderLayout.visibility = View.VISIBLE
@@ -320,17 +312,17 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
                     if (response.body() != null) {
                         if (response.isSuccessful) {
 
-                            binding?.paymentDoneLayout?.visibility = View.VISIBLE
-                            Handler().postDelayed({
-                                binding?.paymentDoneLayout?.visibility = View.GONE
-                                Toast.makeText(this@AddCardActivity, "" + response.body()!!.data.message, Toast.LENGTH_LONG).show()
-                                val intent =
-                                    Intent(this@AddCardActivity, BookingDetailFragment::class.java)
-                                intent.putExtra("bookingId", bookingid)
+                            Toast.makeText(
+                                this@AddCardActivity,
+                                "" + response.body()!!.data.message,
+                                Toast.LENGTH_LONG
+                            ).show()
+                            val intent =
+                                Intent(this@AddCardActivity, BookingDetailFragment::class.java)
+                            intent.putExtra("bookingId", bookingid)
 //                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                                startActivity(intent)
-                                finish()
-                            },3000)
+                            startActivity(intent)
+                            finish()
 
 
                         }
@@ -340,9 +332,17 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
                             try {
                                 jsonObject = JSONObject(response.errorBody()!!.string())
                                 val errorMessage = jsonObject.getString(Constants.ERRORS)
-                                Toast.makeText(this@AddCardActivity, "" + errorMessage, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    this@AddCardActivity,
+                                    "" + errorMessage,
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             } catch (e: JSONException) {
-                                Toast.makeText(this@AddCardActivity, "" + Constants.SOMETHING_WENT_WRONG, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    this@AddCardActivity,
+                                    "" + Constants.SOMETHING_WENT_WRONG,
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
 
                         }

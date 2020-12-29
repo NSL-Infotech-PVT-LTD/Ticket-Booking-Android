@@ -246,177 +246,199 @@
                             app:layout_constraintTop_toBottomOf="@id/bookingPriceTxt"
                             android:layout_marginTop="5dp"/>
 
-                        <ImageView
-                            android:id="@+id/inPersonIcon"
-                            android:layout_width="@dimen/_10sdp"
-                            android:layout_height="@dimen/_10sdp"
-                            android:layout_marginStart="@dimen/_5sdp"
-                            android:src="@drawable/user_pholder_updated"
-                            app:layout_constraintBottom_toBottomOf="@+id/liveShowTxt"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/liveShowTxt" />
-
-
-                        <TextView
-                            android:id="@+id/liveShowTxt"
-                            android:layout_width="wrap_content"
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/inPersonShowLayout"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_25sdp"
+                            app:layout_constraintTop_toBottomOf="@+id/dottedLineImg">
+
+                            <ImageView
+                                android:id="@+id/inPersonIcon"
+                                android:layout_width="@dimen/_10sdp"
+                                android:layout_height="@dimen/_10sdp"
+                                android:layout_marginStart="@dimen/_5sdp"
+                                android:src="@drawable/user_pholder_updated"
+                                app:layout_constraintBottom_toBottomOf="@+id/liveShowTxt"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/liveShowTxt" />
+
+
+                            <TextView
+                                android:id="@+id/liveShowTxt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_25sdp"
+                                android:fontFamily="@font/montserrat_semibold"
+                                android:text="@string/in_person_show"
+                                android:textColor="#36396e"
+                                android:textSize="@dimen/_10sdp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/liveShowCard"
+                                app:layout_constraintBottom_toBottomOf="@+id/liveShowCard"/>
+
+                            <!-- live show price card -->
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/liveShowCard"
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:layout_marginEnd="@dimen/_10sdp"
+                                android:layout_marginBottom="@dimen/_5sdp"
+                                android:paddingHorizontal="@dimen/_100sdp"
+                                app:cardBackgroundColor="#fff5f9"
+                                app:cardCornerRadius="@dimen/_2sdp"
+                                android:minWidth="@dimen/_50sdp"
+
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <ImageView
+                                        android:id="@+id/liveticket"
+                                        android:layout_width="18dp"
+                                        android:layout_height="18dp"
+                                        android:src="@drawable/ticket"
+                                        android:layout_marginStart="5dp"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent" />
+
+                                    <TextView
+                                        android:id="@+id/perhour"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/montserrat_semibold"
+                                        android:text="@string/per_hour"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textSize="@dimen/_5sdp"
+                                        android:gravity="end"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <TextView
+                                        android:id="@+id/livePriceText"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/_5sdp"
+                                        android:layout_marginEnd="@dimen/_5sdp"
+                                        android:layout_marginBottom="@dimen/_5sdp"
+                                        android:singleLine="true"
+                                        android:text="@string/price_demo"
+                                        android:fontFamily="@font/montserrat_semibold"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textSize="@dimen/_10sdp"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toEndOf="@id/liveticket"
+                                        app:layout_constraintTop_toBottomOf="@+id/perhour" />
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </androidx.cardview.widget.CardView>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/virtualShowLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10sdp"
-                            android:fontFamily="@font/montserrat_semibold"
-                            android:text="@string/in_person_show"
-                            android:textColor="#36396e"
-                            android:textSize="@dimen/_10sdp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/dottedLineImg" />
+                            app:layout_constraintTop_toBottomOf="@+id/inPersonShowLayout">
 
-                        <!-- live show price card -->
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/liveShowCard"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_30sdp"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:layout_marginEnd="@dimen/_10sdp"
-                            android:layout_marginBottom="@dimen/_5sdp"
-                            android:paddingHorizontal="@dimen/_100sdp"
-                            app:cardBackgroundColor="#fff5f9"
-                            app:cardCornerRadius="@dimen/_2sdp"
-                            android:minWidth="@dimen/_50sdp"
-                            app:layout_constraintBottom_toBottomOf="@+id/dottedLineImg1"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/dottedLineImg">
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-
-                                <ImageView
-                                    android:id="@+id/liveticket"
-                                    android:layout_width="18dp"
-                                    android:layout_height="18dp"
-                                    android:src="@drawable/ticket"
-                                    android:layout_marginStart="5dp"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent" />
-
-                                <TextView
-                                    android:id="@+id/perhour"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/montserrat_semibold"
-                                    android:text="@string/per_hour"
-                                    android:textColor="@color/colorPrimary"
-                                    android:textSize="@dimen/_5sdp"
-                                    android:gravity="end"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-                                <TextView
-                                    android:id="@+id/livePriceText"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="@dimen/_5sdp"
-                                    android:layout_marginEnd="@dimen/_5sdp"
-                                    android:layout_marginBottom="@dimen/_5sdp"
-                                    android:singleLine="true"
-                                    android:text="@string/price_demo"
-                                    android:fontFamily="@font/montserrat_semibold"
-                                    android:textColor="@color/colorPrimary"
-                                    android:textSize="@dimen/_10sdp"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toEndOf="@id/liveticket"
-                                    app:layout_constraintTop_toBottomOf="@+id/perhour" />
-
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-                        </androidx.cardview.widget.CardView>
+                            <ImageView
+                                android:layout_width="@dimen/_10sdp"
+                                android:layout_height="@dimen/_10sdp"
+                                android:layout_marginStart="@dimen/_5sdp"
+                                android:src="@drawable/user_pholder_updated"
+                                app:layout_constraintBottom_toBottomOf="@+id/digitalShowTxt"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/digitalShowTxt" />
 
 
-                        <ImageView
-                            android:layout_width="@dimen/_10sdp"
-                            android:layout_height="@dimen/_10sdp"
-                            android:layout_marginStart="@dimen/_5sdp"
-                            android:src="@drawable/user_pholder_updated"
-                            app:layout_constraintBottom_toBottomOf="@+id/digitalShowTxt"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/digitalShowTxt" />
+                            <TextView
+                                android:id="@+id/digitalShowTxt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_25sdp"
+                                android:fontFamily="@font/montserrat_semibold"
+                                android:text="@string/virtual_show"
+                                android:textColor="#36396e"
+                                android:textSize="@dimen/_10sdp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/digitalCardShow"
+                                app:layout_constraintBottom_toBottomOf="@+id/digitalCardShow"/>
+
+                            <!-- digital show price card -->
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/digitalCardShow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:layout_marginEnd="@dimen/_10sdp"
+                                android:layout_marginBottom="@dimen/_5sdp"
+                                android:paddingHorizontal="@dimen/_100sdp"
+                                app:cardBackgroundColor="#fff5f9"
+                                android:minWidth="@dimen/_50sdp"
+                                app:cardCornerRadius="@dimen/_2sdp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <ImageView
+                                        android:id="@+id/digitalTicket"
+                                        android:layout_width="18dp"
+                                        android:layout_height="18dp"
+                                        android:src="@drawable/virtual_ticket"
+                                        android:layout_marginStart="5dp"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent" />
+
+                                    <TextView
+                                        android:id="@+id/perhour1"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/montserrat_semibold"
+                                        android:text="@string/per_hour"
+                                        android:gravity="end"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textSize="@dimen/_5sdp"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <TextView
+                                        android:id="@+id/digitalPriceText"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/_5sdp"
+                                        android:layout_marginEnd="@dimen/_5sdp"
+                                        android:layout_marginBottom="@dimen/_5sdp"
+                                        android:fontFamily="@font/montserrat_semibold"
+                                        android:singleLine="true"
+                                        android:text="@string/price_demo"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textSize="@dimen/_10sdp"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toEndOf="@id/digitalTicket"
+                                        app:layout_constraintTop_toBottomOf="@+id/perhour1" />
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </androidx.cardview.widget.CardView>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                        <TextView
-                            android:id="@+id/digitalShowTxt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_25sdp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/montserrat_semibold"
-                            android:text="@string/virtual_show"
-                            android:textColor="#36396e"
-                            android:textSize="@dimen/_10sdp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/liveShowTxt" />
 
-                        <!-- digital show price card -->
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/digitalCardShow"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_30sdp"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:layout_marginEnd="@dimen/_10sdp"
-                            android:layout_marginBottom="@dimen/_5sdp"
-                            android:paddingHorizontal="@dimen/_100sdp"
-                            app:cardBackgroundColor="#fff5f9"
-                            android:minWidth="@dimen/_50sdp"
-                            app:cardCornerRadius="@dimen/_2sdp"
-                            app:layout_constraintBottom_toBottomOf="@+id/digitalShowTxt"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/digitalShowTxt">
 
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
 
-                                <ImageView
-                                    android:id="@+id/digitalTicket"
-                                    android:layout_width="18dp"
-                                    android:layout_height="18dp"
-                                    android:src="@drawable/virtual_ticket"
-                                    android:layout_marginStart="5dp"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent" />
 
-                                <TextView
-                                    android:id="@+id/perhour1"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/montserrat_semibold"
-                                    android:text="@string/per_hour"
-                                    android:gravity="end"
-                                    android:textColor="@color/colorPrimary"
-                                    android:textSize="@dimen/_5sdp"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-                                <TextView
-                                    android:id="@+id/digitalPriceText"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="@dimen/_5sdp"
-                                    android:layout_marginEnd="@dimen/_5sdp"
-                                    android:layout_marginBottom="@dimen/_5sdp"
-                                    android:fontFamily="@font/montserrat_semibold"
-                                    android:singleLine="true"
-                                    android:text="@string/price_demo"
-                                    android:textColor="@color/colorPrimary"
-                                    android:textSize="@dimen/_10sdp"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toEndOf="@id/digitalTicket"
-                                    app:layout_constraintTop_toBottomOf="@+id/perhour1" />
-
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-                        </androidx.cardview.widget.CardView>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>  <!--end of show field layout -->
 

@@ -297,7 +297,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                                     userModel?.email
                                 ) // is used to store user email.
 
-                                if (prefManager?.getString1(Constants.CURRENCY) == "") {
+                                if (prefManager?.getString1(Constants.DataKey.CURRENCY) == "") {
                                     popupSelectCurrency()
                                 } else {
                                     locationListApi()
@@ -720,7 +720,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
             // hit Update profile api to save currency ....
 
             updateProfileApi(currencyvalue)
-            prefManager?.setString1(Constants.CURRENCY, currencyvalue)
+            prefManager?.setString1(Constants.DataKey.CURRENCY, currencyvalue)
 
         }
 

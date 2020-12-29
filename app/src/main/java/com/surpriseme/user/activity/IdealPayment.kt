@@ -4,6 +4,7 @@ package com.surpriseme.user.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -47,6 +48,7 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         shared= PrefrenceShared(this)
 
         bookingid = intent.getStringExtra("bookingid")!!
+
         binding.holderedt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -169,7 +171,7 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 }
 
                 override fun onFailure(call: Call<PaymentIntent>, t: Throwable) {
-                    binding!!.loaderLayout.visibility = View.GONE
+                    binding.loaderLayout.visibility = View.GONE
                     Toast.makeText(
                         this@IdealPayment,
                         "" + t.message.toString(),
@@ -191,12 +193,17 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                     StripeIntent.Status.Succeeded -> {
                         // Setup succeeded
 
-                        Toast.makeText(this@IdealPayment,"Success",Toast.LENGTH_LONG).show()
-                        val intent = Intent(this@IdealPayment,BookingDetailFragment::class.java)
-                        intent.putExtra("bookingId",bookingid)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                        startActivity(intent)
-                        finish()
+                        binding.paymentDoneLayout.visibility = View.VISIBLE
+                        Handler().postDelayed({
+                            Toast.makeText(this@IdealPayment,"Success",Toast.LENGTH_LONG).show()
+                            val intent = Intent(this@IdealPayment,BookingDetailFragment::class.java)
+                            intent.putExtra("bookingId",bookingid)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
+                            finish()
+                            binding.paymentDoneLayout.visibility = View.GONE
+                        },2000)
+
 
                     }
                     else -> {

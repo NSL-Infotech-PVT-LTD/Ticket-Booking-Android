@@ -178,11 +178,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                             if (response.body()?.data?.user?.image != null)
                                 shared.setString(
                                     Constants.DataKey.USER_IMAGE,  // To Save User Image
-                                    Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL +
-                                            response.body()?.data?.user?.image
-                                )
+                                    Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + response.body()?.data?.user?.image)
                             shared.setString(Constants.FB_TOKEN, fbtoken)
-
+                            prefManager?.setString1(Constants.DataKey.CURRENCY, response.body()?.data?.user?.currency) // to save currency....
 
 
                             if (prefManager!!.getBoolean1(Constants.ISREMEMBER)) {

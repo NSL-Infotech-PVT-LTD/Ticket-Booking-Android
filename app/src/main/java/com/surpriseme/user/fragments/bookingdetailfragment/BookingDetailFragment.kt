@@ -891,5 +891,31 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
 
     }
 
+    override fun onBackPressed() {
+
+        if (Constants.NOTIFICATION) {
+            Constants.COMING_FROM_DETAIL = false
+//                    val fragment = NotificationFragment()
+//                    val transaction = fragmentManager?.beginTransaction()
+//                    transaction?.replace(R.id.frameContainer, fragment)
+//                    transaction?.commit()
+            finish()
+        } else {
+            Constants.COMING_FROM_DETAIL = true
+            finish()
+//                    val fragment = BookingFragment()
+//                    val transaction = fragmentManager?.beginTransaction()
+//                    transaction?.replace(R.id.frameContainer, fragment)
+//                    transaction?.commit()
+        }
+        if (Constants.IS_BOOKING_DONE) {
+            val intent = Intent(this@BookingDetailFragment, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        } else {
+            finish()
+        }
+    }
+
 
 }

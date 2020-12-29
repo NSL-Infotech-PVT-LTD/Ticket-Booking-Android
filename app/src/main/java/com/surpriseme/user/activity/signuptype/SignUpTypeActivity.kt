@@ -18,6 +18,7 @@ import com.surpriseme.user.activity.signup.SignUpActivity
 import com.surpriseme.user.databinding.ActivitySignUpTypeBinding
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
+import com.surpriseme.user.util.PrefManger
 import com.surpriseme.user.util.PrefrenceShared
 import kotlinx.android.synthetic.main.activity_sign_up_type.*
 import org.json.JSONException
@@ -38,6 +39,7 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
     private var fbImage = ""
     private var fbID:String? = null
     private var fbDataModel: FbDataModel? = null
+    private var prefManager: PrefManger?=null
 
 
 
@@ -61,6 +63,7 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
         binding =
             DataBindingUtil.setContentView(this@SignUpTypeActivity, R.layout.activity_sign_up_type)
         shared = PrefrenceShared(this@SignUpTypeActivity)
+        prefManager = PrefManger(this@SignUpTypeActivity)
         inIt()
     }
 
@@ -219,6 +222,7 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
                                 Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + response.body()?.data?.user?.image
                             )
                             shared?.setString(Constants.FB_TOKEN, fbtoken)
+                            prefManager?.setString1(Constants.DataKey.CURRENCY,"")
 //                            isFbRegistered = true
                             val mainActIntent =
                                 Intent(this@SignUpTypeActivity, MainActivity::class.java)

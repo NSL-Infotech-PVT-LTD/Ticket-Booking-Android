@@ -171,9 +171,9 @@ class ArtistListAdapter(
             }
 
             if (Constants.SHOW_TYPE == context.resources?.getString(R.string.digital)!!) {
-                price.text = artistModel.currency + " " + artistModel.digital_price_per_hr + context.resources.getString(R.string.hr)
+                price.text = artistModel.currency + " " + artistModel.digital_price_per_hr + "/" + context.resources.getString(R.string.hr)
             } else{
-                price.text = artistModel.currency + " " + artistModel.live_price_per_hr + context.resources.getString(R.string.hr)
+                price.text = artistModel.currency + " " + artistModel.live_price_per_hr + "/" + context.resources.getString(R.string.hr)
             }
 
 

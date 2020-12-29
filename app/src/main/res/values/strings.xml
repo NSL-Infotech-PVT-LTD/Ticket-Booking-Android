@@ -303,5 +303,7 @@
     <string name="artist_not_available">Artist is not available</string>
     <string name="payment_done">Payment Done</string>
     <string name="hurray_you_can_get_ready_for_show">Hurray, you can get ready for show</string>
+    <string name="change_Language">Change Language</string>
+
 
 </resources>

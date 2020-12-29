@@ -7,6 +7,12 @@
         android:layout_height="match_parent"
         tools:context=".activity.forgotpassword.ForgotPasswordActivity">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
         <androidx.cardview.widget.CardView
             android:id="@+id/toolbarCard"
             android:layout_width="match_parent"
@@ -43,14 +49,13 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/termConditionLayout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
+            android:layout_height="55dp"
             android:layout_marginHorizontal="@dimen/_40sdp"
             android:background="@drawable/boxcardview"
             app:layout_constraintVertical_bias="0.1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbarCard"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginTop="@dimen/_100sdp">
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <ImageView
                 android:id="@+id/passwordIcon"
@@ -82,7 +87,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/privacyPolicyLayout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
+            android:layout_height="55dp"
             android:layout_marginHorizontal="@dimen/_40sdp"
             android:background="@drawable/boxcardview"
             app:layout_constraintVertical_bias="0.2"
@@ -120,7 +125,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/aboutUsLayout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
+            android:layout_height="55dp"
             android:layout_marginHorizontal="@dimen/_40sdp"
             android:background="@drawable/boxcardview"
             app:layout_constraintVertical_bias="0.2"
@@ -155,11 +160,59 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <include layout="@layout/settings_layout" android:id="@+id/settingLayout"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/changeLangLayout"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginHorizontal="@dimen/_40sdp"
+            android:background="@drawable/boxcardview"
+            app:layout_constraintVertical_bias="0.2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/aboutUsLayout"
+            android:layout_marginTop="@dimen/_20sdp">
+
+            <ImageView
+                android:id="@+id/langIcon"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:src="@drawable/language_icon"
+                android:padding="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/languageTxt"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="@string/change_Language"
+                android:textColor="#66667e"
+                android:fontFamily="@font/quicksand_medium"
+                android:textSize="14sp"
+                android:gravity="center_vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/langIcon"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include layout="@layout/settings_layout"
+            android:id="@+id/settingLayout"
+            android:visibility="gone"/>
+        <include layout="@layout/loader_layout"
+            android:id="@+id/loaderLayout"
             android:visibility="gone"/>
 
 
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include layout="@layout/choose_language_lay"
+            android:id="@+id/chooseLangLayout"
+            android:visibility="gone"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

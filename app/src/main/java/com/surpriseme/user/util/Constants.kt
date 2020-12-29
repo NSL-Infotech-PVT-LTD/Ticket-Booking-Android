@@ -33,13 +33,14 @@ object Constants {
     const val BOOKING_SLOT_LIST = "customer/bookslot/list"
     const val CUSTOMER_REVIEW = "customer/getartistrating"
     const val CARD_LIST = "customer/cards/list"
-    const val CHANGE_LANGUAGE = "customer/update/lang"
+    const val UPDATE_LANGUAGE = "customer/update/lang"
     const val REGISTER_WITH_FB = "customer/register/fb"
     const val CURRENCIES = "currencies"
     const val CALENDAR_DATE_LIST = "customer/bookslot/list-date"
     const val LOGOUT = "logout"
     const val BOOKING_CANCEL = "customer/change-booking-status"
     const val RATE_BOOKING = "customer/rate-booking"
+    const val TERMS_AND_CONDITIONS = "config/terms_and_conditions"
 
 
 
@@ -95,7 +96,7 @@ object Constants {
     var IS_SWITCH_TO_VIRTUAL = true
     var IS_ADDED_TO_BACKSTACK =false
     var LATLNG:LatLng?=null
-    var addressID = ""
+    var addressID = "addressID"
     var PROFILE_FRAGMENT = false  // Used to handle backpress, while user on profile fragment then popup will display
     // by main activity backpress....
 
@@ -110,6 +111,7 @@ object Constants {
     var PAYMENT_FAILED = "payment_failed"
     var COMPLETED = "completed"
     var IS_CHAT_SESSION = false
+    var IS_BOOKING_DONE = false
 
 
 
@@ -173,6 +175,7 @@ object Constants {
         var ARTIST_ID_VALUE = "ARTIST_ID_VALUE"
         var USER_ID = "USER_ID"
         var OLD_PASS_VALUE = "OLD_PASS_VALUE"
+        var CURRENCY = "CURRENCY"
     }
 
     object ImageUrl {

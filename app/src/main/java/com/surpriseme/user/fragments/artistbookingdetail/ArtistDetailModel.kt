@@ -30,7 +30,7 @@ data class ArtistDataModel(
     val mobile: String,
     val name: String,
     val params: Any,
-    val rating: Double,
+    val rating: Float,
     val role: Role,
     val shows_image: ArrayList<String>?=null,
     val shows_image_1: String?,

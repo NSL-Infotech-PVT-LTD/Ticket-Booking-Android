@@ -14,18 +14,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.textview.MaterialTextView
 import com.squareup.picasso.Picasso
 import com.surpriseme.user.R
-import com.surpriseme.user.activity.SettingsActivity
+import com.surpriseme.user.activity.settings.SettingsActivity
 import com.surpriseme.user.data.model.UpdateProfileModel
 import com.surpriseme.user.databinding.FragmentProfileBinding
 import com.surpriseme.user.activity.login.LoginActivity
 import com.surpriseme.user.activity.login.Loginmodel
 import com.surpriseme.user.fragments.changepasswordfragment.ChangePasswordFragment
-import com.surpriseme.user.fragments.homefragment.HomeFragment
 import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
@@ -103,6 +101,7 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
         if (shared.getString(Constants.DataKey.USER_IMAGE) !="") {
             Picasso.get().load(shared.getString(Constants.DataKey.USER_IMAGE)).resize(4000,1500)
                 .onlyScaleDown()
+                .placeholder(R.drawable.profile_pholder)
                 .into(binding.profileImage)
         }
         if (shared.getString(Constants.DataKey.USER_NAME) !="") {
@@ -340,8 +339,16 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
                                 activity?.finishAffinity()
                             }
                         } else {
-                            Toast.makeText(ctx, response.body()!!.data.message, Toast.LENGTH_LONG)
-                                .show()
+                            val jsonobject:JSONObject
+                            if (response.errorBody() !=null) {
+                                try {
+                                }catch (e:JSONException) {
+                                    Toast.makeText(ctx,"" + e.message.toString(),Toast.LENGTH_SHORT).show()
+                                }
+                                jsonobject = JSONObject(response.errorBody()?.string()!!)
+                                val errorMessage = jsonobject.getString(Constants.ERROR)
+
+                            }
                         }
 
                     }

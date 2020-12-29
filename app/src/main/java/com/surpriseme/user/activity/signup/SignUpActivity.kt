@@ -16,6 +16,7 @@ import com.surpriseme.user.activity.signuptype.SignUpTypeActivity
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.CheckValidEmail
 import com.surpriseme.user.util.Constants
+import com.surpriseme.user.util.PrefManger
 import com.surpriseme.user.util.PrefrenceShared
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import org.json.JSONException
@@ -32,6 +33,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
     private var confirmPassword = ""
     private lateinit var checkValidEmail: CheckValidEmail
     private lateinit var shared: PrefrenceShared
+    private lateinit var prefManager: PrefManger
     private var backpress:MaterialTextView?=null
     private var fbName = ""
     private var fbEmail = ""
@@ -54,6 +56,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_sign_up)
 
         shared = PrefrenceShared(this@SignUpActivity)
+        prefManager = PrefManger(this@SignUpActivity)
 
         inIt()
         checkValidEmail = CheckValidEmail()
@@ -151,8 +154,9 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
                             shared.setString(Constants.DataKey.ARTIST_ID_VALUE,response.body()?.data?.user?.id.toString())    // To Save Artist ID
                             shared.setString(Constants.DataKey.OLD_PASS_VALUE, password)
                             shared.setString(Constants.FB_TOKEN, fbtoken)// To save User Password
+                            prefManager.setString1(Constants.DataKey.CURRENCY, "") // to save currency....
                             val intent = Intent(this@SignUpActivity, MainActivity::class.java)
-                            intent.putExtra("currency",true)
+//                            intent.putExtra("currency",true)
                             startActivity(intent)
                             finishAffinity()
                         }
