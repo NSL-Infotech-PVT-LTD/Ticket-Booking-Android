@@ -108,7 +108,6 @@
                             android:textColor="@color/white"
                             app:singleLine="true"
                             app:chipMinTouchTargetSize="0dp"
-                            app:chipSpacing="0dp"
                             />
 
                     </HorizontalScrollView>
@@ -219,38 +218,38 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/showTypeTxt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/virtual"
-                            android:textAllCaps="true"
-                            android:background="@drawable/corner_round_5_blue"
-                            android:textColor="@color/white"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            android:layout_marginEnd="@dimen/_10sdp"
-                            android:paddingHorizontal="@dimen/_3sdp"
-                            android:paddingVertical="2dp"
-                            android:textSize="10dp"
-                            android:drawablePadding="5dp"
-                            android:gravity="center"
-                            android:drawableStart="@drawable/ic_online_prediction_24"/>
+<!--                        <com.google.android.material.textview.MaterialTextView-->
+<!--                            android:id="@+id/showTypeTxt"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="@string/virtual"-->
+<!--                            android:textAllCaps="true"-->
+<!--                            android:background="@drawable/corner_round_5_blue"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            app:layout_constraintTop_toTopOf="parent"-->
+<!--                            app:layout_constraintEnd_toEndOf="parent"-->
+<!--                            android:layout_marginEnd="@dimen/_10sdp"-->
+<!--                            android:paddingHorizontal="@dimen/_3sdp"-->
+<!--                            android:paddingVertical="2dp"-->
+<!--                            android:textSize="10dp"-->
+<!--                            android:drawablePadding="5dp"-->
+<!--                            android:gravity="center"-->
+<!--                            android:drawableStart="@drawable/ic_online_prediction_24"/>-->
 
-                        <ImageView
-                            android:id="@+id/dottedLineImg"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_3sdp"
-                            android:layout_marginEnd="@dimen/_20sdp"
-                            android:background="@drawable/dotted_view_line"
-                            app:layout_constraintTop_toBottomOf="@id/bookingPriceTxt"
-                            android:layout_marginTop="5dp"/>
+<!--                        <ImageView-->
+<!--                            android:id="@+id/dottedLineImg"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="@dimen/_3sdp"-->
+<!--                            android:layout_marginEnd="@dimen/_20sdp"-->
+<!--                            android:background="@drawable/dotted_view_line"-->
+<!--                            app:layout_constraintTop_toBottomOf="@id/bookingPriceTxt"-->
+<!--                            android:layout_marginTop="5dp"/>-->
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/inPersonShowLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@+id/dottedLineImg">
+                            app:layout_constraintTop_toBottomOf="@+id/bookingPriceTxt">
 
                             <ImageView
                                 android:id="@+id/inPersonIcon"
@@ -281,14 +280,11 @@
                                 android:id="@+id/liveShowCard"
                                 android:layout_width="wrap_content"
                                 android:layout_height="@dimen/_30sdp"
-                                android:layout_marginTop="@dimen/_5sdp"
                                 android:layout_marginEnd="@dimen/_10sdp"
-                                android:layout_marginBottom="@dimen/_5sdp"
                                 android:paddingHorizontal="@dimen/_100sdp"
                                 app:cardBackgroundColor="#fff5f9"
                                 app:cardCornerRadius="@dimen/_2sdp"
                                 android:minWidth="@dimen/_50sdp"
-
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
 
@@ -344,7 +340,6 @@
                             android:id="@+id/virtualShowLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_10sdp"
                             app:layout_constraintTop_toBottomOf="@+id/inPersonShowLayout">
 
                             <ImageView
@@ -375,9 +370,9 @@
                                 android:id="@+id/digitalCardShow"
                                 android:layout_width="wrap_content"
                                 android:layout_height="@dimen/_30sdp"
-                                android:layout_marginTop="@dimen/_5sdp"
+
                                 android:layout_marginEnd="@dimen/_10sdp"
-                                android:layout_marginBottom="@dimen/_5sdp"
+
                                 android:paddingHorizontal="@dimen/_100sdp"
                                 app:cardBackgroundColor="#fff5f9"
                                 android:minWidth="@dimen/_50sdp"
@@ -468,30 +463,30 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_20sdp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/dottedLineImg2">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:padding="@dimen/_5sdp">
+                            >
 
                             <ImageView
                                 android:id="@+id/img1"
-                                android:layout_width="@dimen/_50sdp"
-                                android:layout_height="@dimen/_50sdp"
+                                android:layout_width="50dp"
+                                android:layout_height="70dp"
                                 android:scaleType="centerCrop"
+                                android:layout_marginStart="@dimen/_20sdp"
                                 android:src="@drawable/user_pholder_updated"
                                 android:visibility="gone"
+                                android:layout_marginTop="@dimen/_10sdp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
                             <ImageView
                                 android:id="@+id/img2"
-                                android:layout_width="@dimen/_50sdp"
-                                android:layout_height="@dimen/_50sdp"
-                                android:layout_marginStart="@dimen/_10sdp"
+                                android:layout_width="50dp"
+                                android:layout_height="70dp"
+                                android:layout_marginStart="@dimen/_20sdp"
                                 android:scaleType="centerCrop"
                                 android:src="@drawable/user_pholder_updated"
                                 android:visibility="gone"
@@ -500,9 +495,9 @@
 
                             <ImageView
                                 android:id="@+id/img3"
-                                android:layout_width="@dimen/_50sdp"
-                                android:layout_height="@dimen/_50sdp"
-                                android:layout_marginStart="@dimen/_10sdp"
+                                android:layout_width="50dp"
+                                android:layout_height="70dp"
+                                android:layout_marginStart="@dimen/_20sdp"
                                 android:scaleType="centerCrop"
                                 android:src="@drawable/user_pholder_updated"
                                 android:visibility="gone"
@@ -511,9 +506,9 @@
 
                             <ImageView
                                 android:id="@+id/img4"
-                                android:layout_width="@dimen/_50sdp"
-                                android:layout_height="@dimen/_50sdp"
-                                android:layout_marginStart="@dimen/_10sdp"
+                                android:layout_width="50dp"
+                                android:layout_height="70dp"
+                                android:layout_marginStart="@dimen/_20sdp"
                                 android:scaleType="centerCrop"
                                 android:src="@drawable/user_pholder_updated"
                                 android:visibility="gone"
@@ -742,9 +737,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
 
-            <include layout="@layout/loader_layout"
-                android:id="@+id/loaderLayout"
-                android:visibility="gone"/>
+
             <RelativeLayout
                 android:id="@+id/largeImageView"
                 android:layout_width="match_parent"
@@ -785,7 +778,12 @@
 
             </RelativeLayout>
 
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include layout="@layout/loader_layout"
+            android:id="@+id/loaderLayout"
+            android:visibility="gone"/>
 
     </FrameLayout>
 </layout>

@@ -15,7 +15,10 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.textview.MaterialTextView
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.iid.InstanceIdResult
 import com.squareup.picasso.Picasso
 import com.surpriseme.user.R
 import com.surpriseme.user.activity.settings.SettingsActivity
@@ -28,6 +31,7 @@ import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
+import com.surpriseme.user.util.Utility
 import com.tournie.Util.Permission
 import net.alhazmy13.mediapicker.Image.ImagePicker
 import okhttp3.MediaType
@@ -40,7 +44,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 
-class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCameraCallBack,MainActivity.SendImageBitmap {
+class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCameraCallBack,
+    MainActivity.SendImageBitmap {
 
     private lateinit var binding: FragmentProfileBinding
     private lateinit var shared: PrefrenceShared
@@ -49,8 +54,8 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
     lateinit var thumbnail: Bitmap
     private lateinit var file: File
     private var userImage: MultipartBody.Part? = null
-    private var toolProfileTxt:MaterialTextView?=null
-    private var toolBackpress:MaterialTextView?=null
+    private var toolProfileTxt: MaterialTextView? = null
+    private var toolBackpress: MaterialTextView? = null
     private var currency = ""
 
 
@@ -66,10 +71,12 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
     ): View? {
         // Inflate the layout for this fragment
 
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_profile,container,false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
 
         val view = binding.root
         shared = PrefrenceShared(ctx)
+        val loadingText = view.findViewById<TextView>(R.id.loadingtext)
+        loadingText.text = Utility.randomString()
         Constants.PROFILE_FRAGMENT = true
 
         ((ctx as MainActivity)).hideBottomNavigation()
@@ -79,12 +86,14 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
         return view
     }
 
-    private fun inIt(view:View) {
+    private fun inIt(view: View) {
 
+        val loadingText = view.findViewById<TextView>(R.id.loadingtext)
+        loadingText.text = Utility.randomString()
 //        loaderLayout = view.findViewById(R.id.loaderLayoutprofile)
         toolBackpress = view.findViewById(R.id.backpress)
         toolProfileTxt = view.findViewById(R.id.toolProfileTxt)
-        toolProfileTxt?.visibility =View.VISIBLE
+        toolProfileTxt?.visibility = View.VISIBLE
         binding.logoutTxt.setOnClickListener(this)
         binding.editProfileBtn.setOnClickListener(this)
         binding.updateprofilebtn.setOnClickListener(this)
@@ -98,16 +107,16 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
         binding.profileImage.isEnabled = false
 
         // display value to the views ....
-        if (shared.getString(Constants.DataKey.USER_IMAGE) !="") {
-            Picasso.get().load(shared.getString(Constants.DataKey.USER_IMAGE)).resize(4000,1500)
+        if (shared.getString(Constants.DataKey.USER_IMAGE) != "") {
+            Picasso.get().load(shared.getString(Constants.DataKey.USER_IMAGE)).resize(4000, 1500)
                 .onlyScaleDown()
                 .placeholder(R.drawable.profile_pholder)
                 .into(binding.profileImage)
         }
-        if (shared.getString(Constants.DataKey.USER_NAME) !="") {
+        if (shared.getString(Constants.DataKey.USER_NAME) != "") {
             binding.usernameEdt.setText(shared.getString(Constants.DataKey.USER_NAME))
         }
-        if (shared.getString(Constants.DataKey.USER_EMAIL) !="") {
+        if (shared.getString(Constants.DataKey.USER_EMAIL) != "") {
             binding.emailEdt.setText(shared.getString(Constants.DataKey.USER_EMAIL))
         }
 
@@ -151,69 +160,81 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
                     binding.passwordprofileLayout.visibility = View.VISIBLE
                     binding.aboutprofileLayout.visibility = View.VISIBLE
                     binding.logoutLayout.visibility = View.VISIBLE
-                },1000)
+                }, 1000)
             }
             R.id.cameraIcon -> {
 
-                Permission.checkPermissionForImageCamera(requireActivity(),this@ProfileFragment)
+                Permission.checkPermissionForImageCamera(requireActivity(), this@ProfileFragment)
 
             }
             R.id.changePasswordText -> {
                 loadFragment(ChangePasswordFragment())
             }
             R.id.settingsTxt -> {
-                binding.settingsTxt.isEnabled =false
-                val settingsIntent = Intent(ctx, SettingsActivity ::class.java)
+                binding.settingsTxt.isEnabled = false
+                val settingsIntent = Intent(ctx, SettingsActivity::class.java)
                 startActivity(settingsIntent)
                 binding.settingsTxt.postDelayed(Runnable {
                     binding.settingsTxt.isEnabled = true
-                },2000)
+                }, 2000)
             }
 
         }
     }
 
 
-    private fun updateProfileApi(currency:String) {
+    private fun updateProfileApi(currency: String) {
         val requestBodyMap: HashMap<String, RequestBody> = HashMap()
         requestBodyMap[Constants.ApiKey.NAME] =
             RequestBody.create(MediaType.parse("multipart/form-data"), username)
-        requestBodyMap[Constants.ApiKey.CURRENCY] = RequestBody.create(MediaType.parse("multipart/form-data"),currency)
+        requestBodyMap[Constants.ApiKey.CURRENCY] =
+            RequestBody.create(MediaType.parse("multipart/form-data"), currency)
 
-        RetrofitClient.api.updateProfileApi(shared.getString(Constants.DataKey.AUTH_VALUE),requestBodyMap,userImage)
-            .enqueue(object :Callback<UpdateProfileModel> {
+        RetrofitClient.api.updateProfileApi(
+            shared.getString(Constants.DataKey.AUTH_VALUE),
+            requestBodyMap,
+            userImage
+        )
+            .enqueue(object : Callback<UpdateProfileModel> {
                 override fun onResponse(
                     call: Call<UpdateProfileModel>,
                     response: Response<UpdateProfileModel>
                 ) {
 
-                    if (response.body() !=null) {
+                    if (response.body() != null) {
                         if (response.isSuccessful) {
 
-                            shared.setString(Constants.DataKey.USER_IMAGE,
+                            shared.setString(
+                                Constants.DataKey.USER_IMAGE,
                                 Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL +
-                                        response.body()?.data?.user?.image)
-                            val intent = Intent(ctx, MainActivity ::class.java)
+                                        response.body()?.data?.user?.image
+                            )
+                            val intent = Intent(ctx, MainActivity::class.java)
                             startActivity(intent)
                             activity?.finish()
 
                         }
                     } else {
-                        val jsonObject:JSONObject
-                        if (response.errorBody() !=null) {
+                        val jsonObject: JSONObject
+                        if (response.errorBody() != null) {
                             try {
                                 jsonObject = JSONObject(response.errorBody()?.string()!!)
                                 val errorMessage = jsonObject.getString(Constants.ERRORS)
-                                Toast.makeText(ctx, "" + errorMessage,Toast.LENGTH_SHORT).show()
+                                Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT).show()
 
-                            }catch (e:JSONException) {
-                                Toast.makeText(ctx,"" + Constants.SOMETHING_WENT_WRONG,Toast.LENGTH_SHORT).show()
+                            } catch (e: JSONException) {
+                                Toast.makeText(
+                                    ctx,
+                                    "" + Constants.SOMETHING_WENT_WRONG,
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         }
                     }
                 }
+
                 override fun onFailure(call: Call<UpdateProfileModel>, t: Throwable) {
-                   Toast.makeText(ctx,"" + t.message.toString(),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
                 }
             })
     }
@@ -261,6 +282,7 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
             Constants.PROFILE_FRAGMENT = false
         }
     }
+
     private fun logoutPop() {
 
         val layoutInflater: LayoutInflater =
@@ -311,27 +333,33 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
         thumbnail = BitmapFactory.decodeFile(imageFilePath, bmOption)
         file = File(imageFilePath)
         binding.profileImage.setImageBitmap(thumbnail)
-
         userImage = MultipartBody.Part.createFormData(
-            Constants.ApiKey.IMAGE, file.name, RequestBody.create(
-                MediaType.parse("image/*"), file
-            )
+            Constants.ApiKey.IMAGE,
+            file.name,
+            RequestBody.create(MediaType.parse("image/*"), file)
         )
-
     }
 
     private fun logout() {
 
-        binding.loaderLayout.visibility=View.VISIBLE
-        RetrofitClient.api.logout(shared.getString(Constants.DataKey.AUTH_VALUE),shared.getString(Constants.FB_TOKEN),Constants.DataKey.DEVICE_TYPE_VALUE)
+        binding.loaderLayout.visibility = View.VISIBLE
+        RetrofitClient.api.logout(
+            shared.getString(Constants.DataKey.AUTH_VALUE),
+            shared.getString(Constants.FB_TOKEN),
+            Constants.DataKey.DEVICE_TYPE_VALUE
+        )
             .enqueue(object : Callback<Loginmodel> {
                 override fun onResponse(call: Call<Loginmodel>, response: Response<Loginmodel>) {
-                    binding.loaderLayout.visibility=View.GONE
+                    binding.loaderLayout.visibility = View.GONE
 
                     if (response.body() != null) {
                         if (response.isSuccessful) {
-                            if (response.body() !=null) {
-                                Toast.makeText(ctx, "" + response.body()!!.data.message, Toast.LENGTH_LONG).show()
+                            if (response.body() != null) {
+                                Toast.makeText(
+                                    ctx,
+                                    "" + response.body()!!.data.message,
+                                    Toast.LENGTH_LONG
+                                ).show()
                                 shared.clearShared()
                                 Constants.SHOW_TYPE = ""
                                 val intent = Intent(ctx, LoginActivity::class.java)
@@ -339,31 +367,31 @@ class ProfileFragment : Fragment(), View.OnClickListener,Permission.GalleryCamer
                                 activity?.finishAffinity()
                             }
                         } else {
-                            val jsonobject:JSONObject
-                            if (response.errorBody() !=null) {
+                            val jsonobject: JSONObject
+                            if (response.errorBody() != null) {
                                 try {
-                                }catch (e:JSONException) {
-                                    Toast.makeText(ctx,"" + e.message.toString(),Toast.LENGTH_SHORT).show()
+                                    jsonobject = JSONObject(response.errorBody()?.string()!!)
+                                    val errorMessage = jsonobject.getString(Constants.ERROR)
+                                    Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT)
+                                        .show()
+                                } catch (e: JSONException) {
+                                    Toast.makeText(
+                                        ctx,
+                                        "" + e.message.toString(),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
-                                jsonobject = JSONObject(response.errorBody()?.string()!!)
-                                val errorMessage = jsonobject.getString(Constants.ERROR)
 
                             }
                         }
-
                     }
-
-
                 }
 
                 override fun onFailure(call: Call<Loginmodel>, t: Throwable) {
-                    binding.loaderLayout.visibility=View.GONE
-
-
+                    binding.loaderLayout.visibility = View.GONE
+                    Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
                 }
             })
-
-
     }
 
 }

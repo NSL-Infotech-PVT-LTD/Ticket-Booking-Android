@@ -112,12 +112,6 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
 
-
-                <include
-                    android:id="@+id/loaderLayout"
-                    layout="@layout/loader_layout"
-                    android:visibility="gone" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -133,6 +127,11 @@
         <include layout="@layout/search_bottom_sheet" />
         <!-- include layout for Category bottom sheet -->
         <include layout="@layout/category_bottom_sheet" />
+
+        <include
+            android:id="@+id/loaderLayout"
+            layout="@layout/loader_layout"
+            android:visibility="gone" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

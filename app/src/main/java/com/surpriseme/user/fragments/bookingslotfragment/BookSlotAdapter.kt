@@ -81,7 +81,7 @@ class BookSlotAdapter(
 
         holder.itemView.setOnClickListener {
 
-            if (list[position].date == "") {
+            if (list[position].booked == "1" || list[position].date.isEmpty()) {
                 popupArtistNotAvailable()
                 Handler().postDelayed(Runnable {
                     popWindowNotAvailable?.dismiss()

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +18,7 @@ import com.surpriseme.user.databinding.FragmentReviewBinding
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
+import com.surpriseme.user.util.Utility
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -58,6 +60,8 @@ class ReviewFragment : Fragment(), View.OnClickListener {
 
     private fun init(view:View) {
 
+        val loadingText = view.findViewById<TextView>(R.id.loadingtext)
+        loadingText.text  = Utility.randomString()
         // initializing onclick listener to views....
         backpress = view.findViewById(R.id.backpress)
         backpress?.setOnClickListener(this)

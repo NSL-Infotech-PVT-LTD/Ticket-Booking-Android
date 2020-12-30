@@ -9,6 +9,12 @@
         android:layout_height="match_parent"
         tools:context=".fragments.viewprofile.ProfileFragment">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
         <androidx.cardview.widget.CardView
             android:id="@+id/toolbarCard"
             android:layout_width="match_parent"
@@ -106,8 +112,8 @@
 
                     <ImageView
                         android:id="@+id/userprofileIcon"
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="30dp"
+                        android:layout_height="20dp"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:src="@drawable/user_pholder1"
@@ -153,8 +159,8 @@
 
                     <ImageView
                         android:id="@+id/emailIcon"
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="30dp"
+                        android:layout_height="20dp"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:src="@drawable/email_icon1"
@@ -198,8 +204,8 @@
 
                     <ImageView
                         android:id="@+id/passwordprofileIcon"
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="30dp"
+                        android:layout_height="20dp"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:src="@drawable/password1"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -234,8 +240,8 @@
 
                     <ImageView
                         android:id="@+id/aboutIcon"
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="30dp"
+                        android:layout_height="20dp"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:src="@drawable/setting_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -270,8 +276,8 @@
 
                     <ImageView
                         android:id="@+id/logoutIcon"
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="30dp"
+                        android:layout_height="20dp"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:src="@drawable/logout_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -316,9 +322,12 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <include layout="@layout/loader_layout"
             android:id="@+id/loaderLayout"
             android:visibility="gone"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

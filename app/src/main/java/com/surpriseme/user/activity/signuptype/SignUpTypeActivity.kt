@@ -2,7 +2,9 @@ package com.surpriseme.user.activity.signuptype
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -20,6 +22,7 @@ import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefManger
 import com.surpriseme.user.util.PrefrenceShared
+import com.surpriseme.user.util.Utility
 import kotlinx.android.synthetic.main.activity_sign_up_type.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -68,6 +71,9 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun inIt() {
+        val loadingText = findViewById<TextView>(R.id.loadingtext)
+        loadingText.text  = Utility.randomString()
+
         signUpEmailBtn.setOnClickListener(this)
         binding.fbLogin.setOnClickListener(this)
         backToLoginBtn.setOnClickListener(this)
@@ -103,14 +109,23 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
         LoginManager.getInstance()
             .registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
                 override fun onSuccess(loginResult: LoginResult) {
+                    Log.d("login", "onSuccess: " + loginResult.toString())
 // Retrieving access token using the LoginResult
 //                    val accessToken = loginResult.accessToken
 //                    val isLoggedIn = accessToken != null && !accessToken.isExpired
                 }
 
                 override fun onCancel() {
+                    Toast.makeText(this@SignUpTypeActivity,"Cancel",Toast.LENGTH_SHORT).show()
                 }
-                override fun onError(error: FacebookException) {}
+
+                override fun onError(error: FacebookException) {
+                    Toast.makeText(
+                        this@SignUpTypeActivity,
+                        "" + error.message.toString(),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             })
     }
 
@@ -188,6 +203,7 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
 
     // Register api with facebook
     private fun registerWithFbApi() {
+        shared?.setString(Constants.FB_TOKEN, fbtoken)
         binding.loaderLayout.visibility = View.VISIBLE
         RetrofitClient.api.registerWithFB(
             fbName,
@@ -221,7 +237,6 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
                                 Constants.DataKey.USER_IMAGE,  // To Save User Image
                                 Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + response.body()?.data?.user?.image
                             )
-                            shared?.setString(Constants.FB_TOKEN, fbtoken)
                             prefManager?.setString1(Constants.DataKey.CURRENCY,"")
 //                            isFbRegistered = true
                             val mainActIntent =

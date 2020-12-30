@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.textview.MaterialTextView
@@ -14,10 +15,7 @@ import com.surpriseme.user.R
 import com.surpriseme.user.activity.login.LoginActivity
 import com.surpriseme.user.activity.signuptype.SignUpTypeActivity
 import com.surpriseme.user.retrofit.RetrofitClient
-import com.surpriseme.user.util.CheckValidEmail
-import com.surpriseme.user.util.Constants
-import com.surpriseme.user.util.PrefManger
-import com.surpriseme.user.util.PrefrenceShared
+import com.surpriseme.user.util.*
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -63,6 +61,8 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun inIt() {
+        val loadingText = findViewById<TextView>(R.id.loadingtext)
+        loadingText.text  = Utility.randomString()
 
         signupBtn.setOnClickListener(this)
         backToLoginBtn.setOnClickListener(this)
@@ -131,7 +131,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun registerApi() {
-
+        shared.setString(Constants.FB_TOKEN, fbtoken)   // To save user token
         loaderLayout.visibility = View.VISIBLE
         RetrofitClient.api.registerApi(
             username,
@@ -152,8 +152,8 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
 
                             shared.setString(Constants.DataKey.AUTH_VALUE, Constants.BEARER + response.body()?.data?.token!!)   // To save Auth token
                             shared.setString(Constants.DataKey.ARTIST_ID_VALUE,response.body()?.data?.user?.id.toString())    // To Save Artist ID
-                            shared.setString(Constants.DataKey.OLD_PASS_VALUE, password)
-                            shared.setString(Constants.FB_TOKEN, fbtoken)// To save User Password
+                            shared.setString(Constants.DataKey.OLD_PASS_VALUE, password) // To save User Password
+
                             prefManager.setString1(Constants.DataKey.CURRENCY, "") // to save currency....
                             val intent = Intent(this@SignUpActivity, MainActivity::class.java)
 //                            intent.putExtra("currency",true)

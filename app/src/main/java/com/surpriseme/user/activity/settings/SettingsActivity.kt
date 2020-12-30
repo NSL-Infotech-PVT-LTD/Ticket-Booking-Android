@@ -26,6 +26,7 @@ import com.surpriseme.user.retrofit.RetrofitInterface
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefManger
 import com.surpriseme.user.util.PrefrenceShared
+import com.surpriseme.user.util.Utility
 import kotlinx.android.synthetic.main.activity_settings.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -74,6 +75,10 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun init() {
+
+        val loadingText = findViewById<TextView>(R.id.loadingtext)
+        loadingText.text  = Utility.randomString()
+
         headerTv = findViewById(R.id.headerTxt)
         detailTxt = findViewById(R.id.detailTxt)
         tbackpress = findViewById(R.id.backpress)

@@ -149,11 +149,13 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.8" />
 
-       <include layout="@layout/loader_layout"
-           android:id="@+id/loaderLayout"
-           android:visibility="gone"/>
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include layout="@layout/loader_layout"
+            android:id="@+id/loaderLayout"
+            android:visibility="gone"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

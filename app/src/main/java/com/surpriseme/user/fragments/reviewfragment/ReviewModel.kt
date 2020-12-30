@@ -8,7 +8,7 @@ data class ReviewModel(
 
 data class ReviewDataModel(
     val artist_id: Int,
-    val avg_rate: Int,
+    val avg_rate: Double,
     val booking_id: Int,
     val created_at: String,
     val created_by: Int,
@@ -24,13 +24,15 @@ data class ReviewDataModel(
 )
 
 data class ReviewCustomerDetail(
-    val category_id_details: List<Any>,
-    val currency: Any,
+    val converted_currency: String,
+    val currency: String,
+    val currency_msp: String,
     val id: Int,
     val image: String,
     val name: String,
     val role: ReviewRole,
-    val shows_image: List<Any>
+    val shows_image: List<Any>,
+    val shows_video_thumbnail: String
 )
 
 data class ReviewRole(

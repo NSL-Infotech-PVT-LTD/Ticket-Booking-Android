@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.PopupWindow
+import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
@@ -22,6 +23,7 @@ import com.surpriseme.user.fragments.viewprofile.ProfileFragment
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
+import com.surpriseme.user.util.Utility
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -53,12 +55,15 @@ class ChangePasswordFragment : Fragment(), View.OnClickListener {
         shared = PrefrenceShared(ctx)
         tbackpress = view.findViewById(R.id.backpress)
 
-        init()
+        init(view)
 
         return view
     }
 
-    private fun init() {
+    private fun init(view: View) {
+
+        val loadingText = view.findViewById<TextView>(R.id.loadingtext)
+        loadingText.text  = Utility.randomString()
 
         binding.continueButton.setOnClickListener(this)
         tbackpress.setOnClickListener(this)

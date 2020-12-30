@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import butterknife.OnClick
 import com.surpriseme.user.R
 import com.surpriseme.user.activity.payment.AddCardActivity
+import com.surpriseme.user.activity.payment.PaymentActivity
 import com.surpriseme.user.data.model.CardGetModel
 import com.surpriseme.user.data.model.DeleteCard
 import com.surpriseme.user.data.model.PaymentModel
@@ -21,6 +23,7 @@ import com.surpriseme.user.fragments.bookingdetailfragment.BookingDetailFragment
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
+import com.surpriseme.user.util.Utility
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -39,6 +42,10 @@ class SeleckBank : AppCompatActivity(), CardAdapter.ChangeLocale, View.OnClickLi
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_seleck_bank)
         shared = PrefrenceShared(this)
+
+        val loadingText = findViewById<TextView>(R.id.loadingtext)
+        loadingText.text  = Utility.randomString()
+
         bookingid = intent.getStringExtra("bookingid")!!
         binding.cardrecycler.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -60,6 +67,8 @@ class SeleckBank : AppCompatActivity(), CardAdapter.ChangeLocale, View.OnClickLi
     override fun onClick(v: View?) {
         when(v?.id) {
             R.id.backpress -> {
+                val intent = Intent(this@SeleckBank, PaymentActivity::class.java)
+                startActivity(intent)
                 finish()
             }
             R.id.addcardbtn -> {

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +20,7 @@ import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PaginationScrollListener
 import com.surpriseme.user.util.PrefrenceShared
+import com.surpriseme.user.util.Utility
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -59,7 +61,7 @@ class BookingFragment : Fragment(), View.OnClickListener, BookingListAdapter.See
         val view = binding.root
         shared = PrefrenceShared(ctx)
 
-        init()
+        init(view)
         layoutManager = LinearLayoutManager(ctx)
         binding.bookingRecycler.layoutManager = layoutManager
         binding.bookingRecycler.setHasFixedSize(true)
@@ -86,8 +88,10 @@ class BookingFragment : Fragment(), View.OnClickListener, BookingListAdapter.See
         return view
     }
 
-    private fun init() {
+    private fun init(view: View) {
 
+        val loadingText = view.findViewById<TextView>(R.id.loadingtext)
+        loadingText?.text  = Utility.randomString()
         ((ctx as MainActivity)).showBottomNavigation()
         // Initializing onclick listener to views....
         binding.refresh.setOnClickListener(this)

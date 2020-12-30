@@ -59,10 +59,10 @@
 
             <ImageView
                 android:id="@+id/passwordIcon"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:src="@drawable/password"
+                android:layout_width="30dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/term_condition_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -97,10 +97,10 @@
 
             <ImageView
                 android:id="@+id/passwordIcon1"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:src="@drawable/password"
+                android:layout_width="30dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/privacy_policy_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -135,10 +135,10 @@
 
             <ImageView
                 android:id="@+id/passwordIcon2"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:src="@drawable/password"
+                android:layout_width="30dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/about_us_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -173,10 +173,10 @@
 
             <ImageView
                 android:id="@+id/langIcon"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:src="@drawable/language_icon"
+                android:layout_width="30dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/change_language_icon"
                 android:padding="2dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -202,13 +202,13 @@
         <include layout="@layout/settings_layout"
             android:id="@+id/settingLayout"
             android:visibility="gone"/>
-        <include layout="@layout/loader_layout"
-            android:id="@+id/loaderLayout"
-            android:visibility="gone"/>
-
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include layout="@layout/loader_layout"
+            android:id="@+id/loaderLayout"
+            android:visibility="gone"/>
 
         <include layout="@layout/choose_language_lay"
             android:id="@+id/chooseLangLayout"

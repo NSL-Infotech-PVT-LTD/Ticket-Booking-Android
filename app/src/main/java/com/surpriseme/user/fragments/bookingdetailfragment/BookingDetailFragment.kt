@@ -36,6 +36,7 @@ import com.surpriseme.user.fragments.paymentfragment.BookingStatusModel
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
+import com.surpriseme.user.util.Utility
 import com.warkiz.widget.OnSeekChangeListener
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_booking_detail.*
@@ -110,6 +111,9 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun init() {
+
+        val loadingText = findViewById<TextView>(R.id.loadingtext)
+        loadingText.text  = Utility.randomString()
 
         bottomSheet = findViewById(R.id.rateReviewBottomSheet)!!
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)

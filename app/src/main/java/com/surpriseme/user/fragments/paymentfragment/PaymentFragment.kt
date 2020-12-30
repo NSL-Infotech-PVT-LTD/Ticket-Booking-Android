@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.surpriseme.user.R
@@ -14,6 +15,7 @@ import com.surpriseme.user.fragments.bookingfragment.BookingFragment
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
+import com.surpriseme.user.util.Utility
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -42,12 +44,15 @@ class PaymentFragment : Fragment(), View.OnClickListener {
         val view = binding?.root
         shared = PrefrenceShared(ctx!!)
 
-        init()
+        init(view!!)
 
         return view
     }
 
-    private fun init() {
+    private fun init(view: View) {
+
+        val loadingText = view.findViewById<TextView>(R.id.loadingtext)
+        loadingText.text  = Utility.randomString()
         binding?.checkoutBtn?.setOnClickListener(this)
         bookingID = arguments?.getString("bookingId")!!
     }

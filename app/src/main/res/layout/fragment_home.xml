@@ -104,7 +104,7 @@
                         android:layout_marginEnd="@dimen/_3sdp"
                         android:paddingHorizontal="@dimen/_3sdp"
                         android:paddingVertical="2dp"
-                        android:textSize="10dp"
+                        android:textSize="8dp"
                         android:drawablePadding="5dp"
                         android:gravity="center"
                         android:drawableStart="@drawable/ic_online_prediction_24"/>
@@ -122,7 +122,7 @@
                         app:layout_constraintEnd_toStartOf="@+id/notiIcon"
                         android:paddingHorizontal="3dp"
                         android:paddingVertical="2dp"
-                        android:textSize="10dp"
+                        android:textSize="8dp"
                         android:drawablePadding="5dp"
                         android:gravity="center"
                         android:drawableStart="@drawable/ic_person_24"/>
@@ -130,8 +130,8 @@
 
                     <ImageView
                         android:id="@+id/notiIcon"
-                        android:layout_width="@dimen/_40sdp"
-                        android:layout_height="@dimen/_40sdp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:src="@drawable/noti_icon"
                         app:layout_constraintBottom_toBottomOf="@+id/imageCard"

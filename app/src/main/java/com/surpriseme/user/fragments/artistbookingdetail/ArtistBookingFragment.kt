@@ -12,12 +12,10 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.PopupWindow
-import android.widget.RelativeLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.marginEnd
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.google.android.material.chip.Chip
@@ -39,6 +37,7 @@ import com.surpriseme.user.fragments.wayofbookingfragment.WayOfBookingFragment
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
+import com.surpriseme.user.util.Utility
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -92,11 +91,9 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
         init(view)
 
         if (Constants.SHOW_TYPE == ctx.resources.getString(R.string.digital)) {
-            binding.showTypeTxt.text = ctx.resources.getString(R.string.virtual)
             binding.virtualShowLayout.visibility = View.VISIBLE
             binding.inPersonShowLayout.visibility = View.GONE
         } else {
-            binding.showTypeTxt.text = ctx.resources.getString(R.string.in_person)
             binding.inPersonShowLayout.visibility = View.VISIBLE
             binding.virtualShowLayout.visibility = View.GONE
         }
@@ -106,6 +103,9 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
     }
 
     private fun init(view: View) {
+
+        val loadingText = view.findViewById<TextView>(R.id.loadingtext)
+        loadingText.text  = Utility.randomString()
 
         // initializing clicks for views....
         binding.bookBtn.setOnClickListener(this)
@@ -540,11 +540,12 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
         lChip.text = pItem
         lChip.isClickable = false
         lChip.textSize = 10f
-        lChip.textEndPadding = 8f
-        lChip.textStartPadding = 8f
+//        lChip.textEndPadding = 2f
+//        lChip.textStartPadding = 2f
 // lChip.chipStrokeColor = resources.getColorStateList(R.color.colorAccent)
 // lChip.chipStrokeWidth = 1F
         lChip.setTextColor(ContextCompat.getColor(ctx, R.color.black))
+//        lChip.compoundDrawablePadding = 2
         lChip.chipBackgroundColor = ContextCompat.getColorStateList(ctx, R.color.greyLighter)
         pChipGroup.addView(lChip as View)
 

@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -17,6 +18,7 @@ import com.surpriseme.user.fragments.chatFragment.ChatFragment
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
+import com.surpriseme.user.util.Utility
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -49,13 +51,15 @@ class ChatListFragment : Fragment(), ChatListAdapter.GoToChat {
         val view = binding!!.root
         shared = PrefrenceShared(ctx!!)
         requireActivity().window.statusBarColor = ContextCompat.getColor(requireActivity(),R.color.colorPrimary)
-        init()
+        init(view)
 
         return view
 
     }
-    private fun init() {
+    private fun init(view: View) {
 
+        val loadingText = view.findViewById<TextView>(R.id.loadingtext)
+        loadingText.text  = Utility.randomString()
         ((ctx as MainActivity)).showBottomNavigation()
         // calling Chat list api....
         chatListApi()

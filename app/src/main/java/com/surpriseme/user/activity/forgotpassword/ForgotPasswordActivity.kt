@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.textview.MaterialTextView
@@ -13,6 +14,7 @@ import com.surpriseme.user.databinding.ActivityForgotPasswordBinding
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.CheckValidEmail
 import com.surpriseme.user.util.Constants
+import com.surpriseme.user.util.Utility
 import kotlinx.android.synthetic.main.activity_forgot_password.*
 import kotlinx.android.synthetic.main.item_custom_logout.*
 import kotlinx.android.synthetic.main.toolbar_layout.*
@@ -44,6 +46,8 @@ class ForgotPasswordActivity : AppCompatActivity(), View.OnClickListener {
         binding?.continueButton?.setOnClickListener(this)
         backpress = findViewById(R.id.backpress)
         backpress?.setOnClickListener(this)
+        val loadingText = findViewById<TextView>(R.id.loadingtext)
+        loadingText.text  = Utility.randomString()
     }
 
     override fun onClick(v: View?) {

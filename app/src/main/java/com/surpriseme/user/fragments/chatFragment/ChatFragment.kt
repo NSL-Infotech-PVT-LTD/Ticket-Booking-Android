@@ -8,10 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.BaseAdapter
-import android.widget.ImageView
-import android.widget.ListView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -26,6 +23,7 @@ import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.ConnectionManger
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
+import com.surpriseme.user.util.Utility
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -69,6 +67,9 @@ class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceiv
 
 
     private fun init() {
+
+        val loadingText = findViewById<TextView>(R.id.loadingtext)
+        loadingText.text  = Utility.randomString()
 
         messageList = findViewById(R.id.listchat)
         chatBackpress = findViewById(R.id.chatBackpress)

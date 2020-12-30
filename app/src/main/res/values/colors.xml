@@ -27,6 +27,7 @@
     <color name="transparentPopup">#BFD7D7D7</color>
     <color name="black">#000000</color>
     <color name="grey_color">#BFC2C6</color>
+    <color name="slotGreyColor">#80D3D3D3</color>
     <color name="grey_Dark_color">#878787</color>
     <color name="drawerBg">#EAEBEC</color>
     <color name="recChatbg">#0F0C29</color>

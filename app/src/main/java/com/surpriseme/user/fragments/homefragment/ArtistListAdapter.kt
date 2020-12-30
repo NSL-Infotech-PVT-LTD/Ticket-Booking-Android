@@ -53,6 +53,7 @@ class ArtistListAdapter(
 
         holder.onBind(position)
     }
+
     override fun getItemViewType(position: Int): Int {
         if (artistList.size == 1) {
             return VIEW_TYPE_NORMAL
@@ -67,6 +68,7 @@ class ArtistListAdapter(
     override fun getItemCount(): Int {
         return artistList.size ?: 0
     }
+
     fun addItems(postItems: ArrayList<DataUserArtistList>?) {
         artistList.addAll(postItems!!)
         notifyDataSetChanged()
@@ -87,6 +89,7 @@ class ArtistListAdapter(
             notifyItemRemoved(position)
         }
     }
+
     fun clear() {
         artistList.clear()
         notifyDataSetChanged()
@@ -95,7 +98,6 @@ class ArtistListAdapter(
     private fun getItem(position: Int): DataUserArtistList {
         return artistList[position]
     }
-
 
 
 //    private fun addChip(pItem: String, textView: TextView: MaterialTextView) {
@@ -124,6 +126,7 @@ class ArtistListAdapter(
         val seeArtistProfile = itemView.findViewById<TextView>(R.id.seeArtistProfile)
         val categories = itemView.findViewById<TextView>(R.id.categoryTxt)
         val price = itemView.findViewById<TextView>(R.id.priceTv)
+        val brandNewArtistTv = itemView.findViewById<MaterialTextView>(R.id.brandNewArtistTv)
 
         override fun clear() {}
 
@@ -144,15 +147,18 @@ class ArtistListAdapter(
             name.text = artistModel.name
             description.text = artistModel.description
 
-            if (artistModel.rating == null) {
+            if (artistModel.rating == 0f) {
                 ratingbar.visibility = View.GONE
-            } else
+                brandNewArtistTv.visibility = View.VISIBLE
+            } else {
                 ratingbar.rating = artistModel.rating
+                brandNewArtistTv.visibility = View.GONE
+            }
 
 
 
             categoryList.clear()
-            if (artistModel.category_id_details !=null){
+            if (artistModel.category_id_details != null) {
                 for (i in 0 until artistModel.category_id_details.size) {
                     categoryList.add(artistModel.category_id_details.get(i).category_name)
                 }
@@ -161,19 +167,25 @@ class ArtistListAdapter(
 
             var s = ""
 
-            if (artistModel.category_id_details !=null) {
-                    val builder = StringBuilder()
-                    for (detail in categoryList) {
-                        builder.append(detail)
-                     s = TextUtils.join(", ",categoryList)
-                    }
-                    categories.text = s
+            if (artistModel.category_id_details != null) {
+                val builder = StringBuilder()
+                for (detail in categoryList) {
+                    builder.append(detail)
+                    s = TextUtils.join(", ", categoryList)
+                }
+                categories.text = s
             }
 
             if (Constants.SHOW_TYPE == context.resources?.getString(R.string.digital)!!) {
-                price.text = artistModel.currency + " " + artistModel.digital_price_per_hr + "/" + context.resources.getString(R.string.hr)
-            } else{
-                price.text = artistModel.currency + " " + artistModel.live_price_per_hr + "/" + context.resources.getString(R.string.hr)
+                price.text =
+                    artistModel.currency + " " + artistModel.digital_price_per_hr + "/" + context.resources.getString(
+                        R.string.hr
+                    )
+            } else {
+                price.text =
+                    artistModel.currency + " " + artistModel.live_price_per_hr + "/" + context.resources.getString(
+                        R.string.hr
+                    )
             }
 
 
@@ -181,7 +193,7 @@ class ArtistListAdapter(
             itemView.setOnClickListener {
                 artistListFace.artistDetailLink(artistModel.id.toString())
             }
-            bookBtn.setOnClickListener{
+            bookBtn.setOnClickListener {
                 bookBtnClick.btnClick(artistModel.id.toString())
             }
         }

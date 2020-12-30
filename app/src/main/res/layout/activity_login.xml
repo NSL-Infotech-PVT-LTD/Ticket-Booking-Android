@@ -21,7 +21,8 @@
 
 <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -32,7 +33,6 @@
             android:id="@+id/img_sign"
             android:layout_width="@dimen/_140sdp"
             android:layout_height="@dimen/_140sdp"
-            android:layout_marginTop="@dimen/_20sdp"
             android:src="@drawable/splash_log"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,11 +40,11 @@
 
         <ImageView
             android:id="@+id/translate_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="@dimen/_40sdp"
             android:src="@drawable/ic_translate"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="5dp"
             app:layout_constraintEnd_toStartOf="@id/changetext"
             app:layout_constraintTop_toTopOf="parent" />
         <TextView
@@ -56,18 +56,18 @@
             android:textColor="@color/black"
             android:layout_marginEnd="10dp"
             android:fontFamily="@font/montserrat_medium"
-            android:layout_marginTop="@dimen/_20sdp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/translate_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/translate_icon"/>
         <TextView
             android:id="@+id/welcomeTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_30sdp"
             android:text="@string/welcome"
-            android:fontFamily="@font/montserrat_medium"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_20sdp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:textColor="#5C6367"
+            android:textSize="@dimen/_18sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/img_sign" />
 
@@ -76,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/sign_in_to_continue"
-            android:textSize="15sp"
+            android:textSize="12dp"
             android:textColor="#949494"
             android:fontFamily="@font/montserrat_medium"
             app:layout_constraintStart_toStartOf="@id/welcomeTxt"
@@ -97,7 +97,6 @@
                 android:id="@+id/mailicon"
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_20sdp"
-                android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:src="@drawable/email"
                 app:layout_constraintStart_toStartOf="parent"
@@ -125,8 +124,8 @@
                 android:singleLine="true"
                 android:imeOptions="actionDone"
                 android:paddingEnd="@dimen/_10sdp"
-                android:textColor="#c1c1c1"
-                android:fontFamily="@font/montserrat_regular"
+                android:textColor="#C6C6BC"
+                android:fontFamily="@font/montserrat_medium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/mailicon"
@@ -148,7 +147,6 @@
                 android:id="@+id/passicon"
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_20sdp"
-                android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:src="@drawable/password"
                 app:layout_constraintStart_toStartOf="parent"
@@ -175,7 +173,7 @@
                 android:singleLine="true"
                 android:inputType="textPassword"
                 android:paddingEnd="@dimen/_10sdp"
-                android:textColor="#c1c1c1"
+                android:textColor="#C6C6BC"
                 android:fontFamily="@font/montserrat_regular"
                 android:imeOptions="actionDone"
                 app:layout_constraintEnd_toStartOf="@+id/eye_disable"
@@ -237,29 +235,31 @@
             android:id="@+id/loginButton"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_50sdp"
-            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
             android:layout_marginHorizontal="@dimen/_30sdp"
             android:text="@string/login"
             android:textAllCaps="false"
             android:fontFamily="@font/montserrat_bold"
             android:textColor="@color/white"
             android:textSize="@dimen/_12sdp"
-            app:cornerRadius="@dimen/_15sdp"
-            app:layout_constraintTop_toBottomOf="@id/forgetTxt" />
+            app:cornerRadius="@dimen/_20sdp"
+            app:layout_constraintBottom_toTopOf="@+id/accountYetTxt"/>
 
         <TextView
             android:id="@+id/accountYetTxt"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_40sdp"
             android:gravity="center"
-            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:text="@string/yet"
             android:textColor="@color/grey_Dark_color"
             android:textSize="@dimen/_12sdp"
-            android:fontFamily="@font/montserrat_bold"
+            android:fontFamily="@font/montserrat_regular"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/loginButton" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="@dimen/_10sdp"/>
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

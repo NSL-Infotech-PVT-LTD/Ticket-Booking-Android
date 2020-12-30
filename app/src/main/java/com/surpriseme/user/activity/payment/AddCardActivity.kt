@@ -6,6 +6,7 @@ import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -28,6 +29,7 @@ import com.surpriseme.user.fragments.bookingdetailfragment.BookingDetailFragment
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
+import com.surpriseme.user.util.Utility
 import kotlinx.android.synthetic.main.activity_add_card.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -77,6 +79,8 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
         // initialization of views....
         backpress = findViewById(R.id.backpress)
         backpress?.setOnClickListener(this)
+        val loadingText = findViewById<TextView>(R.id.loadingtext)
+        loadingText.text  = Utility.randomString()
 
         //validations....
         validations()
@@ -227,6 +231,8 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.backpress -> {
+                val intent = Intent(this@AddCardActivity,PaymentActivity::class.java)
+                startActivity(intent)
                 finish()
             }
 

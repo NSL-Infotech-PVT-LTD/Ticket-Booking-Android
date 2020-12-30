@@ -1,33 +1,39 @@
 package com.surpriseme.user.activity.login
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
+import android.util.Base64
+import android.util.Log
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.facebook.FacebookSdk
+import com.facebook.appevents.AppEventsLogger
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.iid.InstanceIdResult
-import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.R
 import com.surpriseme.user.activity.chooselanguage.ChooseLanguageActivity
-import com.surpriseme.user.activity.signuptype.SignUpTypeActivity
 import com.surpriseme.user.activity.forgotpassword.ForgotPasswordActivity
+import com.surpriseme.user.activity.mainactivity.MainActivity
+import com.surpriseme.user.activity.signuptype.SignUpTypeActivity
 import com.surpriseme.user.retrofit.RetrofitClient
-import com.surpriseme.user.util.CheckValidEmail
-import com.surpriseme.user.util.Constants
-import com.surpriseme.user.util.PrefManger
-import com.surpriseme.user.util.PrefrenceShared
+import com.surpriseme.user.util.*
 import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -56,12 +62,14 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_login)
 
         shared = PrefrenceShared(this@LoginActivity)
-        prefManager = PrefManger(this)
+        prefManager = PrefManger(this@LoginActivity)
+
         inIt()
-        checkValidEmail = CheckValidEmail()
     }
 
     private fun inIt() {
+
+
 //        signUpTxtAtLogin.setOnClickListener(this)
         loginButton.setOnClickListener(this)
         forgetTxt.setOnClickListener(this)
@@ -70,13 +78,17 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         eye_disable.setOnClickListener(this)
         eye_enable.setOnClickListener(this)
 
+        val loadingText = findViewById<TextView>(R.id.loadingtext)
+        loadingText.text  = Utility.randomString()
+
+        checkValidEmail = CheckValidEmail()
+
         shared()
         loaderLayout = findViewById(R.id.loaderLayout)
 
         checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
             prefManager!!.setBoolean1(Constants.ISREMEMBER, isChecked)
         }
-
 
     }
 
@@ -100,16 +112,15 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.eye_disable -> {
                 passwordEdt!!.transformationMethod = null
-                    eye_enable!!.visibility=View.VISIBLE
-                    eye_disable!!.visibility=View.GONE
+                eye_enable!!.visibility = View.VISIBLE
+                eye_disable!!.visibility = View.GONE
 
             }
             R.id.eye_enable -> {
 
                 passwordEdt!!.transformationMethod = PasswordTransformationMethod()
-                eye_enable!!.visibility=View.GONE
-                eye_disable!!.visibility=View.VISIBLE
-
+                eye_enable!!.visibility = View.GONE
+                eye_disable!!.visibility = View.VISIBLE
             }
         }
     }
@@ -150,6 +161,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun loginApi() {
 
+        shared.setString(Constants.FB_TOKEN, fbtoken)
         loaderLayout?.visibility = View.VISIBLE
         RetrofitClient.api.loginApi(
             email,
@@ -178,9 +190,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                             if (response.body()?.data?.user?.image != null)
                                 shared.setString(
                                     Constants.DataKey.USER_IMAGE,  // To Save User Image
-                                    Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + response.body()?.data?.user?.image)
-                            shared.setString(Constants.FB_TOKEN, fbtoken)
-                            prefManager?.setString1(Constants.DataKey.CURRENCY, response.body()?.data?.user?.currency) // to save currency....
+                                    Constants.ImageUrl.BASE_URL +
+                                            Constants.ImageUrl.USER_IMAGE_URL + response.body()?.data?.user?.image)
+
+                            prefManager?.setString1(
+                                Constants.DataKey.CURRENCY,
+                                response.body()?.data?.user?.currency
+                            ) // to save currency....
 
 
                             if (prefManager!!.getBoolean1(Constants.ISREMEMBER)) {
@@ -237,4 +253,31 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         super.onBackPressed()
         finishAffinity()
     }
+
+//    private fun getHashCode() {
+//        try {
+//            val info: PackageInfo = this@LoginActivity.getPackageManager().getPackageInfo(
+//                "com.surpriseme.user",
+//                PackageManager.GET_SIGNATURES
+//            )
+//            for (signature in info.signatures) {
+//                val md: MessageDigest = MessageDigest.getInstance("SHA")
+//                md.update(signature.toByteArray())
+//                Log.d(
+//                    "KeyHash", "KeyHash:" + Base64.encodeToString(
+//                        md.digest(),
+//                        Base64.DEFAULT
+//                    )
+//                )
+//                Toast.makeText(
+//                    getApplicationContext(), Base64.encodeToString(
+//                        md.digest(),
+//                        Base64.DEFAULT
+//                    ), Toast.LENGTH_LONG
+//                ).show()
+//            }
+//        } catch (e: PackageManager.NameNotFoundException) {
+//        } catch (e: NoSuchAlgorithmException) {
+//        }
+//    }
 }

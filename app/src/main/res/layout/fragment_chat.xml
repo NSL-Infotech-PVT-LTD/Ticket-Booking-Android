@@ -73,11 +73,11 @@
 
         </androidx.cardview.widget.CardView>
 
-
-        <include layout="@layout/loader_layout"
-            android:id="@+id/loaderLayout"
-            android:visibility="gone"/>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include layout="@layout/loader_layout"
+        android:id="@+id/loaderLayout"
+        android:visibility="gone"/>
+
 </FrameLayout>
 </layout>

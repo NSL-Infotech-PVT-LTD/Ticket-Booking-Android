@@ -28,10 +28,7 @@ import com.surpriseme.user.fragments.homefragment.ArtistListAdapter
 import com.surpriseme.user.fragments.homefragment.ArtistModel
 import com.surpriseme.user.fragments.homefragment.DataUserArtistList
 import com.surpriseme.user.retrofit.RetrofitClient
-import com.surpriseme.user.util.Constants
-import com.surpriseme.user.util.HideKeyBoard
-import com.surpriseme.user.util.PaginationScrollListener
-import com.surpriseme.user.util.PrefrenceShared
+import com.surpriseme.user.util.*
 import com.warkiz.widget.IndicatorSeekBar
 import com.warkiz.widget.OnSeekChangeListener
 import com.warkiz.widget.SeekParams
@@ -126,6 +123,9 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
     }
 
     private fun init() {
+
+        val loadingText = findViewById<TextView>(R.id.loadingtext)
+        loadingText.text  = Utility.randomString()
         // search bottom sheet view initialization....
         bottomSheet = findViewById<ConstraintLayout>(R.id.boottomSheet)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)

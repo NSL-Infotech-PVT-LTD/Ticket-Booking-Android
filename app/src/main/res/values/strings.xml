@@ -19,7 +19,7 @@
     <string name="sign_in_to_continue">Sign In to Continue</string>
     <string name="change">Change</string>
     <string name="e_mail_address">E-mail Address</string>
-    <string name="type_here">type here…</string>
+    <string name="type_here">Type here…</string>
     <string name="password">Password</string>
     <string name="remember_me">Remember me</string>
     <string name="forget_password">Forgot Password?</string>
@@ -235,7 +235,7 @@
     <string name="account_number">Account Number</string>
     <string name="expiry_date_of_card">Expiry Date of Card</string>
     <string name="MM">MM</string>
-    <string name="yy">YY</string>
+    <string name="yyYY">YYYY</string>
     <string name="cvv">cvv</string>
     <string name="cvv_demo">Ex- 234</string>
     <string name="card_number_demo">**** - **** - **** - 1452</string>
@@ -304,6 +304,7 @@
     <string name="payment_done">Payment Done</string>
     <string name="hurray_you_can_get_ready_for_show">Hurray, you can get ready for show</string>
     <string name="change_Language">Change Language</string>
+    <string name="brand_new_artist">Brand New Artist</string>
 
 
 </resources>

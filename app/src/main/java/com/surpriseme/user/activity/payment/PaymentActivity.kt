@@ -73,15 +73,25 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener {
         when(v?.id) {
             R.id.cardPaymentTxt -> {
                 if(list.isEmpty()){
+
+                    Constants.IS_BOOKING_DONE = true
+                    Constants.BOOKING = false
+                    Constants.NOTIFICATION = false
                 val intent = Intent(this@PaymentActivity, AddCardActivity ::class.java)
                     intent.putExtra("paycard","paycard")
                     intent.putExtra("bookingid",bookingId)
                 startActivity(intent)
+                    finish()
+
                 }
                 else{
+                    Constants.IS_BOOKING_DONE = true
+                    Constants.BOOKING = false
+                    Constants.NOTIFICATION = false
                     val intent = Intent(this@PaymentActivity, SeleckBank ::class.java)
                     intent.putExtra("bookingid",bookingId)
                     startActivity(intent)
+                    finish()
                 }
             }
             R.id.backpress -> {

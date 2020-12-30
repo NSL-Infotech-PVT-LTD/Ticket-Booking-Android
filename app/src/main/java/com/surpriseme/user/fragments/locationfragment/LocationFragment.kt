@@ -9,6 +9,7 @@ import android.os.Handler
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupWindow
+import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
@@ -30,6 +31,7 @@ import com.surpriseme.user.fragments.homefragment.HomeFragment
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
+import com.surpriseme.user.util.Utility
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -90,12 +92,14 @@ class LocationFragment : Fragment(), View.OnClickListener,
         Places.initialize(ctx, ctx.resources.getString(R.string.places_api_key))
         val placesClient = Places.createClient(ctx)
 
-        init()
+        init(view)
         return view
     }
 
-    private fun init() {
+    private fun init(view: View) {
 
+        val loadingText = view.findViewById<TextView>(R.id.loadingtext)
+        loadingText.text  = Utility.randomString()
 
         ((ctx as MainActivity)).hideBottomNavigation() // Hide bottom navigation on Location Fragment....
         initializeLocationRecycler()    // Initializing Location Recycler View....

@@ -150,14 +150,15 @@
 app:layout_constraintBottom_toBottomOf="parent"        />
 
 
-<include
-    android:id="@+id/loaderLayout"
-    layout="@layout/loader_layout"
-    android:visibility="gone"
-    />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <include
+        android:id="@+id/loaderLayout"
+        layout="@layout/loader_layout"
+        android:visibility="gone"
+        />
     <include layout="@layout/payment_done_layout"
         android:id="@+id/paymentDoneLayout"
         android:visibility="gone"/>

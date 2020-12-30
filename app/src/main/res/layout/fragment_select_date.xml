@@ -37,7 +37,6 @@
             android:id="@+id/selectDateTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingEnd="@dimen/_20sdp"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:text="@string/select_date_of_booking"
             app:layout_constraintTop_toBottomOf="@id/toolbarCard"
@@ -67,8 +66,8 @@
             android:textSize="12dp"
             app:layout_constraintStart_toStartOf="@+id/selectDateTxt"
             app:layout_constraintEnd_toEndOf="@+id/selectDateTxt"
-            android:fontFamily="@font/montserrat_semibold"
-            android:textColor="#B1B3C7"/>
+            android:fontFamily="@font/montserrat_regular"
+            android:textColor="#36396E"/>
 
 
         <TextView

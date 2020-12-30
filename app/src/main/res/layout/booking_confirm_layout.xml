@@ -8,7 +8,7 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_30sdp"
+        android:layout_marginHorizontal="@dimen/_45sdp"
         app:cardCornerRadius="@dimen/_10sdp"
         app:cardElevation="@dimen/_20sdp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:fontFamily="@font/montserrat_bold"
+                android:fontFamily="@font/montserrat_semibold"
                 android:gravity="center"
                 android:text="@string/booking_confirm_text"
                 android:textColor="@color/black"

@@ -18,6 +18,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -48,6 +49,7 @@ import com.surpriseme.user.fragments.locationfragment.UpdateAddressModel
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
+import com.surpriseme.user.util.Utility
 import kotlinx.android.synthetic.main.fragment_map.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -209,6 +211,9 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
             }
 
         })
+
+        val loadingText = view.findViewById<TextView>(R.id.loadingtext)
+        loadingText.text  = Utility.randomString()
 
         return view
     }

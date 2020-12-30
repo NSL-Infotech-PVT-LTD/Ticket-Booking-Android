@@ -8,6 +8,9 @@
     android:layout_height="match_parent"
     tools:context=".activity.payment.AddCardActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/toolbarCard"
@@ -104,6 +107,7 @@
         android:drawablePadding="@dimen/_5sdp"
         android:hint="Ravi Singla"
         android:layout_marginTop="@dimen/_10sdp"
+        android:singleLine="true"
         android:paddingVertical="@dimen/_10sdp"
         android:textColor="#d1d1d1"
         android:fontFamily="@font/helveticanowdisplay_medium"
@@ -134,6 +138,7 @@
         android:drawablePadding="@dimen/_5sdp"
         android:hint="@string/card_number_demo"
         android:textColor="#d1d1d1"
+        android:singleLine="true"
         android:fontFamily="@font/helveticanowdisplay_medium"
         android:layout_marginTop="@dimen/_10sdp"
         android:paddingVertical="@dimen/_10sdp"
@@ -166,6 +171,7 @@
         android:hint="@string/MM"
         android:gravity="center"
         android:maxLength="2"
+        android:singleLine="true"
         android:textColor="#d1d1d1"
         android:fontFamily="@font/helveticanowdisplay_regular"
         android:layout_marginTop="@dimen/_10sdp"
@@ -193,10 +199,11 @@
         app:layout_constraintStart_toEndOf="@id/slash"
         android:layout_marginEnd="@dimen/_20sdp"
         android:drawablePadding="@dimen/_5sdp"
-        android:hint="@string/yy"
+        android:hint="@string/yyYY"
         android:gravity="center"
         android:maxLength="4"
         android:textColor="#d1d1d1"
+        android:singleLine="true"
         android:fontFamily="@font/helveticanowdisplay_regular"
         android:layout_marginTop="@dimen/_10sdp"
         android:paddingVertical="@dimen/_10sdp"
@@ -232,6 +239,7 @@
         android:maxLength="3"
         android:gravity="center"
         android:textColor="#d1d1d1"
+        android:singleLine="true"
         android:fontFamily="@font/helveticanowdisplay_regular"
         android:paddingVertical="@dimen/_5sdp"
         android:background="@drawable/expiry_bg"
@@ -267,10 +275,11 @@
         android:id="@+id/paymentDoneLayout"
         android:visibility="gone"/>
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include
         android:id="@+id/loaderLayout"
-          layout="@layout/loader_layout"
+        layout="@layout/loader_layout"
         android:visibility="gone"
 
         />

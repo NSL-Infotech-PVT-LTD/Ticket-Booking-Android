@@ -8,6 +8,12 @@
     android:layout_height="match_parent"
     tools:context=".activity.IdealPayment">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
     <androidx.cardview.widget.CardView
     android:id="@+id/toolbarCard"
     android:layout_width="match_parent"
@@ -149,7 +155,7 @@
     <include layout="@layout/payment_done_layout"
         android:id="@+id/paymentDoneLayout"
         android:visibility="gone"/>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <include
         android:id="@+id/loaderLayout"
         android:visibility="gone"
