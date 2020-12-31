@@ -157,7 +157,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
             override fun loadMoreItems() {
                 isLoading = true
                 currentPage++
-                if (Constants.SHOW_TYPE == context?.resources?.getString(R.string.digital)) {
+                if (Constants.SHOW_TYPE == ctx.resources.getString(R.string.digital)) {
                     artistListApiWithoutLatlng(search)
                 } else
                     artistListApi(latitude.toString(), longitude.toString(), search)
@@ -176,27 +176,6 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         return view
     }
 
-//    override fun onRequestPermissionsResult(
-//        requestCode: Int,
-//        permissions: Array<out String>,
-//        grantResults: IntArray
-//    ) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        val permissionLocation = ContextCompat.checkSelfPermission(requireActivity(), ACCESS_FINE_LOCATION)
-//        if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
-////            getMyLocation()
-//        }
-//    }
-
-
-    //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (resultCode == RESULT_OK) {
-//            if (requestCode == REQUEST_CHECK_SETTINGS_GPS) {
-////            getMyLocation()
-//        }
-//    }
-//    }
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.viewProfile -> {
@@ -518,7 +497,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
 
         RetrofitClient.api.artistListApi(
             shared.getString(Constants.DataKey.AUTH_VALUE),
-            Constants.DataKey.CONTENT_TYPE_VALUE, "", search, currentPage.toString()
+            Constants.DataKey.CONTENT_TYPE_VALUE, "20", search, currentPage.toString()
         )
             .enqueue(object : Callback<ArtistModel> {
                 override fun onResponse(call: Call<ArtistModel>, response: Response<ArtistModel>) {

@@ -65,7 +65,6 @@ class ReviewFragment : Fragment(), View.OnClickListener {
         // initializing onclick listener to views....
         backpress = view.findViewById(R.id.backpress)
         backpress?.setOnClickListener(this)
-        binding?.refresh?.setOnClickListener(this)
         artistID = shared?.getString(Constants.ARTIST_ID)!!
 
         reviewListApi()
@@ -84,12 +83,6 @@ class ReviewFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when(v?.id) {
-
-            R.id.refresh -> {
-                binding?.noDataFound?.visibility = View.GONE
-                binding?.refresh?.visibility = View.GONE
-                reviewListApi()
-            }
             R.id.backpress -> {
                 fragmentManager?.popBackStack()
             }
@@ -114,16 +107,10 @@ class ReviewFragment : Fragment(), View.OnClickListener {
                             if (reviewList.isNotEmpty()) {
 
                                 val arrayCount = reviewList.size
-                                binding?.reviewCountTxt?.text = "( " + arrayCount.toString() + " )"
-                                binding?.noDataFound?.visibility = View.GONE
-                                binding?.refresh?.visibility = View.GONE
                                 val reviewAdapter = ReviewAdapter(ctx!!,reviewList)
                                 binding?.reviewRecycler?.adapter = reviewAdapter
 
                             }else {
-
-                                binding?.noDataFound?.visibility = View.VISIBLE
-                                binding?.refresh?.visibility = View.VISIBLE
 
                             }
                         }

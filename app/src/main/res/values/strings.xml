@@ -215,13 +215,13 @@
     <string name="are_you_sure_want_to_cancel">Are you sure you want to cancel?</string>
     <string name="no_booking_right_now">No Booking Right Now</string>
     <string name="unable_to_find_booking_on_this_page">Unable to find booking on this page</string>
-    <string name="unable_to_find_data">Unable to find data on this page.\n  Please try again later.</string>
+    <string name="unable_to_find_data">Unable to find data on this page.\nPlease try again later.</string>
     <string name="no_chat_right_now">No Chat Right Now</string>
-    <string name="unable_to_find_chat">Unable to find Booking on this page. \n Please make bookings first.</string>
+    <string name="unable_to_find_chat">Unable to find chat on this page. \nPlease make bookings first.</string>
     <string name="price_demo">299</string>
     <string name="no_video_uploaded">No Video Uploaded</string>
     <string name="no_address_right_now">No Address Right Now</string>
-    <string name="unable_to_find_saved_addresses">Unable to find saved address.  \n Please add address</string>
+    <string name="unable_to_find_saved_addresses">Unable to find saved address.  \nPlease add address</string>
     <string name="do_you_want_to_delete">Do you want to delete?</string>
     <string name="please_enter_other_address">Please enter other address</string>
     <string name="choose_your_preffered_language">Choose Your Preffered Language</string>
@@ -305,6 +305,10 @@
     <string name="hurray_you_can_get_ready_for_show">Hurray, you can get ready for show</string>
     <string name="change_Language">Change Language</string>
     <string name="brand_new_artist">Brand New Artist</string>
+    <string name="rating_and_review">Rating \nand Review</string>
+    <string name="manage_your_bookings_here">Manage your bookings here</string>
+    <string name="no_artist_right_now">No Artist Right Now</string>
+    <string name="unable_to_find_artist">Unable to find artist on this page. Please search for another</string>
 
 
 </resources>

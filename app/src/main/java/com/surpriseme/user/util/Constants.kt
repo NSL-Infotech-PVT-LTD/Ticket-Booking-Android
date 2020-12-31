@@ -86,7 +86,8 @@ object Constants {
     const val ARTIST_IS_UNREACHABLE =  "Artist is unreachable"
     const val ARTIST_NOT_PICKING_CALL =  "Artist not picking call"
     const val ASENDING ="asc"
-    const val DESENDING ="dsc"
+    const val DESENDING ="desc"
+    const val PRICE_LOW_TO_HIGH = "Price Low To High  "
     var FROM_TIME = ""
     var TO_TIME = ""
     var REPORT = "report"
@@ -176,6 +177,8 @@ object Constants {
         var USER_ID = "USER_ID"
         var OLD_PASS_VALUE = "OLD_PASS_VALUE"
         var CURRENCY = "CURRENCY"
+        var BY_RATING = 0
+
     }
 
     object ImageUrl {

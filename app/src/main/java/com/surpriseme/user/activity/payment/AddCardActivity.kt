@@ -323,8 +323,10 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
                                 "" + response.body()!!.data.message,
                                 Toast.LENGTH_LONG
                             ).show()
-                            val intent =
-                                Intent(this@AddCardActivity, BookingDetailFragment::class.java)
+                            Constants.IS_BOOKING_DONE = true
+                            Constants.BOOKING = false
+                            Constants.NOTIFICATION = false
+                            val intent = Intent(this@AddCardActivity, BookingDetailFragment::class.java)
                             intent.putExtra("bookingId", bookingid)
 //                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                             startActivity(intent)

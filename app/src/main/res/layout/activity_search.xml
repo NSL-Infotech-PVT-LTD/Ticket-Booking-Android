@@ -93,23 +93,60 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/noDataFoundLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@color/colorPrimary"
+                    app:layout_constraintTop_toBottomOf="@id/searchEdt"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/noArtistRightNowTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/no_artist_right_now"
+                        android:textColor="@color/white"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="@dimen/_50sdp"
+                        android:textSize="@dimen/_14sdp"
+                        android:fontFamily="@font/montserrat_bold"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/unableToFindArtistTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/unable_to_find_artist"
+                        android:textColor="#99FFFFFF"
+                        android:textSize="@dimen/_12sdp"
+                        android:gravity="center"
+                        android:visibility="visible"
+                        android:layout_marginHorizontal="@dimen/_30sdp"
+                        app:layout_constraintTop_toBottomOf="@id/noArtistRightNowTv"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:fontFamily="@font/montserrat_semibold"/>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_200sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:visibility="visible"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:src="@drawable/no_artist_found"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/noDataFound"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/no_data_found"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_14sdp"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -128,10 +165,21 @@
         <!-- include layout for Category bottom sheet -->
         <include layout="@layout/category_bottom_sheet" />
 
-        <include
-            android:id="@+id/loaderLayout"
-            layout="@layout/loader_layout"
-            android:visibility="gone" />
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/progressBar"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            app:indicatorName="LineScalePulseOutIndicator"
+            style="@style/AVLoadingIndicatorView"
+            android:layout_gravity="center_horizontal|center_vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:indicatorColor="@color/colorPrimary"
+            />
+
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

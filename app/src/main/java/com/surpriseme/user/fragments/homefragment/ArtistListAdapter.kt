@@ -17,6 +17,8 @@ import com.surpriseme.user.R
 import com.surpriseme.user.util.BaseViewHolder
 import com.surpriseme.user.util.Constants
 import java.lang.StringBuilder
+import java.text.DecimalFormat
+import kotlin.math.roundToLong
 
 class ArtistListAdapter(
     val context: Context,
@@ -30,6 +32,7 @@ class ArtistListAdapter(
     private val VIEW_TYPE_LOADING = 0
     private val VIEW_TYPE_NORMAL = 1
     private var isLoaderVisible = false
+    private var price:Double = 0.0
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
@@ -140,8 +143,6 @@ class ArtistListAdapter(
             Picasso.get()
                 .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.image)
                 .placeholder(R.drawable.artist_pholder)
-                .resize(4000, 1500)
-                .onlyScaleDown()
                 .into(image)
 
             name.text = artistModel.name
@@ -177,13 +178,11 @@ class ArtistListAdapter(
             }
 
             if (Constants.SHOW_TYPE == context.resources?.getString(R.string.digital)!!) {
-                price.text =
-                    artistModel.currency + " " + artistModel.digital_price_per_hr + "/" + context.resources.getString(
+                price.text = artistModel.converted_currency + " " +  DecimalFormat("#.##").format(artistModel.converted_digital_price)+ "/" + context.resources.getString(
                         R.string.hr
                     )
             } else {
-                price.text =
-                    artistModel.currency + " " + artistModel.live_price_per_hr + "/" + context.resources.getString(
+                price.text = artistModel.converted_currency + " " + DecimalFormat("#.##").format(artistModel.converted_live_price)+ "/" + context.resources.getString(
                         R.string.hr
                     )
             }

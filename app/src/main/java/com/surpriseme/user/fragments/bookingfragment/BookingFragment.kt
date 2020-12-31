@@ -125,6 +125,7 @@ class BookingFragment : Fragment(), View.OnClickListener, BookingListAdapter.See
                         if (response.isSuccessful) {
 
                             bookingList.clear()
+                            adapter?.clear()
                             bookingList = response.body()?.data?.data!!
                             totalPage = response.body()?.data?.last_page!!
                             if (bookingList.size > 0) {
@@ -149,13 +150,11 @@ class BookingFragment : Fragment(), View.OnClickListener, BookingListAdapter.See
                                     }
                                 }, 1500)
 
-                                binding.noDataFound.visibility = View.GONE
-                                binding.bookingContainer.visibility = View.VISIBLE
+                                binding.noDataFoundLayout.visibility = View.GONE
 
                             } else {
-                                binding.bookingContainer.visibility = View.GONE
-                                binding.noDataFound.visibility = View.VISIBLE
-                                binding.refresh.visibility = View.VISIBLE
+                                binding.youMayEditTxt.text = ctx.resources.getString(R.string.manage_your_bookings_here)
+                                binding.noDataFoundLayout.visibility = View.VISIBLE
                             }
                         }
                     } else {

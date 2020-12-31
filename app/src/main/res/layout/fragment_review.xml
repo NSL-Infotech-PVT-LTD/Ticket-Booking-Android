@@ -29,74 +29,31 @@
 
 
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/reviewTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/review"
-            android:textSize="@dimen/_18sdp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_20sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
-
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/reviewCountTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/reviewTxt"
-            app:layout_constraintBottom_toBottomOf="@id/reviewTxt"
-            app:layout_constraintStart_toEndOf="@id/reviewTxt"
-            android:textColor="@color/black"/>
-
-            <ImageView
-                android:id="@+id/dottedViewImg"
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/headerTxt"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_10sdp"
-                android:src="@drawable/dotted_view_line"
-                app:layout_constraintTop_toBottomOf="@id/reviewCountTxt"
-                android:layout_marginTop="@dimen/_20sdp"/>
+                android:layout_height="@dimen/_120sdp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textSize="@dimen/_20sdp"
+                android:paddingStart="@dimen/_20sdp"
+                android:gravity="center_vertical"
+                android:text="@string/rating_and_review"
+                android:background="#B2D4145A"
+                android:textColor="@color/white"
+                android:fontFamily="@font/montserrat_bold"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/reviewRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginBottom="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dottedViewImg"/>
+                app:layout_constraintTop_toBottomOf="@+id/headerTxt"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/noDataFound"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/no_data_found"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_14sdp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/refresh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_50sdp"
-            android:text="@string/refresh"
-            android:textAllCaps="false"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.8" />
 
         <include layout="@layout/loader_layout"
             android:id="@+id/loaderLayout"

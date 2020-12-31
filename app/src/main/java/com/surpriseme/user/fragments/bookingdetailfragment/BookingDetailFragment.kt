@@ -83,6 +83,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
     private var rateReviewRatingbar: RatingBar? = null
     private var starImg: ImageView? = null
     private var rateReviewTxt: TextView? = null
+    private var mShowType = ""
 
     // boolean vars to take action according to status....
     private var wantToCancelBooking = false
@@ -166,17 +167,6 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
 
         bookingId = intent.getStringExtra("bookingId")!!
 
-        if (Constants.SHOW_TYPE == getString(R.string.digital)) {
-            binding.showTypeTv.text = getString(R.string.virtual)
-            binding.locationTxt.visibility = View.GONE
-            binding.locationTv.visibility = View.GONE
-
-        } else {
-            binding.showTypeTv.text = getString(R.string.in_person)
-            binding.locationTxt.visibility = View.GONE
-            binding.locationTv.visibility = View.GONE
-        }
-
         //Search bottom sheet callback....
         bottomSheetBehavior.setBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
@@ -217,6 +207,13 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
 //                    val transaction = fragmentManager?.beginTransaction()
 //                    transaction?.replace(R.id.frameContainer, fragment)
 //                    transaction?.commit()
+                }
+                if (Constants.IS_BOOKING_DONE) {
+                    Constants.BOOKING = false
+                    Constants.NOTIFICATION = false
+                    val intent = Intent(this@BookingDetailFragment,MainActivity::class.java)
+                    startActivity(intent)
+                    finishAffinity()
                 }
             }
             R.id.chatTv -> {
@@ -469,6 +466,13 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
                 }
 
                 binding.statusTv.text = "${bookingModel.status}"
+                mShowType = bookingModel.type
+                if (mShowType == Constants.DIGITAL) {
+                    binding.showTypeTv.text = getString(R.string.virtual)
+                }else {
+                    binding.showTypeTv.text = getString(R.string.in_person)
+                }
+
                 //change satatus of button...
                 if (bookingModel.status == Constants.CANCEL) {
                     binding.statusTv.text = resources.getString(R.string.cancel)
@@ -693,6 +697,8 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
                                 "" + response.body()?.data?.message,
                                 Toast.LENGTH_SHORT
                             ).show()
+                            val intent = Intent(this@BookingDetailFragment,MainActivity::class.java)
+                            startActivity(intent)
                             finish()
                         }
                     } else {
@@ -872,12 +878,12 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
                 if (description.isEmpty()) {
                     Toast.makeText(this, "Please write reason for other", Toast.LENGTH_SHORT).show()
                 } else {
-                    reportStatusApi(description)
                     reportPopupWindow.dismiss()
+                    reportStatusApi(description)
                 }
             } else {
-                reportStatusApi(spinnerValue)
                 reportPopupWindow.dismiss()
+                reportStatusApi(spinnerValue)
             }
         }
     }

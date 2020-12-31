@@ -48,10 +48,12 @@ import kotlin.collections.ArrayList
 class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
     ArtistListAdapter.BookBtnClick, View.OnClickListener, CategoryAdapter.CheckList {
 
+    private var seekbarRatingProgress: Float?=null
     private var binding: ActivitySearchBinding? = null
     private var shared: PrefrenceShared? = null
     private var artistList: ArrayList<DataUserArtistList> = ArrayList()
     private var search = ""
+    private var  isSearching = false
     private var latitude = ""
     private var longitude = ""
     private var hideKeyboard: HideKeyBoard? = null
@@ -97,7 +99,6 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
     private var categoryIdList: ArrayList<Int> = ArrayList()
     private var arrow: ImageView? = null
 
-
     private var categoryIdLst: ArrayList<Int> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,6 +110,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
         shared = PrefrenceShared(this@SearchActivity)
         latitude = shared?.getString(Constants.LATITUDE)!!
         longitude = shared?.getString(Constants.LONGITUDE)!!
+
         showType = Constants.SHOW_TYPE
         if (showType == getString(R.string.digital)) {
             byDistanceTv?.visibility = View.GONE
@@ -117,6 +119,12 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
             byDistanceTv?.visibility = View.VISIBLE
             seekbarDistance?.visibility = View.VISIBLE
         }
+
+
+        if (shared?.getInt("byRating") !=null) {
+            val r:Int = shared?.getInt("byRating")!!
+            seekbarRating?.setProgress(shared?.getInt("byRating")!!.toFloat())
+        }
         init()
 
 
@@ -124,8 +132,6 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
 
     private fun init() {
 
-        val loadingText = findViewById<TextView>(R.id.loadingtext)
-        loadingText.text  = Utility.randomString()
         // search bottom sheet view initialization....
         bottomSheet = findViewById<ConstraintLayout>(R.id.boottomSheet)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
@@ -147,25 +153,43 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-
             }
 
             override fun afterTextChanged(s: Editable?) {
 
-                currentPage =1
-                binding?.noDataFound?.visibility = View.GONE
                 search = s.toString()
+                artistListAdapter?.clear()
+                artistList.clear()
+                artistListAdapter?.notifyDataSetChanged()
 
-                    if (Constants.SHOW_TYPE == getString(R.string.digital)) {
+                if (search.length<=2) {
+                    Toast.makeText(this@SearchActivity,"Enter atleast three character",Toast.LENGTH_SHORT).show()
+                    artistListAdapter?.clear()
+                }else {
+                    if (Constants.SHOW_TYPE == getString(R.string.digital)) {Handler().postDelayed({
+                        run {
+                            /**
+                             * manage progress view
+                             */
+                            /**
+                             * manage progress view
+                             */
+                            if(!isSearching){
+                                isSearching = true
+                                artistListApiWithoutLatlng(search)                            }
 
-                        artistListApiWithoutLatlng(search)
+                        }
+                    }, 1500)
+
                     } else {
-
-                        artistListApi(shared?.getString(Constants.LATITUDE)!!,shared?.getString(Constants.LONGITUDE)!!, search)
+                        artistListApi(
+                            shared?.getString(Constants.LATITUDE)!!,
+                            shared?.getString(Constants.LONGITUDE)!!,
+                            search
+                        )
                     }
+                }
             }
 
 
@@ -227,11 +251,13 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
 
         seekbarRating?.onSeekChangeListener = object : OnSeekChangeListener{
             override fun onSeeking(seekParams: SeekParams?) {
-                Toast.makeText(this@SearchActivity, "${seekParams?.tickText}" , Toast.LENGTH_SHORT)
-                    .show()
+
+                seekbarRatingProgress = seekParams?.progress?.toFloat()
                 byRating = seekParams?.tickText!!
                 if (byRating == "Any") {
                     byRating = "0"
+//                    shared?.setInt(Constants.DataKey.BY_RATING,showByRating!!)
+                    shared?.setInt("byRating",seekbarRatingProgress?.toInt())
                 }
 
             }
@@ -295,7 +321,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
 
                 val radioId = group?.findViewById<RadioButton>(checkedId)
                 sortBy = radioId?.text.toString()
-                if (sortBy == getString(R.string.price_low_to_high)) {
+                if (sortBy == Constants.PRICE_LOW_TO_HIGH) {
                     sortBy = Constants.ASENDING
                 } else {
                     sortBy = Constants.DESENDING
@@ -366,17 +392,6 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.refresh -> {
-                binding?.searchEdt?.setText("")
-                hideKeyboard?.hideKeyboard(this@SearchActivity)
-                search = ""
-                categoryIdList.clear()
-                latitude = shared?.getString(Constants.LATITUDE)!!
-                longitude = shared?.getString(Constants.LONGITUDE)!!
-//                artistListApi(latitude, longitude, search)
-                binding?.noDataFound?.visibility = View.GONE
-
-            }
             R.id.filterIcon -> {
                 binding?.whiteBgLayout?.visibility = View.VISIBLE
                 bottomSheetUpDownCategory()
@@ -385,7 +400,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 //bottomSheetUpDownCategory()
                 binding?.whiteBgLayout?.visibility = View.GONE
                 bottomSheetUpDownCategory()
-                binding?.noDataFound?.visibility = View.GONE
+                binding?.noDataFoundLayout?.visibility = View.GONE
             }
             R.id.chooseCategoryTxt -> {
                 isCategoryClicked = true
@@ -407,6 +422,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
             }
             R.id.applySearchBtn -> {
                 bottomSheetUpDownCategory()
+                artistListAdapter?.clear()
 
                 if (showType == getString(R.string.digital)) {
                     from_Date = fromDateTxt?.text.toString().trim()
@@ -487,7 +503,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
 
 //        var array = arrayOf(1)
         if (currentPage == 1)
-            binding?.loaderLayout?.visibility = View.VISIBLE
+            binding?.progressBar?.visibility = View.VISIBLE
 
         RetrofitClient.api.artistListApi(
             shared?.getString(Constants.DataKey.AUTH_VALUE)!!,
@@ -496,7 +512,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
         )
             .enqueue(object : Callback<ArtistModel> {
                 override fun onResponse(call: Call<ArtistModel>, response: Response<ArtistModel>) {
-                    binding?.loaderLayout?.visibility = View.GONE
+                    binding?.progressBar?.visibility = View.GONE
                     if (response.body() != null) {
                         if (response.isSuccessful) {
 
@@ -526,12 +542,11 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                                     }
                                 }, 1500)
 
-                                binding?.searchRecycler?.adapter = artistListAdapter
                                 binding?.searchLayout?.visibility = View.VISIBLE
+                                binding?.noDataFoundLayout?.visibility = View.GONE
 
                             } else {
-                                binding?.noDataFound?.visibility = View.VISIBLE
-
+                                binding?.noDataFoundLayout?.visibility = View.VISIBLE
                                 binding?.searchLayout?.visibility = View.GONE
 
                             }
@@ -557,7 +572,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 }
 
                 override fun onFailure(call: Call<ArtistModel>, t: Throwable) {
-                    binding?.loaderLayout?.visibility = View.GONE
+                    binding?.progressBar?.visibility = View.GONE
                     Toast.makeText(
                         this@SearchActivity,
                         "" + t.message.toString(),
@@ -569,7 +584,8 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
 
     private fun artistListApiWithoutLatlng(search: String) {
 
-        binding?.loaderLayout?.visibility = View.VISIBLE
+
+        binding?.progressBar?.visibility = View.VISIBLE
 
         RetrofitClient.api.artistListApi(
             shared?.getString(Constants.DataKey.AUTH_VALUE)!!,
@@ -578,10 +594,10 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
         )
             .enqueue(object : Callback<ArtistModel> {
                 override fun onResponse(call: Call<ArtistModel>, response: Response<ArtistModel>) {
-                    binding?.loaderLayout?.visibility = View.GONE
+                    binding?.progressBar?.visibility = View.GONE
                     if (response.body() != null) {
                         if (response.isSuccessful) {
-
+                            isSearching = false
                             // after api successfull do your stuff....
                             artistList.clear()
                             artistList = response.body()?.data?.data!!
@@ -596,9 +612,11 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                                         /**
                                          * manage progress view
                                          */
+
+                                    val list =     artistList.distinctBy { it.name } as ArrayList
                                         if (currentPage != PaginationScrollListener.PAGE_START)
                                             artistListAdapter?.removeLoading()
-                                        artistListAdapter?.addItems(artistList)
+                                        artistListAdapter?.addItems(list)
                                         if (currentPage < totalPage) {
                                             artistListAdapter?.addLoading()
                                         } else {
@@ -607,13 +625,13 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                                         isLoading = false
                                     }
                                 }, 1500)
-                                binding?.searchRecycler?.adapter = artistListAdapter
-                                binding?.searchLayout?.visibility = View.VISIBLE
-                                binding?.noDataFound?.visibility = View.GONE
-                                binding?.searchLayout?.visibility = View.VISIBLE
+
+
+                                binding?.noDataFoundLayout?.visibility = View.GONE
+
 
                             } else {
-                                binding?.noDataFound?.visibility = View.VISIBLE
+                                binding?.noDataFoundLayout?.visibility = View.VISIBLE
                                 binding?.searchLayout?.visibility = View.GONE
                             }
                         }
@@ -634,7 +652,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 }
 
                 override fun onFailure(call: Call<ArtistModel>, t: Throwable) {
-                    binding?.loaderLayout?.visibility = View.GONE
+                    binding?.progressBar?.visibility = View.GONE
                     Toast.makeText(applicationContext,"" + t.message.toString(),Toast.LENGTH_SHORT).show()
 
                 }

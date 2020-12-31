@@ -378,9 +378,9 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                     .onlyScaleDown()
                                     .into(binding.profileImg)
                                 binding.profileName.text = artistModel.name
-                                binding.livePriceText.text = artistModel.currency + " "+ artistModel.live_price_per_hr.toString()
-                                if (artistModel.digital_price_per_hr != null)
-                                    binding.digitalPriceText.text = artistModel.currency + " " + artistModel.digital_price_per_hr.toString()
+                                binding.livePriceText.text = artistModel.currency + " "+ artistModel.converted_live_price.toString()
+                                if (artistModel.converted_digital_price != null)
+                                    binding.digitalPriceText.text = artistModel.currency + " " + artistModel.converted_digital_price.toString()
                                 /**
                                  * @author pardeep.sharma@netscapelabs.com
                                  * @param Set the zoom method to open the images

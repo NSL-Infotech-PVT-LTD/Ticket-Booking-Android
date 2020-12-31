@@ -2,14 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/_50sdp"
-    android:background="@color/chatPurple"
+    android:background="#EAECF2"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
         android:id="@+id/chatBackpress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_white_back"
+        android:src="@drawable/ic_back_black"
         android:padding="@dimen/_10sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -18,39 +18,30 @@
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginBottom="@dimen/_20sdp"/>
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/chatImgCard"
-        android:layout_width="@dimen/_30sdp"
-        android:layout_height="@dimen/_30sdp"
-        app:layout_constraintStart_toEndOf="@+id/chatBackpress"
-        app:layout_constraintTop_toTopOf="@id/chatBackpress"
-        app:layout_constraintBottom_toBottomOf="@id/chatBackpress"
-        android:layout_marginStart="@dimen/_10sdp"
-        app:cardCornerRadius="@dimen/_50sdp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/chatImage"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:adjustViewBounds="true"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:src="@drawable/profile_pholder"
+                app:layout_constraintTop_toTopOf="@id/chatBackpress"
+                app:layout_constraintBottom_toBottomOf="@id/chatBackpress"
+                app:layout_constraintStart_toEndOf="@id/chatBackpress"
+                android:layout_marginStart="@dimen/_5sdp"
+               />
+
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/chatName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/chatImgCard"
+        app:layout_constraintStart_toEndOf="@+id/chatImage"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="@dimen/_10sdp"
         app:layout_constraintTop_toTopOf="@id/chatBackpress"
         app:layout_constraintBottom_toBottomOf="@id/chatBackpress"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="@dimen/_12sdp"
         android:singleLine="true"
         android:textStyle="bold"/>

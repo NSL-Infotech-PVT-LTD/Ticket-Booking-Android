@@ -89,8 +89,7 @@ class ChatListFragment : Fragment(), ChatListAdapter.GoToChat {
 
                                 if (chatList.isNotEmpty()) {
 
-                                    binding?.noArtistIcon?.visibility = View.GONE
-                                    binding?.noArtistFound?.visibility = View.GONE
+                                    binding?.artistNotFoundLayout?.visibility = View.GONE
 
                                     val chatListAdapter =
                                         ChatListAdapter(ctx!!, chatList, this@ChatListFragment)
@@ -100,7 +99,7 @@ class ChatListFragment : Fragment(), ChatListAdapter.GoToChat {
                                     binding?.chatContainer?.visibility = View.GONE
                                 }
                             }else{
-                                binding?.noArtistText?.visibility = View.VISIBLE
+                                binding?.artistNotFoundLayout?.visibility = View.VISIBLE
                             }
                         }else {
                                 Toast.makeText(ctx,"Something went Wrong",Toast.LENGTH_SHORT).show()

@@ -146,14 +146,6 @@
                 app:layout_constraintTop_toTopOf="@+id/cardPaymentTxt" />
 
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/partnership"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginBottom="@dimen/_20sdp"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

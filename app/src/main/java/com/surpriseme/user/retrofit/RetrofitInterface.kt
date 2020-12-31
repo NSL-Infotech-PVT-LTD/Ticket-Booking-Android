@@ -157,6 +157,7 @@ interface RetrofitInterface {
         @Query(Constants.ApiKey.RADIUS) radius: String
     ): Call<ArtistModel>
 
+
     //Customer Booking List...
     @POST(Constants.CUSTOMER_BOOKING_LIST)
     fun customerBookingListApi(
@@ -274,7 +275,9 @@ interface RetrofitInterface {
     @POST(Constants.CHAT)
     fun chatApi(
         @Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
-        @Query(Constants.ApiKey.RECEIVER_ID) receiver_id: String
+        @Query(Constants.ApiKey.RECEIVER_ID) receiver_id: String,
+        @Query(Constants.ApiKey.LIMIT) limit: String,
+        @Query("page") page: String
     ): Call<ChatByIdModel>
 
     @POST(Constants.BOOKING_STATUS)

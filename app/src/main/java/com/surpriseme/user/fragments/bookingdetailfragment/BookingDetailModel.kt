@@ -20,7 +20,7 @@ data class BookingDataModel(
     val params: Report,
     val payment_mode: String,
     val payment_params: PaymentParams,
-    val price: Int,
+    val price: Double,
     val rate_artist: Any,
     val rate_detail: RateDetail?,
     val status: String,

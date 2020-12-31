@@ -1,85 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/reviewImage"
-        android:layout_width="@dimen/_30sdp"
-        android:layout_height="@dimen/_30sdp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:src="@drawable/profile_pholder"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginStart="@dimen/_20sdp"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/reviewNameTxt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/reviewImage"
-        app:layout_constraintTop_toTopOf="@id/reviewImage"
-        android:text="Smatha Sills"
         android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
         android:singleLine="true"
+        android:textColor="@color/black"
         android:textSize="@dimen/_12sdp"
-        app:layout_constraintEnd_toStartOf="@+id/ratingbar"
-        android:textColor="@color/black"/>
+        android:fontFamily="@font/montserrat_regular"
+        app:layout_constraintBottom_toBottomOf="@id/reviewImage"
+        app:layout_constraintEnd_toStartOf="@+id/reviewDateTxt"
+        app:layout_constraintStart_toEndOf="@+id/reviewImage"
+        app:layout_constraintTop_toTopOf="@id/reviewImage" />
+
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/reviewDateTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/grey_Dark_color"
+        android:textSize="@dimen/_8sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/_20sdp"
+        app:layout_constraintTop_toTopOf="@+id/reviewNameTxt"
+        app:layout_constraintBottom_toBottomOf="@+id/reviewNameTxt"/>
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/reviewDescTxt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/review_list_bg"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingTop="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_50sdp"
+        app:layout_constraintStart_toStartOf="@id/reviewImage"
+        app:layout_constraintTop_toBottomOf="@id/reviewImage" />
 
     <RatingBar
         android:id="@+id/ratingbar"
         style="@style/Widget.AppCompat.RatingBar.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:layout_marginBottom="5dp"
         android:rating="3"
+        android:layout_marginStart="@dimen/_10sdp"
         android:stepSize="1"
         android:theme="@style/RatingBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="@dimen/_20sdp"
-        app:layout_constraintTop_toTopOf="@id/reviewNameTxt"
-        />
-
-    <ImageView
-        android:id="@+id/dottedViewImg"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/_10sdp"
-        app:layout_constraintStart_toStartOf="@+id/reviewNameTxt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/reviewNameTxt"
-        android:src="@drawable/dotted_view_line"
-        android:layout_marginEnd="@dimen/_20sdp"
-        android:layout_marginTop="@dimen/_5sdp"/>
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/reviewDescTxt"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/reviewNameTxt"
-        app:layout_constraintTop_toBottomOf="@id/dottedViewImg"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_10sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="@dimen/_20sdp"/>
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/reviewDateTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/reviewDescTxt"
-        app:layout_constraintTop_toBottomOf="@+id/reviewDescTxt"
-        android:text="21 october"
-        android:textColor="@color/grey_Dark_color"
-        android:textSize="@dimen/_8sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="@dimen/_10sdp"/>
-
-
-
-
+        app:layout_constraintBottom_toBottomOf="@id/reviewDescTxt"
+        app:layout_constraintStart_toStartOf="@id/reviewDescTxt"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

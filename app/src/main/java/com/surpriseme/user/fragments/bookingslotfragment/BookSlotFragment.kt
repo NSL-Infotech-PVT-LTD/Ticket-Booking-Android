@@ -53,9 +53,9 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
     private var slotList: ArrayList<SlotDataModel> = ArrayList()
     val fakeList: ArrayList<SlotDataModel> = ArrayList()
     private var selectedSlotList: ArrayList<SlotDataModel> = ArrayList()
-    private var backpress:MaterialTextView?=null
+    private var backpress: MaterialTextView? = null
     private var showType = ""
-    private var bookingId =""
+    private var bookingId = ""
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -76,10 +76,10 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
         return view
     }
 
-    private fun init(view:View) {
+    private fun init(view: View) {
 
         val loadingText = view.findViewById<TextView>(R.id.loadingtext)
-        loadingText.text  = Utility.randomString()
+        loadingText.text = Utility.randomString()
 
         // initialization of views....
         backpress = view.findViewById(R.id.backpress)
@@ -120,18 +120,19 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
         when (v?.id) {
 
             R.id.proceedToCheckoutBtn -> {
-                proceedToCheckoutBtn.isEnabled = false
+                binding.proceedToCheckoutBtn.isEnabled = false
                 popupBookingConfirm()
                 Handler().postDelayed(Runnable {
-                    proceedToCheckoutBtn.isEnabled = true
-                },2000)
+                    binding.proceedToCheckoutBtn.isEnabled = true
+                }, 2000)
 
             }
             R.id.clearAllBtn -> {
                 adapter?.settSlotClear(true)
                 list.clear()
                 selectedSlotList.clear()
-                binding.proceedToCheckoutBtn.background = ContextCompat.getDrawable(ctx,R.drawable.proceed_to_check_unselected)
+                binding.proceedToCheckoutBtn.background =
+                    ContextCompat.getDrawable(ctx, R.drawable.proceed_to_check_unselected)
             }
             R.id.backpress -> {
                 fragmentManager?.popBackStack()
@@ -196,10 +197,11 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
                         if (response.isSuccessful) {
                             // Display Popup Message when Api Successfully created booking....
 
-                            bookingId= response.body()?.data?.address?.id.toString()
-                            val intent = Intent(ctx,PaymentActivity::class.java)
+                            bookingId = response.body()?.data?.address?.id.toString()
+                            val intent = Intent(ctx, PaymentActivity::class.java)
                             intent.putExtra("bookingid", bookingId)
                             startActivity(intent)
+                            requireActivity().finish()
                             list.clear()
                         }
                     } else {
@@ -229,9 +231,11 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
 
         selectedSlotList = slotList
         if (selectedSlotList.isNotEmpty()) {
-            binding.proceedToCheckoutBtn.background = ContextCompat.getDrawable(ctx,R.drawable.proceed_to_check_selected)
-        }else  {
-            binding.proceedToCheckoutBtn.background = ContextCompat.getDrawable(ctx,R.drawable.proceed_to_check_unselected)
+            binding.proceedToCheckoutBtn.background =
+                ContextCompat.getDrawable(ctx, R.drawable.proceed_to_check_selected)
+        } else {
+            binding.proceedToCheckoutBtn.background =
+                ContextCompat.getDrawable(ctx, R.drawable.proceed_to_check_unselected)
         }
 
     }
@@ -275,32 +279,41 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
 
                         val fromTime = list[0].hour
                         val toTime = list[list.size - 1].hour
-                        mFromTime = fromTime.split("-")[0]   // gettimg fromTime from List
-                        mToTime = toTime.split("-")[1]     // // gettimg toTime from List
+                        val sdfParse1 = SimpleDateFormat("HH:mm")
+                        val sdf1 = SimpleDateFormat("hh:mm a")
 
-                        if (mFromTime.contains("am") && mToTime.contains("am")) {
-                            if(mFromTime == "12:00 am "){
-                                mFromTime  = "00:00 am"
-                            }
-                            mFromTime = mFromTime.split("am")[0]
-                            mToTime = mToTime.split("am")[0]
-                        } else if (mFromTime.contains("am") && mToTime.contains("pm")) {
-                            mFromTime = mFromTime.split("am")[0]
-                            mToTime = mToTime.split("pm")[0]
-                        } else if (mFromTime.contains("pm") && mToTime.contains("pm")) {
-                            mFromTime = mFromTime.split("pm")[0]
-                            mToTime = mToTime.split("pm")[0]
-                        } else if (mFromTime.contains("pm") && mToTime.contains("am")){
-                            mFromTime = mFromTime.split("pm")[0]
-                            mToTime = mToTime.split("am")[0]
+                        mFromTime = fromTime.split(" - ")[0]   // gettimg fromTime from List
+                        mToTime = toTime.split(" - ")[1]     // // gettimg toTime from List
+
+                        val date = sdf1.parse(mFromTime)
+                        val date1 = sdf1.parse(mToTime)
+                        if (date != null && date1 !=null) {
+                            mFromTime = sdfParse1.format(date)
+                            mToTime = sdfParse1.format(date1)
                         }
+//                        if (mFromTime.contains("am") && mToTime.contains("am")) {
+//                            if (mFromTime == "12:00 am ") {
+//                                mFromTime = "00:00 am"
+//                            }
+//                            mFromTime = mFromTime.split("am")[0]
+//                            mToTime = mToTime.split("am")[0]
+//                        } else if (mFromTime.contains("am") && mToTime.contains("pm")) {
+//                            mFromTime = mFromTime.split("am")[0]
+//                            mToTime = mToTime.split("pm")[0]
+//                        } else if (mFromTime.contains("pm") && mToTime.contains("pm")) {
+//                            mFromTime = mFromTime.split("pm")[0]
+//                            mToTime = mToTime.split("pm")[0]
+//                        } else if (mFromTime.contains("pm") && mToTime.contains("am")) {
+//                            mFromTime = mFromTime.split("pm")[0]
+//                            mToTime = mToTime.split("am")[0]
+//                        }
 
                     }
                 }
 
                 if (selectedSlotList.isEmpty()) {
-                    Toast.makeText(ctx,"Please select Any Slot",Toast.LENGTH_SHORT).show()
-                }else {
+                    Toast.makeText(ctx, "Please select Any Slot", Toast.LENGTH_SHORT).show()
+                } else {
                     bookingCreateApi()
                 }
 

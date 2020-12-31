@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.method.PasswordTransformationMethod
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -24,6 +25,7 @@ import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
 import com.surpriseme.user.util.Utility
+import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -66,6 +68,12 @@ class ChangePasswordFragment : Fragment(), View.OnClickListener {
         loadingText.text  = Utility.randomString()
 
         binding.continueButton.setOnClickListener(this)
+        binding.changeEyeDisable.setOnClickListener(this)
+        binding.changeEyeEnable.setOnClickListener(this)
+        binding.newEyeDisable.setOnClickListener(this)
+        binding.newEyeEnable.setOnClickListener(this)
+        binding.confirmEyeDisable.setOnClickListener(this)
+        binding.confirmEyeEnable.setOnClickListener(this)
         tbackpress.setOnClickListener(this)
         oldPassValue = shared.getString(Constants.DataKey.OLD_PASS_VALUE)
 
@@ -103,6 +111,38 @@ class ChangePasswordFragment : Fragment(), View.OnClickListener {
             }
             R.id.backpress -> {
                 fragmentManager?.popBackStack()
+            }
+            R.id.changeEyeDisable -> {
+                binding.oldPassEdt.transformationMethod = null
+                binding.changeEyeEnable.visibility = View.VISIBLE
+                binding.changeEyeDisable.visibility = View.GONE
+            }
+            R.id.changeEyeEnable -> {
+                binding.oldPassEdt.transformationMethod = PasswordTransformationMethod()
+                binding.changeEyeEnable.visibility = View.GONE
+                binding.changeEyeDisable.visibility = View.VISIBLE
+
+            }
+            R.id.newEyeDisable -> {
+                binding.newPasswordEdt.transformationMethod = null
+                binding.newEyeEnable.visibility = View.VISIBLE
+                binding.newEyeDisable.visibility = View.GONE
+
+            }
+            R.id.newEyeEnable -> {
+                binding.newPasswordEdt.transformationMethod = PasswordTransformationMethod()
+                binding.newEyeEnable.visibility = View.GONE
+                binding.newEyeDisable.visibility = View.VISIBLE
+            }
+            R.id.confirmEyeDisable-> {
+                binding.confirmPassEdt.transformationMethod = null
+                binding.confirmEyeEnable.visibility = View.VISIBLE
+                binding.confirmEyeDisable.visibility = View.GONE
+            }
+            R.id.confirmEyeEnable -> {
+                binding.confirmPassEdt.transformationMethod = PasswordTransformationMethod()
+                binding.confirmEyeEnable.visibility = View.GONE
+                binding.confirmEyeDisable.visibility = View.VISIBLE
             }
         }
     }

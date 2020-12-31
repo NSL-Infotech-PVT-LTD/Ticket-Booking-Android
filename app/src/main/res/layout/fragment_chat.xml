@@ -7,7 +7,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.chatFragment.ChatFragment">
 
@@ -21,56 +20,73 @@
             android:id="@+id/toolbarLayout"
             layout="@layout/chat_toolbar_layout" />
 
-        <ListView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listchat"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:divider="@null"
-            android:stackFromBottom="true"
-            android:transcriptMode="normal"
-            android:dividerHeight="0dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_4sdp"
+            app:layout_constraintBottom_toTopOf="@id/customcard"
             app:layout_constraintTop_toBottomOf="@+id/toolbarLayout"
-            app:layout_constraintBottom_toTopOf="@+id/msgEdt"
-            app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <EditText
-            android:id="@+id/msgEdt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/msg_bg"
-            android:minHeight="@dimen/_40sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:textSize="@dimen/_10sdp"
-            android:hint="@string/type_your_message"
-            android:textColorHint="@color/black"
-            android:paddingHorizontal="@dimen/_20sdp"
-            android:paddingVertical="@dimen/_20sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginHorizontal="@dimen/_20sdp"
-            android:inputType="textCapSentences|textMultiLine"
-            app:layout_constraintEnd_toStartOf="@id/sendBtnCard"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/sendBtnCard"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            app:layout_constraintBottom_toBottomOf="@+id/msgEdt"
-            android:layout_marginEnd="@dimen/_10sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:cardCornerRadius="@dimen/_50sdp">
-
-        <ImageView
-            android:id="@+id/sendBtn"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_send_icon_24"
-            android:padding="@dimen/_10sdp"
-            android:background="@color/colorPrimary"
             />
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/customcard"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_70sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:cardElevation="@dimen/_5sdp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/aatext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@id/msgEdt"
+                    app:layout_constraintBottom_toBottomOf="@id/msgEdt"
+                    android:fontFamily="@font/montserrat_bolditalic"
+                    android:text="Aa"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    app:layout_constraintEnd_toStartOf="@id/msgEdt"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
+
+
+                <ImageView
+                    android:id="@+id/sendBtn"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:src="@drawable/send11"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:padding="@dimen/_7sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+
+                <EditText
+                    android:id="@+id/msgEdt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:background="@drawable/msg_bg"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/sendBtn"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/aatext"
+                    android:hint="@string/type_your_message"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:maxLines="8"
+                    android:minHeight="@dimen/_35sdp"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:textColorHint="@color/grey_Dark_color"
+                    android:textSize="@dimen/_9sdp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -36,31 +36,32 @@ import retrofit2.Retrofit
 
 class PaymentActivity : AppCompatActivity(), View.OnClickListener {
 
-    private var binding:ActivityPaymentBinding?=null
-    private var shared:PrefrenceShared?=null
-    private var bookingId=""
-    private var list:ArrayList<DataX> = ArrayList()
-    private var backpress:MaterialTextView?=null
+    private var binding: ActivityPaymentBinding? = null
+    private var shared: PrefrenceShared? = null
+    private var bookingId = ""
+    private var list: ArrayList<DataX> = ArrayList()
+    private var backpress: MaterialTextView? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_payment)
-        binding = DataBindingUtil.setContentView(this@PaymentActivity,R.layout.activity_payment)
+        binding = DataBindingUtil.setContentView(this@PaymentActivity, R.layout.activity_payment)
 
         bookingId = intent.getStringExtra("bookingid")!!
         init()
         binding?.idealPaymentTxt!!.setOnClickListener {
-            val intent = Intent(this@PaymentActivity, IdealPayment ::class.java)
-            intent.putExtra("bookingid",bookingId)
+            val intent = Intent(this@PaymentActivity, IdealPayment::class.java)
+            intent.putExtra("bookingid", bookingId)
             startActivity(intent)
+            finish()
 
         }
 
     }
 
     private fun init() {
-        shared= PrefrenceShared(this)
+        shared = PrefrenceShared(this)
         backpress = findViewById(R.id.backpress)
         backpress?.setOnClickListener(this)
         cardget()
@@ -70,26 +71,25 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        when(v?.id) {
+        when (v?.id) {
             R.id.cardPaymentTxt -> {
-                if(list.isEmpty()){
+                if (list.isEmpty()) {
 
                     Constants.IS_BOOKING_DONE = true
                     Constants.BOOKING = false
                     Constants.NOTIFICATION = false
-                val intent = Intent(this@PaymentActivity, AddCardActivity ::class.java)
-                    intent.putExtra("paycard","paycard")
-                    intent.putExtra("bookingid",bookingId)
-                startActivity(intent)
+                    val intent = Intent(this@PaymentActivity, AddCardActivity::class.java)
+                    intent.putExtra("paycard", "paycard")
+                    intent.putExtra("bookingid", bookingId)
+                    startActivity(intent)
                     finish()
 
-                }
-                else{
+                } else {
                     Constants.IS_BOOKING_DONE = true
                     Constants.BOOKING = false
                     Constants.NOTIFICATION = false
-                    val intent = Intent(this@PaymentActivity, SeleckBank ::class.java)
-                    intent.putExtra("bookingid",bookingId)
+                    val intent = Intent(this@PaymentActivity, SeleckBank::class.java)
+                    intent.putExtra("bookingid", bookingId)
                     startActivity(intent)
                     finish()
                 }
@@ -137,12 +137,16 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     // api to cancel booking....
-    private fun cancelBookingApi(bookingID:String) {
+    private fun cancelBookingApi(bookingID: String) {
 
         binding?.loaderLayout?.visibility = View.VISIBLE
         val status = "cancel"
-        RetrofitClient.api.bookingCancelApi(shared?.getString(Constants.DataKey.AUTH_VALUE)!!,bookingID,status)
-            .enqueue(object :Callback<BookingCancelModel> {
+        RetrofitClient.api.bookingCancelApi(
+            shared?.getString(Constants.DataKey.AUTH_VALUE)!!,
+            bookingID,
+            status
+        )
+            .enqueue(object : Callback<BookingCancelModel> {
                 override fun onResponse(
                     call: Call<BookingCancelModel>,
                     response: Response<BookingCancelModel>
@@ -150,21 +154,33 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener {
 
                     binding?.loaderLayout?.visibility = View.GONE
                     if (response.isSuccessful) {
-                        if (response.body() !=null){
-                            Toast.makeText(this@PaymentActivity,"" + response.body()?.data?.message.toString(),Toast.LENGTH_SHORT).show()
+                        if (response.body() != null) {
+                            Toast.makeText(
+                                this@PaymentActivity,
+                                "" + response.body()?.data?.message.toString(),
+                                Toast.LENGTH_SHORT
+                            ).show()
                             val intent = Intent(this@PaymentActivity, MainActivity::class.java)
                             startActivity(intent)
                             finish()
                         }
                     } else {
-                        val jsonObject:JSONObject
-                        if (response.errorBody() !=null) {
+                        val jsonObject: JSONObject
+                        if (response.errorBody() != null) {
                             try {
                                 jsonObject = JSONObject(response.errorBody()?.string()!!)
                                 val errorMessage = jsonObject.getString(Constants.ERROR)
-                                Toast.makeText(this@PaymentActivity,"" + errorMessage,Toast.LENGTH_SHORT).show()
-                            } catch (e:JSONException) {
-                                Toast.makeText(this@PaymentActivity,"" + e.message.toString(),Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    this@PaymentActivity,
+                                    "" + errorMessage,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } catch (e: JSONException) {
+                                Toast.makeText(
+                                    this@PaymentActivity,
+                                    "" + e.message.toString(),
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         }
                     }
@@ -195,8 +211,8 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener {
                     binding!!.loaderLayout.visibility = View.GONE
                     if (response.body() != null) {
                         if (response.isSuccessful) {
-                            if(response.body()!!.data.data.isNotEmpty()){
-                                list= response.body()!!.data.data
+                            if (response.body()!!.data.data.isNotEmpty()) {
+                                list = response.body()!!.data.data
                             }
                         }
                     } else {

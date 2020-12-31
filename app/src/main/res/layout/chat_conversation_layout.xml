@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+
     android:layout_height="wrap_content">
 
     <com.google.android.material.textview.MaterialTextView
@@ -14,6 +15,7 @@
         android:paddingHorizontal="@dimen/_10sdp"
         android:paddingVertical="@dimen/_2sdp"
         android:textColor="@color/black"
+        android:visibility="gone"
         android:textSize="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +25,7 @@
         android:id="@+id/recLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,25 +38,31 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <!--            <de.hdodenhof.circleimageview.CircleImageView-->
-            <!--                android:id="@+id/recImg"-->
-            <!--                android:layout_width="@dimen/_30sdp"-->
-            <!--                android:layout_height="@dimen/_30sdp"-->
-            <!--                android:layout_marginStart="@dimen/_15sdp"-->
-            <!--                android:src="@drawable/img"-->
-            <!--                app:civ_border_color="@color/yellowChat"-->
-            <!--                app:civ_border_width="@dimen/_1sdp"-->
-            <!--                app:layout_constraintStart_toStartOf="parent"-->
-            <!--                app:layout_constraintTop_toTopOf="parent" />-->
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/recImg"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+
+                android:layout_marginStart="@dimen/_15sdp"
+                android:src="@drawable/profile_pholder"
+                app:civ_border_color="@color/grey_color"
+                app:civ_border_width="@dimen/_1sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/rcurve"
+                />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/receiveconstrain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_20sdp"
-                android:background="@drawable/chat_receiver_bg"
-                android:backgroundTint="@color/colorPrimary"
+                android:background="@drawable/chat_send_bg"
+                android:backgroundTint="#EAECF2"
                 android:maxWidth="@dimen/_190sdp"
-                app:layout_constraintStart_toStartOf="parent"
+                android:paddingTop="@dimen/_7sdp"
+                android:paddingBottom="@dimen/_7sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                app:layout_constraintStart_toEndOf="@id/recImg"
+
                 app:layout_constraintTop_toTopOf="parent">
 
 
@@ -62,38 +70,52 @@
                     android:id="@+id/recMessage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    android:backgroundTint="@color/redBtnBg"
+
                     android:gravity="start"
                     android:maxWidth="@dimen/_190sdp"
-                    android:minWidth="@dimen/_40sdp"
-                    android:paddingHorizontal="@dimen/_10sdp"
-                    android:paddingVertical="@dimen/_2sdp"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:paddingStart="@dimen/_10sdp"
+
+
+                    android:text="hello"
 
                     android:inputType="textCapSentences|textMultiLine"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/_10sdp"
-                    app:layout_constraintBottom_toTopOf="@+id/recTimeTxt"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0"
+
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/recTimeTxt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_5sdp"
-                    android:layout_marginBottom="@dimen/_5sdp"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_7sdp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/recMessage"
-                    app:layout_constraintVertical_bias="0" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <ImageView
+                android:id="@+id/rcurve"
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
+                app:layout_constraintBottom_toBottomOf="@id/receiveconstrain"
+                app:layout_constraintEnd_toStartOf="@id/receiveconstrain"
+                app:layout_constraintEnd_toEndOf="parent"
+
+
+                android:src="@drawable/ic_rcurve"
+                />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/recTimeTxt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_7sdp"
+                android:gravity="start"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="dfg"
+                app:layout_constraintBottom_toBottomOf="parent"
+
+                app:layout_constraintStart_toStartOf="@id/rcurve"
+                app:layout_constraintTop_toBottomOf="@id/receiveconstrain" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -102,7 +124,7 @@
         android:id="@+id/senderLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dateMtv">
@@ -113,24 +135,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <!--            <de.hdodenhof.circleimageview.CircleImageView-->
-            <!--                android:id="@+id/senderImg"-->
-            <!--                android:layout_width="@dimen/_30sdp"-->
-            <!--                android:layout_height="@dimen/_30sdp"-->
-            <!--                android:layout_marginEnd="@dimen/_15sdp"-->
-            <!--                android:src="@drawable/img"-->
-            <!--                app:civ_border_color="@color/yellowChat"-->
-            <!--                app:civ_border_width="@dimen/_1sdp"-->
-            <!--                app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                app:layout_constraintTop_toTopOf="parent" />-->
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/sconst"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_20sdp"
                 android:background="@drawable/chat_receiver_bg"
-                android:backgroundTint="@color/chatPurple"
+                android:backgroundTint="@color/colorAccent"
                 android:maxWidth="@dimen/_190sdp"
+                android:paddingTop="@dimen/_7sdp"
+                android:paddingBottom="@dimen/_7sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -138,40 +153,56 @@
                     android:id="@+id/senderMsg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
                     android:background="@drawable/chat_receiver_bg"
-                    android:backgroundTint="@color/chatPurple"
+                    android:backgroundTint="@color/colorAccent"
                     android:gravity="start"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:paddingStart="@dimen/_10sdp"
                     android:maxWidth="@dimen/_190sdp"
                     android:inputType="textCapSentences|textMultiLine"
-                    android:minWidth="@dimen/_40sdp"
-                    android:paddingHorizontal="@dimen/_10sdp"
+
+                    android:text="hello"
 
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/senderTimeTxt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_5sdp"
-                    android:layout_marginBottom="@dimen/_5sdp"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_7sdp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/senderMsg" />
+
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ImageView
+                android:id="@+id/scurve"
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
+                app:layout_constraintBottom_toBottomOf="@id/sconst"
+                app:layout_constraintStart_toEndOf="@id/sconst"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:src="@drawable/ic_sencurve"
+                />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/senderTimeTxt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:textColor="@color/black"
+                android:gravity="end"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:textSize="@dimen/_7sdp"
+                android:text="dfvg"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/scurve"
+                app:layout_constraintTop_toBottomOf="@id/sconst" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 

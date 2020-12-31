@@ -13,10 +13,12 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import com.google.android.material.textview.MaterialTextView
 import com.stripe.android.*
 import com.stripe.android.model.*
 import com.stripe.android.view.PaymentMethodsActivity
 import com.surpriseme.user.R
+import com.surpriseme.user.activity.payment.PaymentActivity
 import com.surpriseme.user.data.model.PaymentIntent
 import com.surpriseme.user.data.model.PaymentModel
 import com.surpriseme.user.databinding.ActivityIdealPaymentBinding
@@ -42,12 +44,21 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     var bankcode=""
     var stripe: Stripe?=null
     var bookingid=""
+    private var backpress:MaterialTextView?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=DataBindingUtil.setContentView(this,R.layout.activity_ideal_payment)
 
         shared= PrefrenceShared(this)
+
+        backpress = findViewById(R.id.backpress)
+        backpress?.setOnClickListener{
+            val intent = Intent(this@IdealPayment, PaymentActivity::class.java)
+            startActivity(intent)
+            finish()
+
+        }
 
         val loadingText = findViewById<TextView>(R.id.loadingtext)
         loadingText.text  = Utility.randomString()
@@ -199,6 +210,9 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                         // Setup succeeded
 
                         binding.paymentDoneLayout.visibility = View.VISIBLE
+                        Constants.IS_BOOKING_DONE = true
+                        Constants.BOOKING = false
+                        Constants.NOTIFICATION = false
                         Handler().postDelayed({
                             Toast.makeText(this@IdealPayment,"Success",Toast.LENGTH_LONG).show()
                             val intent = Intent(this@IdealPayment,BookingDetailFragment::class.java)
