@@ -42,8 +42,6 @@ class ReviewAdapter(val context: Context, val reviewList:ArrayList<ReviewDataMod
             Picasso.get()
                 .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + model.customer_detail.image)
                 .placeholder(R.drawable.profile_pholder)
-                .resize(4000, 1500)
-                .onlyScaleDown()
                 .into(holder.artistImage)
             holder.artistName.text = model.customer_detail.name
             if (model.rate != null) {

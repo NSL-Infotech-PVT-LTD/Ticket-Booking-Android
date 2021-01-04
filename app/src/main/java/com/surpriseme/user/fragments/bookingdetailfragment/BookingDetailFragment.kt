@@ -279,8 +279,6 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
 
                     Picasso.get()
                         .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + bookingModel?.artist_detail?.image)
-                        .resize(4000, 1500)
-                        .onlyScaleDown()
                         .placeholder(R.drawable.user_pholder_updated)
                         .into(rateReviewImg)
                     rateReviewName?.text = bookingModel?.artist_detail?.name
@@ -302,8 +300,6 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
 
                     Picasso.get()
                         .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + bookingModel?.artist_detail?.image)
-                        .resize(4000, 1500)
-                        .onlyScaleDown()
                         .placeholder(R.drawable.user_pholder_updated)
                         .into(rateReviewImg)
                     rateReviewName?.text = bookingModel?.artist_detail?.name
@@ -457,8 +453,6 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
 
                     Picasso.get()
                         .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + bookingModel.artist_detail.image)
-                        .resize(4000, 1500)
-                        .onlyScaleDown()
                         .placeholder(R.drawable.user_pholder)
                         .into(binding.profileImg)
 

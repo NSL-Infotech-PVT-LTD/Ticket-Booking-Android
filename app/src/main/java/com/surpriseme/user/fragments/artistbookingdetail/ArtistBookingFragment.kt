@@ -356,8 +356,7 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                     binding.noVideoUploadedTxt.visibility = View.GONE
                                 } else if (artistModel.shows_video !=null && artistModel.shows_video!!.contains(".mp4")) {
                                     Picasso.get().load("https://dev.netscapelabs.com/surpriseme/public/uploads/artist/videos/thumbnail/"+artistModel.shows_video_thumbnail!!)
-                                        .resize(300, 300)
-                                        .onlyScaleDown().into(binding.thumbnail)
+                                        .into(binding.thumbnail)
                                     video_url ="https://dev.netscapelabs.com/surpriseme/public/uploads/artist/videos/"+artistModel.shows_video
                                     binding.noVideoUploadedTxt.visibility = View.GONE
                                     binding.youtubePlayIcon.visibility = View.GONE
@@ -374,8 +373,6 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                     Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.image
                                 Picasso.get()
                                     .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.image)
-                                    .resize(4000, 1500)
-                                    .onlyScaleDown()
                                     .into(binding.profileImg)
                                 binding.profileName.text = artistModel.name
                                 binding.livePriceText.text = artistModel.currency + " "+ artistModel.converted_live_price.toString()
@@ -390,8 +387,6 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                         binding.img1.visibility = View.VISIBLE
                                         Picasso.get()
                                             .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.shows_image_1)
-                                            .resize(4000, 1500)
-                                            .onlyScaleDown()
                                             .into(binding.img1)
                                         binding.img1.setOnClickListener{
                                             largeImge?.visibility=View.VISIBLE
@@ -410,8 +405,6 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                         binding.img2.visibility = View.VISIBLE
                                         Picasso.get()
                                             .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.shows_image_2)
-                                            .resize(4000, 1500)
-                                            .onlyScaleDown()
                                             .into(binding.img2)
                                         binding.img2.setOnClickListener{
                                             largeImge?.visibility=View.VISIBLE
@@ -430,8 +423,6 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                         binding.img3.visibility = View.VISIBLE
                                         Picasso.get()
                                             .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.shows_image_3)
-                                            .resize(4000, 1500)
-                                            .onlyScaleDown()
                                             .into(binding.img3)
 
                                         binding.img3.setOnClickListener{
@@ -451,8 +442,6 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                         binding.img4.visibility = View.VISIBLE
                                         Picasso.get()
                                             .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.shows_image_4)
-                                            .resize(4000, 1500)
-                                            .onlyScaleDown()
                                             .into(binding.img4)
 
                                         binding.img4.setOnClickListener{
@@ -599,10 +588,7 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
         img_url1 =
             "https://img.youtube.com/vi/$videoid/0.jpg"
 
-        Picasso.get().load(img_url1)
-
-            .resize(4000, 1500)
-            .onlyScaleDown().into(binding.thumbnail)
+        Picasso.get().load(img_url1).into(binding.thumbnail)
 // binding.upload.visibility = View.GONE
         return videoid
     }

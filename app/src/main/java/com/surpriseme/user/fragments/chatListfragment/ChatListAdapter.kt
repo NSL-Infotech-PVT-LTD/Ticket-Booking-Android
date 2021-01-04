@@ -41,8 +41,6 @@ class ChatListAdapter(val context: Context, val chatList: ArrayList<ChatDetailMo
         if (shared?.getString(Constants.DataKey.USER_ID) == model.sender_id.toString()) {
 
             Picasso.get().load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + model.receiver_image)
-                .resize(4000, 1500)
-                .onlyScaleDown()
                 .into(holder.image)
 
             holder.name.text = model.receiver_name
@@ -53,8 +51,6 @@ class ChatListAdapter(val context: Context, val chatList: ArrayList<ChatDetailMo
             }
         } else {
             Picasso.get().load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + model.sender_image)
-                .resize(4000, 1500)
-                .onlyScaleDown()
                 .into(holder.image)
 
             holder.name.text = model.sender_name

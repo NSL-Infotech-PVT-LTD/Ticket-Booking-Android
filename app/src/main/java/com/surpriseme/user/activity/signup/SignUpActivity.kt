@@ -165,18 +165,10 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
                         if (response.errorBody() != null) {
                             try {
                                 jsonObject = JSONObject(response.errorBody()!!.string())
-                                val errorMessage = jsonObject.getString(Constants.ERRORS)
-                                Toast.makeText(
-                                    this@SignUpActivity,
-                                    "" + errorMessage,
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                val errorMessage = jsonObject.getString(Constants.ERROR)
+                                Toast.makeText(this@SignUpActivity, "" + errorMessage, Toast.LENGTH_SHORT).show()
                             } catch (e: JSONException) {
-                                Toast.makeText(
-                                    this@SignUpActivity,
-                                    "" + Constants.SOMETHING_WENT_WRONG,
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                Toast.makeText(this@SignUpActivity, "" + Constants.SOMETHING_WENT_WRONG, Toast.LENGTH_SHORT).show()
                             }
 
                         }

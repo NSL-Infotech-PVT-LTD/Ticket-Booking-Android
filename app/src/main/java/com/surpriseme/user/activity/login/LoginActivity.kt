@@ -193,10 +193,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                                     Constants.ImageUrl.BASE_URL +
                                             Constants.ImageUrl.USER_IMAGE_URL + response.body()?.data?.user?.image)
 
-                            prefManager?.setString1(
-                                Constants.DataKey.CURRENCY,
-                                response.body()?.data?.user?.currency
-                            ) // to save currency....
+                            prefManager?.setString1(Constants.DataKey.CURRENCY, response.body()?.data?.user?.currency) // to save currency....
 
 
                             if (prefManager!!.getBoolean1(Constants.ISREMEMBER)) {

@@ -43,6 +43,7 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
     private var fbID:String? = null
     private var fbDataModel: FbDataModel? = null
     private var prefManager: PrefManger?=null
+    private var currency = ""
 
 
 
@@ -237,7 +238,12 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
                                 Constants.DataKey.USER_IMAGE,  // To Save User Image
                                 Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + response.body()?.data?.user?.image
                             )
+
+                            currency = response.body()?.data?.user?.currency!!
+                            if (currency.isEmpty())
                             prefManager?.setString1(Constants.DataKey.CURRENCY,"")
+                            else prefManager?.setString1(Constants.DataKey.CURRENCY,currency)
+
 //                            isFbRegistered = true
                             val mainActIntent =
                                 Intent(this@SignUpTypeActivity, MainActivity::class.java)

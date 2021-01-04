@@ -124,9 +124,6 @@ class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceiv
 
             Picasso.get()
                 .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + mReceiverImage)
-                .resize(4000, 1500)
-                .placeholder(R.drawable.profile_pholder)
-                .onlyScaleDown()
                 .into(mReceiverImageView)
         }
         if ((mReceiverName != "") || (mReceiverName != "null")) {

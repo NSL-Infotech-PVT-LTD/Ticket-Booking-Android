@@ -260,9 +260,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                                 userName = userModel?.name.toString()
                                 userEmail = userModel?.email.toString()
                                 Picasso.get().load(userImage)
-                                    .resize(4000, 1500)
                                     .placeholder(R.drawable.profile_pholder)
-                                    .onlyScaleDown()
                                     .into(binding.dashUserImg)
 
                                 shared.setString(

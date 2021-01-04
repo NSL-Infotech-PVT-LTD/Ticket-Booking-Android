@@ -57,6 +57,7 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
     private var toolProfileTxt: MaterialTextView? = null
     private var toolBackpress: MaterialTextView? = null
     private var currency = ""
+    private var isTryToUpdateProfile = false
 
 
     override fun onAttach(context: Context) {
@@ -108,8 +109,7 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
 
         // display value to the views ....
         if (shared.getString(Constants.DataKey.USER_IMAGE) != "") {
-            Picasso.get().load(shared.getString(Constants.DataKey.USER_IMAGE)).resize(4000, 1500)
-                .onlyScaleDown()
+            Picasso.get().load(shared.getString(Constants.DataKey.USER_IMAGE))
                 .placeholder(R.drawable.profile_pholder)
                 .into(binding.profileImage)
         }
@@ -127,13 +127,19 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
 
             R.id.backpress -> {
 
-                updateProfilePopup()
+                if (isTryToUpdateProfile) {
+                    updateProfilePopup()
+                } else {
+                    fragmentManager?.popBackStack()
+                }
+
             }
             R.id.logoutTxt -> {
 
                 logoutPop()
             }
             R.id.editProfileBtn -> {
+                isTryToUpdateProfile = true
                 binding.editProfileBtn.visibility = View.GONE
                 binding.cameraIcon.visibility = View.VISIBLE
                 binding.usernameEdt.isEnabled = true
@@ -160,7 +166,7 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
                     binding.passwordprofileLayout.visibility = View.VISIBLE
                     binding.aboutprofileLayout.visibility = View.VISIBLE
                     binding.logoutLayout.visibility = View.VISIBLE
-                }, 1000)
+                }, 3000)
             }
             R.id.cameraIcon -> {
 
@@ -184,6 +190,8 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
 
 
     private fun updateProfileApi(currency: String) {
+
+        binding.loaderLayout.visibility = View.VISIBLE
         val requestBodyMap: HashMap<String, RequestBody> = HashMap()
         requestBodyMap[Constants.ApiKey.NAME] =
             RequestBody.create(MediaType.parse("multipart/form-data"), username)
@@ -204,14 +212,26 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
                     if (response.body() != null) {
                         if (response.isSuccessful) {
 
+                            binding.loaderLayout.visibility = View.GONE
+
                             shared.setString(
                                 Constants.DataKey.USER_IMAGE,
-                                Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL +
-                                        response.body()?.data?.user?.image
-                            )
-                            val intent = Intent(ctx, MainActivity::class.java)
-                            startActivity(intent)
-                            activity?.finish()
+                                Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + response.body()?.data?.user?.image)
+
+                            isTryToUpdateProfile = false
+                            binding.editProfileBtn.visibility = View.VISIBLE
+                            binding.cameraIcon.visibility = View.GONE
+                            binding.usernameEdt.isEnabled = false
+                            binding.profileImage.isEnabled = false
+                            binding.updateprofilebtn.visibility = View.GONE
+                            binding.passwordprofileLayout.visibility = View.VISIBLE
+                            binding.aboutprofileLayout.visibility = View.VISIBLE
+                            binding.logoutLayout.visibility = View.VISIBLE
+
+                            val message = response.body()?.data?.message
+
+                            popupUpdatedProfile(message!!)
+
 
                         }
                     } else {
@@ -234,6 +254,7 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
                 }
 
                 override fun onFailure(call: Call<UpdateProfileModel>, t: Throwable) {
+                    binding.loaderLayout.visibility = View.GONE
                     Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
                 }
             })
@@ -248,6 +269,7 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
 
     }
 
+    // popup to display want to update profile or not....
     fun updateProfilePopup() {
 
         val layoutInflater: LayoutInflater =
@@ -274,12 +296,60 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
 
         yes.setOnClickListener {
             popUpWindowReport.dismiss()
+            username = binding.usernameEdt.text.toString()
+
+            if (username.isEmpty()) {
+                binding.usernameEdt.error = getString(R.string.please_fill_require_field)
+                binding.usernameEdt.requestFocus()
+            } else {
+                // update profile api
+                updateProfileApi(currency)
+            }
+            Handler().postDelayed({
+                binding.passwordprofileLayout.visibility = View.VISIBLE
+                binding.aboutprofileLayout.visibility = View.VISIBLE
+                binding.logoutLayout.visibility = View.VISIBLE
+            }, 3000)
+            Constants.PROFILE_FRAGMENT = false
+
         }
 
         no.setOnClickListener {
             popUpWindowReport.dismiss()
             fragmentManager?.popBackStack()
             Constants.PROFILE_FRAGMENT = false
+        }
+    }
+
+
+    // when profile will be updated, then success message to display, "Profile has been updated successfully"
+    fun popupUpdatedProfile(message:String?) {
+
+        val layoutInflater: LayoutInflater =
+            ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+        val popUp: View = layoutInflater.inflate(R.layout.updated_profile_alert_layout, null)
+        val popUpWindowReport = PopupWindow(
+            popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
+            ConstraintLayout.LayoutParams.MATCH_PARENT, true
+        )
+        popUpWindowReport.showAtLocation(popUp, Gravity.CENTER, 0, 0)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            popUpWindowReport.elevation = 10f
+        }
+        popUpWindowReport.isTouchable = false
+        popUpWindowReport.isOutsideTouchable = false
+
+        val messageToDisplay = message
+        val done: MaterialTextView = popUp.findViewById(R.id.done)
+        val displayMessage: TextView = popUp.findViewById(R.id.messageTxt)
+        displayMessage.text = messageToDisplay
+
+        done.setOnClickListener {
+            popUpWindowReport.dismiss()
+
         }
     }
 

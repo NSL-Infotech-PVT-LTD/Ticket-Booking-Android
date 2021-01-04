@@ -309,6 +309,7 @@
     <string name="manage_your_bookings_here">Manage your bookings here</string>
     <string name="no_artist_right_now">No Artist Right Now</string>
     <string name="unable_to_find_artist">Unable to find artist on this page. Please search for another</string>
+    <string name="profile_has_been_updated_successfully">Profile has been updated successfully</string>
 
 
 </resources>

@@ -187,8 +187,6 @@ class BookingListAdapter(
                 Picasso.get()
                     .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + bookingModel.artist_detail?.image)
                     .placeholder(R.drawable.user_pholder_updated)
-                    .resize(4000, 1500)
-                    .onlyScaleDown()
                     .into(image)
 
                 // Display Name of Artist....
