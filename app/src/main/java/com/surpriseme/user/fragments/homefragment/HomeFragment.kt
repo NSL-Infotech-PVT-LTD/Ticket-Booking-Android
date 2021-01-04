@@ -358,6 +358,9 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                                         R.drawable.corner_round_5_grey
                                     )
                                 binding.addressLayout.visibility = View.GONE
+                                isLastPage=false
+                                isLoading=false
+                                currentPage=1
                                 artistListApiWithoutLatlng(search)
                             } else {
                                 if (locationList.size > 0) {
@@ -390,6 +393,9 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                                             ctx,
                                             R.drawable.corner_round_5_grey
                                         )
+                                    isLastPage=false
+                                    isLoading=false
+                                    currentPage=1
                                     artistListApiWithoutLatlng(search)
                                 }
                             }

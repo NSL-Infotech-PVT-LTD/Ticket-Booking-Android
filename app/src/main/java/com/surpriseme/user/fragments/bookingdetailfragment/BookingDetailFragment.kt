@@ -328,7 +328,9 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
                 }
             }
             R.id.profileImg -> {
-
+                Constants.IS_COMING_FROM_BOOKING_DETAIL = true
+                Constants.IS_CHAT_SESSION = false
+                Constants.IS_SEARCH_ACTIVITY = false
                 val intent = Intent(this@BookingDetailFragment, MainActivity::class.java)
                 intent.putExtra("artistID", artistId)
                 startActivity(intent)

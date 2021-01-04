@@ -48,12 +48,12 @@ import kotlin.collections.ArrayList
 class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
     ArtistListAdapter.BookBtnClick, View.OnClickListener, CategoryAdapter.CheckList {
 
-    private var seekbarRatingProgress: Float?=null
+    private var seekbarRatingProgress: Float? = null
     private var binding: ActivitySearchBinding? = null
     private var shared: PrefrenceShared? = null
     private var artistList: ArrayList<DataUserArtistList> = ArrayList()
     private var search = ""
-    private var  isSearching = false
+    private var isSearching = false
     private var latitude = ""
     private var longitude = ""
     private var hideKeyboard: HideKeyBoard? = null
@@ -63,7 +63,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
     private var isLoading = false
     private var currentPage: Int = 1
     private var totalPage = 0
-    private var backpress:MaterialTextView?=null
+    private var backpress: MaterialTextView? = null
 
     //var for search bottom sheet....
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
@@ -80,14 +80,14 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
     private var sortBy = Constants.ASENDING
     private var showType = ""
     private var isCategoryClicked = false
-    private var seekbarRating:IndicatorSeekBar?=null
+    private var seekbarRating: IndicatorSeekBar? = null
     private var byDistanceTv: MaterialTextView? = null
     private var seekbarDistance: IndicatorSeekBar? = null
-    private var kilometerLayout:ConstraintLayout?=null
+    private var kilometerLayout: ConstraintLayout? = null
     private var byRating = ""
     private var byDistance = ""
-    private var radioLowToHigh:RadioButton?=null
-    private var radioHighToLow:RadioButton?=null
+    private var radioLowToHigh: RadioButton? = null
+    private var radioHighToLow: RadioButton? = null
 
     // var for category bottom sheet....
     private lateinit var bottomSheetBehaviorCategory: BottomSheetBehavior<View>
@@ -108,6 +108,10 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
         binding = DataBindingUtil.setContentView(this@SearchActivity, R.layout.activity_search)
 
         shared = PrefrenceShared(this@SearchActivity)
+        Constants.IS_SEARCH_ACTIVITY = true
+        Constants.IS_COMING_FROM_BOOKING_DETAIL = false
+        Constants.IS_CHAT_SESSION = false
+
         latitude = shared?.getString(Constants.LATITUDE)!!
         longitude = shared?.getString(Constants.LONGITUDE)!!
 
@@ -121,8 +125,8 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
         }
 
 
-        if (shared?.getInt("byRating") !=null) {
-            val r:Int = shared?.getInt("byRating")!!
+        if (shared?.getInt("byRating") != null) {
+            val r: Int = shared?.getInt("byRating")!!
             seekbarRating?.setProgress(shared?.getInt("byRating")!!.toFloat())
         }
         init()
@@ -146,49 +150,51 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
         binding?.searchRecycler?.layoutManager = layoutManager
         binding?.searchRecycler?.setHasFixedSize(true)
         artistListAdapter =
-            ArtistListAdapter(applicationContext, ArrayList(), this@SearchActivity, this@SearchActivity)
+            ArtistListAdapter(
+                applicationContext,
+                ArrayList(),
+                this@SearchActivity,
+                this@SearchActivity
+            )
         binding?.searchRecycler?.adapter = artistListAdapter
 
-        binding?.searchEdt?.addTextChangedListener(object :TextWatcher{
+        binding?.searchEdt?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
+                artistList.clear()
+                artistListAdapter?.clear()
+                artistListAdapter?.notifyDataSetChanged()
             }
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                artistList.clear()
+                artistListAdapter?.clear()
+                artistListAdapter?.notifyDataSetChanged()
             }
 
             override fun afterTextChanged(s: Editable?) {
-
-                search = s.toString()
-                artistListAdapter?.clear()
                 artistList.clear()
+                artistListAdapter?.clear()
                 artistListAdapter?.notifyDataSetChanged()
+                search = s.toString()
+                if (search.length <= 2) {
+                    Toast.makeText(
+                        this@SearchActivity,
+                        "Enter atleast three character",
+                        Toast.LENGTH_SHORT
+                    ).show()
 
-                if (search.length<=2) {
-                    Toast.makeText(this@SearchActivity,"Enter atleast three character",Toast.LENGTH_SHORT).show()
-                    artistListAdapter?.clear()
-                }else {
-                    if (Constants.SHOW_TYPE == getString(R.string.digital)) {Handler().postDelayed({
-                        run {
-                            /**
-                             * manage progress view
-                             */
-                            /**
-                             * manage progress view
-                             */
-                            if(!isSearching){
-                                isSearching = true
-                                artistListApiWithoutLatlng(search)                            }
+                } else {
 
-                        }
-                    }, 1500)
+                    artistListApiWithoutLatlng(search)
 
-                    } else {
-                        artistListApi(
-                            shared?.getString(Constants.LATITUDE)!!,
-                            shared?.getString(Constants.LONGITUDE)!!,
-                            search
-                        )
-                    }
+//                    if (Constants.SHOW_TYPE == getString(R.string.digital)) {
+//                    } else {
+//                        artistListApi(
+//                            shared?.getString(Constants.LATITUDE)!!,
+//                            shared?.getString(Constants.LONGITUDE)!!,
+//                            search
+//                        )
+//                    }
                 }
             }
 
@@ -203,7 +209,11 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 if (showType == getString(R.string.digital)) {
                     artistListApiWithoutLatlng(search)
                 } else {
-                    artistListApi(shared?.getString(Constants.LATITUDE)!!,shared?.getString(Constants.LONGITUDE)!!, search)
+                    artistListApi(
+                        shared?.getString(Constants.LATITUDE)!!,
+                        shared?.getString(Constants.LONGITUDE)!!,
+                        search
+                    )
                 }
 
             }
@@ -230,7 +240,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
 
 
         seekbarRating = findViewById(R.id.seekbarRating)
-        val tickArray:Array<String> = arrayOf("5","4.5","4.0","3.5","Any")
+        val tickArray: Array<String> = arrayOf("5", "4.5", "4.0", "3.5", "Any")
         seekbarRating?.customTickTexts(tickArray)
         byDistanceTv = findViewById(R.id.byDistanceTv)
         seekbarDistance = findViewById(R.id.seekbarDistance)
@@ -249,7 +259,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
             kilometerLayout?.visibility = View.VISIBLE
         }
 
-        seekbarRating?.onSeekChangeListener = object : OnSeekChangeListener{
+        seekbarRating?.onSeekChangeListener = object : OnSeekChangeListener {
             override fun onSeeking(seekParams: SeekParams?) {
 
                 seekbarRatingProgress = seekParams?.progress?.toFloat()
@@ -257,7 +267,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 if (byRating == "Any") {
                     byRating = "0"
 //                    shared?.setInt(Constants.DataKey.BY_RATING,showByRating!!)
-                    shared?.setInt("byRating",seekbarRatingProgress?.toInt())
+                    shared?.setInt("byRating", seekbarRatingProgress?.toInt())
                 }
 
             }
@@ -270,10 +280,11 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
 
         }
 
-        seekbarDistance?.onSeekChangeListener = object :OnSeekChangeListener{
+        seekbarDistance?.onSeekChangeListener = object : OnSeekChangeListener {
             override fun onSeeking(seekParams: SeekParams?) {
                 byDistance = seekParams?.tickText!!
-                Toast.makeText(this@SearchActivity,"" + byDistance.toString(),Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@SearchActivity, "" + byDistance.toString(), Toast.LENGTH_SHORT)
+                    .show()
             }
 
             override fun onStartTrackingTouch(seekBar: IndicatorSeekBar?) {
@@ -442,12 +453,13 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                         from_Date = ""
                         to_Date = ""
                     }
-                    artistListApi(latitude,longitude,search)
+                    artistListApi(latitude, longitude, search)
                 }
 
             }
             R.id.backpress -> {
                 finish()
+                Constants.IS_SEARCH_ACTIVITY = false
             }
             R.id.fromDateTxt -> {
                 openCalendar(fromDateTxt!!)
@@ -507,8 +519,19 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
 
         RetrofitClient.api.artistListApi(
             shared?.getString(Constants.DataKey.AUTH_VALUE)!!,
-            Constants.DataKey.CONTENT_TYPE_VALUE, "",currentPage.toString(),
-            lat, lng, search,categoryIdList.toString(),from_Date,to_Date,sortBy,showType,byRating,byDistance
+            Constants.DataKey.CONTENT_TYPE_VALUE,
+            "",
+            currentPage.toString(),
+            lat,
+            lng,
+            search,
+            categoryIdList.toString(),
+            from_Date,
+            to_Date,
+            sortBy,
+            showType,
+            byRating,
+            byDistance
         )
             .enqueue(object : Callback<ArtistModel> {
                 override fun onResponse(call: Call<ArtistModel>, response: Response<ArtistModel>) {
@@ -551,14 +574,18 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
 
                             }
                         }
-                    } else  {
+                    } else {
 
                         val jsonObject: JSONObject
                         if (response.errorBody() != null) {
                             try {
                                 jsonObject = JSONObject(response.errorBody()?.string()!!)
                                 val errorMessage = jsonObject.getString(Constants.ERRORS)
-                                Toast.makeText(applicationContext, "" + errorMessage, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    applicationContext,
+                                    "" + errorMessage,
+                                    Toast.LENGTH_SHORT
+                                ).show()
 
                             } catch (e: JSONException) {
                                 Toast.makeText(
@@ -586,18 +613,16 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
 
 
         binding?.progressBar?.visibility = View.VISIBLE
-
         RetrofitClient.api.artistListApi(
             shared?.getString(Constants.DataKey.AUTH_VALUE)!!,
-            Constants.DataKey.CONTENT_TYPE_VALUE,"",search,currentPage.toString(),
-            categoryIdList.toString(),from_Date,to_Date,sortBy,showType,byRating,byDistance
+            Constants.DataKey.CONTENT_TYPE_VALUE, "", search, currentPage.toString(),
+            categoryIdList.toString(), from_Date, to_Date, sortBy, showType, byRating, byDistance
         )
             .enqueue(object : Callback<ArtistModel> {
                 override fun onResponse(call: Call<ArtistModel>, response: Response<ArtistModel>) {
                     binding?.progressBar?.visibility = View.GONE
                     if (response.body() != null) {
                         if (response.isSuccessful) {
-                            isSearching = false
                             // after api successfull do your stuff....
                             artistList.clear()
                             artistList = response.body()?.data?.data!!
@@ -613,21 +638,26 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                                          * manage progress view
                                          */
 
-                                    val list =     artistList.distinctBy { it.name } as ArrayList
-                                        if (currentPage != PaginationScrollListener.PAGE_START)
+                                        if (currentPage != PaginationScrollListener.PAGE_START){
                                             artistListAdapter?.removeLoading()
-                                        artistListAdapter?.addItems(list)
+                                        }
+                                        artistListAdapter?.addItems(artistList)
                                         if (currentPage < totalPage) {
                                             artistListAdapter?.addLoading()
                                         } else {
                                             isLastPage = true
                                         }
                                         isLoading = false
+
                                     }
                                 }, 1500)
 
 
+
                                 binding?.noDataFoundLayout?.visibility = View.GONE
+                                binding?.searchLayout?.visibility = View.VISIBLE
+
+                                artistListAdapter?.notifyDataSetChanged()
 
 
                             } else {
@@ -636,15 +666,23 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                             }
                         }
                     } else {
-                        val jsonObject:JSONObject
-                        if (response.errorBody() !=null) {
+                        val jsonObject: JSONObject
+                        if (response.errorBody() != null) {
                             try {
                                 jsonObject = JSONObject(response.errorBody()?.string()!!)
                                 val errorMessage = jsonObject.getString(Constants.ERROR)
-                                Toast.makeText(applicationContext,"" + errorMessage,Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    applicationContext,
+                                    "" + errorMessage,
+                                    Toast.LENGTH_SHORT
+                                ).show()
 
-                            }catch (e:JSONException) {
-                                Toast.makeText(applicationContext,"" + e.message.toString(),Toast.LENGTH_SHORT).show()
+                            } catch (e: JSONException) {
+                                Toast.makeText(
+                                    applicationContext,
+                                    "" + e.message.toString(),
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         }
 
@@ -653,7 +691,11 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
 
                 override fun onFailure(call: Call<ArtistModel>, t: Throwable) {
                     binding?.progressBar?.visibility = View.GONE
-                    Toast.makeText(applicationContext,"" + t.message.toString(),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        applicationContext,
+                        "" + t.message.toString(),
+                        Toast.LENGTH_SHORT
+                    ).show()
 
                 }
             })

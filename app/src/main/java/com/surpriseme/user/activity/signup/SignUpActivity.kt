@@ -155,6 +155,8 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
                             shared.setString(Constants.DataKey.OLD_PASS_VALUE, password) // To save User Password
 
                             prefManager.setString1(Constants.DataKey.CURRENCY, "") // to save currency....
+
+
                             val intent = Intent(this@SignUpActivity, MainActivity::class.java)
 //                            intent.putExtra("currency",true)
                             startActivity(intent)

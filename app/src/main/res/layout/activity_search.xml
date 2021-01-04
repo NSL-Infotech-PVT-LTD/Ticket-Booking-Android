@@ -42,7 +42,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/toolbarCard">
 
-                <EditText
+                <AutoCompleteTextView
                     android:id="@+id/searchEdt"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_40sdp"

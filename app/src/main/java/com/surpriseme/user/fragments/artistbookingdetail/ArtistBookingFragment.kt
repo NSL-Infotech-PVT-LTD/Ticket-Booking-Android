@@ -30,6 +30,7 @@ import com.surpriseme.user.R
 import com.surpriseme.user.activity.VideoActivity
 import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.databinding.FragmentArtistBookingBinding
+import com.surpriseme.user.fragments.bookingdetailfragment.BookingDetailFragment
 import com.surpriseme.user.fragments.chatFragment.ChatFragment
 import com.surpriseme.user.fragments.reviewfragment.ReviewFragment
 import com.surpriseme.user.fragments.selectdateofbookingfragment.SelectDateFragment
@@ -44,6 +45,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import uk.co.senab.photoview.PhotoViewAttacher
+import java.text.DecimalFormat
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -117,6 +119,7 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
         binding.youtubeViewProfileTxt.setOnClickListener(this)
         binding.close.setOnClickListener(this)
         binding.thumbnail.setOnClickListener(this)
+        binding.playIcon.setOnClickListener(this)
 
         // attaching views....
         backpress = view.findViewById(R.id.backpress)
@@ -186,7 +189,14 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
 
                 if (Constants.IS_CHAT_SESSION) {
                     requireActivity().finish()
-                } else
+                }
+               else if(Constants.IS_SEARCH_ACTIVITY) {
+                    requireActivity().finish()
+                }
+                else if (Constants.IS_COMING_FROM_BOOKING_DETAIL) {
+                    requireActivity().finish()
+                }
+                else
                     fragmentManager?.popBackStack()
 
             }
@@ -249,6 +259,12 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
 
             }
             R.id.thumbnail -> {
+                val intent = Intent(ctx, VideoActivity::class.java)
+                intent.putExtra("videourl", video_url)
+                startActivity(intent)
+            }
+
+            R.id.playIcon -> {
                 val intent = Intent(ctx, VideoActivity::class.java)
                 intent.putExtra("videourl", video_url)
                 startActivity(intent)
@@ -344,6 +360,9 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
 
                                 if(artistModel.shows_image!=null){
                                     showimage = artistModel.shows_image!!
+                                    adapterimage = ImageViewAdapter(ctx, showimage)
+                                    binding.pager.adapter = adapterimage
+                                    binding.indicator.setViewPager(binding.pager)
 
                                 }
 
@@ -352,7 +371,9 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                     val videoUrl = artistModel.shows_video
                                     binding.youtubePlayIcon.visibility = View.VISIBLE
                                     binding.thumbnail.visibility = View.VISIBLE
+                                    binding.playIcon.visibility = View.GONE
                                     extractYoutubeId(videoUrl!!)
+
                                     binding.noVideoUploadedTxt.visibility = View.GONE
                                 } else if (artistModel.shows_video !=null && artistModel.shows_video!!.contains(".mp4")) {
                                     Picasso.get().load("https://dev.netscapelabs.com/surpriseme/public/uploads/artist/videos/thumbnail/"+artistModel.shows_video_thumbnail!!)
@@ -360,11 +381,13 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                     video_url ="https://dev.netscapelabs.com/surpriseme/public/uploads/artist/videos/"+artistModel.shows_video
                                     binding.noVideoUploadedTxt.visibility = View.GONE
                                     binding.youtubePlayIcon.visibility = View.GONE
+                                    binding.playIcon.visibility = View.VISIBLE
                                    // binding.thumbnail.visibility = View.GONE
                                 } else {
                                     binding.noVideoUploadedTxt.visibility = View.VISIBLE
                                     binding.youtubePlayIcon.visibility = View.GONE
                                     binding.thumbnail.visibility = View.GONE
+                                    binding.playIcon.visibility = View.GONE
                                 }
 
 
@@ -373,11 +396,13 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                     Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.image
                                 Picasso.get()
                                     .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.image)
+                                    .resize(500,500)
+                                    .onlyScaleDown()
                                     .into(binding.profileImg)
                                 binding.profileName.text = artistModel.name
-                                binding.livePriceText.text = artistModel.currency + " "+ artistModel.converted_live_price.toString()
+                                binding.livePriceText.text = artistModel.currency + " " + DecimalFormat("#.##").format(artistModel.converted_live_price)
                                 if (artistModel.converted_digital_price != null)
-                                    binding.digitalPriceText.text = artistModel.currency + " " + artistModel.converted_digital_price.toString()
+                                    binding.digitalPriceText.text = artistModel.currency + " " + DecimalFormat("#.##").format(artistModel.converted_digital_price)
                                 /**
                                  * @author pardeep.sharma@netscapelabs.com
                                  * @param Set the zoom method to open the images
@@ -387,6 +412,7 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                         binding.img1.visibility = View.VISIBLE
                                         Picasso.get()
                                             .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.shows_image_1)
+                                            .placeholder(R.drawable.profile_pholder)
                                             .into(binding.img1)
                                         binding.img1.setOnClickListener{
                                             largeImge?.visibility=View.VISIBLE
@@ -394,10 +420,8 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                             binding.pager.visibility=View.VISIBLE
                                             binding.indicator.visibility=View.VISIBLE
                                             binding.toolbarCard.visibility=View.GONE
-                                            adapterimage =
-                                                ImageViewAdapter(ctx, showimage)
-                                            binding.pager.adapter = adapterimage
-                                            binding.indicator.setViewPager(binding.pager)
+                                            binding.pager.currentItem = 0
+
 //                                            imageZoomPopup(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.shows_image_1)
                                         }
                                     }
@@ -405,6 +429,7 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                         binding.img2.visibility = View.VISIBLE
                                         Picasso.get()
                                             .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.shows_image_2)
+                                            .placeholder(R.drawable.profile_pholder)
                                             .into(binding.img2)
                                         binding.img2.setOnClickListener{
                                             largeImge?.visibility=View.VISIBLE
@@ -412,10 +437,8 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                             binding.pager.visibility=View.VISIBLE
                                             binding.indicator.visibility=View.VISIBLE
                                             binding.toolbarCard.visibility=View.GONE
-                                            adapterimage =
-                                                ImageViewAdapter(ctx, showimage)
-                                            binding.pager.adapter = adapterimage
-                                            binding.indicator.setViewPager(binding.pager)
+                                            binding.pager.currentItem = 1
+
 //                                            imageZoomPopup(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.shows_image_2)
                                         }
                                     }
@@ -423,6 +446,7 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                         binding.img3.visibility = View.VISIBLE
                                         Picasso.get()
                                             .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.shows_image_3)
+                                            .placeholder(R.drawable.profile_pholder)
                                             .into(binding.img3)
 
                                         binding.img3.setOnClickListener{
@@ -431,10 +455,9 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                             binding.pager.visibility=View.VISIBLE
                                             binding.indicator.visibility=View.VISIBLE
                                             binding.toolbarCard.visibility=View.GONE
-                                            adapterimage =
-                                                ImageViewAdapter(ctx, showimage)
-                                            binding.pager.adapter = adapterimage
-                                            binding.indicator.setViewPager(binding.pager)
+                                            binding.pager.currentItem = 2
+
+
 //                                            imageZoomPopup(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.shows_image_3)
                                         }
                                     }
@@ -442,6 +465,7 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                         binding.img4.visibility = View.VISIBLE
                                         Picasso.get()
                                             .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.shows_image_4)
+                                            .placeholder(R.drawable.profile_pholder)
                                             .into(binding.img4)
 
                                         binding.img4.setOnClickListener{
@@ -450,9 +474,9 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                             binding.pager.visibility=View.VISIBLE
                                             binding.indicator.visibility=View.VISIBLE
                                             binding.toolbarCard.visibility=View.GONE
-                                            adapterimage = ImageViewAdapter(ctx, showimage)
-                                            binding.pager.adapter = adapterimage
-                                            binding.indicator.setViewPager(binding.pager)
+                                            binding.pager.currentItem = 3
+
+
 //                                            imageZoomPopup(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.shows_image_4)
                                         }
 

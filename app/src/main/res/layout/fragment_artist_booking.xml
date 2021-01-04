@@ -88,6 +88,17 @@
                         app:layout_constraintStart_toStartOf="@id/youtubeView"
                         app:layout_constraintTop_toTopOf="@id/youtubeView" />
 
+                    <ImageView
+                        android:id="@+id/playIcon"
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:src="@drawable/videoplay"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="@id/youtubeView"
+                        app:layout_constraintEnd_toEndOf="@id/youtubeView"
+                        app:layout_constraintStart_toStartOf="@id/youtubeView"
+                        app:layout_constraintTop_toTopOf="@id/youtubeView" />
+
 
                     <HorizontalScrollView
                         android:id="@+id/viewHorizontal"
@@ -113,25 +124,16 @@
                     </HorizontalScrollView>
 
 
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/profileImgCard"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/viewHorizontal"
-                        app:cardCornerRadius="5dp"
-                        android:layout_marginStart="@dimen/_20sdp"
-                        android:layout_marginTop="@dimen/_20sdp">
-
-                        <ImageView
-                            android:id="@+id/profileImg"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/user_pholder_updated"
-                            />
-
-                    </androidx.cardview.widget.CardView>
+                   <com.google.android.material.imageview.ShapeableImageView
+                       android:id="@+id/profileImg"
+                       android:layout_width="@dimen/_40sdp"
+                       android:layout_height="@dimen/_40sdp"
+                       android:layout_marginStart="@dimen/_20sdp"
+                       android:layout_marginTop="@dimen/_20sdp"
+                       android:src="@drawable/profile_pholder"
+                       app:layout_constraintTop_toBottomOf="@+id/viewHorizontal"
+                       app:layout_constraintStart_toStartOf="parent"
+                       android:background="@drawable/artist_profile_img_bg"/>
 
 
 
@@ -149,8 +151,8 @@
                         android:textSize="@dimen/_18sdp"
                         app:fontFamily="@font/montserrat_bold"
                         app:layout_constraintEnd_toStartOf="@+id/bookBtn"
-                        app:layout_constraintStart_toEndOf="@id/profileImgCard"
-                        app:layout_constraintTop_toTopOf="@id/profileImgCard" />
+                        app:layout_constraintStart_toEndOf="@id/profileImg"
+                        app:layout_constraintTop_toTopOf="@id/profileImg" />
 
 
                     <RatingBar
@@ -194,7 +196,7 @@
                         android:textAllCaps="true"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:fontFamily="@font/montserrat_semibold"
-                        app:layout_constraintTop_toTopOf="@id/profileImgCard"
+                        app:layout_constraintTop_toTopOf="@id/profileImg"
                         />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -203,7 +205,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_20sdp"
                         android:layout_marginTop="@dimen/_30sdp"
-                        app:layout_constraintTop_toBottomOf="@+id/profileImgCard">
+                        app:layout_constraintTop_toBottomOf="@+id/profileImg">
 
                         <TextView
                             android:id="@+id/bookingPriceTxt"
@@ -251,15 +253,7 @@
                             android:layout_height="wrap_content"
                             app:layout_constraintTop_toBottomOf="@+id/bookingPriceTxt">
 
-                            <ImageView
-                                android:id="@+id/inPersonIcon"
-                                android:layout_width="@dimen/_10sdp"
-                                android:layout_height="@dimen/_10sdp"
-                                android:layout_marginStart="@dimen/_5sdp"
-                                android:src="@drawable/user_pholder_updated"
-                                app:layout_constraintBottom_toBottomOf="@+id/liveShowTxt"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="@+id/liveShowTxt" />
+
 
 
                             <TextView
@@ -341,15 +335,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:layout_constraintTop_toBottomOf="@+id/inPersonShowLayout">
-
-                            <ImageView
-                                android:layout_width="@dimen/_10sdp"
-                                android:layout_height="@dimen/_10sdp"
-                                android:layout_marginStart="@dimen/_5sdp"
-                                android:src="@drawable/user_pholder_updated"
-                                app:layout_constraintBottom_toBottomOf="@+id/digitalShowTxt"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="@+id/digitalShowTxt" />
 
 
                             <TextView
@@ -474,7 +459,6 @@
                                 android:id="@+id/img1"
                                 android:layout_width="50dp"
                                 android:layout_height="70dp"
-                                android:scaleType="centerCrop"
                                 android:layout_marginStart="@dimen/_20sdp"
                                 android:src="@drawable/user_pholder_updated"
                                 android:visibility="gone"
@@ -487,7 +471,6 @@
                                 android:layout_width="50dp"
                                 android:layout_height="70dp"
                                 android:layout_marginStart="@dimen/_20sdp"
-                                android:scaleType="centerCrop"
                                 android:src="@drawable/user_pholder_updated"
                                 android:visibility="gone"
                                 app:layout_constraintStart_toEndOf="@+id/img1"
@@ -498,7 +481,6 @@
                                 android:layout_width="50dp"
                                 android:layout_height="70dp"
                                 android:layout_marginStart="@dimen/_20sdp"
-                                android:scaleType="centerCrop"
                                 android:src="@drawable/user_pholder_updated"
                                 android:visibility="gone"
                                 app:layout_constraintStart_toEndOf="@+id/img2"
@@ -509,7 +491,6 @@
                                 android:layout_width="50dp"
                                 android:layout_height="70dp"
                                 android:layout_marginStart="@dimen/_20sdp"
-                                android:scaleType="centerCrop"
                                 android:src="@drawable/user_pholder_updated"
                                 android:visibility="gone"
                                 app:layout_constraintStart_toEndOf="@+id/img3"
@@ -700,9 +681,12 @@
                         android:id="@+id/aboutText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:minHeight="200dp"
                         android:layout_marginHorizontal="@dimen/_20sdp"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:gravity="center_vertical"
+                        android:gravity="start"
+                        android:padding="10dp"
+                        android:background="@drawable/review_tv_bg"
                         android:textColor="#36396e"
                         android:fontFamily="@font/montserrat_regular"
                         android:textSize="@dimen/_10sdp"
@@ -720,7 +704,7 @@
                         android:singleLine="true"
                         android:textColor="#36396e"
                         android:fontFamily="@font/montserrat_bold"
-                        android:textSize="@dimen/_12sdp"
+                        android:textSize="12dp"
                         android:layout_marginTop="@dimen/_30sdp"/>
 
 
@@ -748,7 +732,7 @@
                 <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_200sdp"
+                    android:layout_height="wrap_content"
                     android:visibility="gone"
                     android:layout_centerInParent="true"
                     android:src="@drawable/profile_pholder" />

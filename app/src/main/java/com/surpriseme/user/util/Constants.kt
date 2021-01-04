@@ -113,6 +113,8 @@ object Constants {
     var COMPLETED = "completed"
     var IS_CHAT_SESSION = false
     var IS_BOOKING_DONE = false
+    var IS_SEARCH_ACTIVITY = false
+    var IS_COMING_FROM_BOOKING_DETAIL = false
 
 
 

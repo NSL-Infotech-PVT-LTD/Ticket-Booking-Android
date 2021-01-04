@@ -73,7 +73,11 @@ class ArtistListAdapter(
     }
 
     fun addItems(postItems: ArrayList<DataUserArtistList>?) {
+
         artistList.addAll(postItems!!)
+        var myList = artistList.distinctBy { it.id } as ArrayList
+        artistList.clear()
+        artistList.addAll(myList)
         notifyDataSetChanged()
     }
 
@@ -178,9 +182,9 @@ class ArtistListAdapter(
             }
 
             if (Constants.SHOW_TYPE == context.resources?.getString(R.string.digital)!!) {
-                price.text = artistModel.converted_currency + " " +  DecimalFormat("#.##").format(artistModel.converted_digital_price)+ "/" + context.resources.getString(
-                        R.string.hr
-                    )
+                price.text = artistModel.converted_currency + " " +
+                        DecimalFormat("#.##").format(artistModel.converted_digital_price)+ "/" + context.resources.getString(
+                        R.string.hr)
             } else {
                 price.text = artistModel.converted_currency + " " + DecimalFormat("#.##").format(artistModel.converted_live_price)+ "/" + context.resources.getString(
                         R.string.hr

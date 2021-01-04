@@ -232,6 +232,7 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
         when (v?.id) {
             R.id.backpress -> {
                 val intent = Intent(this@AddCardActivity,PaymentActivity::class.java)
+                intent.putExtra("bookingid",bookingid)
                 startActivity(intent)
                 finish()
             }

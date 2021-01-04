@@ -130,6 +130,8 @@ class ChatListFragment : Fragment(), ChatListAdapter.GoToChat {
     override fun chatId(chatid: String, rImage:String,rName:String) {
         this.mChatId = chatid
         Constants.IS_CHAT_SESSION = true
+        Constants.IS_SEARCH_ACTIVITY = false
+        Constants.IS_COMING_FROM_BOOKING_DETAIL = false
         val intent = Intent(ctx , ChatFragment::class.java)
         intent.putExtra("chatId",chatid)
         intent.putExtra("receiverImage",rImage)
