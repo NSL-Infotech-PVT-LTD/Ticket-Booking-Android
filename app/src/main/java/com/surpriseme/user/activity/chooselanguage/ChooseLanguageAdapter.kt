@@ -8,11 +8,12 @@ import android.widget.RadioButton
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.R
+import com.surpriseme.user.util.PrefManger
 
-class ChooseLanguageAdapter(val context: Context
+class ChooseLanguageAdapter(val prefManager:PrefManger,val context: Context
                             , val languageList:ArrayList<LanguageModel>,
 val lang:ChangeLocale) : RecyclerView.Adapter<ChooseLanguageAdapter.LanguageViewHolder>(){
-    var adpPosition = -1
+    var adpPosition = prefManager.getInt("position")
 
     class LanguageViewHolder(itemView:View) : RecyclerView.ViewHolder(itemView) {
 
@@ -34,8 +35,8 @@ val lang:ChangeLocale) : RecyclerView.Adapter<ChooseLanguageAdapter.LanguageView
         holder.radioBtn.setOnClickListener {
 
             adpPosition = holder.adapterPosition
+            prefManager.setInt("position",adpPosition)
             notifyDataSetChanged()
-
             lang.language(languageList[position].lang_code)
         }
 

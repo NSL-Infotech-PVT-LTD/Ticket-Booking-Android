@@ -61,7 +61,7 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         }
 
         val loadingText = findViewById<TextView>(R.id.loadingtext)
-        loadingText.text  = Utility.randomString()
+        loadingText.text  = Utility.randomString(this@IdealPayment)
 
         bookingid = intent.getStringExtra("bookingid")!!
 

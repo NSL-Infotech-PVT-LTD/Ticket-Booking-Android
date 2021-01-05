@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="@dimen/_20sdp"
+        android:button="@drawable/currency_radio_bg"
         app:layout_constraintTop_toTopOf="@id/languageNametxt"
         app:layout_constraintBottom_toBottomOf="@id/languageNametxt"/>
 

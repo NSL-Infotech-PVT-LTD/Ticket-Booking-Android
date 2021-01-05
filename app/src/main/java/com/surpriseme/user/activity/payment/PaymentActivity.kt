@@ -190,10 +190,7 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener {
 
                 override fun onFailure(call: Call<BookingCancelModel>, t: Throwable) {
                     binding?.loaderLayout?.visibility = View.GONE
-
                 }
-
-
             })
 
 

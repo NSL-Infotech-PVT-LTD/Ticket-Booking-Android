@@ -47,7 +47,7 @@ class ForgotPasswordActivity : AppCompatActivity(), View.OnClickListener {
         backpress = findViewById(R.id.backpress)
         backpress?.setOnClickListener(this)
         val loadingText = findViewById<TextView>(R.id.loadingtext)
-        loadingText.text  = Utility.randomString()
+        loadingText.text  = Utility.randomString(this@ForgotPasswordActivity)
     }
 
     override fun onClick(v: View?) {

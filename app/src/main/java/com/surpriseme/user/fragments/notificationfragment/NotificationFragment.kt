@@ -67,7 +67,7 @@ class NotificationFragment : Fragment(),NotificationListAdapter.NotificationDeta
     private fun init(view:View) {
 
         val loadingText = view.findViewById<TextView>(R.id.loadingtext)
-        loadingText.text  = Utility.randomString()
+        loadingText.text  = Utility.randomString(ctx!!)
         // calling notification list api....
         notificationListApi()
         backpress = view.findViewById(R.id.backpress)

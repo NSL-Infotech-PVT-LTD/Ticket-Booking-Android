@@ -99,7 +99,7 @@ class LocationFragment : Fragment(), View.OnClickListener,
     private fun init(view: View) {
 
         val loadingText = view.findViewById<TextView>(R.id.loadingtext)
-        loadingText.text  = Utility.randomString()
+        loadingText.text  = Utility.randomString(ctx)
 
         ((ctx as MainActivity)).hideBottomNavigation() // Hide bottom navigation on Location Fragment....
         initializeLocationRecycler()    // Initializing Location Recycler View....

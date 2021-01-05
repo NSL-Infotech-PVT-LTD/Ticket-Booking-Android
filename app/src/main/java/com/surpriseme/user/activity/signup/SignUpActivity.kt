@@ -31,7 +31,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
     private var confirmPassword = ""
     private lateinit var checkValidEmail: CheckValidEmail
     private lateinit var shared: PrefrenceShared
-    private lateinit var prefManager: PrefManger
+    private var prefManager: PrefManger?=null
     private var backpress:MaterialTextView?=null
     private var fbName = ""
     private var fbEmail = ""
@@ -62,7 +62,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun inIt() {
         val loadingText = findViewById<TextView>(R.id.loadingtext)
-        loadingText.text  = Utility.randomString()
+        loadingText.text  = Utility.randomString(this@SignUpActivity)
 
         signupBtn.setOnClickListener(this)
         backToLoginBtn.setOnClickListener(this)
@@ -139,7 +139,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
             password,
             Constants.DataKey.DEVICE_TYPE_VALUE,
            fbtoken,
-            "en"
+            prefManager?.getString1("language")!!
         )
             .enqueue(object : Callback<RegisterModel> {
                 override fun onResponse(
@@ -153,8 +153,8 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
                             shared.setString(Constants.DataKey.AUTH_VALUE, Constants.BEARER + response.body()?.data?.token!!)   // To save Auth token
                             shared.setString(Constants.DataKey.ARTIST_ID_VALUE,response.body()?.data?.user?.id.toString())    // To Save Artist ID
                             shared.setString(Constants.DataKey.OLD_PASS_VALUE, password) // To save User Password
+                            prefManager?.setString1(Constants.DataKey.CURRENCY, "") // to save currency....
 
-                            prefManager.setString1(Constants.DataKey.CURRENCY, "") // to save currency....
 
 
                             val intent = Intent(this@SignUpActivity, MainActivity::class.java)

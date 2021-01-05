@@ -134,7 +134,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         prefManager = PrefManger(ctx)
 
         val loadingText = view.findViewById<TextView>(R.id.loadingtext)
-        loadingText.text  = Utility.randomString()
+        loadingText.text  = Utility.randomString(ctx)
         invalidAuth = InvalidAuth()
 
         binding.viewProfile.setOnClickListener(this)

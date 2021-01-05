@@ -79,7 +79,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         eye_enable.setOnClickListener(this)
 
         val loadingText = findViewById<TextView>(R.id.loadingtext)
-        loadingText.text  = Utility.randomString()
+        loadingText.text  = Utility.randomString(this@LoginActivity)
 
         checkValidEmail = CheckValidEmail()
 
@@ -107,8 +107,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.changetext -> {
                 val intent = Intent(this@LoginActivity, ChooseLanguageActivity::class.java)
+                intent.putExtra("login","login")
                 startActivity(intent)
-                finish()
             }
             R.id.eye_disable -> {
                 passwordEdt!!.transformationMethod = null
@@ -277,4 +277,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 //        } catch (e: NoSuchAlgorithmException) {
 //        }
 //    }
+
+
 }

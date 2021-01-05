@@ -75,7 +75,7 @@ class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceiv
     private fun init() {
 
         val loadingText = findViewById<TextView>(R.id.loadingtext)
-        loadingText.text = Utility.randomString()
+        loadingText.text = Utility.randomString(this@ChatFragment)
 
         messageList = findViewById(R.id.listchat)
         chatBackpress = findViewById(R.id.chatBackpress)

@@ -79,7 +79,7 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
     private fun init(view: View) {
 
         val loadingText = view.findViewById<TextView>(R.id.loadingtext)
-        loadingText.text = Utility.randomString()
+        loadingText.text = Utility.randomString(ctx)
 
         // initialization of views....
         backpress = view.findViewById(R.id.backpress)

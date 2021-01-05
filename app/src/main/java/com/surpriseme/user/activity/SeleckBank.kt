@@ -44,7 +44,7 @@ class SeleckBank : AppCompatActivity(), CardAdapter.ChangeLocale, View.OnClickLi
         shared = PrefrenceShared(this)
 
         val loadingText = findViewById<TextView>(R.id.loadingtext)
-        loadingText.text  = Utility.randomString()
+        loadingText.text  = Utility.randomString(this@SeleckBank)
 
         bookingid = intent.getStringExtra("bookingid")!!
         binding.cardrecycler.layoutManager =

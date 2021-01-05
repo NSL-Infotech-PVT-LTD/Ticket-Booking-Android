@@ -6,15 +6,27 @@ import android.content.res.Resources
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.surpriseme.user.R
 import com.surpriseme.user.activity.login.LoginActivity
+import com.surpriseme.user.activity.mainactivity.MainActivity
+import com.surpriseme.user.activity.settings.UpdateLanguageModel
+import com.surpriseme.user.activity.signup.SignUpActivity
 import com.surpriseme.user.activity.splashwalkthrough.SplashGetStartedActivity
 import com.surpriseme.user.databinding.ActivityChooseLanguageBinding
+import com.surpriseme.user.retrofit.RetrofitClient
+import com.surpriseme.user.util.Constants
+import com.surpriseme.user.util.PrefManger
 import com.surpriseme.user.util.PrefrenceShared
+import org.json.JSONException
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -25,6 +37,8 @@ class ChooseLanguageActivity : AppCompatActivity(), View.OnClickListener, Choose
     private var shared:PrefrenceShared?=null
     private var layoutManager:RecyclerView.LayoutManager?=null
     private var languageList:ArrayList<LanguageModel> = ArrayList()
+    private var prefManager:PrefManger?=null
+    private var language=""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +50,7 @@ class ChooseLanguageActivity : AppCompatActivity(), View.OnClickListener, Choose
             R.layout.activity_choose_language
         )
         shared = PrefrenceShared(this@ChooseLanguageActivity)
+        prefManager = PrefManger(this@ChooseLanguageActivity)
 
         init()
 
@@ -44,7 +59,7 @@ class ChooseLanguageActivity : AppCompatActivity(), View.OnClickListener, Choose
     private fun init() {
 
         // initialize listener.....
-        binding?.saveButton?.setOnClickListener(this)
+
         initializeRecycler()
 
     }
@@ -54,18 +69,45 @@ class ChooseLanguageActivity : AppCompatActivity(), View.OnClickListener, Choose
         layoutManager = LinearLayoutManager(this@ChooseLanguageActivity)
         binding?.languageRecycler?.layoutManager = layoutManager
         binding?.languageRecycler?.setHasFixedSize(true)
+
+        binding?.saveButton!!.setOnClickListener {
+
+            if (intent.hasExtra("splash")) {
+                val intent = Intent(this@ChooseLanguageActivity, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            }else if (intent.hasExtra("setting")){
+                changeLanguageApi(prefManager?.getString1("language")!!)
+            } else{
+                val intent = Intent(this@ChooseLanguageActivity, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+
+//            if (intent.getStringExtra("setting")!!.equals("setting")) {
+//
+//            }
+//            else if(intent.getStringExtra("register")!!.equals("register")) {
+//                val intent = Intent(this@ChooseLanguageActivity, SignUpActivity::class.java)
+//                startActivity(intent)
+//                finish()
+//            }
+//
+//            else {
+//                val intent = Intent(this@ChooseLanguageActivity, LoginActivity::class.java)
+//                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+//                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+//                startActivity(intent)
+//                finishAffinity()
+//            }
+        }
+
         displayLanguage()
     }
     override fun onClick(v: View?) {
 
         when(v?.id) {
-            R.id.saveButton -> {
-                val intent = Intent(applicationContext, SplashGetStartedActivity ::class.java)
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                startActivity(intent)
-                finishAffinity()
-            }
+
         }
     }
 
@@ -76,10 +118,9 @@ class ChooseLanguageActivity : AppCompatActivity(), View.OnClickListener, Choose
         languageList.add(LanguageModel("German", "de"))
         languageList.add(LanguageModel("Spanish", "es"))
 
-        val adapter = ChooseLanguageAdapter(this@ChooseLanguageActivity, languageList,this)
+        val adapter = ChooseLanguageAdapter(prefManager!!,this@ChooseLanguageActivity, languageList,this)
         binding?.languageRecycler?.adapter = adapter
         binding?.languageRecycler?.setHasFixedSize(true)
-
     }
 
     fun setLocale(lang: String?) {
@@ -101,15 +142,46 @@ class ChooseLanguageActivity : AppCompatActivity(), View.OnClickListener, Choose
     }
 
     override fun language(language: String) {
+        prefManager?.setString1("language",language)
         setLocale(language)
-        val intent = Intent(this@ChooseLanguageActivity,LoginActivity ::class.java)
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        startActivity(intent)
-        finishAffinity()
     }
 
-
+    // Change language api call....
+    private fun changeLanguageApi(language: String){
+        binding?.loaderLayout?.visibility = View.VISIBLE
+        RetrofitClient.api.updateLanguageApi(shared?.getString(Constants.DataKey.AUTH_VALUE)!!,language)
+            .enqueue(object : Callback<UpdateLanguageModel> {
+                override fun onResponse(
+                    call: Call<UpdateLanguageModel>,
+                    response: Response<UpdateLanguageModel>
+                ) {
+                    binding?.loaderLayout?.visibility = View.GONE
+                    if (response.isSuccessful) {
+                        if (response.body() !=null){
+                            val intent = Intent(this@ChooseLanguageActivity, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+                    } else{
+                        val jsonobject: JSONObject
+                        if (response.errorBody() !=null) {
+                            try {
+                                jsonobject = JSONObject(response.errorBody()?.string()!!)
+                                val errorMessage = jsonobject.getString(Constants.ERROR)
+                                Toast.makeText(this@ChooseLanguageActivity,"" + errorMessage, Toast.LENGTH_SHORT).show()
+                            }catch (e: JSONException) {
+                                Toast.makeText(this@ChooseLanguageActivity,"" + e.message.toString(),
+                                    Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
+                override fun onFailure(call: Call<UpdateLanguageModel>, t: Throwable) {
+                    binding?.loaderLayout?.visibility = View.GONE
+                    Toast.makeText(this@ChooseLanguageActivity,"" + t.message.toString(), Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
 
 
 }

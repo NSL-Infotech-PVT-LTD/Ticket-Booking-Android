@@ -77,7 +77,7 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
         val view = binding.root
         shared = PrefrenceShared(ctx)
         val loadingText = view.findViewById<TextView>(R.id.loadingtext)
-        loadingText.text = Utility.randomString()
+        loadingText.text = Utility.randomString(ctx)
         Constants.PROFILE_FRAGMENT = true
 
         ((ctx as MainActivity)).hideBottomNavigation()
@@ -90,7 +90,7 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
     private fun inIt(view: View) {
 
         val loadingText = view.findViewById<TextView>(R.id.loadingtext)
-        loadingText.text = Utility.randomString()
+        loadingText.text = Utility.randomString(ctx)
 //        loaderLayout = view.findViewById(R.id.loaderLayoutprofile)
         toolBackpress = view.findViewById(R.id.backpress)
         toolProfileTxt = view.findViewById(R.id.toolProfileTxt)

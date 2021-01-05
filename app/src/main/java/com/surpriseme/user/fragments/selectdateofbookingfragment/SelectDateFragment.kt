@@ -82,7 +82,7 @@ class SelectDateFragment : Fragment(), View.OnClickListener {
     private fun init(view: View) {
 
         val loadingText = view.findViewById<TextView>(R.id.loadingtext)
-        loadingText.text  = Utility.randomString()
+        loadingText.text  = Utility.randomString(ctx)
 
         artistID = shared?.getString(Constants.ARTIST_ID)!!
 

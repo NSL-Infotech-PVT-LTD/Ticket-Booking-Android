@@ -107,7 +107,7 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
     private fun init(view: View) {
 
         val loadingText = view.findViewById<TextView>(R.id.loadingtext)
-        loadingText.text  = Utility.randomString()
+        loadingText.text  = Utility.randomString(ctx)
 
         // initializing clicks for views....
         binding.bookBtn.setOnClickListener(this)

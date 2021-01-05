@@ -59,7 +59,7 @@ class ChatListFragment : Fragment(), ChatListAdapter.GoToChat {
     private fun init(view: View) {
 
         val loadingText = view.findViewById<TextView>(R.id.loadingtext)
-        loadingText.text  = Utility.randomString()
+        loadingText.text  = Utility.randomString(ctx!!)
         ((ctx as MainActivity)).showBottomNavigation()
         // calling Chat list api....
         chatListApi()

@@ -73,7 +73,7 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun inIt() {
         val loadingText = findViewById<TextView>(R.id.loadingtext)
-        loadingText.text  = Utility.randomString()
+        loadingText.text  = Utility.randomString(this@SignUpTypeActivity)
 
         signUpEmailBtn.setOnClickListener(this)
         binding.fbLogin.setOnClickListener(this)
@@ -212,7 +212,7 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
             fbID!!,
             Constants.DataKey.DEVICE_TYPE_VALUE,
             fbtoken,
-            "en",
+            prefManager?.getString1("language")!!,
             fbImage
         )
             .enqueue(object : Callback<RegisterWithFbModel> {

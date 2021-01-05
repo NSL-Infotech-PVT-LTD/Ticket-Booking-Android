@@ -52,6 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/change"
+            android:padding="@dimen/_10sdp"
             android:textSize="12sp"
             android:textColor="@color/black"
             android:layout_marginEnd="10dp"
@@ -207,13 +208,16 @@
 
         <CheckBox
             android:id="@+id/checkbox"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:text="@string/remember_me"
             android:textColor="#66667e"
             android:fontFamily="@font/montserrat_medium"
             app:layout_constraintStart_toStartOf="@id/passwordLayout"
+            app:layout_constraintEnd_toStartOf="@+id/forgetTxt"
+            app:layout_constraintHorizontal_bias="0"
+            android:layout_marginEnd="@dimen/_10sdp"
             app:layout_constraintTop_toBottomOf="@id/passwordLayout" />
 
 
@@ -248,8 +252,9 @@
         <TextView
             android:id="@+id/accountYetTxt"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/_40sdp"
+            android:layout_height="wrap_content"
             android:gravity="center"
+            android:paddingVertical="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_20sdp"
             android:text="@string/yet"
             android:textColor="@color/grey_Dark_color"

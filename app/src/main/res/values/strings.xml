@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">SurpriseMeUser</string>
-    <!--    <string name="places_api_key">AIzaSyAeRjBp9uCEHLe-dIdsGVKegO9KzsmHmwA</string>-->
-    <!--    <string name="places_api_key">AIzaSyCRpD56NTTmuzvDUUBgpSjbUgyrA71bOM</string>-->
     <string name="facebook_app_id">1078382892582555</string>
     <string name="fb_login_protocol_scheme">fb1078382892582555</string>
     <string name="places_api_key">AIzaSyA8xsvoYmsGtITtzvU90jkK3OHArVBAinI</string>
@@ -40,8 +38,6 @@
     <string name="username">Username</string>
     <string name="confirm_pass">Confirm Password</string>
     <string name="register_now">Register Now</string>
-    <!--    <string name="facebook_app_id">688614105089365</string>-->
-    <!--    <string name="fb_login_protocol_scheme">fb688614105089365</string>-->
     <string name="please_fill_require_field">Please fill the require field</string>
     <string name="password_not_match">Password not match</string>
     <string name="con_Text">Continue</string>
@@ -291,7 +287,7 @@
     <string name="youtube_account">Youtube Account</string>
     <string name="rate_your_artist">Rate your artist</string>
     <string name="read_more">Read More</string>
-    <string name="rate_and_review"><![CDATA[Rate & Review]]></string>
+    <string name="rate_and_review">Rate &amp; Review</string>
     <string name="are_you_sure_artist_reached_at_your_location">Are you sure Artist Reach At Your Location ?</string>
     <string name="yes_reached">Yes, Reached</string>
     <string name="no_want_to_report">No, Want to Report</string>
@@ -310,6 +306,14 @@
     <string name="no_artist_right_now">No Artist Right Now</string>
     <string name="unable_to_find_artist">Unable to find artist on this page. Please search for another</string>
     <string name="profile_has_been_updated_successfully">Profile has been updated successfully</string>
-
+    <string name="loader1">Musicians want to be the loud voice for so many quiet hearts</string>
+    <string name="loader2">Music is the universal language of mankind</string>
+    <string name="loader3">If Music is a Place — then Jazz is the City</string>
+    <string name="loader4">Rock is the Road, Classical is a Temple</string>
+    <string name="loader5">Music is the shorthand of emotion.</string>
+    <string name="loader6">Music is the only language in which you cannot say a mean or sarcastic thing</string>
+    <string name="loader7">Music is the art which is most nigh to tears and memory.</string>
+    <string name="loader8">One good thing about music, when it hits you, you feel no pain</string>
+    <string name="loader9">Where words fail, music speaks</string>
 
 </resources>

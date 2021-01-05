@@ -1,21 +1,22 @@
 package com.surpriseme.user.util
 
+import android.content.Context
+import com.surpriseme.user.R
 import java.util.*
 
 object Utility {
 
-    fun randomString(): String {
+    fun randomString(ctx: Context): String {
         val arraystring = arrayOf(
-            "Musicians want to be the loud voice for so many quiet hearts",
-            "Music is the universal language of mankind",
-            "If Music is a Place — then Jazz is the City",
-            "Rock is the Road, Classical is a Temple",
-            "Music is the shorthand of emotion.",
-            "Music is the only language in which you cannot say a mean or sarcastic thing",
-            "Music is the art which is most nigh to tears and memory.",
-            "One good thing about music, when it hits you, you feel no pain",
-            "Where words fail, music speaks"
-        )
+            ctx.getString(R.string.loader1),
+            ctx.getString(R.string.loader2),
+            ctx.getString(R.string.loader3),
+            ctx.getString(R.string.loader4),
+            ctx.getString(R.string.loader5),
+            ctx.getString(R.string.loader6),
+            ctx.getString(R.string.loader7),
+            ctx.getString(R.string.loader8),
+            ctx.getString(R.string.loader9))
         val min = 0
         val max = 8
         val random = Random().nextInt(max - min + 1) + min

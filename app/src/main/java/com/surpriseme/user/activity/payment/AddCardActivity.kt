@@ -80,7 +80,7 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
         backpress = findViewById(R.id.backpress)
         backpress?.setOnClickListener(this)
         val loadingText = findViewById<TextView>(R.id.loadingtext)
-        loadingText.text  = Utility.randomString()
+        loadingText.text  = Utility.randomString(this@AddCardActivity)
 
         //validations....
         validations()
@@ -217,6 +217,7 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
         )
         stripe.createCardToken(card, null, null, object : ApiResultCallback<Token> {
             override fun onError(e: Exception) {
+                binding!!.loaderLayout.visibility = View.GONE
             }
 
 

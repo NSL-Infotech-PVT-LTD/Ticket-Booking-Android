@@ -55,4 +55,18 @@ class PrefManger(context: Context) {
     fun isFirstTimeLaunch(): Boolean {
         return pref?.getBoolean(IS_FIRST_TIME_LAUNCH, true)!!
     }
+
+    fun setInt(key1: String?, value1: Int?) {
+// val prefs1 = context?.getSharedPreferences("abc", Context.MODE_PRIVATE)
+//// val prefs1 = PreferenceManager.getDefaultSharedPreferences(context)
+        val editor1 = pref?.edit()
+        editor1?.putInt(key1, value1!!)
+        editor1?.apply()
+    }
+
+
+    fun getInt(key1: String): Int {
+// val prefs1 = context?.getSharedPreferences("abc", Context.MODE_PRIVATE)
+        return pref?.getInt(key1, -1)!!
+    }
 }

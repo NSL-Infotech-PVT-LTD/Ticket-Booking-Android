@@ -65,7 +65,7 @@ class ChangePasswordFragment : Fragment(), View.OnClickListener {
     private fun init(view: View) {
 
         val loadingText = view.findViewById<TextView>(R.id.loadingtext)
-        loadingText.text  = Utility.randomString()
+        loadingText.text  = Utility.randomString(ctx)
 
         binding.continueButton.setOnClickListener(this)
         binding.changeEyeDisable.setOnClickListener(this)

@@ -114,7 +114,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
     private fun init() {
 
         val loadingText = findViewById<TextView>(R.id.loadingtext)
-        loadingText.text  = Utility.randomString()
+        loadingText.text  = Utility.randomString(this@BookingDetailFragment)
 
         bottomSheet = findViewById(R.id.rateReviewBottomSheet)!!
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)

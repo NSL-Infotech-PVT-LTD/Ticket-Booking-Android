@@ -91,7 +91,7 @@ class BookingFragment : Fragment(), View.OnClickListener, BookingListAdapter.See
     private fun init(view: View) {
 
         val loadingText = view.findViewById<TextView>(R.id.loadingtext)
-        loadingText?.text  = Utility.randomString()
+        loadingText?.text  = Utility.randomString(ctx)
         ((ctx as MainActivity)).showBottomNavigation()
         // Initializing onclick listener to views....
         binding.refresh.setOnClickListener(this)
