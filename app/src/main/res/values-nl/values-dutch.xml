@@ -40,7 +40,7 @@
     <string name="confirm_pass">Bevestig wachtwoord</string>
     <string name="register_now">Registreer nu</string>
     <string name="please_fill_require_field">Vul het vereiste inveld</string>
-    <string name="password_not_match">Wachtwoord komt niet overeen</string>
+    <string name="password_not_match">wachtwoord komt niet overeen</string>
     <string name="con_Text">Doorgaan met</string>
     <string name="please_enter_valid_email">Voer een geldig e-mailadres in</string>
     <string name="home">huis</string>
@@ -68,8 +68,6 @@
     <string name="search_for_artist_singer"> Zoek naar artiest, zangerenz. </string>
     <string name="book_artist_you_listen"> Boekartiest die je luistert </string>
     <string name="singer_actor"> Zanger, acteur </string>
-    <string name="diljit"> Diljit Dosanjh </string>
-    <string name="description_demo"> Diljit Dosanjh is een Indiase zangeres, acteuren tv-presentator die in punjabi en hindi-cinema werken. Hij wordt herkendals een van de toonaangevende artiesten in de Indiase muziekindustrie </string>
     <string name="book"> Boek </string>
     <string name="see_artist_profile"> Zie artiestenprofiel </string>
     <string name="no_data_found"> ​​Geen gegevens gevonden </string>

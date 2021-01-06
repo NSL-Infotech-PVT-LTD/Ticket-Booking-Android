@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import com.surpriseme.user.R
 import com.surpriseme.user.fragments.artistbookingdetail.ArtistBookingFragment
 import com.surpriseme.user.fragments.bookingfragment.BookingFragment
@@ -19,8 +18,8 @@ import com.surpriseme.user.fragments.chatFragment.ChatFragment
 import com.surpriseme.user.fragments.chatListfragment.ChatListFragment
 import com.surpriseme.user.fragments.homefragment.HomeFragment
 import com.surpriseme.user.fragments.locationfragment.LocationFragment
+import com.surpriseme.user.fragments.selectdateofbookingfragment.SelectDateFragment
 import com.surpriseme.user.fragments.viewprofile.ProfileFragment
-import com.surpriseme.user.fragments.wayofbookingfragment.WayOfBookingFragment
 import com.surpriseme.user.util.Constants
 import kotlinx.android.synthetic.main.activity_main.*
 import net.alhazmy13.mediapicker.Image.ImagePicker
@@ -57,7 +56,7 @@ class MainActivity : AppCompatActivity() {
             transaction.replace(R.id.frameContainer, fragment)
             transaction.commit()
         } else if (intent.hasExtra("artistBook")) {
-            val fragment = WayOfBookingFragment()
+            val fragment = SelectDateFragment()
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.frameContainer, fragment)
             transaction.commit()

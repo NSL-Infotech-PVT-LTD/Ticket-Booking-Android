@@ -116,7 +116,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
         longitude = shared?.getString(Constants.LONGITUDE)!!
 
         showType = Constants.SHOW_TYPE
-        if (showType == getString(R.string.digital)) {
+        if (showType == "digital") {
             byDistanceTv?.visibility = View.GONE
             seekbarDistance?.visibility = View.GONE
         } else {

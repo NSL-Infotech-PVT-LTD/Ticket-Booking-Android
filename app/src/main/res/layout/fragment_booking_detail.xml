@@ -108,11 +108,12 @@
                         android:layout_height="@dimen/_120sdp"
                         app:cardElevation="5dp"
                         app:cardCornerRadius="@dimen/_10sdp"
+                        app:cardBackgroundColor="@color/grey_color"
                         android:layout_marginHorizontal="@dimen/_20sdp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="@dimen/_20sdp">
+                        android:layout_marginTop="@dimen/_16sdp">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
@@ -123,8 +124,6 @@
                             android:id="@+id/profileImg"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:adjustViewBounds="true"
-                            android:scaleType="centerCrop"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent" />
 
@@ -319,6 +318,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/booking_date"
                         android:textColor="#91a1b7"
+                        android:textSize="10dp"
                         android:fontFamily="@font/montserrat_regular"
                         app:layout_constraintTop_toBottomOf="@id/dottedView"
                         app:layout_constraintStart_toStartOf="@id/dottedView"
@@ -345,6 +345,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/booking_time"
                         android:textColor="#91a1b7"
+                        android:textSize="10dp"
                         android:layout_marginStart="@dimen/_14sdp"
                         android:fontFamily="@font/montserrat_regular"
                         app:layout_constraintTop_toTopOf="@+id/dateTv"
@@ -371,6 +372,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/location"
                         android:textColor="#91a1b7"
+                        android:textSize="10dp"
                         app:layout_constraintTop_toBottomOf="@id/dateTxt"
                         app:layout_constraintStart_toStartOf="@id/dottedView"
                         android:layout_marginTop="@dimen/_20sdp"/>
@@ -392,6 +394,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/status"
                         android:textColor="#91a1b7"
+                        android:textSize="10dp"
                         app:layout_constraintTop_toBottomOf="@id/locationTv"
                         app:layout_constraintStart_toStartOf="@id/dottedView"
                         app:layout_constraintEnd_toStartOf="@id/timeTv"
@@ -418,6 +421,7 @@
                         android:text="@string/payment"
                         android:textColor="#91a1b7"
                         android:layout_marginStart="@dimen/_10sdp"
+                        android:textSize="10dp"
                         app:layout_constraintTop_toTopOf="@id/statusTxt"
                         app:layout_constraintStart_toEndOf="@id/statusTxt"
                         app:layout_constraintEnd_toEndOf="@id/dottedView"/>
@@ -464,7 +468,7 @@
                         android:text="@string/pay_now"
                         android:textAllCaps="false"
                         android:visibility="gone"
-                        android:textSize="@dimen/_12sdp"
+                        android:textSize="@dimen/_10sdp"
                         android:layout_marginHorizontal="@dimen/_30sdp"
                         app:cornerRadius="@dimen/_16sdp" />
 

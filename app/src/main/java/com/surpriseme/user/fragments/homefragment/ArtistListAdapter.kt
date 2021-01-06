@@ -181,7 +181,7 @@ class ArtistListAdapter(
                 categories.text = s
             }
 
-            if (Constants.SHOW_TYPE == context.resources?.getString(R.string.digital)!!) {
+            if (Constants.SHOW_TYPE == "digital") {
                 price.text = artistModel.converted_currency + " " +
                         DecimalFormat("#.##").format(artistModel.converted_digital_price)+ "/" + context.resources.getString(
                         R.string.hr)

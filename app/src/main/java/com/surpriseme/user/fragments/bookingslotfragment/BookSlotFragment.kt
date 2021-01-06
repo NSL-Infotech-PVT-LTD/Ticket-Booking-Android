@@ -107,7 +107,7 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
             binding.weekDayText.text = weekday
         }
 
-        if (Constants.SHOW_TYPE == ctx.resources.getString(R.string.digital)) {
+        if (Constants.SHOW_TYPE == "digital") {
             showType = ctx.resources.getString(R.string.digital)
         } else {
             showType = ctx.resources.getString(R.string.live)

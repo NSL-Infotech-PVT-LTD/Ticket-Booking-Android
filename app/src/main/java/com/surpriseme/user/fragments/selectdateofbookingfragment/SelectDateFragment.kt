@@ -67,7 +67,7 @@ class SelectDateFragment : Fragment(), View.OnClickListener {
 
         showTypeTv = view.findViewById(R.id.showTypeTv)
         showTypeTv?.visibility = View.VISIBLE
-        if (Constants.SHOW_TYPE == ctx.resources.getString(R.string.digital)) {
+        if (Constants.SHOW_TYPE == "digital") {
             showTypeTv?.text = ctx.resources.getString(R.string.virtual)
         } else {
             showTypeTv?.text = ctx.resources.getString(R.string.in_person)

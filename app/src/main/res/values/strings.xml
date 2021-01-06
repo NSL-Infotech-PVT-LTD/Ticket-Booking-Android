@@ -39,7 +39,7 @@
     <string name="confirm_pass">Confirm Password</string>
     <string name="register_now">Register Now</string>
     <string name="please_fill_require_field">Please fill the require field</string>
-    <string name="password_not_match">Password not match</string>
+    <string name="password_not_match">password doesn\'t match</string>
     <string name="con_Text">Continue</string>
     <string name="please_enter_valid_email">Please enter valid email</string>
     <string name="home">Home</string>
@@ -68,8 +68,6 @@
     <string name="search_for_artist_singer">Search for Artist, Singer etc.</string>
     <string name="book_artist_you_listen">Book Artist You  Listen</string>
     <string name="singer_actor">Singer,Actor</string>
-    <string name="diljit">Diljit Dosanjh</string>
-    <string name="description_demo">Diljit Dosanjh is an indian singer, actor and television presenter who work in punjabi and hindi cinema. He is recognized as one of the leading artist in the Indian music industry</string>
     <string name="book">Book</string>
     <string name="see_artist_profile">See Artist Profile</string>
     <string name="no_data_found">No Data Found</string>
@@ -315,5 +313,10 @@
     <string name="loader7">Music is the art which is most nigh to tears and memory.</string>
     <string name="loader8">One good thing about music, when it hits you, you feel no pain</string>
     <string name="loader9">Where words fail, music speaks</string>
+    <string name="error">Error</string>
+    <string name="enter_your_user_name">Enter your user name</string>
+    <string name="enter_your_mail">Enter your email</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="enter_your_confirm_password">Enter your confirm password</string>
 
 </resources>

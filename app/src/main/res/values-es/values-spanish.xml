@@ -39,16 +39,13 @@
     <string name="username">Nombre de usuario</string>
     <string name="confirm_pass">Confirmar contraseña</string>
     <string name="register_now">Regístrate ahora</string>
-
-
     <string name="please_fill_require_field">Por favor complete el campo requerido</string>
-    <string name="password_not_match">La contraseña no coincide</string>
+    <string name="password_not_match">la contraseña no coincide</string>
     <string name="con_Text">Seguir</string>
     <string name="please_enter_valid_email">Por favor introduzca un correo electrónico válido</string>
     <string name="home">Casa</string>
     <string name="booking">Reserva</string>
     <string name="chat">Charla</string>
-
     <string name="hello_blank_fragment">Hola fragmento en blanco</string>
     <string name="your_location">Tu ubicación</string>
     <string name="view_profile">Ver perfil</string>
@@ -71,8 +68,6 @@
     <string name="search_for_artist_singer">Busca artista, cantante, etc.</string>
     <string name="book_artist_you_listen">Artista del libro que escuchas</string>
     <string name="singer_actor">Cantante, actor</string>
-    <string name="diljit">Diljit Dosanjh</string>
-    <string name="description_demo">Diljit Dosanjh es un cantante, actor y presentador de televisión indio que trabaja en el cine hindi y punjabi. Es reconocido como uno de los artistas líderes en la industria musical india.</string>
     <string name="book">Libro</string>
     <string name="see_artist_profile">Ver perfil de artista</string>
     <string name="no_data_found">Datos no encontrados</string>

@@ -107,23 +107,17 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
         confirmPassword = confirmPassEdt.text.toString().trim()
 
         if (username.isEmpty()) {
-            useredt.error = getString(R.string.please_fill_require_field)
-            useredt.requestFocus()
+            Utility.alertErrorMessage(this@SignUpActivity,getString(R.string.enter_your_user_name))
         } else if (email.isEmpty()) {
-            emailEdt.error = getString(R.string.please_fill_require_field)
-            emailEdt.requestFocus()
+            Utility.alertErrorMessage(this@SignUpActivity, getString(R.string.enter_your_mail))
         } else if (!checkValidEmail.isValidEmail(email)) {
-            emailEdt.error = getString(R.string.please_enter_valid_email)
-            emailEdt.requestFocus()
+            Utility.alertErrorMessage(this@SignUpActivity,getString(R.string.please_enter_valid_email))
         } else if (password.isEmpty()) {
-            passwordEdt.error = getString(R.string.please_fill_require_field)
-            passwordEdt.requestFocus()
+            Utility.alertErrorMessage(this@SignUpActivity, getString(R.string.enter_your_password))
         } else if (confirmPassword.isEmpty()) {
-            confirmPassEdt.error = getString(R.string.please_fill_require_field)
-            confirmPassEdt.requestFocus()
+            Utility.alertErrorMessage(this@SignUpActivity, getString(R.string.enter_your_confirm_password))
         } else if (password != confirmPassword) {
-            passwordEdt.error = getString(R.string.password_not_match)
-            passwordEdt.requestFocus()
+            Utility.alertErrorMessage(this@SignUpActivity,getString(R.string.password_not_match))
         } else {
             // hit Signup api here....
             registerApi()

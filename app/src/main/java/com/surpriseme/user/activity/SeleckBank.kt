@@ -68,6 +68,7 @@ class SeleckBank : AppCompatActivity(), CardAdapter.ChangeLocale, View.OnClickLi
         when(v?.id) {
             R.id.backpress -> {
                 val intent = Intent(this@SeleckBank, PaymentActivity::class.java)
+                intent.putExtra("bookingid",bookingid)
                 startActivity(intent)
                 finish()
             }
@@ -110,7 +111,7 @@ class SeleckBank : AppCompatActivity(), CardAdapter.ChangeLocale, View.OnClickLi
                         if (response.errorBody() != null) {
                             try {
                                 jsonObject = JSONObject(response.errorBody()!!.string())
-                                val errorMessage = jsonObject.getString(Constants.ERRORS)
+                                val errorMessage = jsonObject.getString(Constants.ERROR)
                                 Toast.makeText(
                                     this@SeleckBank,
                                     "" + errorMessage,
@@ -196,7 +197,7 @@ class SeleckBank : AppCompatActivity(), CardAdapter.ChangeLocale, View.OnClickLi
                         if (response.errorBody() != null) {
                             try {
                                 jsonObject = JSONObject(response.errorBody()!!.string())
-                                val errorMessage = jsonObject.getString(Constants.ERRORS)
+                                val errorMessage = jsonObject.getString(Constants.ERROR)
                                 Toast.makeText(
                                     this@SeleckBank,
                                     "" + errorMessage,
@@ -205,7 +206,7 @@ class SeleckBank : AppCompatActivity(), CardAdapter.ChangeLocale, View.OnClickLi
                             } catch (e: JSONException) {
                                 Toast.makeText(
                                     this@SeleckBank,
-                                    "" + Constants.SOMETHING_WENT_WRONG,
+                                    "" +e.message.toString(),
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
@@ -255,7 +256,7 @@ class SeleckBank : AppCompatActivity(), CardAdapter.ChangeLocale, View.OnClickLi
                         if (response.errorBody() != null) {
                             try {
                                 jsonObject = JSONObject(response.errorBody()!!.string())
-                                val errorMessage = jsonObject.getString(Constants.ERRORS)
+                                val errorMessage = jsonObject.getString(Constants.ERROR)
                                 Toast.makeText(
                                     this@SeleckBank,
                                     "" + errorMessage,

@@ -115,28 +115,14 @@ class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceiv
 
         if (intent.getStringExtra("receiverImage") != null) {
             mReceiverImage = intent.getStringExtra("receiverImage").toString()
+            if (mReceiverImage != "" || mReceiverImage != null) {
+
+                Picasso.get().load(mReceiverImage).into(mReceiverImageView)
+            }
         }
         if (intent.getStringExtra("receiverName") != null) {
             mReceiverName = intent.getStringExtra("receiverName").toString()
-        }
-       // adapter = MessageAdapter(mReceiverId, shared, ArrayList(), this)
-        if (mReceiverImage != "" || mReceiverImage != null) {
-
-            Picasso.get()
-                .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + mReceiverImage)
-                .into(mReceiverImageView)
-        }
-        if ((mReceiverName != "") || (mReceiverName != "null")) {
-            if (mReceiverName == "null")
-                mReceiverNameMtv?.text = ""
-            else {
-//                val prefix = mReceiverName.substring(0,1)
-//                val suffix = mReceiverName.substring(1)
-//                pre
-                mReceiverNameMtv?.text = mReceiverName
-            }
-        } else {
-            mReceiverNameMtv?.text = ""
+            mReceiverNameMtv?.text = mReceiverName.capitalize()
         }
         messageList?.adapter = adapter
         adapter?.notifyDataSetChanged()
@@ -154,10 +140,7 @@ class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceiv
 //                    onetoonelayout?.mySnack("write something..") {}
                     } else {
                         //   if(senderrole!=null || requestId!=null) {
-                        ConnectionManger.sendMessage(
-                            message,
-                            shared?.getString(Constants.DataKey.USER_ID)!!,
-                            mReceiverId
+                        ConnectionManger.sendMessage(message, shared?.getString(Constants.DataKey.USER_ID)!!, mReceiverId
                         )
                         binding?.msgEdt!!.setText("")
                     }
@@ -178,8 +161,6 @@ class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceiv
                 } else {
                     finish()
                 }
-
-
             }
         }
     }
@@ -201,8 +182,6 @@ class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceiv
                     binding?.loaderLayout?.visibility = View.GONE
                     if (response.body() != null) {
                         if (response.isSuccessful) {
-
-                            mReceiverNameMtv?.text = ""
                             list?.clear()
                              list = response.body()?.data?.chat?.data
                             totalPage = response.body()?.data?.chat?.last_page!!
@@ -239,8 +218,8 @@ class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceiv
 
 // adapter?.addItemList(list)
 
-                                Picasso.get().load(Constants.ImageUrl.BASE_URL+ Constants.ImageUrl.ARTIST_IMAGE_URL+response.body()!!.data.receiver_detail.image).resize(500,500)
-                                    .onlyScaleDown().into(mReceiverImageView)
+                                Picasso.get().load(Constants.ImageUrl.BASE_URL+ Constants.ImageUrl.ARTIST_IMAGE_URL+response.body()!!.data.receiver_detail.image)
+                                    .into(mReceiverImageView)
                                 mReceiverNameMtv?.text=response.body()!!.data.receiver_detail.name
                             }
                         }

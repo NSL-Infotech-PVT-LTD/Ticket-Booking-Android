@@ -463,7 +463,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
 
                 binding.statusTv.text = "${bookingModel.status}"
                 mShowType = bookingModel.type
-                if (mShowType == Constants.DIGITAL) {
+                if (mShowType == "digital") {
                     binding.showTypeTv.text = getString(R.string.virtual)
                 }else {
                     binding.showTypeTv.text = getString(R.string.in_person)
@@ -544,6 +544,9 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
 
                 if (bookingModel.address !=null) {
                     binding.locationTv.text = bookingModel.address.toString()
+                } else {
+                    binding.locationTxt.visibility = View.GONE
+                    binding.locationTv.visibility = View.GONE
                 }
 
                 // Display date at top of card....

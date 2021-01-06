@@ -92,7 +92,7 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
         ((ctx as MainActivity)).hideBottomNavigation()
         init(view)
 
-        if (Constants.SHOW_TYPE == ctx.resources.getString(R.string.digital)) {
+        if (Constants.SHOW_TYPE == "digital") {
             binding.virtualShowLayout.visibility = View.VISIBLE
             binding.inPersonShowLayout.visibility = View.GONE
         } else {
@@ -396,13 +396,11 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                     Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.image
                                 Picasso.get()
                                     .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.image)
-                                    .resize(500,500)
-                                    .onlyScaleDown()
                                     .into(binding.profileImg)
                                 binding.profileName.text = artistModel.name
-                                binding.livePriceText.text = artistModel.currency + " " + DecimalFormat("#.##").format(artistModel.converted_live_price)
+                                binding.livePriceText.text = artistModel.converted_currency + " " + DecimalFormat("#.##").format(artistModel.converted_live_price)
                                 if (artistModel.converted_digital_price != null)
-                                    binding.digitalPriceText.text = artistModel.currency + " " + DecimalFormat("#.##").format(artistModel.converted_digital_price)
+                                    binding.digitalPriceText.text = artistModel.converted_currency + " " + DecimalFormat("#.##").format(artistModel.converted_digital_price)
                                 /**
                                  * @author pardeep.sharma@netscapelabs.com
                                  * @param Set the zoom method to open the images
