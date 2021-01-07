@@ -102,7 +102,7 @@ class ChatListFragment : Fragment(), ChatListAdapter.GoToChat {
                                 binding?.artistNotFoundLayout?.visibility = View.VISIBLE
                             }
                         }else {
-                                Toast.makeText(ctx,"Something went Wrong",Toast.LENGTH_SHORT).show()
+                                Toast.makeText(ctx,"" + Constants.SOMETHING_WENT_WRONG,Toast.LENGTH_SHORT).show()
                             }
 
                     } else {

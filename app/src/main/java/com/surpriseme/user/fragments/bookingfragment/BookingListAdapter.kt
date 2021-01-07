@@ -122,7 +122,7 @@ class BookingListAdapter(
 
             bookingId.text = "#" + " " + bookingModel.id.toString()
 
-            if (mType == context.resources.getString(R.string.digital)) {
+            if (mType == "digital") {
                 mType = context.resources.getString(R.string.virtual)
             } else {
                 mType = context.resources.getString(R.string.in_person)
@@ -131,44 +131,44 @@ class BookingListAdapter(
 
             mStatus = bookingModel.status
 
-            if (mStatus == context.resources.getString(R.string.pending)) {
+            if (mStatus == "pending") {
                 mStatus = context.resources.getString(R.string.Pending)
                 status.background = ContextCompat.getDrawable(context,R.drawable.status_yellow_bg)
                 status.text = mStatus    // Display Status of booking
-            } else if (mStatus == context.resources.getString(R.string.rejected)) {
+            } else if (mStatus == "rejected") {
                 mStatus = context.resources.getString(R.string.Rejected)
                 status.background = ContextCompat.getDrawable(context,R.drawable.status_red_bg)
                 status.text = mStatus    // Display Status of booking
 
-            } else if (mStatus == context.resources.getString(R.string.cancel)) {
+            } else if (mStatus == "cancel") {
                 mStatus = context.resources.getString(R.string.Cancel)
                 status.background = ContextCompat.getDrawable(context,R.drawable.status_red_bg)
                 status.text = mStatus    // Display Status of booking
-            } else if (mStatus == context.resources.getString(R.string.accepted)) {
+            } else if (mStatus == "accepted") {
                 mStatus = context.resources.getString(R.string.Accepted)
                 status.background = ContextCompat.getDrawable(context,R.drawable.status_green_bg)
                 status.text = mStatus    // Display Status of booking
-            } else if (mStatus == context.resources.getString(R.string.confirmed)) {
+            } else if (mStatus == "confirmed") {
                 mStatus = context.resources.getString(R.string.Confirmed)
                 status.background = ContextCompat.getDrawable(context,R.drawable.status_green_bg)
                 status.text = mStatus    // Display Status of booking
-            } else if (mStatus == context.resources.getString(R.string.processing)) {
+            } else if (mStatus == "processing") {
                 mStatus = context.resources.getString(R.string.Processing)
                 status.background = ContextCompat.getDrawable(context,R.drawable.status_yellow_bg)
                 status.text = mStatus    // Display Status of booking
-            } else if (mStatus == context.resources.getString(R.string.completed_review)) {
+            } else if (mStatus == "completed_review") {
                 mStatus = context.resources.getString(R.string.Completed)
                 status.background = ContextCompat.getDrawable(context,R.drawable.status_green_bg)
                 status.text = mStatus    // Display Status of booking
-            } else if (mStatus == context.resources.getString(R.string.payment_failed)) {
+            } else if (mStatus == "payment_failed") {
                 mStatus = context.resources.getString(R.string.Failed)
                 status.background = ContextCompat.getDrawable(context,R.drawable.status_red_bg)
                 status.text = mStatus    // Display Status of booking
-            } else if (mStatus == context.resources.getString(R.string.report)) {
+            } else if (mStatus == "report") {
                 mStatus = context.resources.getString(R.string.Report)
                 status.background = ContextCompat.getDrawable(context,R.drawable.status_red_bg)
                 status.text = mStatus    // Display Status of booking
-            } else if (mStatus == context.resources.getString(R.string.completed)) {
+            } else if (mStatus == "completed") {
                 status.background = ContextCompat.getDrawable(context,R.drawable.status_green_bg)
                 status.text = context.resources.getString(R.string.Completed)    // Display Status of booking
             }

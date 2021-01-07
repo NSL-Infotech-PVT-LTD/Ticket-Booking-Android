@@ -310,4 +310,10 @@
     <string name="loader7">La música es el arte más cercano al llanto y la memoria.</string>
     <string name="loader8">Una cosa buena de la música, cuando te golpea, no sientes dolor</string>
     <string name="loader9">Donde las palabras fallan, la música habla</string>
+    <string name="have_chat_about_your_booking">Charle sobre su reserva</string>
+    <string name="please_select_any_slot">Seleccione cualquier ranura</string>
+    <string name="please_choose_reason">Por favor elija el motivo</string>
+    <string name="please_write_reason_for_other">Por favor escriba el motivo de otro</string>
+    <string name="please_give_rating">Por favor, califique</string>
+
 </resources>

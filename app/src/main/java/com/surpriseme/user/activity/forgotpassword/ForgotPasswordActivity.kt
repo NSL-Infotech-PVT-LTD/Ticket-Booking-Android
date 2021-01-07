@@ -55,12 +55,12 @@ class ForgotPasswordActivity : AppCompatActivity(), View.OnClickListener {
             R.id.continueButton -> {
                 email = emailedt.text.toString().trim()
                 if (email.isEmpty()) {
-                    binding?.emailedt?.error = getString(R.string.please_fill_require_field)
-                    binding?.emailedt?.requestFocus()
-                } else if (!checkValidEmail.isValidEmail(email)){
-                    binding?.emailedt?.error = getString(R.string.please_enter_valid_email)
-                    binding?.emailedt?.requestFocus()
-                } else{
+                    Utility.alertErrorMessage(this@ForgotPasswordActivity, getString(R.string.enter_your_mail))
+                }
+//                else if (!checkValidEmail.isValidEmail(email)){
+//                    Utility.alertErrorMessage(this@ForgotPasswordActivity,getString(R.string.please_enter_valid_email))
+//                }
+                else{
                     registerApi()
                 }
             }

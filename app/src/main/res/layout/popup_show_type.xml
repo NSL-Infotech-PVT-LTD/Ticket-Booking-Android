@@ -85,8 +85,8 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/virtualSelectBtn"
-                    android:layout_width="@dimen/_60sdp"
-                    android:layout_height="@dimen/_35sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="@string/select"
                     android:textAllCaps="false"
@@ -118,8 +118,8 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/inPersonSelectBtn"
-                    android:layout_width="@dimen/_60sdp"
-                    android:layout_height="@dimen/_35sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="@string/select"
                     android:textAllCaps="false"

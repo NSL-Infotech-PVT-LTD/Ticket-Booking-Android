@@ -112,14 +112,14 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/selectDateTxt"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_20sdp"
                 android:text="@string/select_time_of_booking"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/clearAllBtn"
                 android:textSize="@dimen/_12sdp"
-                android:gravity="center"
                 android:fontFamily="@font/montserrat_bold"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:textColor="#36396E" />

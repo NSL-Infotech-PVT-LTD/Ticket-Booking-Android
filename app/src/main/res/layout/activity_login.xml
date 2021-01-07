@@ -247,7 +247,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/_12sdp"
             app:cornerRadius="@dimen/_20sdp"
-            app:layout_constraintBottom_toTopOf="@+id/accountYetTxt"/>
+            app:layout_constraintBottom_toTopOf="@id/accountYetTxt"/>
 
         <TextView
             android:id="@+id/accountYetTxt"

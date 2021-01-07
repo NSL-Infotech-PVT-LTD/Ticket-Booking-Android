@@ -26,6 +26,7 @@ import com.squareup.picasso.Picasso
 import com.surpriseme.user.R
 import com.surpriseme.user.activity.login.LoginActivity
 import com.surpriseme.user.activity.mainactivity.MainActivity
+import com.surpriseme.user.activity.payment.BookingCancelModel
 import com.surpriseme.user.activity.payment.PaymentActivity
 import com.surpriseme.user.databinding.FragmentBookingDetailBinding
 import com.surpriseme.user.fragments.paymentfragment.PaymentFragment
@@ -53,8 +54,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
-    AdapterView.OnItemSelectedListener {
+class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: FragmentBookingDetailBinding
 
@@ -70,7 +70,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
     private var spinnerValue = ""
     private var reasonList: ArrayList<String> = ArrayList()
     private var descriptionTv: EditText? = null
-    private var submitReviewBtn:MaterialButton?=null
+    private var submitReviewBtn: MaterialButton? = null
 
 
     // rate review bottom sheet....
@@ -91,12 +91,12 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
     private var messageToDisplay = ""
 
     // Rate Review Custom layout views....
-    private var ratingbarForSmile:RatingBar?=null
-    private var smileIcon:ImageView?=null
-    private var laterTv:TextView?=null
+    private var ratingbarForSmile: RatingBar? = null
+    private var smileIcon: ImageView? = null
+    private var laterTv: TextView? = null
     private var rateForSmile = "1.0"
     private var review = ""
-    private var rateReviewEdt:EditText?=null
+    private var rateReviewEdt: EditText? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,7 +114,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
     private fun init() {
 
         val loadingText = findViewById<TextView>(R.id.loadingtext)
-        loadingText.text  = Utility.randomString(this@BookingDetailFragment)
+        loadingText.text = Utility.randomString(this@BookingDetailFragment)
 
         bottomSheet = findViewById(R.id.rateReviewBottomSheet)!!
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
@@ -133,28 +133,42 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
         submitReviewBtn?.setOnClickListener(this)
         rateReviewEdt = findViewById(R.id.rateReviewEdt)
         binding.profileImg.setOnClickListener(this)
+        binding.cancelTv.setOnClickListener(this)
+
+        reasonList.clear()
+        reasonList.add(Constants.SELECT_REASON)
+        reasonList.add(Constants.ARTIST_DENIED_DUTY)
+        reasonList.add(Constants.ARTIST_IS_UNREACHABLE)
+        reasonList.add(Constants.ARTIST_NOT_PICKING_CALL)
+        reasonList.add(Constants.OTHER)
+
 
 
         // get rating to change smile while give rate your experience...
 
 
-        ratingbarForSmile?.onRatingBarChangeListener = object :RatingBar.OnRatingBarChangeListener{
-            override fun onRatingChanged(ratingBar: RatingBar?, rating: Float, fromUser: Boolean) {
-                rateForSmile = rating.toString()
+        ratingbarForSmile?.onRatingBarChangeListener =
+            object : RatingBar.OnRatingBarChangeListener {
+                override fun onRatingChanged(
+                    ratingBar: RatingBar?,
+                    rating: Float,
+                    fromUser: Boolean
+                ) {
+                    rateForSmile = rating.toString()
 
-                if (rateForSmile == "1.0")
-                    smileIcon?.setImageResource(R.drawable.smile_one)
-                else if (rateForSmile == "2.0")
-                    smileIcon?.setImageResource(R.drawable.smile_two)
-                else if (rateForSmile == "3.0")
-                    smileIcon?.setImageResource(R.drawable.smile_three)
-                else if (rateForSmile == "4.0")
-                    smileIcon?.setImageResource(R.drawable.smile_fourth)
-                else if (rateForSmile == "5.0")
-                    smileIcon?.setImageResource(R.drawable.smile_fourth)
+                    if (rateForSmile == "1.0")
+                        smileIcon?.setImageResource(R.drawable.smile_one)
+                    else if (rateForSmile == "2.0")
+                        smileIcon?.setImageResource(R.drawable.smile_two)
+                    else if (rateForSmile == "3.0")
+                        smileIcon?.setImageResource(R.drawable.smile_three)
+                    else if (rateForSmile == "4.0")
+                        smileIcon?.setImageResource(R.drawable.smile_fourth)
+                    else if (rateForSmile == "5.0")
+                        smileIcon?.setImageResource(R.drawable.smile_fourth)
+                }
+
             }
-
-        }
 
         close?.setOnClickListener(this)
 
@@ -211,7 +225,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
                 if (Constants.IS_BOOKING_DONE) {
                     Constants.BOOKING = false
                     Constants.NOTIFICATION = false
-                    val intent = Intent(this@BookingDetailFragment,MainActivity::class.java)
+                    val intent = Intent(this@BookingDetailFragment, MainActivity::class.java)
                     startActivity(intent)
                     finishAffinity()
                 }
@@ -321,10 +335,13 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
 
                 review = rateReviewEdt?.text.toString()
                 binding.rateReviewCustomLayout.visibility = View.GONE
-                if (rateForSmile !="" && review !="") {
-                    Toast.makeText(this@BookingDetailFragment, "Please give rating",Toast.LENGTH_SHORT).show()
+                if (rateForSmile != "" && review != "") {
+                    Utility.alertErrorMessage(
+                        this@BookingDetailFragment,
+                        getString(R.string.please_give_rating)
+                    )
                 } else {
-                rateReviewBookingApi(bookingId,rateForSmile,review)
+                    rateReviewBookingApi(bookingId, rateForSmile, review)
                 }
             }
             R.id.profileImg -> {
@@ -336,9 +353,105 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
                 startActivity(intent)
 
             }
+            R.id.cancelTv -> {
+                popupBookingCancel()
+            }
         }
 
     }
+
+    private fun popupBookingCancel() {
+
+        val layoutInflater: LayoutInflater =
+            this@BookingDetailFragment.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+        val popUp: View = layoutInflater.inflate(R.layout.booking_cancel_layout, null)
+        val windowBookingCancel = PopupWindow(
+            popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
+            ConstraintLayout.LayoutParams.MATCH_PARENT, true
+        )
+        windowBookingCancel.showAtLocation(popUp, Gravity.CENTER, 0, 0)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            windowBookingCancel.elevation = 10f
+        }
+        windowBookingCancel.isTouchable = false
+        windowBookingCancel.isOutsideTouchable = false
+
+        val yes: TextView = popUp.findViewById(R.id.yes)
+        val no: TextView = popUp.findViewById(R.id.no)
+
+        yes.setOnClickListener {
+
+            windowBookingCancel.dismiss()
+            cancelBookingApi(bookingId)
+
+        }
+
+        no.setOnClickListener {
+            windowBookingCancel.dismiss()
+        }
+    }
+
+    // api to cancel booking....
+    private fun cancelBookingApi(bookingID: String) {
+
+        binding.loaderLayout.visibility = View.VISIBLE
+        val status = "cancel"
+        RetrofitClient.api.bookingCancelApi(
+            shared.getString(Constants.DataKey.AUTH_VALUE),
+            bookingID,
+            status
+        )
+            .enqueue(object : Callback<BookingCancelModel> {
+                override fun onResponse(
+                    call: Call<BookingCancelModel>,
+                    response: Response<BookingCancelModel>
+                ) {
+
+                    binding.loaderLayout.visibility = View.GONE
+                    if (response.isSuccessful) {
+                        if (response.body() != null) {
+                            Toast.makeText(
+                                this@BookingDetailFragment,
+                                "" + response.body()?.data?.message.toString(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            bookingDetailApi()
+                        }
+                    } else {
+                        val jsonObject: JSONObject
+                        if (response.errorBody() != null) {
+                            try {
+                                jsonObject = JSONObject(response.errorBody()?.string()!!)
+                                val errorMessage = jsonObject.getString(Constants.ERROR)
+                                Toast.makeText(
+                                    this@BookingDetailFragment,
+                                    "" + errorMessage,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } catch (e: JSONException) {
+                                Toast.makeText(
+                                    this@BookingDetailFragment,
+                                    "" + e.message.toString(),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    }
+
+
+                }
+
+                override fun onFailure(call: Call<BookingCancelModel>, t: Throwable) {
+                    binding.loaderLayout.visibility = View.GONE
+                }
+            })
+
+
+    }
+
     // Search Bottom Sheet Method....
     private fun bottomSheetUpDownRateReview() {
         if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
@@ -351,7 +464,11 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
     private fun bookingDetailApi() {
 
         binding.loaderLayout.visibility = View.VISIBLE
-        RetrofitClient.api.bookingDetailApi(shared.getString(Constants.DataKey.AUTH_VALUE), Constants.DataKey.CONTENT_TYPE_VALUE, bookingId)
+        RetrofitClient.api.bookingDetailApi(
+            shared.getString(Constants.DataKey.AUTH_VALUE),
+            Constants.DataKey.CONTENT_TYPE_VALUE,
+            bookingId
+        )
             .enqueue(object : Callback<BookingDetailModel> {
                 override fun onResponse(
                     call: Call<BookingDetailModel>,
@@ -465,7 +582,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
                 mShowType = bookingModel.type
                 if (mShowType == "digital") {
                     binding.showTypeTv.text = getString(R.string.virtual)
-                }else {
+                } else {
                     binding.showTypeTv.text = getString(R.string.in_person)
                 }
 
@@ -475,13 +592,16 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
                     binding.paymentTv.text = resources.getString(R.string.not_paid)
                     binding.actionBtn.visibility = View.VISIBLE
                     binding.actionBtn.text = resources.getString(R.string.go_to_Home)
+                    binding.cancelTv.visibility = View.GONE
 
                 } else if (bookingModel.status == Constants.CONFIRMED) {
                     binding.statusTv.text = resources.getString(R.string.Confirmed)
                     binding.paymentTv.text =
                         resources.getString(R.string.paid) + bookingModel.customer_currency + " " + bookingModel.price
                     binding.actionBtn.visibility = View.VISIBLE
-                    binding.actionBtn.text = resources.getString(R.string.did_artist_reach_at_yout_location)
+                    binding.actionBtn.text =
+                        resources.getString(R.string.did_artist_reach_at_yout_location)
+
                 } else if (bookingModel.status == Constants.PROCESSING) {
                     binding.statusTv.text = resources.getString(R.string.Processing)
                     binding.paymentTv.text =
@@ -490,19 +610,21 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
                     binding.actionBtn.visibility = View.VISIBLE
                     binding.actionBtn.text =
                         resources.getString(R.string.your_artist_start_to_perform)
+
                 } else if (bookingModel.status == Constants.COMPLETE_REVIEW) {
                     binding.statusTv.text = resources.getString(R.string.completed_review)
-                    binding.paymentTv.text = getString(R.string.paid) + bookingModel.customer_currency + " " + bookingModel.price
+                    binding.paymentTv.text =
+                        getString(R.string.paid) + bookingModel.customer_currency + " " + bookingModel.price
                     binding.rateReviewLayout.visibility = View.VISIBLE
                     if (bookingModel.rate_detail != null) {
-                        if (bookingModel.rate_detail.rate !="") {
+                        if (bookingModel.rate_detail.rate != "") {
                             binding.rateTv.text = bookingModel.rate_detail.rate
                         }
-                        if (!bookingModel.rate_detail.rate.isEmpty()){
+                        if (!bookingModel.rate_detail.rate.isEmpty()) {
                             try {
                                 binding.ratingbar.rating = bookingModel.rate_detail.rate.toFloat()
 
-                            }catch (e:NumberFormatException){
+                            } catch (e: NumberFormatException) {
                                 e.printStackTrace()
                             }
                         } else {
@@ -510,7 +632,6 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
                         }
                         binding.reviewTv.text = bookingModel.rate_detail.review
                     }
-
                 } else if (bookingModel.status == Constants.REPORT) {
                     binding.statusTv.text = resources.getString(R.string.report)
                     binding.paymentTv.text =
@@ -532,17 +653,17 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
                         resources.getString(R.string.paid) + " " + bookingModel.customer_currency + " " + bookingModel.price
                     binding.actionBtn.visibility = View.VISIBLE
                     binding.actionBtn.text = resources.getString(R.string.pay_now)
-                    binding.cancelBtn.visibility = View.GONE
-                    binding.cancelTxt.visibility = View.VISIBLE
+                    binding.cancelTv.visibility = View.VISIBLE
+//                    binding.cancelTxt.visibility = View.VISIBLE
                 } else if (bookingModel.status == Constants.COMPLETED) {
                     binding.statusTv.text = resources.getString(R.string.Completed)
-                    binding.paymentTv.text = resources.getString(R.string.paid) + " " + bookingModel.customer_currency + " " + bookingModel.price
+                    binding.paymentTv.text =
+                        resources.getString(R.string.paid) + " " + bookingModel.customer_currency + " " + bookingModel.price
                     binding.actionBtn.visibility = View.VISIBLE
                     binding.actionBtn.text = resources.getString(R.string.rate_your_artist)
                 }
 
-
-                if (bookingModel.address !=null) {
+                if (bookingModel.address != null) {
                     binding.locationTv.text = bookingModel.address.toString()
                 } else {
                     binding.locationTxt.visibility = View.GONE
@@ -582,27 +703,40 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
     }
 
     // Rate and Review Api when booking status would be completed....
-    private fun rateReviewBookingApi(bookingID:String, rate:String,review:String) {
+    private fun rateReviewBookingApi(bookingID: String, rate: String, review: String) {
 
         binding.loaderLayout.visibility = View.VISIBLE
-        RetrofitClient.api.rateReviewBookingApi(shared.getString(Constants.DataKey.AUTH_VALUE),bookingID,rate,review)
-            .enqueue(object :Callback<RateReviewModel> {
+        RetrofitClient.api.rateReviewBookingApi(
+            shared.getString(Constants.DataKey.AUTH_VALUE),
+            bookingID,
+            rate,
+            review
+        )
+            .enqueue(object : Callback<RateReviewModel> {
                 override fun onResponse(
                     call: Call<RateReviewModel>,
                     response: Response<RateReviewModel>
                 ) {
                     binding.loaderLayout.visibility = View.GONE
                     if (response.isSuccessful) {
-                        if (response.body() !=null) {
-                            Toast.makeText(this@BookingDetailFragment, "" + response.body()?.data?.message.toString(),Toast.LENGTH_SHORT).show()
+                        if (response.body() != null) {
+                            Toast.makeText(
+                                this@BookingDetailFragment,
+                                "" + response.body()?.data?.message.toString(),
+                                Toast.LENGTH_SHORT
+                            ).show()
 
                         }
                     } else {
-                        val jsonobject:JSONObject
-                        if (response.errorBody() !=null) {
+                        val jsonobject: JSONObject
+                        if (response.errorBody() != null) {
                             jsonobject = JSONObject(response.errorBody()?.string()!!)
                             val errorMessage = jsonobject.getString(Constants.ERROR)
-                            Toast.makeText(this@BookingDetailFragment,"" + errorMessage,Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this@BookingDetailFragment,
+                                "" + errorMessage,
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
                 }
@@ -615,7 +749,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
     }
 
     // Booking Status Api when status cancel....
-    private fun bookingStatusApi(bookingID:String) {
+    private fun bookingStatusApi(bookingID: String) {
         val status = "completed_review"
         binding.loaderLayout.visibility = View.VISIBLE
         RetrofitClient.api.bookingStatusApi(
@@ -696,7 +830,8 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
                                 "" + response.body()?.data?.message,
                                 Toast.LENGTH_SHORT
                             ).show()
-                            val intent = Intent(this@BookingDetailFragment,MainActivity::class.java)
+                            val intent =
+                                Intent(this@BookingDetailFragment, MainActivity::class.java)
                             startActivity(intent)
                             finish()
                         }
@@ -775,7 +910,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
 
         noWantToReportTv.setOnClickListener {
             popupWindow.dismiss()
-           reportPopup()
+            reportPopup()
 
 //            if (wantToCancelBooking) {
 //                popupWindow.dismiss()
@@ -842,19 +977,39 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
         val cancel: TextView = popUp.findViewById(R.id.cancelReportTv)
         val done: TextView = popUp.findViewById(R.id.submitTv)
         reportSpinner = popUp.findViewById(R.id.reportSpinner)
-        reportSpinner?.onItemSelectedListener = this@BookingDetailFragment
         descriptionTv = popUp.findViewById(R.id.descriptionTxt)
 
-        reasonList.clear()
-        reasonList.add(Constants.SELECT_REASON)
-        reasonList.add(Constants.ARTIST_DENIED_DUTY)
-        reasonList.add(Constants.ARTIST_IS_UNREACHABLE)
-        reasonList.add(Constants.ARTIST_NOT_PICKING_CALL)
-        reasonList.add(Constants.OTHER)
+
 
 //        val reasonAdapter = ReasonSpinnerAdapter(this, reasonList)
-        val reasonAdapter = ArrayAdapter<String>(this@BookingDetailFragment,android.R.layout.simple_spinner_item,reasonList)
-        reportSpinner?.adapter = reasonAdapter
+//        val reasonAdapter = ReasonSpinnerAdapter(this@BookingDetailFragment, reasonList)
+        val rAdapter = ArrayAdapter<String>(this@BookingDetailFragment,R.layout.reason_spinner_layout,reasonList)
+        //rAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        reportSpinner?.adapter = rAdapter
+
+        reportSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+
+                spinnerValue = parent?.getItemAtPosition(position).toString()
+                if (spinnerValue == Constants.OTHER) {
+                    descriptionTv?.visibility = View.VISIBLE
+                } else {
+                    descriptionTv?.visibility = View.GONE
+                }
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+        }
+
 
 
         cancel.setOnClickListener {
@@ -872,10 +1027,10 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
 
 
             if (spinnerValue == Constants.SELECT_REASON) {
-                Toast.makeText(this, "Please choose reason", Toast.LENGTH_SHORT).show()
+                Utility.alertErrorMessage(this@BookingDetailFragment, getString(R.string.please_choose_reason))
             } else if (spinnerValue == Constants.OTHER) {
                 if (description.isEmpty()) {
-                    Toast.makeText(this, "Please write reason for other", Toast.LENGTH_SHORT).show()
+                    Utility.alertErrorMessage(this@BookingDetailFragment, getString(R.string.please_write_reason_for_other))
                 } else {
                     reportPopupWindow.dismiss()
                     reportStatusApi(description)
@@ -887,18 +1042,18 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener,
         }
     }
 
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        spinnerValue = parent?.getItemAtPosition(position).toString()
-        if (spinnerValue == Constants.OTHER) {
-            descriptionTv?.visibility = View.VISIBLE
-        } else {
-            descriptionTv?.visibility = View.GONE
-        }
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-
-    }
+//    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+//        spinnerValue = parent?.getItemAtPosition(position).toString()
+//        if (spinnerValue == Constants.OTHER) {
+//            descriptionTv?.visibility = View.VISIBLE
+//        } else {
+//            descriptionTv?.visibility = View.GONE
+//        }
+//    }
+//
+//    override fun onNothingSelected(parent: AdapterView<*>?) {
+//
+//    }
 
     override fun onBackPressed() {
 

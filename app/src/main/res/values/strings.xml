@@ -41,7 +41,7 @@
     <string name="please_fill_require_field">Please fill the require field</string>
     <string name="password_not_match">password doesn\'t match</string>
     <string name="con_Text">Continue</string>
-    <string name="please_enter_valid_email">Please enter valid email</string>
+    <string name="please_enter_valid_email">Enter valid email</string>
     <string name="home">Home</string>
     <string name="booking">Booking</string>
     <string name="chat">Chat</string>
@@ -318,5 +318,11 @@
     <string name="enter_your_mail">Enter your email</string>
     <string name="enter_your_password">Enter your password</string>
     <string name="enter_your_confirm_password">Enter your confirm password</string>
+    <string name="start_chat_with">Start chat with</string>
+    <string name="have_chat_about_your_booking">Have a chat about your booking</string>
+    <string name="please_select_any_slot">Please select Any Slot</string>
+    <string name="please_choose_reason">Please choose reason</string>
+    <string name="please_write_reason_for_other">Please write reason for other</string>
+    <string name="please_give_rating">Please give rating</string>
 
 </resources>

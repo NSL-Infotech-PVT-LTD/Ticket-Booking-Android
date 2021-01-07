@@ -714,7 +714,7 @@
                         android:id="@+id/chatAboutBookingTxt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Have a chat about your booking"
+                        android:text="@string/have_chat_about_your_booking"
                         app:layout_constraintStart_toStartOf="@+id/aboutText"
                         app:layout_constraintTop_toBottomOf="@+id/aboutText"
                         app:layout_constraintEnd_toStartOf="@+id/chatStartIcon"

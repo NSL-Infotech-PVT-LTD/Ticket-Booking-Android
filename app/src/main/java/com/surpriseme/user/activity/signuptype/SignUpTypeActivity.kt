@@ -64,8 +64,7 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_sign_up_type)
 
-        binding =
-            DataBindingUtil.setContentView(this@SignUpTypeActivity, R.layout.activity_sign_up_type)
+        binding = DataBindingUtil.setContentView(this@SignUpTypeActivity, R.layout.activity_sign_up_type)
         shared = PrefrenceShared(this@SignUpTypeActivity)
         prefManager = PrefManger(this@SignUpTypeActivity)
         inIt()
@@ -239,10 +238,12 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
                                 Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + response.body()?.data?.user?.image
                             )
 
-                            currency = response.body()?.data?.user?.currency!!
-                            if (currency.isEmpty())
-                            prefManager?.setString1(Constants.DataKey.CURRENCY,"")
-                            else prefManager?.setString1(Constants.DataKey.CURRENCY,currency)
+                            currency = fbDataModel?.user?.currency!!
+                            if (currency.isEmpty()) {
+                                prefManager?.setString1(Constants.DataKey.CURRENCY, "")
+                            } else {
+                                prefManager?.setString1(Constants.DataKey.CURRENCY, currency)
+                            }
 
 //                            isFbRegistered = true
                             val mainActIntent =

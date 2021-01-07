@@ -3,10 +3,12 @@
 
 <TextView android:id="@+id/spinnerTxt"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="wrap_content"
     android:textColor="@color/black"
+    android:paddingTop="@dimen/_10sdp"
+    android:paddingBottom="@dimen/_10sdp"
+    android:paddingStart="@dimen/_10sdp"
     android:textSize="@dimen/_12sdp"
-    android:background="@color/grey_color"
     android:inputType="textCapSentences"
     android:gravity="center"
     xmlns:android="http://schemas.android.com/apk/res/android" />

@@ -25,6 +25,7 @@ import com.surpriseme.user.fragments.chatListfragment.ChatListFragment
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.*
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.fragment_chat.*
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -123,10 +124,25 @@ class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceiv
         if (intent.getStringExtra("receiverName") != null) {
             mReceiverName = intent.getStringExtra("receiverName").toString()
             mReceiverNameMtv?.text = mReceiverName.capitalize()
+
         }
+
+        // display current date time for first time to start chat....
+        val dnt = SimpleDateFormat("dd MMM yyyy hh:mm a")
+        val date = Date()
+        binding?.currentDateTv!!.text=dnt.format(date)
+        Picasso.get().load(mReceiverImage).placeholder(R.drawable.profile_pholder).into(binding?.chatStartImgArtist)
+        if (shared?.getString(Constants.DataKey.USER_IMAGE) != "") {
+            Picasso.get().load(shared?.getString(Constants.DataKey.USER_IMAGE))
+                .placeholder(R.drawable.profile_pholder)
+                .into(binding?.chatStartImgCustomer)
+        }
+        binding?.startChatWithTv?.text = getString(R.string.start_chat_with) + " " + mReceiverName
+
         messageList?.adapter = adapter
         adapter?.notifyDataSetChanged()
         chatApi(mReceiverId)
+
     }
 
     override fun onClick(v: View?) {
@@ -220,7 +236,12 @@ class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceiv
 
                                 Picasso.get().load(Constants.ImageUrl.BASE_URL+ Constants.ImageUrl.ARTIST_IMAGE_URL+response.body()!!.data.receiver_detail.image)
                                     .into(mReceiverImageView)
-                                mReceiverNameMtv?.text=response.body()!!.data.receiver_detail.name
+                                mReceiverNameMtv?.text=response.body()?.data?.receiver_detail?.name
+                                Picasso.get().load(Constants.ImageUrl.BASE_URL+ Constants.ImageUrl.ARTIST_IMAGE_URL+response.body()!!.data.receiver_detail.image).placeholder(R.drawable.profile_pholder).into(binding?.chatStartImgArtist)
+                                startChatWithTv.text = getString(R.string.start_chat_with) + " " + response.body()?.data?.receiver_detail?.name
+
+                            } else {
+                                binding?.startChatWithLayout?.visibility = View.VISIBLE
                             }
                         }
                     } else {
@@ -270,6 +291,7 @@ class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceiv
                 model.local_message_id = System.currentTimeMillis().toString()
 
                 adapter?.addItem(model)
+                binding?.startChatWithLayout?.visibility = View.GONE
 
 
             } catch (e: JSONException) {

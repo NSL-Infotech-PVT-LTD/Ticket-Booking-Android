@@ -306,4 +306,9 @@
     <string name="loader7">Musik ist die Kunst, die Tränen und Erinnerungen am nächsten kommt.</string>
     <string name="loader8">Eine gute Sache an Musik: Wenn sie dich trifft, fühlst du keinen Schmerz</string>
     <string name="loader9">Wo Worte fehlen spricht Musik</string>
+    <string name="have_chat_about_your_booking">Plaudern Sie über Ihre Buchung</string>
+    <string name="please_select_any_slot">Bitte wählen Sie Beliebiger Steckplatz</string>
+    <string name="please_choose_reason">Bitte wählen Sie den Grund</string>
+    <string name="please_write_reason_for_other">Bitte schreiben Sie Grund für andere</string>
+    <string name="please_give_rating">Bitte geben Sie eine Bewertung</string>
 </resources>

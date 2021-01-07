@@ -22,13 +22,10 @@ import com.surpriseme.user.R
 import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.activity.payment.PaymentActivity
 import com.surpriseme.user.databinding.FragmentBookSlotBinding
-import com.surpriseme.user.fragments.bookingfragment.BookingFragment
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
 import com.surpriseme.user.util.Utility
-import kotlinx.android.synthetic.main.fragment_book_slot.*
-import kotlinx.android.synthetic.main.popup_select_currency.view.*
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -51,7 +48,7 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
     private var adapter: BookSlotAdapter? = null
     private val list = ArrayList<Int>()
     private var slotList: ArrayList<SlotDataModel> = ArrayList()
-    val fakeList: ArrayList<SlotDataModel> = ArrayList()
+    private val fakeList: ArrayList<SlotDataModel> = ArrayList()
     private var selectedSlotList: ArrayList<SlotDataModel> = ArrayList()
     private var backpress: MaterialTextView? = null
     private var showType = ""
@@ -107,10 +104,10 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
             binding.weekDayText.text = weekday
         }
 
-        if (Constants.SHOW_TYPE == "digital") {
-            showType = ctx.resources.getString(R.string.digital)
+        showType = if (Constants.SHOW_TYPE == "digital") {
+            "digital"
         } else {
-            showType = ctx.resources.getString(R.string.live)
+            "live"
         }
         initializeRecycler()
     }
@@ -122,7 +119,7 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
             R.id.proceedToCheckoutBtn -> {
                 binding.proceedToCheckoutBtn.isEnabled = false
                 popupBookingConfirm()
-                Handler().postDelayed(Runnable {
+                Handler().postDelayed({
                     binding.proceedToCheckoutBtn.isEnabled = true
                 }, 2000)
 
@@ -196,7 +193,6 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
                     if (response.body() != null) {
                         if (response.isSuccessful) {
                             // Display Popup Message when Api Successfully created booking....
-
                             bookingId = response.body()?.data?.address?.id.toString()
                             val intent = Intent(ctx, PaymentActivity::class.java)
                             intent.putExtra("bookingid", bookingId)
@@ -291,28 +287,11 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
                             mFromTime = sdfParse1.format(date)
                             mToTime = sdfParse1.format(date1)
                         }
-//                        if (mFromTime.contains("am") && mToTime.contains("am")) {
-//                            if (mFromTime == "12:00 am ") {
-//                                mFromTime = "00:00 am"
-//                            }
-//                            mFromTime = mFromTime.split("am")[0]
-//                            mToTime = mToTime.split("am")[0]
-//                        } else if (mFromTime.contains("am") && mToTime.contains("pm")) {
-//                            mFromTime = mFromTime.split("am")[0]
-//                            mToTime = mToTime.split("pm")[0]
-//                        } else if (mFromTime.contains("pm") && mToTime.contains("pm")) {
-//                            mFromTime = mFromTime.split("pm")[0]
-//                            mToTime = mToTime.split("pm")[0]
-//                        } else if (mFromTime.contains("pm") && mToTime.contains("am")) {
-//                            mFromTime = mFromTime.split("pm")[0]
-//                            mToTime = mToTime.split("am")[0]
-//                        }
-
                     }
                 }
 
                 if (selectedSlotList.isEmpty()) {
-                    Toast.makeText(ctx, "Please select Any Slot", Toast.LENGTH_SHORT).show()
+                    Utility.alertErrorMessage(ctx, ctx.resources.getString(R.string.please_select_any_slot))
                 } else {
                     bookingCreateApi()
                 }

@@ -307,4 +307,9 @@
     <string name="loader7">Muziek is de kunst die het meest nabij tranen en herinnering is.</string>
     <string name="loader8">Een goed ding over muziek, als het je raakt, voel je geen pijn</string>
     <string name="loader9">Waar woorden falen spreekt muziek</string>
+    <string name="have_chat_about_your_booking">Maak een praatje over uw boeking</string>
+    <string name="please_select_any_slot">Selecteer een willekeurige sleuf</string>
+    <string name="please_choose_reason">Kies een reden</string>
+    <string name="please_write_reason_for_other">Schrijf een reden voor een andere</string>
+    <string name="please_give_rating">Geef beoordeling</string>
 </resources>

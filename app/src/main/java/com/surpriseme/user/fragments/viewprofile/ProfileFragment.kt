@@ -156,8 +156,9 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
                 username = binding.usernameEdt.text.toString()
 
                 if (username.isEmpty()) {
-                    binding.usernameEdt.error = getString(R.string.please_fill_require_field)
-                    binding.usernameEdt.requestFocus()
+//                    binding.usernameEdt.error = getString(R.string.enter_your_user_name)
+//                    binding.usernameEdt.requestFocus()
+                    Utility.alertErrorMessage(ctx,ctx.resources.getString(R.string.enter_your_user_name))
                 } else {
                     // update profile api
                     updateProfileApi(currency)
@@ -180,7 +181,7 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
                 binding.settingsTxt.isEnabled = false
                 val settingsIntent = Intent(ctx, SettingsActivity::class.java)
                 startActivity(settingsIntent)
-                binding.settingsTxt.postDelayed(Runnable {
+                binding.settingsTxt.postDelayed({
                     binding.settingsTxt.isEnabled = true
                 }, 2000)
             }

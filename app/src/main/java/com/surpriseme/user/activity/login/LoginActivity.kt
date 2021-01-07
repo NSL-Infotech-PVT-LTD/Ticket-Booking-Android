@@ -131,18 +131,15 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         password = passwordEdt.text.toString().trim()
 
         if (email.isEmpty()) {
-            emailedt.error = getString(R.string.please_fill_require_field)
-            emailedt.requestFocus()
-        } else if (!checkValidEmail.isValidEmail(email)) {       // Checking for Valid Email Entered or not....
-            emailedt.error = getString(R.string.please_enter_valid_email)
-            emailedt.requestFocus()
-        } else if (password.isEmpty()) {
-            passwordEdt.error = getString(R.string.please_fill_require_field)
-            passwordEdt.requestFocus()
-        } else if (password.length < 8) {
-            passwordEdt.error = getString(R.string.password_should_atleast_eight_character)
-            passwordEdt.requestFocus()
-        } else {
+            Utility.alertErrorMessage(this@LoginActivity, getString(R.string.enter_your_mail))
+        }
+//        else if (!checkValidEmail.isValidEmail(email)) {       // Checking for Valid Email Entered or not....
+//            Utility.alertErrorMessage(this@LoginActivity, getString(R.string.please_enter_valid_email))
+//        }
+        else if (password.isEmpty()) {
+            Utility.alertErrorMessage(this@LoginActivity, getString(R.string.enter_your_password))
+        }
+        else {
             // Hit login api here....
             loginApi()
         }

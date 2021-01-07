@@ -107,19 +107,16 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
     private var popUpWindowCurrency: PopupWindow? = null
     private var invalidAuth: InvalidAuth? = null
     private var prefManager:PrefManger?=null
-
     private var isCheck = false
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         ctx = context
-
     }
 
     override fun onStart() {
         super.onStart()
-
         getProfileApi()
-
     }
 
     override fun onCreateView(
@@ -182,7 +179,6 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 replaceFragment(ProfileFragment())
             }
             R.id.addressLayout -> {
-
                 replaceFragment(LocationFragment())
             }
             R.id.searchEdt -> {
@@ -193,7 +189,6 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 replaceFragment(NotificationFragment())
             }
             R.id.virtualTv -> {
-
                 artistListAdapter?.clear()
                 binding.artistNotFoundLayout.visibility = View.GONE
 
@@ -237,7 +232,6 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         transaction?.addToBackStack("fragment")
         transaction?.commit()
     }
-
     // Get Profile Api....
     private fun getProfileApi() {
         binding.loaderLayout.visibility = View.VISIBLE
@@ -252,9 +246,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                         if (response.isSuccessful) {
 
                             userModel = response.body()?.data?.user
-
                             if (userModel != null) {
-
                                 userImage =
                                     Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + userModel?.image
                                 userName = userModel?.name.toString()
@@ -262,21 +254,12 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                                 Picasso.get().load(userImage)
                                     .placeholder(R.drawable.profile_pholder)
                                     .into(binding.dashUserImg)
-
                                 shared.setString(
                                     Constants.DataKey.USER_IMAGE,
-                                    Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL
-                                            + userModel?.image
+                                    Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + userModel?.image
                                 ) // is  used to store user image.
-                                shared.setString(
-                                    Constants.DataKey.USER_NAME,
-                                    userModel?.name
-                                ) // is used to store user name.
-                                shared.setString(
-                                    Constants.DataKey.USER_EMAIL,
-                                    userModel?.email
-                                ) // is used to store user email.
-
+                                shared.setString(Constants.DataKey.USER_NAME, userModel?.name) // is used to store user name.
+                                shared.setString(Constants.DataKey.USER_EMAIL, userModel?.email) // is used to store user email.
                                 if (prefManager?.getString1(Constants.DataKey.CURRENCY) == "") {
                                     popupSelectCurrency()
                                 } else {
@@ -315,7 +298,6 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
     private fun locationListApi() {
 
         binding.loaderLayout.visibility = View.VISIBLE
-
         RetrofitClient.api.addressListApi(shared.getString(Constants.DataKey.AUTH_VALUE))
             .enqueue(object : Callback<LocationListModel> {
                 override fun onResponse(

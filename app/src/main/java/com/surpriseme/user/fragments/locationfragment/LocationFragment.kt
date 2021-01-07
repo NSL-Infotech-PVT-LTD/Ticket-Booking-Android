@@ -185,11 +185,7 @@ class LocationFragment : Fragment(), View.OnClickListener,
                     data?.let {
                         val status = Autocomplete.getStatusFromIntent(data)
 //                        Log.i(TAG, status.statusMessage)
-                        Toast.makeText(
-                            ctx,
-                            "" + status.statusMessage.toString(),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(ctx, "" + status.statusMessage.toString(), Toast.LENGTH_SHORT).show()
                     }
                 }
                 Activity.RESULT_CANCELED -> {
@@ -294,6 +290,7 @@ class LocationFragment : Fragment(), View.OnClickListener,
 
     }
 
+    // Delete address api....
     private fun deleteAddressApi(id: String) {
         binding.loaderLayout.visibility = View.VISIBLE
         RetrofitClient.api.addressDeleteApi(
@@ -360,8 +357,6 @@ class LocationFragment : Fragment(), View.OnClickListener,
         }
         popUpWindow.isTouchable = false
         popUpWindow.isOutsideTouchable = false
-
-        val dispMsgForPopUp = "Do you Want to delete?"
 
         val ok: MaterialTextView = popUp.findViewById(R.id.yes)
         val cancelTv: MaterialTextView = popUp.findViewById(R.id.cancel)

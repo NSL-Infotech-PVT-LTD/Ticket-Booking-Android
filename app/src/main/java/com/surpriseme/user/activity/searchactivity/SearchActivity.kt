@@ -206,7 +206,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
             override fun loadMoreItems() {
                 isLoading = true
                 currentPage++
-                if (showType == getString(R.string.digital)) {
+                if (showType == "digital") {
                     artistListApiWithoutLatlng(search)
                 } else {
                     artistListApi(
@@ -247,13 +247,13 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
 
 
 
-        if (showType == getString(R.string.digital)) {
-            showType = getString(R.string.digital)
+        if (showType == "digital") {
+            showType = "digital"
             byDistanceTv?.visibility = View.GONE
             seekbarDistance?.visibility = View.GONE
             kilometerLayout?.visibility = View.GONE
         } else {
-            showType = getString(R.string.live)
+            showType = "live"
             byDistanceTv?.visibility = View.VISIBLE
             seekbarDistance?.visibility = View.VISIBLE
             kilometerLayout?.visibility = View.VISIBLE
@@ -283,7 +283,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
         seekbarDistance?.onSeekChangeListener = object : OnSeekChangeListener {
             override fun onSeeking(seekParams: SeekParams?) {
                 byDistance = seekParams?.tickText!!
-                Toast.makeText(this@SearchActivity, "" + byDistance.toString(), Toast.LENGTH_SHORT)
+                Toast.makeText(this@SearchActivity, "" + byDistance, Toast.LENGTH_SHORT)
                     .show()
             }
 
@@ -435,7 +435,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 bottomSheetUpDownCategory()
                 artistListAdapter?.clear()
 
-                if (showType == getString(R.string.digital)) {
+                if (showType == "digital") {
                     from_Date = fromDateTxt?.text.toString().trim()
                     to_Date = toDateTxt?.text.toString().trim()
                     if (from_Date == getString(R.string.from) && to_Date == getString(R.string.to)) {

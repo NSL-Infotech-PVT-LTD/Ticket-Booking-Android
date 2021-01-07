@@ -44,44 +44,26 @@ private val deleteAddress: DeleteAddress,private val editLocation: EditAddress) 
         if (model !=null) {
             when (model.name) {
                 Constants.HOME_ADDRESS -> {
-                    holder.addressIcon.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            context,
-                            R.drawable.home_icon_updated
-                        )
-                    )
+                    holder.addressIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.home_icon_updated))
                     holder.addressTypeTxt.text = model.name
                 }
                 Constants.WORK_ADDRESS -> {
-
-                    holder.addressIcon.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            context,
-                            R.drawable.work_icon
-                        )
-                    )
+                    holder.addressIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.work_icon))
                     holder.addressTypeTxt.text = model.name
                 }
                 else -> {
-                holder.addressIcon.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        context,
-                        R.drawable.other_icon
-                    )
-                )
+                holder.addressIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.other_icon))
                 holder.addressTypeTxt.text = model.name
             }
             }
-
             if (adpPosition == holder.adapterPosition) {
                 holder.radioButton.isChecked = true
             }
+
             holder.address.text = model.street_address
 
             holder.editAddress.setOnClickListener {
-
                 editLocation.updateAddress(locationList[position])
-
             }
             holder.deleteAddress.setOnClickListener {
                 deleteAddress.deleteAdd(model.id.toString())
@@ -94,7 +76,7 @@ private val deleteAddress: DeleteAddress,private val editLocation: EditAddress) 
 
 //                Constants.adpPosition = holder.adapterPosition
                 adpPosition = holder.adapterPosition
-                shared?.setInt("myValue",adpPosition)
+                shared.setInt("myValue",adpPosition)
                 notifyDataSetChanged()
                 if (model.street_address!=null)
                 dispAddToDashboard.dispAddressDashboard(model.street_address, model.latitude,model.longitude, model.name)

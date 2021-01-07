@@ -138,7 +138,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
         if (shared.getString(Constants.LANDMARK) != "") {
             binding.landmarkEdt.setText(shared.getString(Constants.LANDMARK))
         }
-        name = ctx.resources.getString(R.string.other)
+        name = "Other"
         tbackpress = view.findViewById(R.id.backpress)
         tbackpress.setOnClickListener(this)
         binding.mapLayout.setOnClickListener {
@@ -236,58 +236,23 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
             Constants.WORK_ADDRESS -> {
                 name = "Work"
                 binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
-                binding.workBtn.setBackgroundColor(
-                    ContextCompat.getColor(
-                        ctx,
-                        R.color.colorPrimary
-                    )
-                )
+                binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.colorPrimary))
                 binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
                 binding.otherTypeEdt.visibility = View.GONE
                 binding.closeIcon.visibility = View.GONE
             }
             else -> {
                 if (Constants.WantToAddLocation) {
-                    binding.homeBtn.setBackgroundColor(
-                        ContextCompat.getColor(
-                            ctx,
-                            R.color.grey_color
-                        )
-                    )
-                    binding.workBtn.setBackgroundColor(
-                        ContextCompat.getColor(
-                            ctx,
-                            R.color.grey_color
-                        )
-                    )
-                    binding.otherBtn.setBackgroundColor(
-                        ContextCompat.getColor(
-                            ctx,
-                            R.color.grey_color
-                        )
-                    )
+                    binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
+                    binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
+                    binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
                     binding.otherTypeEdt.visibility = View.GONE
                     binding.closeIcon.visibility = View.GONE
 
                 } else {
-                    binding.homeBtn.setBackgroundColor(
-                        ContextCompat.getColor(
-                            ctx,
-                            R.color.grey_color
-                        )
-                    )
-                    binding.workBtn.setBackgroundColor(
-                        ContextCompat.getColor(
-                            ctx,
-                            R.color.grey_color
-                        )
-                    )
-                    binding.otherBtn.setBackgroundColor(
-                        ContextCompat.getColor(
-                            ctx,
-                            R.color.colorPrimary
-                        )
-                    )
+                    binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
+                    binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
+                    binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.colorPrimary))
                     binding.otherTypeEdt.visibility = View.VISIBLE
                     binding.otherTypeEdt.setText(locationName)
                 }
@@ -410,21 +375,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
             Toast.makeText(ctx, "" + e.message.toString(), Toast.LENGTH_SHORT).show()
 
         }
-//        mMap.setOnCameraMoveStartedListener { reason: Int ->
-//            when (reason) {
-//                GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE -> {
-//                    Log.d("camera", "The user gestured on the map.")
-//                }
-//                GoogleMap.OnCameraMoveStartedListener
-//                    .REASON_API_ANIMATION -> {
-//                    Log.d("camera", "The user tapped something on the map.")
-//                }
-//                GoogleMap.OnCameraMoveStartedListener
-//                    .REASON_DEVELOPER_ANIMATION -> {
-//                    Log.d("camera", "The app moved the camera.")
-//                }
-//            }
-//        }
 
         mMap.setOnCameraChangeListener { p0 ->
 
@@ -517,12 +467,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
             R.id.homeBtn -> {
                 name = Constants.HOME_ADDRESS
                 isOtherAddress = false
-                binding.homeBtn.setBackgroundColor(
-                    ContextCompat.getColor(
-                        ctx,
-                        R.color.colorPrimary
-                    )
-                )
+                binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.colorPrimary))
                 binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
                 binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
                 binding.otherTypeEdt.visibility = View.GONE
@@ -534,12 +479,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                 name = Constants.WORK_ADDRESS
                 isOtherAddress = false
                 binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
-                binding.workBtn.setBackgroundColor(
-                    ContextCompat.getColor(
-                        ctx,
-                        R.color.colorPrimary
-                    )
-                )
+                binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.colorPrimary))
                 binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
                 binding.otherTypeEdt.visibility = View.GONE
                 binding.closeIcon.visibility = View.GONE
@@ -551,12 +491,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                 isOtherAddress = true
                 binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
                 binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
-                binding.otherBtn.setBackgroundColor(
-                    ContextCompat.getColor(
-                        ctx,
-                        R.color.colorPrimary
-                    )
-                )
+                binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.colorPrimary))
                 binding.otherTypeEdt.visibility = View.VISIBLE
                 binding.closeIcon.visibility = View.VISIBLE
                 binding.otherTypeEdt.setText(locationName)
@@ -575,14 +510,10 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
             }
             R.id.saveAddressBtn -> {
 
-                if (name == ctx.resources.getString(R.string.other) && isOtherAddress == true) {
+                if (name == "Other" && isOtherAddress == true) {
                     name = binding.otherTypeEdt.text.toString().trim()
                     if (name == "") {
-                        Toast.makeText(
-                            ctx,
-                            "" + getString(R.string.please_enter_other_address),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Utility.alertErrorMessage(ctx, ctx.resources.getString(R.string.please_enter_other_address))
                     }
                 } else {
 
@@ -660,7 +591,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
     private fun createAddressApi() {
 
         if (name !="Home" && name !="Work") {
-            name = ctx.resources.getString(R.string.other)
+            name = "Other"
         }
         binding.loaderLayout.visibility = View.VISIBLE
 
