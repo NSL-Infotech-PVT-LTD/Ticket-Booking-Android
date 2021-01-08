@@ -1,11 +1,17 @@
 package com.surpriseme.user.activity.forgotpassword
 
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.R
@@ -81,9 +87,7 @@ class ForgotPasswordActivity : AppCompatActivity(), View.OnClickListener {
                     binding?.loaderLayout?.visibility = View.GONE
                     if (response.body() !=null) {
                         if (response.isSuccessful) {
-                            val intent = Intent(this@ForgotPasswordActivity, LoginActivity ::class.java)
-                            startActivity(intent)
-                            finish()
+                            popupForgetPasswordAlert(response.body()?.data?.message.toString())
                         }
                     } else {
                         val jsonObject: JSONObject
@@ -91,10 +95,10 @@ class ForgotPasswordActivity : AppCompatActivity(), View.OnClickListener {
                             if (response.errorBody() !=null) {
                                 jsonObject = JSONObject(response.errorBody()!!.string())
                                 val errorMessage = jsonObject.getString(Constants.ERROR)
-                                Toast.makeText(this@ForgotPasswordActivity, "" + errorMessage, Toast.LENGTH_SHORT).show()
+                                Utility.alertErrorMessage(this@ForgotPasswordActivity, errorMessage.toString())
                             }
                         }catch (e:JSONException) {
-                            Toast.makeText(this@ForgotPasswordActivity, "" + Constants.SOMETHING_WENT_WRONG,Toast.LENGTH_SHORT).show()
+                            Utility.alertErrorMessage(this@ForgotPasswordActivity, e.message.toString())
                         }
                     }
                 }
@@ -103,6 +107,36 @@ class ForgotPasswordActivity : AppCompatActivity(), View.OnClickListener {
                     Toast.makeText(this@ForgotPasswordActivity, "" + t.message.toString(),Toast.LENGTH_SHORT).show()
                 }
             })
+
+    }
+
+    // popup will display to select currency.
+    fun popupForgetPasswordAlert(message:String) {
+
+        val layoutInflater: LayoutInflater =
+            this@ForgotPasswordActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+        val popUp: View = layoutInflater.inflate(R.layout.popup_forget_password_alert_layout, null)
+        val errorAlertWindow = PopupWindow(
+            popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
+            ConstraintLayout.LayoutParams.MATCH_PARENT, true
+        )
+        errorAlertWindow.showAtLocation(popUp, Gravity.CENTER, 0, 0)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            errorAlertWindow.elevation = 10f
+        }
+        errorAlertWindow.isTouchable = false
+        errorAlertWindow.isOutsideTouchable = false
+
+        val messageDispText = popUp.findViewById<MaterialTextView>(R.id.messageDispText)
+        val doneTv = popUp.findViewById<MaterialTextView>(R.id.doneTv)
+        messageDispText.text = message
+        doneTv.setOnClickListener{
+            errorAlertWindow.dismiss()
+            finish()
+        }
 
     }
 

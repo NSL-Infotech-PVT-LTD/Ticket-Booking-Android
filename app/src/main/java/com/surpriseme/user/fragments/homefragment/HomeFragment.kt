@@ -599,8 +599,8 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         popUpWindow.isTouchable = false
         popUpWindow.isOutsideTouchable = false
 
-        val virtual: MaterialButton = popUp.findViewById(R.id.virtualSelectBtn)
-        val live: MaterialButton = popUp.findViewById(R.id.inPersonSelectBtn)
+        val virtual: TextView = popUp.findViewById(R.id.virtualSelectBtn)
+        val live: TextView = popUp.findViewById(R.id.inPersonSelectBtn)
         val showTypeLayout: ConstraintLayout = popUp.findViewById(R.id.showTypeLayout)
         val virtualLayout: ConstraintLayout = popUp.findViewById(R.id.virtualLayout)
         val liveLayout: ConstraintLayout = popUp.findViewById(R.id.liveLayout)

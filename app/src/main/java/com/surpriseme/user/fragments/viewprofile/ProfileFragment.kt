@@ -56,7 +56,6 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
     private var userImage: MultipartBody.Part? = null
     private var toolProfileTxt: MaterialTextView? = null
     private var toolBackpress: MaterialTextView? = null
-    private var currency = ""
     private var isTryToUpdateProfile = false
 
 
@@ -161,7 +160,7 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
                     Utility.alertErrorMessage(ctx,ctx.resources.getString(R.string.enter_your_user_name))
                 } else {
                     // update profile api
-                    updateProfileApi(currency)
+                    updateProfileApi()
                 }
                 Handler().postDelayed({
                     binding.passwordprofileLayout.visibility = View.VISIBLE
@@ -190,14 +189,12 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
     }
 
 
-    private fun updateProfileApi(currency: String) {
+    private fun updateProfileApi() {
 
         binding.loaderLayout.visibility = View.VISIBLE
         val requestBodyMap: HashMap<String, RequestBody> = HashMap()
         requestBodyMap[Constants.ApiKey.NAME] =
             RequestBody.create(MediaType.parse("multipart/form-data"), username)
-        requestBodyMap[Constants.ApiKey.CURRENCY] =
-            RequestBody.create(MediaType.parse("multipart/form-data"), currency)
 
         RetrofitClient.api.updateProfileApi(
             shared.getString(Constants.DataKey.AUTH_VALUE),
@@ -300,11 +297,10 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
             username = binding.usernameEdt.text.toString()
 
             if (username.isEmpty()) {
-                binding.usernameEdt.error = getString(R.string.please_fill_require_field)
-                binding.usernameEdt.requestFocus()
+                Utility.alertErrorMessage(ctx, getString(R.string.enter_your_user_name))
             } else {
                 // update profile api
-                updateProfileApi(currency)
+                updateProfileApi()
             }
             Handler().postDelayed({
                 binding.passwordprofileLayout.visibility = View.VISIBLE

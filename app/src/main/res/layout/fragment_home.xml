@@ -13,7 +13,6 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
             android:background="@color/white">
 
 
@@ -38,27 +37,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/imageCard"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            app:cardCornerRadius="@dimen/_50sdp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <ImageView
+                            <de.hdodenhof.circleimageview.CircleImageView
                                 android:id="@+id/dashUserImg"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:scaleType="fitXY"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_marginStart="@dimen/_20sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
                                 android:src="@drawable/profile_pholder"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
-
-
-                        </androidx.cardview.widget.CardView>
 
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -67,10 +54,10 @@
                             android:layout_height="@dimen/_30sdp"
                             android:layout_marginStart="@dimen/_5sdp"
                             android:layout_marginEnd="@dimen/_10sdp"
-                            app:layout_constraintBottom_toBottomOf="@id/imageCard"
+                            app:layout_constraintBottom_toBottomOf="@id/dashUserImg"
                             app:layout_constraintEnd_toStartOf="@+id/virtualTv"
-                            app:layout_constraintStart_toEndOf="@id/imageCard"
-                            app:layout_constraintTop_toTopOf="@id/imageCard">
+                            app:layout_constraintStart_toEndOf="@id/dashUserImg"
+                            app:layout_constraintTop_toTopOf="@id/dashUserImg">
 
 
                             <com.google.android.material.textview.MaterialTextView
@@ -109,9 +96,9 @@
                             app:autoSizeMinTextSize="5dp"
                             app:autoSizeStepGranularity="2sp"
                             app:autoSizeTextType="uniform"
-                            app:layout_constraintBottom_toBottomOf="@id/addressLayout"
+                            app:layout_constraintBottom_toBottomOf="@id/dashUserImg"
                             app:layout_constraintEnd_toStartOf="@+id/inPersonTv"
-                            app:layout_constraintTop_toTopOf="@id/addressLayout" />
+                            app:layout_constraintTop_toTopOf="@id/dashUserImg" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/inPersonTv"
@@ -143,9 +130,9 @@
                             android:layout_height="30dp"
                             android:layout_marginEnd="@dimen/_10sdp"
                             android:src="@drawable/noti_icon"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageCard"
+                            app:layout_constraintBottom_toBottomOf="@+id/dashUserImg"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/imageCard" />
+                            app:layout_constraintTop_toTopOf="@+id/dashUserImg" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/viewProfile"
@@ -158,9 +145,9 @@
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/_10sdp"
                             android:visibility="visible"
-                            app:layout_constraintEnd_toEndOf="@id/imageCard"
-                            app:layout_constraintStart_toStartOf="@id/imageCard"
-                            app:layout_constraintTop_toBottomOf="@id/imageCard" />
+                            app:layout_constraintEnd_toEndOf="@id/dashUserImg"
+                            app:layout_constraintStart_toStartOf="@id/dashUserImg"
+                            app:layout_constraintTop_toBottomOf="@id/dashUserImg" />
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>

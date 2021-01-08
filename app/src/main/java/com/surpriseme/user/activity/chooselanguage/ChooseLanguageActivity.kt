@@ -22,6 +22,7 @@ import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefManger
 import com.surpriseme.user.util.PrefrenceShared
+import com.surpriseme.user.util.Utility
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -72,16 +73,20 @@ class ChooseLanguageActivity : AppCompatActivity(), View.OnClickListener, Choose
 
         binding?.saveButton!!.setOnClickListener {
 
-            if (intent.hasExtra("splash")) {
-                val intent = Intent(this@ChooseLanguageActivity, LoginActivity::class.java)
-                startActivity(intent)
-                finish()
-            }else if (intent.hasExtra("setting")){
-                changeLanguageApi(prefManager?.getString1("language")!!)
-            } else{
-                val intent = Intent(this@ChooseLanguageActivity, LoginActivity::class.java)
-                startActivity(intent)
-                finish()
+            if (prefManager?.getInt("position") ==-1) {
+                Utility.alertErrorMessage(this@ChooseLanguageActivity, getString(R.string.please_choose_language))
+            } else {
+                if (intent.hasExtra("splash")) {
+                    val intent = Intent(this@ChooseLanguageActivity, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else if (intent.hasExtra("setting")) {
+                    changeLanguageApi(prefManager?.getString1("language")!!)
+                } else {
+                    val intent = Intent(this@ChooseLanguageActivity, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
             }
 
 //            if (intent.getStringExtra("setting")!!.equals("setting")) {

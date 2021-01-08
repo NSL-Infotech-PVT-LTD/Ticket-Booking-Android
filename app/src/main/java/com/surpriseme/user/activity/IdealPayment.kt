@@ -51,10 +51,12 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         binding=DataBindingUtil.setContentView(this,R.layout.activity_ideal_payment)
 
         shared= PrefrenceShared(this)
+        bookingid = intent.getStringExtra("bookingid")!!
 
         backpress = findViewById(R.id.backpress)
         backpress?.setOnClickListener{
             val intent = Intent(this@IdealPayment, PaymentActivity::class.java)
+            intent.putExtra("bookingid", bookingid)
             startActivity(intent)
             finish()
 
@@ -63,7 +65,7 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         val loadingText = findViewById<TextView>(R.id.loadingtext)
         loadingText.text  = Utility.randomString(this@IdealPayment)
 
-        bookingid = intent.getStringExtra("bookingid")!!
+
 
         binding.holderedt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
