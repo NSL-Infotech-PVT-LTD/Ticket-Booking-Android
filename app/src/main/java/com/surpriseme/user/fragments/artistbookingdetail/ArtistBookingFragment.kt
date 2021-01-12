@@ -7,11 +7,9 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.util.Log
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -99,7 +97,17 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
             binding.inPersonShowLayout.visibility = View.VISIBLE
             binding.virtualShowLayout.visibility = View.GONE
         }
-
+        binding.aboutText.movementMethod=LinkMovementMethod.getInstance()
+        binding.aboutText.setOnTouchListener { view, event ->
+            if (view.id == R.id.aboutText) {
+                view.parent.requestDisallowInterceptTouchEvent(true)
+                when (event.getAction() and MotionEvent.ACTION_MASK) {
+                    MotionEvent.ACTION_UP -> view.parent
+                        .requestDisallowInterceptTouchEvent(false)
+                }
+            }
+            false
+        }
 
         return view
     }
@@ -405,7 +413,7 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                  * @author pardeep.sharma@netscapelabs.com
                                  * @param Set the zoom method to open the images
                                  */
-                                if (artistModel.shows_image_1 != null) {
+                                if (artistModel.shows_image_1 != null && artistModel.shows_image_1!="") {
 
                                         binding.img1.visibility = View.VISIBLE
                                         Picasso.get()
@@ -423,7 +431,7 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
 //                                            imageZoomPopup(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.shows_image_1)
                                         }
                                     }
-                                if(artistModel.shows_image_2 != null) {
+                                if(artistModel.shows_image_2 != null && artistModel.shows_image_2!="") {
                                         binding.img2.visibility = View.VISIBLE
                                         Picasso.get()
                                             .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.shows_image_2)
@@ -440,7 +448,7 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
 //                                            imageZoomPopup(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.shows_image_2)
                                         }
                                     }
-                                if(artistModel.shows_image_3 != null){
+                                if(artistModel.shows_image_3 != null && artistModel.shows_image_3!=""){
                                         binding.img3.visibility = View.VISIBLE
                                         Picasso.get()
                                             .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.shows_image_3)
@@ -459,7 +467,7 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
 //                                            imageZoomPopup(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.shows_image_3)
                                         }
                                     }
-                                if(artistModel.shows_image_4 != null) {
+                                if(artistModel.shows_image_4 != null && artistModel.shows_image_4!="") {
                                         binding.img4.visibility = View.VISIBLE
                                         Picasso.get()
                                             .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.shows_image_4)
@@ -502,9 +510,9 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                 if (artistModel.rating == 0f || artistModel.rating ==null) {
                                     binding.ratingbar.visibility = View.GONE
                                     binding.seeReviewTxt.visibility = View.GONE
+                                    binding.brandNewArtistTv.visibility=View.VISIBLE
                                 } else {
                                     binding.ratingbar.rating = artistModel.rating
-
                                 }
 
 

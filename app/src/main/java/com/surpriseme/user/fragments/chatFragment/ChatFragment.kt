@@ -1,18 +1,11 @@
 package com.surpriseme.user.fragments.chatFragment
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +14,6 @@ import com.squareup.picasso.Picasso
 import com.surpriseme.user.R
 import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.databinding.FragmentChatBinding
-import com.surpriseme.user.fragments.chatListfragment.ChatListFragment
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.*
 import de.hdodenhof.circleimageview.CircleImageView
@@ -31,7 +23,6 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -52,7 +43,6 @@ class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceiv
     private var chatBackpress: ImageView? = null
     private var mReceiverImageView: CircleImageView? = null
     private var mReceiverNameMtv: MaterialTextView? = null
-
     private var isLastPage = false
     private var isLoading = false
     private var currentPage: Int = 1
@@ -239,6 +229,10 @@ class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceiv
                                 mReceiverNameMtv?.text=response.body()?.data?.receiver_detail?.name
                                 Picasso.get().load(Constants.ImageUrl.BASE_URL+ Constants.ImageUrl.ARTIST_IMAGE_URL+response.body()!!.data.receiver_detail.image).placeholder(R.drawable.profile_pholder).into(binding?.chatStartImgArtist)
                                 startChatWithTv.text = getString(R.string.start_chat_with) + " " + response.body()?.data?.receiver_detail?.name
+                                Picasso.get().
+                                load(shared?.getString(Constants.DataKey.USER_IMAGE))
+                                    .into(binding?.chatStartImgCustomer)
+
 
                             } else {
                                 binding?.startChatWithLayout?.visibility = View.VISIBLE

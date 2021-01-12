@@ -3,6 +3,7 @@ package com.surpriseme.user.activity.signup
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.method.PasswordTransformationMethod
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -66,12 +67,13 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
 
         signupBtn.setOnClickListener(this)
         backToLoginBtn.setOnClickListener(this)
+        passEyeDisable.setOnClickListener(this)
+        passEyeEnable.setOnClickListener(this)
+        confirmPassEyeEnable.setOnClickListener(this)
+        confirmPassEyeDisable.setOnClickListener(this)
         backpress = findViewById(R.id.backpress)
         backpress?.setOnClickListener(this)
-//        if (intent?.getStringExtra("fbName")!=null && intent?.getStringExtra("fbEmail")!=null) {
-//            fbName = intent?.getStringExtra("fbName")!!
-//            fbEmail = intent?.getStringExtra("fbEmail")!!
-//        }
+
         if (fbName !="") {
             useredt.setText(fbName)
         }
@@ -95,6 +97,38 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
             R.id.backToLoginBtn -> {
                 finish()
             }
+            R.id.confirmPassEyeDisable -> {
+                confirmPassEdt.transformationMethod = null
+                confirmPassEyeEnable.visibility = View.VISIBLE
+                confirmPassEyeDisable.visibility = View.GONE
+            }
+            R.id.confirmPassEyeEnable -> {
+                confirmPassEdt.transformationMethod = PasswordTransformationMethod()
+                confirmPassEyeEnable.visibility = View.GONE
+                confirmPassEyeDisable.visibility = View.VISIBLE
+            }
+            R.id.passEyeDisable -> {
+                passwordEdt?.transformationMethod = null
+                passEyeDisable?.visibility = View.GONE
+                passEyeEnable?.visibility = View.VISIBLE
+            }
+            R.id.passEyeEnable -> {
+                passwordEdt?.transformationMethod = PasswordTransformationMethod()
+                passEyeEnable?.visibility = View.GONE
+                passEyeDisable?.visibility = View.VISIBLE
+            }
+//            R.id.confirmPassEyeDisable -> {
+//                confirmPassEdt.transformationMethod = null
+//                confirmPassEyeEnable.visibility = View.VISIBLE
+//                confirmPassEyeDisable.visibility = View.GONE
+//            }
+//            R.id.confirmPassEyeEnable -> {
+//                confirmPassEdt.transformationMethod = PasswordTransformationMethod()
+//                confirmPassEyeEnable.visibility = View.GONE
+//                confirmPassEyeDisable.visibility = View.VISIBLE
+//            }
+
+
 
         }
     }

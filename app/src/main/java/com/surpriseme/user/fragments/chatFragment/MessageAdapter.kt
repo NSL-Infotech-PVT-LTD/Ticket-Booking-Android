@@ -1,11 +1,15 @@
 package com.surpriseme.user.fragments.chatFragment
 
 import android.annotation.SuppressLint
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textview.MaterialTextView
@@ -167,6 +171,26 @@ class MessageAdapter(
             val date = Calendar.getInstance().time
             val formatter = SimpleDateFormat("hh:mm a") //or use getDateInstance()
             val formatedDate = formatter.format(date)
+            recMessage?.movementMethod =LinkMovementMethod.getInstance()
+            senderMsg?.movementMethod =LinkMovementMethod.getInstance()
+            senderMsg?.setOnClickListener {
+                val clipboard: ClipboardManager =
+                    ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clip = ClipData.newPlainText("shared", senderMsg?.getText().toString());
+                if (clipboard != null) {
+                    Toast.makeText(ctx, "Text Copied", Toast.LENGTH_SHORT).show();
+                    clipboard.setPrimaryClip(clip);
+                }
+            }
+            recMessage?.setOnClickListener {
+                val clipboard: ClipboardManager =
+                    ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clip = ClipData.newPlainText("shared", recMessage?.getText().toString());
+                if (clipboard != null) {
+                    Toast.makeText(ctx, "Text Copied", Toast.LENGTH_SHORT).show();
+                    clipboard.setPrimaryClip(clip);
+                }
+            }
             val item = messagesList[position]
             try {
 

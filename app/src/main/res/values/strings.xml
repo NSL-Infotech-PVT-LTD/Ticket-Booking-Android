@@ -298,7 +298,7 @@
     <string name="payment_done">Payment Done</string>
     <string name="hurray_you_can_get_ready_for_show">Hurray, you can get ready for show</string>
     <string name="change_Language">Change Language</string>
-    <string name="brand_new_artist">Brand New Artist</string>
+    <string name="brand_new_artist">New Artist (No rating yet)</string>
     <string name="rating_and_review">Rating \nand Review</string>
     <string name="manage_your_bookings_here">Manage your bookings here</string>
     <string name="no_artist_right_now">No Artist Right Now</string>
@@ -325,5 +325,6 @@
     <string name="please_write_reason_for_other">Please write reason for other</string>
     <string name="please_give_rating">Please give rating</string>
     <string name="please_choose_language">Please choose language</string>
+    <string name="inperson">In-person</string>
 
 </resources>

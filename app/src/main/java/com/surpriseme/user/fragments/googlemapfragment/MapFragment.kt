@@ -138,7 +138,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
         if (shared.getString(Constants.LANDMARK) != "") {
             binding.landmarkEdt.setText(shared.getString(Constants.LANDMARK))
         }
-        name = "Other"
         tbackpress = view.findViewById(R.id.backpress)
         tbackpress.setOnClickListener(this)
         binding.mapLayout.setOnClickListener {
@@ -255,6 +254,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                     binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.colorPrimary))
                     binding.otherTypeEdt.visibility = View.VISIBLE
                     binding.otherTypeEdt.setText(locationName)
+                    isOtherAddress = true
                 }
             }
         }
@@ -510,11 +510,18 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
             }
             R.id.saveAddressBtn -> {
 
-                if (name == "Other" && isOtherAddress == true) {
-                    name = binding.otherTypeEdt.text.toString().trim()
-                    if (name == "") {
+                    if (isOtherAddress) {
+                        name = binding.otherTypeEdt.text.toString()
+                        if (name.isEmpty())
                         Utility.alertErrorMessage(ctx, ctx.resources.getString(R.string.please_enter_other_address))
-                    }
+                        else{
+                            if (Constants.WantToAddLocation) {
+                                createAddressApi()
+                            } else {
+                                updateAddressList()
+                            }
+                        }
+
                 } else {
 
                     if (Constants.WantToAddLocation) {
@@ -590,8 +597,10 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
     // Create Address Api....
     private fun createAddressApi() {
 
-        if (name !="Home" && name !="Work") {
-            name = "Other"
+        if (!isOtherAddress) {
+            if (name != "Home" && name != "Work") {
+                name = "Other"
+            }
         }
         binding.loaderLayout.visibility = View.VISIBLE
 

@@ -5,14 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.WindowManager
-import android.widget.ImageView
-import com.facebook.FacebookSdk
-import com.facebook.appevents.AppEventsLogger
-import com.squareup.picasso.Picasso
 import com.surpriseme.user.R
 import com.surpriseme.user.activity.chooselanguage.ChooseLanguageActivity
 import com.surpriseme.user.activity.login.LoginActivity
-import com.surpriseme.user.activity.splashwalkthrough.SplashGetStartedActivity
 import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefManger
@@ -36,7 +31,7 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
         shared = PrefrenceShared(this@SplashActivity)
         prefManager = PrefManger(this@SplashActivity)
-        setLocale(prefManager?.getString1("language"))
+        setLocale(prefManager.getString1("language"))
 
 //        FacebookSdk.sdkInitialize(getApplicationContext())
 //        AppEventsLogger.activateApp(this@SplashActivity)
@@ -58,7 +53,7 @@ class SplashActivity : AppCompatActivity() {
                     startActivity(intent)
                     finishAffinity()
 
-                }else if (prefManager?.getString1("language")?.isEmpty()!!) {
+                }else if (prefManager.getString1("language")?.isEmpty()!!) {
                     val intent = Intent(this@SplashActivity,ChooseLanguageActivity ::class.java)
                     intent.putExtra("splash","splash")
                     startActivity(intent)

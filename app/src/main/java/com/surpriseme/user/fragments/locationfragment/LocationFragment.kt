@@ -56,7 +56,6 @@ class LocationFragment : Fragment(), View.OnClickListener,
     private var lng:Double = 0.0
     private var address = ""
     private var locationName = ""
-
     private val AUTOCOMPLETE_REQUEST_CODE = 1
     private var latlng:LatLng?=null
     private var addAddressBtn:MaterialButton?=null
@@ -86,8 +85,6 @@ class LocationFragment : Fragment(), View.OnClickListener,
         addAddressBtn = view.findViewById(R.id.addAddressBtn)
         addAddressBtn?.setOnClickListener(this) //  Initializing the Add Address Button click
         binding.addAddressBtnLayout.setOnClickListener(this)
-
-
 
         Places.initialize(ctx, ctx.resources.getString(R.string.places_api_key))
         val placesClient = Places.createClient(ctx)
@@ -372,10 +369,7 @@ class LocationFragment : Fragment(), View.OnClickListener,
 
     override fun updateAddress(locationDataList: LocationDataList) {
 
-        Constants.LATLNG = LatLng(
-            locationDataList.latitude.toDouble(),
-            locationDataList.longitude.toDouble()
-        )
+        Constants.LATLNG = LatLng(locationDataList.latitude.toDouble(), locationDataList.longitude.toDouble())
         Constants.addressID = locationDataList.id.toString()
         locationName = locationDataList.name
         Constants.WantToAddLocation = false

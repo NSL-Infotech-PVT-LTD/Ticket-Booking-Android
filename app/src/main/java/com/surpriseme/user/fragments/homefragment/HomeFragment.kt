@@ -74,13 +74,8 @@ import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistListFace,
     ArtistListAdapter.BookBtnClick {
-    private var mylocation: Location? = null
-    private var googleApiClient: GoogleApiClient? = null
-    private val REQUEST_CHECK_SETTINGS_GPS = 0x1
-    private val REQUEST_ID_MULTIPLE_PERMISSIONS = 0x2
-    private var address = ""
-    var currencyvalue = ""
 
+    var currencyvalue = ""
     private lateinit var binding: FragmentHomeBinding
     private lateinit var ctx: Context
     private lateinit var shared: PrefrenceShared
@@ -96,7 +91,6 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
     private var currentPage: Int = 1
     private var totalPage = 0
     private var locationList: ArrayList<LocationDataList> = ArrayList()
-    private var categoryList: ArrayList<Int> = ArrayList()
     private var userModel: UserViewProfile? = null
     private var userImage = ""
     private var userName = ""
@@ -107,7 +101,6 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
     private var popUpWindowCurrency: PopupWindow? = null
     private var invalidAuth: InvalidAuth? = null
     private var prefManager:PrefManger?=null
-    private var isCheck = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -129,6 +122,8 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         val view = binding.root
         shared = PrefrenceShared(ctx)
         prefManager = PrefManger(ctx)
+
+        ((ctx as MainActivity)).hideBottomNavigation()
 
         val loadingText = view.findViewById<TextView>(R.id.loadingtext)
         loadingText.text  = Utility.randomString(ctx)
@@ -159,16 +154,13 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 } else
                     artistListApi(latitude.toString(), longitude.toString(), search)
             }
-
             override fun isLastPage(): Boolean {
                 return isLastPage
             }
-
             override fun isLoading(): Boolean {
                 return isLoading
             }
         })
-
 
         return view
     }
@@ -221,7 +213,6 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                     transaction?.replace(R.id.frameContainer, fragment)
                     transaction?.commit()
                 }
-
             }
         }
     }
@@ -235,6 +226,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
     // Get Profile Api....
     private fun getProfileApi() {
         binding.loaderLayout.visibility = View.VISIBLE
+        ((ctx as MainActivity)).hideBottomNavigation()
         RetrofitClient.api.getProfileApi(shared.getString(Constants.DataKey.AUTH_VALUE))
             .enqueue(object : Callback<ViewProfileModel> {
                 override fun onResponse(
@@ -245,19 +237,16 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                     if (response.body() != null) {
                         if (response.isSuccessful) {
 
+                            ((ctx as MainActivity)).showBottomNavigation()
+
                             userModel = response.body()?.data?.user
                             if (userModel != null) {
-                                userImage =
-                                    Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + userModel?.image
+                                userImage = Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + userModel?.image
                                 userName = userModel?.name.toString()
                                 userEmail = userModel?.email.toString()
-                                Picasso.get().load(userImage)
-                                    .placeholder(R.drawable.profile_pholder)
-                                    .into(binding.dashUserImg)
-                                shared.setString(
-                                    Constants.DataKey.USER_IMAGE,
-                                    Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + userModel?.image
-                                ) // is  used to store user image.
+                                Picasso.get().load(userImage).placeholder(R.drawable.profile_pholder).into(binding.dashUserImg)
+                                shared.setString(Constants.DataKey.USER_IMAGE, Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL
+                                        + userModel?.image) // is  used to store user image.
                                 shared.setString(Constants.DataKey.USER_NAME, userModel?.name) // is used to store user name.
                                 shared.setString(Constants.DataKey.USER_EMAIL, userModel?.email) // is used to store user email.
                                 if (prefManager?.getString1(Constants.DataKey.CURRENCY) == "") {
@@ -265,7 +254,6 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                                 } else {
                                     locationListApi()
                                 }
-
                             }
                         }
                     } else {
@@ -276,11 +264,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                                 val errorMessage = jsonObject.getString(Constants.ERROR)
                                 Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT).show()
                             } catch (e: JSONException) {
-                                Toast.makeText(
-                                    ctx,
-                                    "" + Constants.SOMETHING_WENT_WRONG,
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                Toast.makeText(ctx, "" + Constants.SOMETHING_WENT_WRONG, Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
@@ -288,6 +272,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
 
                 override fun onFailure(call: Call<ViewProfileModel>, t: Throwable) {
                     binding.loaderLayout.visibility = View.GONE
+                    ((ctx as MainActivity)).showBottomNavigation()
                     Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
                 }
             })
@@ -315,30 +300,19 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                             if (locationList.isNotEmpty()) {
 
                                 if (Constants.SAVED_LOCATION) {
-                                    binding.yourLocationInfo.text =
-                                        shared.getString(Constants.ADDRESS)
+                                    binding.yourLocationInfo.text = shared.getString(Constants.ADDRESS)
                                 } else {
                                     binding.yourLocationInfo.text = locationList[0].street_address
                                 }
                             }
                             if (Constants.SHOW_TYPE == "") {
-                                binding.virtualTv.background =
-                                    ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
-                                binding.inPersonTv.background =
-                                    ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+                                binding.virtualTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+                                binding.inPersonTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
                                 popupShowType()
 
                             } else if (Constants.SHOW_TYPE == "digital") {
-                                binding.virtualTv.background =
-                                    ContextCompat.getDrawable(
-                                        ctx,
-                                        R.drawable.corner_round_5_blue
-                                    )
-                                binding.inPersonTv.background =
-                                    ContextCompat.getDrawable(
-                                        ctx,
-                                        R.drawable.corner_round_5_grey
-                                    )
+                                binding.virtualTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_blue)
+                                binding.inPersonTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
                                 binding.addressLayout.visibility = View.GONE
                                 isLastPage=false
                                 isLoading=false
@@ -346,39 +320,20 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                                 artistListApiWithoutLatlng(search)
                             } else {
                                 if (locationList.size > 0) {
-
                                     binding.addressLayout.visibility = View.VISIBLE
-                                    binding.virtualTv.background =
-                                        ContextCompat.getDrawable(
-                                            ctx,
-                                            R.drawable.corner_round_5_grey
-                                        )
-                                    binding.inPersonTv.background =
-                                        ContextCompat.getDrawable(
-                                            ctx,
-                                            R.drawable.corner_round_5_pink
-                                        )
-                                    artistListApi(
-                                        locationList[0].latitude,
-                                        locationList[0].longitude,
-                                        search
-                                    )
+                                    binding.virtualTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+                                    binding.inPersonTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_pink)
+                                    artistListApi(locationList[0].latitude, locationList[0].longitude, search)
                                 } else {
                                     binding.addressLayout.visibility = View.GONE
-                                    binding.virtualTv.background =
-                                        ContextCompat.getDrawable(
-                                            ctx,
-                                            R.drawable.corner_round_5_blue
-                                        )
-                                    binding.inPersonTv.background =
-                                        ContextCompat.getDrawable(
-                                            ctx,
-                                            R.drawable.corner_round_5_grey
-                                        )
+                                    binding.virtualTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_blue)
+                                    binding.inPersonTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
                                     isLastPage=false
                                     isLoading=false
                                     currentPage=1
+                                    Constants.SHOW_TYPE = "digital"
                                     artistListApiWithoutLatlng(search)
+
                                 }
                             }
 
@@ -626,10 +581,8 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
             Handler().postDelayed({
                 popUpWindow.dismiss()
                 Constants.SHOW_TYPE = "live"
-                binding.inPersonTv.background =
-                    ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_pink)
-                binding.virtualTv.background =
-                    ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+                binding.inPersonTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_pink)
+                binding.virtualTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
                 if (locationList.size > 0) {
                     artistListApi(locationList[0].latitude, locationList[0].longitude, search)
                     binding.addressLayout.visibility = View.VISIBLE

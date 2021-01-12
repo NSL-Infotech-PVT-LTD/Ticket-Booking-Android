@@ -280,7 +280,9 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
                     statusPopUp()
                 } else if (actionBtn.text == resources.getString(R.string.go_to_Home)) {
                     Constants.COMING_FROM_DETAIL = true
-                    finish()
+                   val intent = Intent(this,MainActivity::class.java)
+                    startActivity(intent)
+                    finishAffinity()
                 } else if (actionBtn.text == resources.getString(R.string.rate_your_artist)) {
                     binding.rateReviewCustomLayout.visibility = View.VISIBLE
                 }
@@ -581,9 +583,9 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
                 binding.statusTv.text = "${bookingModel.status}"
                 mShowType = bookingModel.type
                 if (mShowType == "digital") {
-                    binding.showTypeTv.text = getString(R.string.virtual)
+                    binding.virtualTv.visibility = View.VISIBLE
                 } else {
-                    binding.showTypeTv.text = getString(R.string.in_person)
+                    binding.liveDigitalTv.visibility = View.VISIBLE
                 }
 
                 //change satatus of button...

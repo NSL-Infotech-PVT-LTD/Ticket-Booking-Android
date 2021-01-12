@@ -46,6 +46,7 @@ class SelectDateFragment : Fragment(), View.OnClickListener {
     private val sdf = SimpleDateFormat("yyyy-MM-dd")
     private var artistID = ""
     private var showTypeTv:MaterialTextView?=null
+    private var virtualtype:MaterialTextView?=null
 
 
     override fun onAttach(context: Context) {
@@ -65,12 +66,13 @@ class SelectDateFragment : Fragment(), View.OnClickListener {
 
         ((ctx as MainActivity)).hideBottomNavigation()
 
-        showTypeTv = view.findViewById(R.id.showTypeTv)
-        showTypeTv?.visibility = View.VISIBLE
+        showTypeTv = view.findViewById(R.id.liveDigitalTv)
+        virtualtype = view.findViewById(R.id.virtualTv)
+
         if (Constants.SHOW_TYPE == "digital") {
-            showTypeTv?.text = ctx.resources.getString(R.string.virtual)
+            virtualtype?.visibility = View.VISIBLE
         } else {
-            showTypeTv?.text = ctx.resources.getString(R.string.in_person)
+            showTypeTv?.visibility = View.VISIBLE
         }
 
         init(view)

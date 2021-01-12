@@ -158,13 +158,55 @@
                                 android:layout_marginTop="@dimen/_10sdp"
                                 android:paddingHorizontal="@dimen/_3sdp"
                                 android:paddingVertical="2dp"
+                                android:visibility="gone"
                                 android:textSize="10dp"
                                 android:drawablePadding="5dp"
                                 android:gravity="center"
                                 android:drawableStart="@drawable/ic_online_prediction_24"/>
 
 <!--                            android:drawableStart="@drawable/grey_round"-->
+                            <TextView
+                                android:id="@+id/liveDigitalTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/_25sdp"
+                                android:layout_marginEnd="@dimen/_5sdp"
+                                android:background="@drawable/corner_round_5_blue"
+                                android:text="@string/inperson"
+                                android:gravity="center"
+                                android:singleLine="true"
+                                android:textSize="@dimen/_10sdp"
+                                android:visibility="gone"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:paddingStart="@dimen/_4sdp"
+                                android:paddingEnd="@dimen/_4sdp"
+                                android:drawablePadding="@dimen/_4sdp"
+                                android:drawableStart="@drawable/ic_video_chat"
+                                android:textColor="@color/white"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                               />
 
+
+                            <TextView
+                                android:id="@+id/virtualTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/_25sdp"
+                                android:layout_marginEnd="@dimen/_5sdp"
+                                android:background="@drawable/corner_round_5_blue"
+                                android:text="@string/virtual"
+                                android:gravity="center"
+                                android:textSize="@dimen/_10sdp"
+                                android:visibility="gone"
+                                android:singleLine="true"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:paddingStart="@dimen/_8sdp"
+                                android:paddingEnd="@dimen/_8sdp"
+                                android:drawablePadding="@dimen/_4sdp"
+                                android:drawableStart="@drawable/ic_online_prediction_24"
+                                android:textColor="@color/white"
+
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </com.google.android.material.card.MaterialCardView>
 

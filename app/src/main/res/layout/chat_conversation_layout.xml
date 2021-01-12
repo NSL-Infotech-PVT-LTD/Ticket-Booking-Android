@@ -70,7 +70,8 @@
                     android:id="@+id/recMessage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
+                      android:autoLink="all"
+                    android:linksClickable="true"
                     android:gravity="start"
                     android:maxWidth="@dimen/_190sdp"
                     android:paddingEnd="@dimen/_10sdp"
@@ -156,11 +157,13 @@
                     android:background="@drawable/chat_receiver_bg"
                     android:backgroundTint="@color/colorAccent"
                     android:gravity="start"
+                    android:textColorLink="@color/white"
                     android:paddingEnd="@dimen/_10sdp"
                     android:paddingStart="@dimen/_10sdp"
                     android:maxWidth="@dimen/_190sdp"
                     android:inputType="textCapSentences|textMultiLine"
-
+                    android:autoLink="all"
+                    android:linksClickable="true"
                     android:text="hello"
 
                     android:textColor="@color/white"

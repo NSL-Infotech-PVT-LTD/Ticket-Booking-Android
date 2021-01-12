@@ -2,19 +2,21 @@ package com.surpriseme.user.activity.searchactivity
 
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
-import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.*
+import android.widget.ImageView
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.TextView.OnEditorActionListener
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.*
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,20 +30,21 @@ import com.surpriseme.user.fragments.homefragment.ArtistListAdapter
 import com.surpriseme.user.fragments.homefragment.ArtistModel
 import com.surpriseme.user.fragments.homefragment.DataUserArtistList
 import com.surpriseme.user.retrofit.RetrofitClient
-import com.surpriseme.user.util.*
+import com.surpriseme.user.util.Constants
+import com.surpriseme.user.util.HideKeyBoard
+import com.surpriseme.user.util.PaginationScrollListener
+import com.surpriseme.user.util.PrefrenceShared
+import com.warkiz.widget.ColorCollector
 import com.warkiz.widget.IndicatorSeekBar
 import com.warkiz.widget.OnSeekChangeListener
 import com.warkiz.widget.SeekParams
-import kotlinx.android.synthetic.main.fragment_booking_detail.*
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.*
-import javax.xml.datatype.DatatypeConstants.MONTHS
 import kotlin.collections.ArrayList
 
 
@@ -53,7 +56,6 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
     private var shared: PrefrenceShared? = null
     private var artistList: ArrayList<DataUserArtistList> = ArrayList()
     private var search = ""
-    private var isSearching = false
     private var latitude = ""
     private var longitude = ""
     private var hideKeyboard: HideKeyBoard? = null
@@ -84,10 +86,13 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
     private var byDistanceTv: MaterialTextView? = null
     private var seekbarDistance: IndicatorSeekBar? = null
     private var kilometerLayout: ConstraintLayout? = null
-    private var byRating = ""
+    private var byRating = "4.5"
     private var byDistance = ""
     private var radioLowToHigh: RadioButton? = null
     private var radioHighToLow: RadioButton? = null
+    private var startseek:MaterialTextView?=null
+    private var endseek:MaterialTextView?=null
+    private var textseek:MaterialTextView?=null
 
     // var for category bottom sheet....
     private lateinit var bottomSheetBehaviorCategory: BottomSheetBehavior<View>
@@ -139,11 +144,14 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
         // search bottom sheet view initialization....
         bottomSheet = findViewById<ConstraintLayout>(R.id.boottomSheet)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+        startseek = findViewById(R.id.startseek)
+        endseek = findViewById(R.id.endseek)
         // category bottom sheet view initialization....
         bottomSheetCategory = findViewById<ConstraintLayout>(R.id.bottomSheetCategory)
         bottomSheetBehaviorCategory = BottomSheetBehavior.from(bottomSheetCategory)
 
         backpress = findViewById(R.id.backpress)
+        textseek = findViewById(R.id.textseek)
         backpress?.setOnClickListener(this)
 
         layoutManager = LinearLayoutManager(this@SearchActivity)
@@ -240,7 +248,8 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
 
 
         seekbarRating = findViewById(R.id.seekbarRating)
-        val tickArray: Array<String> = arrayOf("5", "4.5", "4.0", "3.5", "Any")
+        val tickArray: Array<String> = arrayOf("5", "4.5 +", "4.0 +", "3.5 +", "Any")
+//        val tickArray: Array<String> = arrayOf("Any", "3.5", "4.0", "4.5", "5")
         seekbarRating?.customTickTexts(tickArray)
         byDistanceTv = findViewById(R.id.byDistanceTv)
         seekbarDistance = findViewById(R.id.seekbarDistance)
@@ -252,6 +261,9 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
             byDistanceTv?.visibility = View.GONE
             seekbarDistance?.visibility = View.GONE
             kilometerLayout?.visibility = View.GONE
+            startseek?.visibility = View.GONE
+            endseek?.visibility = View.GONE
+            textseek?.visibility = View.GONE
         } else {
             showType = "live"
             byDistanceTv?.visibility = View.VISIBLE
@@ -263,38 +275,37 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
             override fun onSeeking(seekParams: SeekParams?) {
 
                 seekbarRatingProgress = seekParams?.progress?.toFloat()
-                byRating = seekParams?.tickText!!
+               // byRating = seekParams?.tickText!!
                 if (byRating == "Any") {
                     byRating = "0"
+                }else if (byRating == "3.5 +"){
+                    byRating = "3.5"
+                } else if (byRating == "4.0 +"){
+                    byRating = "4.0"
+                } else if (byRating == "4.5 +") {
+                    byRating = "4.5"
+                }
+                else{
+                    byRating = "4.5"
+                }
 //                    shared?.setInt(Constants.DataKey.BY_RATING,showByRating!!)
                     shared?.setInt("byRating", seekbarRatingProgress?.toInt())
-                }
-
             }
-
             override fun onStartTrackingTouch(seekBar: IndicatorSeekBar?) {
             }
-
             override fun onStopTrackingTouch(seekBar: IndicatorSeekBar?) {
             }
-
         }
 
         seekbarDistance?.onSeekChangeListener = object : OnSeekChangeListener {
             override fun onSeeking(seekParams: SeekParams?) {
-                byDistance = seekParams?.tickText!!
-                Toast.makeText(this@SearchActivity, "" + byDistance, Toast.LENGTH_SHORT)
-                    .show()
+              byDistance = seekParams?.progress.toString()!!
+                textseek?.text = seekParams!!.progress.toString()+" "+"miles"
             }
-
             override fun onStartTrackingTouch(seekBar: IndicatorSeekBar?) {
-
             }
-
             override fun onStopTrackingTouch(seekBar: IndicatorSeekBar?) {
-
             }
-
         }
 
 
@@ -436,8 +447,27 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 artistListAdapter?.clear()
 
                 if (showType == "digital") {
-                    from_Date = fromDateTxt?.text.toString().trim()
-                    to_Date = toDateTxt?.text.toString().trim()
+
+                    if (from_Date != getString(R.string.from)) {
+                        val sdf = SimpleDateFormat("MMM dd,yyyy")
+                        val sdf1 = SimpleDateFormat("yyyy-MM-dd")
+
+
+                        val dateToFormat = sdf.parse(fromDateTxt?.text.toString().trim())
+                        val finalDate = sdf1.format(dateToFormat)
+                        from_Date = finalDate
+
+                    }
+                     if(to_Date != getString(R.string.to)) {
+
+                         val sdf = SimpleDateFormat("MMM dd,yyyy")
+                        val sdf1 = SimpleDateFormat("yyyy-MM-dd")
+                        val dateToFormat1 = sdf.parse(toDateTxt?.text.toString().trim())
+                        val finalDate1 = sdf1.format(dateToFormat1)
+                        to_Date = finalDate1
+                    }
+
+
                     if (from_Date == getString(R.string.from) && to_Date == getString(R.string.to)) {
                         from_Date = ""
                         to_Date = ""
@@ -447,8 +477,24 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 } else {
                     latitude = shared?.getString(Constants.LATITUDE)!!
                     longitude = shared?.getString(Constants.LONGITUDE)!!
-                    from_Date = fromDateTxt?.text.toString().trim()
-                    to_Date = toDateTxt?.text.toString().trim()
+                    if (from_Date != getString(R.string.from)) {
+                        val sdf = SimpleDateFormat("MMM dd,yyyy")
+                        val sdf1 = SimpleDateFormat("yyyy-MM-dd")
+
+
+                        val dateToFormat = sdf.parse(fromDateTxt?.text.toString().trim())
+                        val finalDate = sdf1.format(dateToFormat)
+                        from_Date = finalDate
+
+                    }
+                    if(to_Date != getString(R.string.to)) {
+
+                        val sdf = SimpleDateFormat("MMM dd,yyyy")
+                        val sdf1 = SimpleDateFormat("yyyy-MM-dd")
+                        val dateToFormat1 = sdf.parse(toDateTxt?.text.toString().trim())
+                        val finalDate1 = sdf1.format(dateToFormat1)
+                        to_Date = finalDate1
+                    }
                     if (from_Date == getString(R.string.from) && to_Date == getString(R.string.to)) {
                         from_Date = ""
                         to_Date = ""
@@ -490,11 +536,14 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 val date = "" + year + "-" + month + "-" + dayOfMonth
 
                 val sdf = SimpleDateFormat("yyyy-MM-dd")
+                val sdf1 = SimpleDateFormat("MMM dd,yyyy")
+
                 val dateToFormat = sdf.parse(date)
-                val finalDate = sdf.format(dateToFormat)
+                val fromDateToDisplay1 = sdf1.format(dateToFormat)
+
                 textView.textSize = 10f
 //                    fromDateTxt?.setText("" + dayOfMonth + " " + month + ", " + year)
-                textView.text = finalDate
+                textView.text = fromDateToDisplay1
 
             },
             y,
@@ -638,7 +687,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                                          * manage progress view
                                          */
 
-                                        if (currentPage != PaginationScrollListener.PAGE_START){
+                                        if (currentPage != PaginationScrollListener.PAGE_START) {
                                             artistListAdapter?.removeLoading()
                                         }
                                         artistListAdapter?.addItems(artistList)

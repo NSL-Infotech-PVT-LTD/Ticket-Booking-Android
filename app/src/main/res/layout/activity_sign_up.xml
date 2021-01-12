@@ -95,16 +95,15 @@
             <EditText
                 android:id="@+id/useredt"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:background="@null"
+                android:paddingVertical="5dp"
                 android:hint="@string/type_here"
                 android:textSize="@dimen/_12sdp"
                 android:fontFamily="@font/montserrat_regular"
                 android:textColor="#c1c1c1"
                 android:singleLine="true"
-                android:layout_marginTop="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/usernameTxt"
                 app:layout_constraintTop_toBottomOf="@+id/usernameTxt" />
@@ -145,15 +144,14 @@
             <EditText
                 android:id="@+id/emailEdt"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:background="@null"
                 android:hint="@string/type_here"
                 android:textSize="@dimen/_12sdp"
                 android:singleLine="true"
+                android:paddingVertical="5dp"
                 android:fontFamily="@font/montserrat_regular"
                 android:textColor="#c1c1c1"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/emailTxt"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -196,20 +194,40 @@
             <EditText
                 android:id="@+id/passwordEdt"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:background="@null"
                 android:hint="@string/type_here"
                 android:textSize="@dimen/_12sdp"
                 android:inputType="textPassword"
                 android:singleLine="true"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:layout_marginTop="5dp"
+                android:paddingVertical="5dp"
                 android:fontFamily="@font/montserrat_regular"
                 android:textColor="#c1c1c1"
                 app:layout_constraintStart_toStartOf="@+id/passwordTxt"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/passwordTxt" />
+
+            <ImageView
+                android:id="@+id/passEyeDisable"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                app:layout_constraintBottom_toBottomOf="@+id/passwordEdt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/passwordEdt"
+                android:src="@drawable/ic_eye_disable"/>
+
+            <ImageView
+                android:id="@+id/passEyeEnable"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                app:layout_constraintBottom_toBottomOf="@+id/passwordEdt"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="@+id/passwordEdt"
+                android:src="@drawable/ic_eyes_2"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -248,20 +266,40 @@
             <EditText
                 android:id="@+id/confirmPassEdt"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:background="@null"
                 android:hint="@string/type_here"
                 android:textSize="@dimen/_12sdp"
                 android:inputType="textPassword"
+                android:paddingVertical="5dp"
                 android:singleLine="true"
                 android:fontFamily="@font/montserrat_regular"
                 android:textColor="#c1c1c1"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="5dp"
                 app:layout_constraintStart_toEndOf="@+id/confirmPassIcon"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/confirmPassTxt" />
+
+            <ImageView
+                android:id="@+id/confirmPassEyeDisable"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                app:layout_constraintBottom_toBottomOf="@+id/confirmPassEdt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/confirmPassEdt"
+                android:src="@drawable/ic_eye_disable"/>
+
+            <ImageView
+                android:id="@+id/confirmPassEyeEnable"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                app:layout_constraintBottom_toBottomOf="@+id/confirmPassEdt"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="@+id/confirmPassEdt"
+                android:src="@drawable/ic_eyes_2"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
