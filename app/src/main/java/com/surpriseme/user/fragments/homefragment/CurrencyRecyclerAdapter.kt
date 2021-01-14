@@ -8,12 +8,13 @@ import android.widget.RadioButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.surpriseme.user.R
+import com.surpriseme.user.util.PrefManger
 import com.surpriseme.user.util.PrefrenceShared
 
-class CurrencyAdapter(val shared:PrefrenceShared,val context: Context, val currencyList:ArrayList<CurrencyList>,
+class CurrencyAdapter(val prefShared:PrefManger,val context: Context, val currencyList:ArrayList<CurrencyList>,
 val currencyAdpClick: CurrencyAdpClick) :RecyclerView.Adapter<CurrencyAdapter.CurrencyViewHolder>() {
 
-    private var adpPosition = shared.getInt("myCurrencyAdp")
+    private var adpPosition = prefShared.getInt("myCurrencyAdp")
     inner class CurrencyViewHolder(itemview:View) :RecyclerView.ViewHolder(itemview) {
 
         val currencyName = itemview.findViewById<TextView>(R.id.currencyNameTv)
@@ -37,7 +38,7 @@ val currencyAdpClick: CurrencyAdpClick) :RecyclerView.Adapter<CurrencyAdapter.Cu
 
 //            holder.currencyRadio.isChecked = true
             adpPosition = holder.adapterPosition
-            shared.setInt("myCurrencyAdp",adpPosition)
+            prefShared.setInt("myCurrencyAdp",adpPosition)
             notifyDataSetChanged()
             currencyAdpClick.currencyClick(model.currency)
 

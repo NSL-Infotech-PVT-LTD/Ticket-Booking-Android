@@ -113,31 +113,30 @@
 
 
 
-            <TextView
-                android:id="@+id/seeArtistProfile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:text="@string/see_artist_profile"
-                android:textColor="@color/colorPrimary"
-                android:textSize="10dp"
-                android:fontFamily="@font/montserrat_regular"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/description" />
+<!--            <TextView-->
+<!--                android:id="@+id/seeArtistProfile"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="@dimen/_10sdp"-->
+<!--                android:text="@string/see_artist_profile"-->
+<!--                android:textColor="@color/colorPrimary"-->
+<!--                android:textSize="10dp"-->
+<!--                android:fontFamily="@font/montserrat_regular"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/description" />-->
 
             <RatingBar
                 android:id="@+id/ratingbar"
                 style="@style/Widget.AppCompat.RatingBar.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
-                android:rating="3"
-                android:stepSize="1"
+                android:stepSize="0.5"
+                android:visibility="visible"
                 android:theme="@style/RatingBar"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/seeArtistProfile" />
+                app:layout_constraintTop_toBottomOf="@id/description" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/brandNewArtistTv"
@@ -151,9 +150,9 @@
                 android:layout_marginTop="5dp"
                 android:textColor="@color/greenColor"
                 android:background="@drawable/brand_new_artist_bg"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/seeArtistProfile"/>
+                app:layout_constraintTop_toBottomOf="@id/ratingbar"
+                app:layout_goneMarginTop="@dimen/_10sdp"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -86,7 +86,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
     private var byDistanceTv: MaterialTextView? = null
     private var seekbarDistance: IndicatorSeekBar? = null
     private var kilometerLayout: ConstraintLayout? = null
-    private var byRating = "4.5"
+    private var byRating = "0"
     private var byDistance = ""
     private var radioLowToHigh: RadioButton? = null
     private var radioHighToLow: RadioButton? = null
@@ -187,26 +187,14 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 if (search.length <= 2) {
                     Toast.makeText(
                         this@SearchActivity,
-                        "Enter atleast three character",
+                        "" + getString(R.string.enter_atleast_three_character),
                         Toast.LENGTH_SHORT
                     ).show()
 
                 } else {
-
                     artistListApiWithoutLatlng(search)
-
-//                    if (Constants.SHOW_TYPE == getString(R.string.digital)) {
-//                    } else {
-//                        artistListApi(
-//                            shared?.getString(Constants.LATITUDE)!!,
-//                            shared?.getString(Constants.LONGITUDE)!!,
-//                            search
-//                        )
-//                    }
                 }
             }
-
-
         })
 
         binding?.searchRecycler?.addOnScrollListener(object :
@@ -223,13 +211,11 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                         search
                     )
                 }
-
             }
 
             override fun isLastPage(): Boolean {
                 return isLastPage
             }
-
             override fun isLoading(): Boolean {
                 return isLoading
             }
@@ -246,15 +232,12 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
             radioLowToHigh?.isChecked = false
         }
 
-
         seekbarRating = findViewById(R.id.seekbarRating)
         val tickArray: Array<String> = arrayOf("5", "4.5 +", "4.0 +", "3.5 +", "Any")
 //        val tickArray: Array<String> = arrayOf("Any", "3.5", "4.0", "4.5", "5")
         seekbarRating?.customTickTexts(tickArray)
         byDistanceTv = findViewById(R.id.byDistanceTv)
         seekbarDistance = findViewById(R.id.seekbarDistance)
-
-
 
         if (showType == "digital") {
             showType = "digital"
@@ -275,7 +258,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
             override fun onSeeking(seekParams: SeekParams?) {
 
                 seekbarRatingProgress = seekParams?.progress?.toFloat()
-               // byRating = seekParams?.tickText!!
+                byRating = seekParams?.tickText!!
                 if (byRating == "Any") {
                     byRating = "0"
                 }else if (byRating == "3.5 +"){
@@ -284,9 +267,8 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                     byRating = "4.0"
                 } else if (byRating == "4.5 +") {
                     byRating = "4.5"
-                }
-                else{
-                    byRating = "4.5"
+                } else if (byRating == "5") {
+                    byRating = "0"
                 }
 //                    shared?.setInt(Constants.DataKey.BY_RATING,showByRating!!)
                     shared?.setInt("byRating", seekbarRatingProgress?.toInt())
@@ -299,16 +281,14 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
 
         seekbarDistance?.onSeekChangeListener = object : OnSeekChangeListener {
             override fun onSeeking(seekParams: SeekParams?) {
-              byDistance = seekParams?.progress.toString()!!
-                textseek?.text = seekParams!!.progress.toString()+" "+"miles"
+              byDistance = seekParams?.progress.toString()
+                textseek?.text = seekParams!!.progress.toString()+" "+ getString(R.string.miles)
             }
             override fun onStartTrackingTouch(seekBar: IndicatorSeekBar?) {
             }
             override fun onStopTrackingTouch(seekBar: IndicatorSeekBar?) {
             }
         }
-
-
         //Search bottom sheet callback....
         bottomSheetBehavior.setBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
@@ -320,13 +300,13 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                     BottomSheetBehavior.STATE_EXPANDED -> {
                         binding?.whiteBgLayout?.visibility = View.VISIBLE
                     }
-
                 }
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
             }
         })
+
         // Search Bottom Sheet view initialization....
         closeBtn = findViewById(R.id.closeBtn)
         chooseCategory = findViewById(R.id.chooseCategoryTxt)
@@ -356,7 +336,6 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
         arrow = findViewById(R.id.arrow)
         arrow?.setOnClickListener(this)
 
-
         hideKeyboard = HideKeyBoard()
 
         binding?.filterIcon?.setOnClickListener(this)
@@ -370,7 +349,6 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
             }
-
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
             }
         })
@@ -396,12 +374,10 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
         if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED)
             categoryListApi()
-
         } else {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED)
         }
     }
-
     // Category Bottom Sheet Method....
     private fun bottomSheetUpDownCategoryForCategory() {
         if (bottomSheetBehaviorCategory.state != BottomSheetBehavior.STATE_EXPANDED) {
@@ -438,6 +414,8 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                         categoryIdLst.add(details.id)
                     }
                     chooseCategory?.text = builder.toString()
+                } else{
+                    chooseCategory?.text = getString(R.string.click_to_choose_category)
                 }
                 bottomSheetUpDownCategoryForCategory()
 
@@ -446,48 +424,43 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 bottomSheetUpDownCategory()
                 artistListAdapter?.clear()
 
+                from_Date = fromDateTxt?.text.toString().trim()
+                to_Date = toDateTxt?.text.toString().trim()
+
                 if (showType == "digital") {
 
-                    if (from_Date != getString(R.string.from)) {
+                    if (from_Date != "") {
                         val sdf = SimpleDateFormat("MMM dd,yyyy")
                         val sdf1 = SimpleDateFormat("yyyy-MM-dd")
 
-
-                        val dateToFormat = sdf.parse(fromDateTxt?.text.toString().trim())
+                        val dateToFormat = sdf.parse(from_Date)
                         val finalDate = sdf1.format(dateToFormat)
                         from_Date = finalDate
 
                     }
-                     if(to_Date != getString(R.string.to)) {
+                     if(to_Date != "") {
 
                          val sdf = SimpleDateFormat("MMM dd,yyyy")
                         val sdf1 = SimpleDateFormat("yyyy-MM-dd")
-                        val dateToFormat1 = sdf.parse(toDateTxt?.text.toString().trim())
+                        val dateToFormat1 = sdf.parse(to_Date)
                         val finalDate1 = sdf1.format(dateToFormat1)
                         to_Date = finalDate1
-                    }
-
-
-                    if (from_Date == getString(R.string.from) && to_Date == getString(R.string.to)) {
-                        from_Date = ""
-                        to_Date = ""
                     }
 
                     artistListApiWithoutLatlng(search)
                 } else {
                     latitude = shared?.getString(Constants.LATITUDE)!!
                     longitude = shared?.getString(Constants.LONGITUDE)!!
-                    if (from_Date != getString(R.string.from)) {
+                    if (from_Date != "") {
                         val sdf = SimpleDateFormat("MMM dd,yyyy")
                         val sdf1 = SimpleDateFormat("yyyy-MM-dd")
-
 
                         val dateToFormat = sdf.parse(fromDateTxt?.text.toString().trim())
                         val finalDate = sdf1.format(dateToFormat)
                         from_Date = finalDate
 
                     }
-                    if(to_Date != getString(R.string.to)) {
+                    if(to_Date != "") {
 
                         val sdf = SimpleDateFormat("MMM dd,yyyy")
                         val sdf1 = SimpleDateFormat("yyyy-MM-dd")
@@ -495,17 +468,14 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                         val finalDate1 = sdf1.format(dateToFormat1)
                         to_Date = finalDate1
                     }
-                    if (from_Date == getString(R.string.from) && to_Date == getString(R.string.to)) {
-                        from_Date = ""
-                        to_Date = ""
-                    }
+
                     artistListApi(latitude, longitude, search)
                 }
 
             }
             R.id.backpress -> {
-                finish()
                 Constants.IS_SEARCH_ACTIVITY = false
+                finish()
             }
             R.id.fromDateTxt -> {
                 openCalendar(fromDateTxt!!)
@@ -538,8 +508,10 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 val sdf = SimpleDateFormat("yyyy-MM-dd")
                 val sdf1 = SimpleDateFormat("MMM dd,yyyy")
 
+
                 val dateToFormat = sdf.parse(date)
                 val fromDateToDisplay1 = sdf1.format(dateToFormat)
+
 
                 textView.textSize = 10f
 //                    fromDateTxt?.setText("" + dayOfMonth + " " + month + ", " + year)
@@ -659,8 +631,6 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
     }
 
     private fun artistListApiWithoutLatlng(search: String) {
-
-
         binding?.progressBar?.visibility = View.VISIBLE
         RetrofitClient.api.artistListApi(
             shared?.getString(Constants.DataKey.AUTH_VALUE)!!,
@@ -697,18 +667,12 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                                             isLastPage = true
                                         }
                                         isLoading = false
-
                                     }
                                 }, 1500)
 
-
-
                                 binding?.noDataFoundLayout?.visibility = View.GONE
                                 binding?.searchLayout?.visibility = View.VISIBLE
-
                                 artistListAdapter?.notifyDataSetChanged()
-
-
                             } else {
                                 binding?.noDataFoundLayout?.visibility = View.VISIBLE
                                 binding?.searchLayout?.visibility = View.GONE

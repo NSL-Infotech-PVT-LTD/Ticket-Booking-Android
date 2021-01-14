@@ -130,7 +130,7 @@ class ArtistListAdapter(
         val description = itemView.findViewById<TextView>(R.id.description)
         val bookBtn = itemView.findViewById<MaterialTextView>(R.id.bookBtn)
         val ratingbar = itemView.findViewById<RatingBar>(R.id.ratingbar)
-        val seeArtistProfile = itemView.findViewById<TextView>(R.id.seeArtistProfile)
+//        val seeArtistProfile = itemView.findViewById<TextView>(R.id.seeArtistProfile)
         val categories = itemView.findViewById<TextView>(R.id.categoryTxt)
         val price = itemView.findViewById<TextView>(R.id.priceTv)
         val brandNewArtistTv = itemView.findViewById<MaterialTextView>(R.id.brandNewArtistTv)
@@ -152,11 +152,12 @@ class ArtistListAdapter(
             name.text = artistModel.name
             description.text = artistModel.description
 
-            if (artistModel.rating == 0f) {
+            if (artistModel.rating == 0.0) {
                 ratingbar.visibility = View.GONE
                 brandNewArtistTv.visibility = View.VISIBLE
             } else {
-                ratingbar.rating = artistModel.rating
+                ratingbar.visibility = View.VISIBLE
+                ratingbar.rating = artistModel.rating.toFloat()
                 brandNewArtistTv.visibility = View.GONE
             }
 

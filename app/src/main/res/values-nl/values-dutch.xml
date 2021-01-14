@@ -312,4 +312,6 @@
     <string name="please_choose_reason">Kies een reden</string>
     <string name="please_write_reason_for_other">Schrijf een reden voor een andere</string>
     <string name="please_give_rating">Geef beoordeling</string>
+    <string name="miles">mijl</string>
+    <string name="enter_atleast_three_character">Voer minimaal drie tekens in</string>
 </resources>

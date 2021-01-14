@@ -53,12 +53,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("bookingId", id)
             } else if (target_Model.equals(Constants.TARGET_MODEL_MESSAGE)) {
-
                 intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("chatId", id)
             } else {
                 intent = Intent(this, MainActivity::class.java)
-
             }
 
 

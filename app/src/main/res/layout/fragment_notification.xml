@@ -1,82 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/notificationContainer"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/notificationContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:orientation="vertical"
-        tools:context=".fragments.notificationfragment.NotificationActivity"
-        android:weightSum="2">
+        android:weightSum="2"
+        tools:context=".fragments.notificationfragment.NotificationActivity">
 
-        <include layout="@layout/loader_layout"
+        <include
             android:id="@+id/loaderLayout"
-            android:visibility="gone"/>
+            layout="@layout/loader_layout"
+            android:visibility="gone" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1.6"
-            >
+            android:layout_weight="1.6">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/toolbarCard"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_50sdp"
-                app:cardElevation="@dimen/_10sdp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-
-                    <include layout="@layout/toolbar_layout" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-
-
+            <include
+                android:id="@+id/toolbarLayout"
+                layout="@layout/toolbar_layout" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/notificationTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/notifications"
-                app:layout_constraintTop_toBottomOf="@id/toolbarCard"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/montserrat_semibold"
+                android:text="@string/notifications"
                 android:textColor="#242830"
-                android:fontFamily="@font/montserrat_bold"
-                android:textSize="@dimen/_18sdp"/>
+                android:textSize="@dimen/_16sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbarLayout" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/turnOnOfTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/turn_on_of_floating_notification"
-                app:layout_constraintTop_toBottomOf="@id/notificationTxt"
-                app:layout_constraintStart_toStartOf="@id/notificationTxt"
-                android:textColor="@color/grey_color"
                 android:fontFamily="@font/montserrat_regular"
-                android:textSize="@dimen/_10sdp"/>
+                android:text="@string/turn_on_of_floating_notification"
+                android:textColor="@color/grey_color"
+                android:textSize="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                app:layout_constraintStart_toStartOf="@id/notificationTxt"
+                app:layout_constraintTop_toBottomOf="@id/notificationTxt" />
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switchBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_20sdp"
-                app:thumbTint="@color/white"
                 android:checked="true"
-                app:track="@drawable/notification_track_inactive"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/notificationTxt"/>
+                app:layout_constraintTop_toTopOf="@id/notificationTxt"
+                app:thumbTint="@color/white"
+                app:track="@drawable/notification_track_inactive" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -92,38 +76,45 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginVertical="@dimen/_5sdp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/noDataFound"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/no_data_found"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_14sdp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/noNotificationLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary"
+                android:visibility="gone">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/refresh"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_50sdp"
-                android:text="@string/refresh"
-                android:textAllCaps="false"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.8" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/noArtistText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_30sdp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:gravity="center"
+                    android:text="@string/no_notifications_found"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14sdp"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.3" />
 
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_200sdp"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_30sdp"
+                    android:src="@drawable/no_notification_icon"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
     </LinearLayout>
 </layout>

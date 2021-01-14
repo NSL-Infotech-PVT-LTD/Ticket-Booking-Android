@@ -315,5 +315,6 @@
     <string name="please_choose_reason">Por favor elija el motivo</string>
     <string name="please_write_reason_for_other">Por favor escriba el motivo de otro</string>
     <string name="please_give_rating">Por favor, califique</string>
-
+    <string name="miles">millas</string>
+    <string name="enter_atleast_three_character">Ingrese al menos tres caracteres</string>
 </resources>

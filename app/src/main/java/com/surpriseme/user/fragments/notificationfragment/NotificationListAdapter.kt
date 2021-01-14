@@ -53,7 +53,8 @@ val notificationDetail:NotificationDetail) : RecyclerView.Adapter<NotificationLi
 
 
         holder.itemView.setOnClickListener {
-            notificationDetail.detail(model.booking_detail.target_id.toString(),model.id.toString(),model.booking_detail.target_model)
+            notificationDetail.detail(model.booking_detail.target_id.toString(),model.id.toString(),model.booking_detail.target_model
+            ,model.customer_detail.name,model.customer_detail.image.toString())
         }
     }
 
@@ -62,7 +63,7 @@ val notificationDetail:NotificationDetail) : RecyclerView.Adapter<NotificationLi
     }
 
     interface NotificationDetail{
-        fun detail(id:String,notificationId:String, targetModel:String)
+        fun detail(id:String,notificationId:String, targetModel:String,name:String,image:String)
     }
 
     //Converting Utc Time to Local time

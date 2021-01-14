@@ -631,18 +631,18 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
 
         val layoutManager = LinearLayoutManager(ctx)
         currencyRecycler?.layoutManager = layoutManager
-
-
         // calling Currency List api....
         currencyListApi()
-
         proceedBtn.setOnClickListener {
-            popUpWindowCurrency?.dismiss()
-            // hit Update profile api to save currency ....
 
-            updateProfileApi(currencyvalue)
-            prefManager?.setString1(Constants.DataKey.CURRENCY, currencyvalue)
-
+            if (prefManager?.getInt("myCurrencyAdp") == -1) {
+                Utility.alertErrorMessage(ctx, ctx.resources.getString(R.string.please_choose_currency))
+            } else {
+                popUpWindowCurrency?.dismiss()
+                // hit Update profile api to save currency ....
+                updateProfileApi(currencyvalue)
+                prefManager?.setString1(Constants.DataKey.CURRENCY, currencyvalue)
+            }
         }
 
     }
@@ -660,7 +660,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                             currencyList = response.body()?.data?.list!!
                             if (currencyList.isNotEmpty()) {
 
-                                currencyAdapter = CurrencyAdapter(shared, ctx, currencyList, this)
+                                currencyAdapter = CurrencyAdapter(prefManager!!, ctx, currencyList, this)
                                 currencyRecycler?.adapter = currencyAdapter
                                 currencyRecycler?.setHasFixedSize(true)
                             }

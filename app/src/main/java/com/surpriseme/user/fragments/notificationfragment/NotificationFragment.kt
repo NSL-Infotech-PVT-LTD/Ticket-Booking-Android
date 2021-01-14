@@ -18,6 +18,7 @@ import com.surpriseme.user.R
 import com.surpriseme.user.databinding.FragmentNotificationBinding
 import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.fragments.bookingdetailfragment.BookingDetailFragment
+import com.surpriseme.user.fragments.chatFragment.ChatFragment
 import com.surpriseme.user.fragments.chatListfragment.ChatListFragment
 import com.surpriseme.user.fragments.homefragment.HomeFragment
 import com.surpriseme.user.retrofit.RetrofitClient
@@ -191,13 +192,10 @@ class NotificationFragment : Fragment(),NotificationListAdapter.NotificationDeta
                                 val notificationListAdp = NotificationListAdapter(ctx!!,notificationList,this@NotificationFragment)
                                 binding?.notiListRecycler?.adapter = notificationListAdp
 
-                                binding?.noDataFound?.visibility = View.GONE
-                                binding?.refresh?.visibility = View.GONE
+                                binding?.noNotificationLayout?.visibility = View.GONE
 
                             } else {
-                                binding?.noDataFound?.visibility = View.VISIBLE
-                                binding?.noDataFound?.text = "No Notifications"
-                                binding?.refresh?.visibility = View.VISIBLE
+                                binding?.noNotificationLayout?.visibility = View.VISIBLE
 
                             }
                         }
@@ -225,7 +223,8 @@ class NotificationFragment : Fragment(),NotificationListAdapter.NotificationDeta
 
     }
     // override method from Notification List Adapter to send detail to Detail Fragment
-    override fun detail(id:String, notificationId:String,targetModel:String) {
+    override fun detail(id:String, notificationId:String,targetModel:String
+        ,name:String,image:String) {
 
         this.mNotificationID = notificationId
         notificationReadApi(mNotificationID)
@@ -233,26 +232,16 @@ class NotificationFragment : Fragment(),NotificationListAdapter.NotificationDeta
         Constants.BOOKING = false
         Constants.IS_BOOKING_DONE = false
         if (targetModel == Constants.TARGET_MODEL_MESSAGE) {
-            val bundle = Bundle()
-            val fragment = ChatListFragment()
-            bundle.putString("chatId",id)
-            fragment.arguments = bundle
-            val transaction = fragmentManager?.beginTransaction()
-            transaction?.replace(R.id.frameContainer,fragment)
-            transaction?.addToBackStack("notiFragment")
-            transaction?.commit()
+            val intent = Intent(ctx, ChatFragment::class.java)
+            intent.putExtra("chatId",id)
+            intent.putExtra("receiverName",name)
+            intent.putExtra("receiverImage",image)
+            startActivity(intent)
         }else {
           val intent = Intent(ctx,BookingDetailFragment::class.java)
             intent.putExtra("bookingId",id)
             startActivity(intent)
         }
-
-    }
-
-    private fun loadFragment(fragment: Fragment) {
-        val transaction = fragmentManager?.beginTransaction()
-        transaction?.replace(R.id.frameContainer, fragment)
-        transaction?.commit()
 
     }
 

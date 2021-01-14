@@ -33,7 +33,7 @@ data class Data(
     val converted_live_price : Double=0.0
     val converted_currency : String =  ""
     val name: String=""
-    val rating: Float=0f
+    val rating: Double=0.0
     val role: Role?=null
     val shows_image: List<Any>?=null
 }

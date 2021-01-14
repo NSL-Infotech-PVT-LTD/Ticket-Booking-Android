@@ -326,5 +326,9 @@
     <string name="please_give_rating">Please give rating</string>
     <string name="please_choose_language">Please choose language</string>
     <string name="inperson">In-person</string>
+    <string name="miles">miles</string>
+    <string name="enter_atleast_three_character">Enter atleast three character</string>
+    <string name="please_choose_currency">Please choose currency</string>
+    <string name="no_notifications_found">No Notifications found</string>
 
 </resources>

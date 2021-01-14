@@ -34,6 +34,7 @@ class MessageAdapter(
     private val VIEW_TYPE_LOADING = 0
     private val VIEW_TYPE_NORMAL = 1
     private var isLoaderVisible = false
+    private var mDate = ""
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
@@ -78,7 +79,6 @@ class MessageAdapter(
     fun addItem(item: ChatDataModel) {
         messagesList.add(0, item)
         notifyDataSetChanged()
-
         recycle.scrollToPosition(0)
     }
 
@@ -171,24 +171,57 @@ class MessageAdapter(
             val date = Calendar.getInstance().time
             val formatter = SimpleDateFormat("hh:mm a") //or use getDateInstance()
             val formatedDate = formatter.format(date)
+
+
+            mDate = messagesList[position].created_at
+
+            dateMtv?.setText(uTCToLocal("yyyy-MM-dd hh:mm:ss","dd-MMM-yyyy",mDate))
+
+            if(position >= 1  && position <  messagesList.size -1 ){
+
+                val senTime = messagesList.get(position).created_at.split(" ")
+                val store = messagesList.get(position + 1).created_at.split(" ")
+                if (senTime[0].equals(store[0])) {
+                    dateMtv?.visibility = View.GONE
+                }else {
+                    dateMtv?.visibility = View.VISIBLE
+                }
+            }else if (  messagesList.size == 1){
+                dateMtv?.visibility = View.VISIBLE
+            }else if (position ==  messagesList.size -1 ){
+                dateMtv?.visibility = View.VISIBLE
+            }
+
+
+
+
+//            else {
+//                dateMtv?.visibility = View.VISIBLE
+//            }
+
+
+//            dateMtv?.text = mDate
+
+
+
             recMessage?.movementMethod =LinkMovementMethod.getInstance()
             senderMsg?.movementMethod =LinkMovementMethod.getInstance()
             senderMsg?.setOnClickListener {
                 val clipboard: ClipboardManager =
                     ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                val clip = ClipData.newPlainText("shared", senderMsg?.getText().toString());
+                val clip = ClipData.newPlainText("shared", senderMsg?.getText().toString())
                 if (clipboard != null) {
-                    Toast.makeText(ctx, "Text Copied", Toast.LENGTH_SHORT).show();
-                    clipboard.setPrimaryClip(clip);
+                    Toast.makeText(ctx, "Text Copied", Toast.LENGTH_SHORT).show()
+                    clipboard.setPrimaryClip(clip)
                 }
             }
             recMessage?.setOnClickListener {
                 val clipboard: ClipboardManager =
                     ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                val clip = ClipData.newPlainText("shared", recMessage?.getText().toString());
+                val clip = ClipData.newPlainText("shared", recMessage?.getText().toString())
                 if (clipboard != null) {
-                    Toast.makeText(ctx, "Text Copied", Toast.LENGTH_SHORT).show();
-                    clipboard.setPrimaryClip(clip);
+                    Toast.makeText(ctx, "Text Copied", Toast.LENGTH_SHORT).show()
+                    clipboard.setPrimaryClip(clip)
                 }
             }
             val item = messagesList[position]
@@ -222,7 +255,6 @@ class MessageAdapter(
 
 
 //                 val date = messagesList[0].created_at
-//                dateMtv?.setText(uTCToLocal("yyyy-MM-dd hh:mm:ss", "dd-MMM-yyyy", date))
 //
 //                if (i > 0) {
 //                    val senTime = messagesList.get(i).created_at!!.split(" ")

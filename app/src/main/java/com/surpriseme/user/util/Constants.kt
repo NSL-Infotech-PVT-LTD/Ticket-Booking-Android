@@ -99,6 +99,7 @@ object Constants {
     var LATLNG:LatLng?=null
     var addressID = "addressID"
     var PROFILE_FRAGMENT = false  // Used to handle backpress, while user on profile fragment then popup will display
+    var IS_CURRENCY_SELECTED = false
     // by main activity backpress....
 
     var FB_ID = ""

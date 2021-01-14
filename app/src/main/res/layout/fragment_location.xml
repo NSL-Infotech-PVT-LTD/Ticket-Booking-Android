@@ -8,6 +8,10 @@
         android:background="@color/white"
         tools:context=".fragments.locationfragment.LocationFragment">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
         <androidx.cardview.widget.CardView
             android:id="@+id/toolbarCard"
             android:layout_width="match_parent"
@@ -132,6 +136,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <include layout="@layout/loader_layout"

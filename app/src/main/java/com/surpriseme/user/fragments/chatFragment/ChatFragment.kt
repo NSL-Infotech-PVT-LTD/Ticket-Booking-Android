@@ -108,7 +108,8 @@ class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceiv
             mReceiverImage = intent.getStringExtra("receiverImage").toString()
             if (mReceiverImage != "" || mReceiverImage != null) {
 
-                Picasso.get().load(mReceiverImage).into(mReceiverImageView)
+                Picasso.get().load(mReceiverImage)
+                    .placeholder(R.drawable.profile_pholder).into(mReceiverImageView)
             }
         }
         if (intent.getStringExtra("receiverName") != null) {
@@ -121,6 +122,7 @@ class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceiv
         val dnt = SimpleDateFormat("dd MMM yyyy hh:mm a")
         val date = Date()
         binding?.currentDateTv!!.text=dnt.format(date)
+
         Picasso.get().load(mReceiverImage).placeholder(R.drawable.profile_pholder).into(binding?.chatStartImgArtist)
         if (shared?.getString(Constants.DataKey.USER_IMAGE) != "") {
             Picasso.get().load(shared?.getString(Constants.DataKey.USER_IMAGE))
@@ -225,12 +227,15 @@ class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceiv
 // adapter?.addItemList(list)
 
                                 Picasso.get().load(Constants.ImageUrl.BASE_URL+ Constants.ImageUrl.ARTIST_IMAGE_URL+response.body()!!.data.receiver_detail.image)
+                                    .placeholder(R.drawable.profile_pholder)
                                     .into(mReceiverImageView)
                                 mReceiverNameMtv?.text=response.body()?.data?.receiver_detail?.name
-                                Picasso.get().load(Constants.ImageUrl.BASE_URL+ Constants.ImageUrl.ARTIST_IMAGE_URL+response.body()!!.data.receiver_detail.image).placeholder(R.drawable.profile_pholder).into(binding?.chatStartImgArtist)
+                                Picasso.get().load(Constants.ImageUrl.BASE_URL+ Constants.ImageUrl.ARTIST_IMAGE_URL+response.body()!!.data.receiver_detail.image)
+                                    .placeholder(R.drawable.profile_pholder)
+                                    .into(binding?.chatStartImgArtist)
                                 startChatWithTv.text = getString(R.string.start_chat_with) + " " + response.body()?.data?.receiver_detail?.name
-                                Picasso.get().
-                                load(shared?.getString(Constants.DataKey.USER_IMAGE))
+                                Picasso.get().load(shared?.getString(Constants.DataKey.USER_IMAGE))
+                                    .placeholder(R.drawable.profile_pholder)
                                     .into(binding?.chatStartImgCustomer)
 
 
