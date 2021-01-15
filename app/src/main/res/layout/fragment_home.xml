@@ -161,6 +161,7 @@
                     app:cardBackgroundColor="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    android:visibility="visible"
                     app:layout_constraintTop_toBottomOf="@+id/headerCard">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -228,13 +229,22 @@
                     android:id="@+id/artistNotFoundLayout"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:background="@color/colorPrimary"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/searchCard">
+                    app:layout_constraintTop_toBottomOf="@id/headerCard">
 
 
                     <!-- when no data found. -->
+
+                    <ImageView
+                        android:id="@+id/noDataImg"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_100sdp"
+                        android:src="@drawable/no_artist_found"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="@dimen/_100sdp"
+                        app:layout_constraintTop_toTopOf="parent"/>
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/noArtistText"
@@ -244,37 +254,14 @@
                         android:fontFamily="@font/montserrat_bold"
                         android:gravity="center"
                         android:text="@string/no_data_found"
-                        android:textColor="@color/white"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_14sdp"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginTop="@dimen/_30sdp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.3" />
+                        app:layout_constraintTop_toBottomOf="@+id/noDataImg"
+                        />
 
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/unableToFindBookingText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_30sdp"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:gravity="center"
-                        android:text="@string/unable_to_find_data"
-                        android:textColor="#99FFFFFF"
-                        android:textSize="@dimen/_12sdp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/noArtistText" />
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_200sdp"
-                        android:src="@drawable/no_artist_found"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/unableToFindBookingText" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

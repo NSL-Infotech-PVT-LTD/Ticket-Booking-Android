@@ -75,7 +75,7 @@ import kotlin.collections.ArrayList
 class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistListFace,
     ArtistListAdapter.BookBtnClick {
 
-    var currencyvalue = "EUR"
+    var currencyvalue = ""
     private lateinit var binding: FragmentHomeBinding
     private lateinit var ctx: Context
     private lateinit var shared: PrefrenceShared
@@ -473,10 +473,12 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                                     }
                                 }, 1500)
 
-                                binding.homeContainer.visibility = View.VISIBLE
+                                binding.searchCard.visibility = View.VISIBLE
+                                binding.artistNotFoundLayout.visibility = View.GONE
 
                             } else {
-                                binding.homeContainer.visibility = View.GONE
+                                binding.searchCard.visibility = View.GONE
+                                binding.artistNotFoundLayout.visibility = View.VISIBLE
                             }
                         }
                     } else {

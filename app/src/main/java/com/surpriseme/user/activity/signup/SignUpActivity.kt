@@ -182,6 +182,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
                             shared.setString(Constants.DataKey.ARTIST_ID_VALUE,response.body()?.data?.user?.id.toString())    // To Save Artist ID
                             shared.setString(Constants.DataKey.OLD_PASS_VALUE, password) // To save User Password
                             prefManager?.setString1(Constants.DataKey.CURRENCY, "") // to save currency....
+                            prefManager?.setInt("myCurrencyAdp",-1) // to set initial currency to 0 position....
 
 
 

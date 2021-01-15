@@ -233,10 +233,8 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
                                 response.body()?.data?.user?.id.toString()
                             )    // To Save User ID
 //                            shared.setString(Constants.DataKey.OLD_PASS_VALUE, password)                                       // To save User Password
-                            shared?.setString(
-                                Constants.DataKey.USER_IMAGE,  // To Save User Image
-                                Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + response.body()?.data?.user?.image
-                            )
+                            shared?.setString(Constants.DataKey.USER_IMAGE,  // To Save User Image
+                                Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + response.body()?.data?.user?.image)
 
                             currency = fbDataModel?.user?.currency!!
                             if (currency.isEmpty()) {
@@ -244,6 +242,7 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
                             } else {
                                 prefManager?.setString1(Constants.DataKey.CURRENCY, currency)
                             }
+                            prefManager?.setInt("myCurrencyAdp",-1) // to set initial currency to 0 position....
 
 //                            isFbRegistered = true
                             val mainActIntent =

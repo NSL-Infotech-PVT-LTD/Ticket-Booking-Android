@@ -32,7 +32,7 @@ val currencyAdpClick: CurrencyAdpClick) :RecyclerView.Adapter<CurrencyAdapter.Cu
         holder.currencyName.text = model.currency
 
 
-//        holder.currencyRadio.isChecked = adpPosition == position
+        holder.currencyRadio.isChecked = adpPosition == position
 
         holder.currencyRadio.setOnClickListener {
 

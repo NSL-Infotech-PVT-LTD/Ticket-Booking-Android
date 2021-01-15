@@ -77,7 +77,6 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
         shared = PrefrenceShared(ctx)
         val loadingText = view.findViewById<TextView>(R.id.loadingtext)
         loadingText.text = Utility.randomString(ctx)
-        Constants.PROFILE_FRAGMENT = true
 
         ((ctx as MainActivity)).hideBottomNavigation()
 
@@ -126,10 +125,11 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
 
             R.id.backpress -> {
 
-                if (isTryToUpdateProfile) {
+                if (Constants.PROFILE_FRAGMENT) {
                     updateProfilePopup()
                 } else {
                     fragmentManager?.popBackStack()
+                    Constants.PROFILE_FRAGMENT = false
                 }
 
             }
@@ -138,7 +138,8 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
                 logoutPop()
             }
             R.id.editProfileBtn -> {
-                isTryToUpdateProfile = true
+             //   isTryToUpdateProfile = true
+                Constants.PROFILE_FRAGMENT = true
                 binding.editProfileBtn.visibility = View.GONE
                 binding.cameraIcon.visibility = View.VISIBLE
                 binding.usernameEdt.isEnabled = true
@@ -151,7 +152,9 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
 
             }
             R.id.updateprofilebtn -> {
+             //   isTryToUpdateProfile = false
 
+                Constants.PROFILE_FRAGMENT = false
                 username = binding.usernameEdt.text.toString()
 
                 if (username.isEmpty()) {
@@ -216,7 +219,7 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
                                 Constants.DataKey.USER_IMAGE,
                                 Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + response.body()?.data?.user?.image)
 
-                            isTryToUpdateProfile = false
+                            //isTryToUpdateProfile = false
                             binding.editProfileBtn.visibility = View.VISIBLE
                             binding.cameraIcon.visibility = View.GONE
                             binding.usernameEdt.isEnabled = false

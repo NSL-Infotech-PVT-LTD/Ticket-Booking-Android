@@ -475,6 +475,25 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 fromDateTxt?.text = fromDateToDisplay1
                 from_Date = dateToFormat
 
+                if (to_Date.isNotEmpty()){
+                    var sDate:Date?=null
+                    var eDate:Date?=null
+
+                    try {
+                        sDate = sdf.parse(from_Date)
+                        eDate = sdf.parse(to_Date)
+
+                        if (sDate.after(eDate)) {
+                            Utility.alertErrorMessage(this@SearchActivity, getString(R.string.from_date_should_not_greater_than_to_date))
+                            fromDateTxt?.text = ""
+                        }
+
+                    }catch (e:ParseException) {
+                        Toast.makeText(this@SearchActivity,e.message.toString(),Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+
             }, y, m, d)
         datepickerdialog?.show()
         // display calender minimum date as tomorrow date....
@@ -513,7 +532,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 toDateTxt?.text = fromDateToDisplay1
                 to_Date = dateToFormat
 
-
+                if (from_Date.isNotEmpty()){
                     var sDate:Date?=null
                     var eDate:Date?=null
 
@@ -529,6 +548,9 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                     }catch (e:ParseException) {
                         Toast.makeText(this@SearchActivity,e.message.toString(),Toast.LENGTH_SHORT).show()
                     }
+                }
+
+
             }, y, m, d)
         datepickerdialog?.show()
         // display calender minimum date as tomorrow date....
