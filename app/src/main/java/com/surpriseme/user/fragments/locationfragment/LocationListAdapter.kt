@@ -81,6 +81,17 @@ private val deleteAddress: DeleteAddress,private val editLocation: EditAddress) 
                 if (model.street_address!=null)
                 dispAddToDashboard.dispAddressDashboard(model.street_address, model.latitude,model.longitude, model.name)
             }
+            holder.radioButton.setOnClickListener {
+                // Item view click to send address to dashboard, Click implemented on LocationFragment....
+                holder.radioButton.isChecked = true
+
+//                Constants.adpPosition = holder.adapterPosition
+                adpPosition = holder.adapterPosition
+                shared.setInt("myValue",adpPosition)
+                notifyDataSetChanged()
+                if (model.street_address!=null)
+                    dispAddToDashboard.dispAddressDashboard(model.street_address, model.latitude,model.longitude, model.name)
+            }
         }
     }
 

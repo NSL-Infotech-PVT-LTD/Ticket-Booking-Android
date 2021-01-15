@@ -330,5 +330,6 @@
     <string name="enter_atleast_three_character">Enter atleast three character</string>
     <string name="please_choose_currency">Please choose currency</string>
     <string name="no_notifications_found">No Notifications found</string>
+    <string name="to_date_should_greater_than_from_date">To Date should greater than from date</string>
 
 </resources>

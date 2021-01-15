@@ -75,7 +75,7 @@ import kotlin.collections.ArrayList
 class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistListFace,
     ArtistListAdapter.BookBtnClick {
 
-    var currencyvalue = ""
+    var currencyvalue = "EUR"
     private lateinit var binding: FragmentHomeBinding
     private lateinit var ctx: Context
     private lateinit var shared: PrefrenceShared
@@ -620,14 +620,6 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         currencyRecycler = popUp.findViewById(R.id.recyclerCurrency)
 
         val proceedBtn = popUp.findViewById<MaterialButton>(R.id.proceedBtn)
-
-
-//        popUpWindowCurrency?.setOnDismissListener {
-//            Handler().postDelayed({
-//                popupShowType()
-//            }, 1000)
-//        }
-
 
         val layoutManager = LinearLayoutManager(ctx)
         currencyRecycler?.layoutManager = layoutManager

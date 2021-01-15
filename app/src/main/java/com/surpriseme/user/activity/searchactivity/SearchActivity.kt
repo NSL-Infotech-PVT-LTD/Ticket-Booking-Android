@@ -30,10 +30,7 @@ import com.surpriseme.user.fragments.homefragment.ArtistListAdapter
 import com.surpriseme.user.fragments.homefragment.ArtistModel
 import com.surpriseme.user.fragments.homefragment.DataUserArtistList
 import com.surpriseme.user.retrofit.RetrofitClient
-import com.surpriseme.user.util.Constants
-import com.surpriseme.user.util.HideKeyBoard
-import com.surpriseme.user.util.PaginationScrollListener
-import com.surpriseme.user.util.PrefrenceShared
+import com.surpriseme.user.util.*
 import com.warkiz.widget.ColorCollector
 import com.warkiz.widget.IndicatorSeekBar
 import com.warkiz.widget.OnSeekChangeListener
@@ -43,6 +40,7 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -93,6 +91,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
     private var startseek:MaterialTextView?=null
     private var endseek:MaterialTextView?=null
     private var textseek:MaterialTextView?=null
+
 
     // var for category bottom sheet....
     private lateinit var bottomSheetBehaviorCategory: BottomSheetBehavior<View>
@@ -233,8 +232,8 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
         }
 
         seekbarRating = findViewById(R.id.seekbarRating)
-        val tickArray: Array<String> = arrayOf("5", "4.5 +", "4.0 +", "3.5 +", "Any")
-//        val tickArray: Array<String> = arrayOf("Any", "3.5", "4.0", "4.5", "5")
+//        val tickArray: Array<String> = arrayOf("5", "4.5 +", "4.0 +", "3.5 +", "Any")
+        val tickArray: Array<String> = arrayOf("Any", "3.5 +", "4.0 +", "4.5 +", "5")
         seekbarRating?.customTickTexts(tickArray)
         byDistanceTv = findViewById(R.id.byDistanceTv)
         seekbarDistance = findViewById(R.id.seekbarDistance)
@@ -418,70 +417,30 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                     chooseCategory?.text = getString(R.string.click_to_choose_category)
                 }
                 bottomSheetUpDownCategoryForCategory()
-
             }
             R.id.applySearchBtn -> {
                 bottomSheetUpDownCategory()
                 artistListAdapter?.clear()
 
-                from_Date = fromDateTxt?.text.toString().trim()
-                to_Date = toDateTxt?.text.toString().trim()
-
                 if (showType == "digital") {
-
-                    if (from_Date != "") {
-                        val sdf = SimpleDateFormat("MMM dd,yyyy")
-                        val sdf1 = SimpleDateFormat("yyyy-MM-dd")
-
-                        val dateToFormat = sdf.parse(from_Date)
-                        val finalDate = sdf1.format(dateToFormat)
-                        from_Date = finalDate
-
-                    }
-                     if(to_Date != "") {
-
-                         val sdf = SimpleDateFormat("MMM dd,yyyy")
-                        val sdf1 = SimpleDateFormat("yyyy-MM-dd")
-                        val dateToFormat1 = sdf.parse(to_Date)
-                        val finalDate1 = sdf1.format(dateToFormat1)
-                        to_Date = finalDate1
-                    }
 
                     artistListApiWithoutLatlng(search)
                 } else {
                     latitude = shared?.getString(Constants.LATITUDE)!!
                     longitude = shared?.getString(Constants.LONGITUDE)!!
-                    if (from_Date != "") {
-                        val sdf = SimpleDateFormat("MMM dd,yyyy")
-                        val sdf1 = SimpleDateFormat("yyyy-MM-dd")
-
-                        val dateToFormat = sdf.parse(fromDateTxt?.text.toString().trim())
-                        val finalDate = sdf1.format(dateToFormat)
-                        from_Date = finalDate
-
-                    }
-                    if(to_Date != "") {
-
-                        val sdf = SimpleDateFormat("MMM dd,yyyy")
-                        val sdf1 = SimpleDateFormat("yyyy-MM-dd")
-                        val dateToFormat1 = sdf.parse(toDateTxt?.text.toString().trim())
-                        val finalDate1 = sdf1.format(dateToFormat1)
-                        to_Date = finalDate1
-                    }
 
                     artistListApi(latitude, longitude, search)
                 }
-
             }
             R.id.backpress -> {
                 Constants.IS_SEARCH_ACTIVITY = false
                 finish()
             }
             R.id.fromDateTxt -> {
-                openCalendar(fromDateTxt!!)
+                openCalendarForFromDate()
             }
             R.id.toDateTxt -> {
-                openCalendar(toDateTxt!!)
+              openCalendarForToDate()
             }
             R.id.arrow -> {
                 bottomSheetUpDownCategoryForCategory()
@@ -489,8 +448,8 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
         }
     }
 
-    // open Date Picker Dialog with minumum date of one day after from today....
-    private fun openCalendar(textView: MaterialTextView) {
+    // open Date Picker Dialog with minumum date of one day after from today for From Date....
+    private fun openCalendarForFromDate() {
         val cal = Calendar.getInstance()
 
         val y = cal.get(Calendar.YEAR)
@@ -508,20 +467,69 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 val sdf = SimpleDateFormat("yyyy-MM-dd")
                 val sdf1 = SimpleDateFormat("MMM dd,yyyy")
 
+                val dateToParse = sdf.parse(date)
+                val dateToFormat = sdf.format(dateToParse)
+                val fromDateToDisplay1 = sdf1.format(dateToParse)
 
-                val dateToFormat = sdf.parse(date)
-                val fromDateToDisplay1 = sdf1.format(dateToFormat)
+                fromDateTxt?.textSize = 10f
+                fromDateTxt?.text = fromDateToDisplay1
+                from_Date = dateToFormat
+
+            }, y, m, d)
+        datepickerdialog?.show()
+        // display calender minimum date as tomorrow date....
+        val oneDayAfter = cal.clone() as Calendar
+        oneDayAfter.add(Calendar.DATE, 1)
+        datepickerdialog?.datePicker?.minDate = oneDayAfter.timeInMillis
+        // display calender minimum date as today date...
+//        datepickerdialog?.getDatePicker()?.setMinDate(System.currentTimeMillis())
+
+    }
+
+    // open Date Picker Dialog with minumum date of one day after from today for To Date....
+    private fun openCalendarForToDate() {
+        val cal = Calendar.getInstance()
+
+        val y = cal.get(Calendar.YEAR)
+        val m = cal.get(Calendar.MONTH)
+        val d = cal.get(Calendar.DAY_OF_MONTH)
+
+        datepickerdialog = DatePickerDialog(
+            this,
+            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+
+                // Display Selected date in textbox
+                val month = monthOfYear + 1
+                val date = "" + year + "-" + month + "-" + dayOfMonth
+
+                val sdf = SimpleDateFormat("yyyy-MM-dd")
+                val sdf1 = SimpleDateFormat("MMM dd,yyyy")
+
+                val dateToParse = sdf.parse(date)
+                val dateToFormat = sdf.format(dateToParse)
+                val fromDateToDisplay1 = sdf1.format(dateToParse)
+
+                toDateTxt?.textSize = 10f
+                toDateTxt?.text = fromDateToDisplay1
+                to_Date = dateToFormat
 
 
-                textView.textSize = 10f
-//                    fromDateTxt?.setText("" + dayOfMonth + " " + month + ", " + year)
-                textView.text = fromDateToDisplay1
+                    var sDate:Date?=null
+                    var eDate:Date?=null
 
-            },
-            y,
-            m,
-            d
-        )
+                    try {
+                        sDate = sdf.parse(from_Date)
+                        eDate = sdf.parse(to_Date)
+
+                        if (eDate?.before(sDate)!!) {
+                            Utility.alertErrorMessage(this@SearchActivity, getString(R.string.to_date_should_greater_than_from_date))
+                            toDateTxt?.text = ""
+                        }
+
+                    }catch (e:ParseException) {
+                        Toast.makeText(this@SearchActivity,e.message.toString(),Toast.LENGTH_SHORT).show()
+                    }
+            }, y, m, d)
         datepickerdialog?.show()
         // display calender minimum date as tomorrow date....
         val oneDayAfter = cal.clone() as Calendar
