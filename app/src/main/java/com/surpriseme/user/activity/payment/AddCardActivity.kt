@@ -328,11 +328,16 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
                             Constants.IS_BOOKING_DONE = true
                             Constants.BOOKING = false
                             Constants.NOTIFICATION = false
-                            val intent = Intent(this@AddCardActivity, BookingDetailFragment::class.java)
-                            intent.putExtra("bookingId", bookingid)
+                            binding?.paymentDoneLayout?.visibility = View.VISIBLE
+                            Handler().postDelayed({
+                                val intent = Intent(this@AddCardActivity, BookingDetailFragment::class.java)
+                                intent.putExtra("bookingId", bookingid)
 //                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent)
-                            finish()
+                                startActivity(intent)
+                                finish()
+
+                            },3000)
+                            binding?.paymentDoneLayout?.visibility = View.GONE
 
 
                         }

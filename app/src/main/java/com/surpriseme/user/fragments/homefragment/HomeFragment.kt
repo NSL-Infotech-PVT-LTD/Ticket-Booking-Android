@@ -565,6 +565,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         virtual.setOnClickListener {
             virtualLayout.visibility = View.VISIBLE
             showTypeLayout.visibility = View.GONE
+            liveLayout.visibility = View.GONE
 
             Handler().postDelayed({
                 popUpWindow.dismiss()
@@ -580,6 +581,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         live.setOnClickListener {
             liveLayout.visibility = View.VISIBLE
             showTypeLayout.visibility = View.GONE
+            virtualLayout.visibility = View.GONE
             Handler().postDelayed({
                 popUpWindow.dismiss()
                 Constants.SHOW_TYPE = "live"

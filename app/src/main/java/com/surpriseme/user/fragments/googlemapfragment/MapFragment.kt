@@ -71,11 +71,13 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
     private lateinit var binding: FragmentMapBinding
     private lateinit var shared: PrefrenceShared
     private lateinit var mMap: GoogleMap
+    private  var isFirst: Boolean = true
     private lateinit var ctx: Context
     private lateinit var tbackpress: MaterialTextView
     private lateinit var centerLatlng: LatLng
     private var googleApiClient: GoogleApiClient? = null
     private var locationName = ""
+    private var mAddress = ""
     private var additionalDetails: String? = null
     private var landmark: String? = null
 
@@ -140,24 +142,22 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
         }
         tbackpress = view.findViewById(R.id.backpress)
         tbackpress.setOnClickListener(this)
-        binding.mapLayout.setOnClickListener {
-            mMap.setOnCameraChangeListener(object : GoogleMap.OnCameraChangeListener {
-                override fun onCameraChange(p0: CameraPosition?) {
-                    Toast.makeText(ctx, "camera move", Toast.LENGTH_SHORT).show()
-                }
-            })
-        }
+
 
         if (Constants.WantToAddLocation) {
             latitude = arguments?.getDouble("lat")!!
             longitude = arguments?.getDouble("lng")!!
             locationName = arguments?.getString("locationName")!!
+            mAddress = arguments?.getString("address")!!
+            binding.mapAddressTxt.text = mAddress
+
         } else if (Constants.WantToUpdateAddress) {
 
             latitude = arguments?.getDouble("lat")!!
             longitude = arguments?.getDouble("lng")!!
             locationName = arguments?.getString("locationName")!!
-
+            mAddress = arguments?.getString("address")!!
+            binding.mapAddressTxt.text = mAddress
         }
         displayAddressType(locationName)
 
@@ -221,12 +221,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
         when (locationName) {
             Constants.HOME_ADDRESS -> {
                 name = "Home"
-                binding.homeBtn.setBackgroundColor(
-                    ContextCompat.getColor(
-                        ctx,
-                        R.color.colorPrimary
-                    )
-                )
+                binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.colorPrimary))
                 binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
                 binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
                 binding.otherTypeEdt.visibility = View.GONE
@@ -316,42 +311,42 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
 //            buildGoogleApiClient();
 //            mMap.setMyLocationEnabled(true);
         }
-        val geocoder: Geocoder?
-        val addresses: List<Address>?
-        geocoder = Geocoder(ctx, Locale.getDefault())
+//        val geocoder: Geocoder?
+//        val addresses: List<Address>?
+//        geocoder = Geocoder(ctx, Locale.getDefault())
         try {
-            addresses = geocoder.getFromLocation(latitude, longitude, 1)
-            val address = (addresses as MutableList<Address>?)?.get(0)
-            var locality = ""
-            var addCheckLocality = ""
-            if (address != null) {
-                var subLocality = address.subLocality
-                addCheckLocality = address.locality
-
-                if (subLocality == null) {
-                    subLocality = ""
-                }
-                if (addCheckLocality == null)
-                    addCheckLocality = ""
-
-                if (subLocality == "" || addCheckLocality == "") {
-
-                    locality =
-                        address.featureName + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
-                } else {
-                    locality =
-                        subLocality + "," + address.featureName + "," + address.locality + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
-                }
-
-                binding.mapAddressTxt.text = locality
-                if (binding.mapAddressTxt.text.length == 0) {
-                    binding.editAddressIcon.visibility = View.GONE
-                } else {
-                    binding.editAddressIcon.visibility = View.VISIBLE
-                }
+//            addresses = geocoder.getFromLocation(latitude, longitude, 1)
+//            val address = (addresses as MutableList<Address>?)?.get(0)
+//            var locality = ""
+//            var addCheckLocality = ""
+//            if (address != null) {
+//                var thoroughFare = address.thoroughfare + "," + address.featureName
+//                var postalCode = address.postalCode
+//                var locality = address.locality
+//                var countryname = address.countryName
+//
+//                if (address.thoroughfare == null || thoroughFare == "Unnamed Road") {
+//                    thoroughFare = address.featureName  + ", "+ address.subLocality
+//
+//                } else if (postalCode == null) {
+//                    postalCode == ""
+//                }else if (locality == null) {
+//                    locality = ""
+//                }else if (countryname == null) {
+//                    countryname = ""
+//                }
+//
+//                locality = thoroughFare + ", " + postalCode  + ", " + locality + "," + countryname
+//
+//                binding.mapAddressTxt.text = locality
+//                if (binding.mapAddressTxt.text.length == 0) {
+//                    binding.editAddressIcon.visibility = View.GONE
+//                } else {
+//                    binding.editAddressIcon.visibility = View.VISIBLE
+//                }
                 mMap.setOnCameraChangeListener(null)
-
-            }
+//
+//            }
 //            val markerOptions = MarkerOptions()
 //            markerOptions.position(Constants.LATLNG!!)
 //            markerOptions.title(address?.locality)
@@ -377,7 +372,10 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
         }
 
         mMap.setOnCameraChangeListener { p0 ->
-
+            if(isFirst){
+                isFirst = false
+                return@setOnCameraChangeListener
+            }
             if (p0?.target!!.latitude == 0.0)
                 centerLatlng = Constants.LATLNG!!
             else
@@ -387,38 +385,33 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
             val addresses: List<Address>?
             geocoder = Geocoder(ctx, Locale.getDefault())
             try {
-                addresses = geocoder.getFromLocation(
-                    centerLatlng.latitude,
-                    centerLatlng.longitude,
-                    1
-                )
+                addresses = geocoder.getFromLocation(centerLatlng.latitude, centerLatlng.longitude, 1)
                 val address = (addresses as MutableList<Address>?)?.get(0)
                 var locality = ""
                 var checkLocality = ""
                 if (address != null) {
-                    var subLocality = address.subLocality
-                    checkLocality = address.locality
 
+                    var thoroughFare = address.thoroughfare + "," + address.featureName
+                        var postalCode = address.postalCode
+                        var locality = address.locality
+                        var countryname = address.countryName
 
-                    if (subLocality == null) {
-                        subLocality = ""
-                    }
-                    if (checkLocality == null)
-                        checkLocality = ""
+                        if (address.thoroughfare == null || thoroughFare == "Unnamed Road") {
+                            thoroughFare = address.featureName  + ", "+ address.subLocality
 
-                    if (subLocality == "" || checkLocality == "") {
+                        } else if (postalCode == null) {
+                            postalCode == ""
+                        }else if (locality == null) {
+                            locality = ""
+                        }else if (countryname == null) {
+                            countryname = ""
+                        }
 
-                        locality =
-                            address.featureName + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
-                    } else {
-                        locality =
-                            subLocality + "," + address.featureName + "," + address.locality + "," + address.adminArea + "," + address.postalCode + "," + address.countryName
-                    }
-
+                    locality = thoroughFare + ", " + postalCode  + ", " + locality + "," + countryname
 
                     binding.mapAddressTxt.text = locality
                     streetAddress = locality
-                    city = locality
+                    city = address.locality
                     state = address.adminArea.toString()
                     zip = address.postalCode.toString()
                     country = address.countryName.toString()

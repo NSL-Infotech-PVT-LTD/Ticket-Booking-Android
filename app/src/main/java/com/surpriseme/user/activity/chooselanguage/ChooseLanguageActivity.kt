@@ -81,7 +81,10 @@ class ChooseLanguageActivity : AppCompatActivity(), View.OnClickListener, Choose
                     startActivity(intent)
                     finish()
                 } else if (intent.hasExtra("setting")) {
-                    changeLanguageApi(prefManager?.getString1("language")!!)
+                    val intent = Intent(this@ChooseLanguageActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+//                    changeLanguageApi(prefManager?.getString1("language")!!)
                 } else {
                     val intent = Intent(this@ChooseLanguageActivity, LoginActivity::class.java)
                     startActivity(intent)
@@ -119,9 +122,9 @@ class ChooseLanguageActivity : AppCompatActivity(), View.OnClickListener, Choose
     private fun displayLanguage() {
 
         languageList.add(LanguageModel("English", "en"))
-        languageList.add(LanguageModel("Dutch", "nl"))
-        languageList.add(LanguageModel("German", "de"))
-        languageList.add(LanguageModel("Spanish", "es"))
+//        languageList.add(LanguageModel("Dutch", "nl"))
+//        languageList.add(LanguageModel("German", "de"))
+//        languageList.add(LanguageModel("Spanish", "es"))
 
         val adapter = ChooseLanguageAdapter(prefManager!!,this@ChooseLanguageActivity, languageList,this)
         binding?.languageRecycler?.adapter = adapter

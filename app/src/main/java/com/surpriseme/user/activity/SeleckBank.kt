@@ -176,20 +176,16 @@ class SeleckBank : AppCompatActivity(), CardAdapter.ChangeLocale, View.OnClickLi
 
                             Handler().postDelayed({
 
-                                Toast.makeText(
-                                    this@SeleckBank,
-                                    "" + response.body()!!.data.message,
-                                    Toast.LENGTH_LONG
-                                ).show()
+                                Toast.makeText(this@SeleckBank, "" + response.body()!!.data.message, Toast.LENGTH_LONG).show()
                                 val intent =
                                     Intent(this@SeleckBank, BookingDetailFragment::class.java)
                                 intent.putExtra("bookingId", bookingid)
 //                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                                 startActivity(intent)
                                 finish()
-                                binding.paymentDoneLayout.visibility = View.GONE
-                            },2000)
 
+                            },3000)
+                            binding.paymentDoneLayout.visibility = View.GONE
 
                         }
                     } else {

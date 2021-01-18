@@ -148,9 +148,13 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
             Utility.alertErrorMessage(this@SignUpActivity,getString(R.string.please_enter_valid_email))
         } else if (password.isEmpty()) {
             Utility.alertErrorMessage(this@SignUpActivity, getString(R.string.enter_your_password))
+        } else if (password.length <8) {
+            Utility.alertErrorMessage(this@SignUpActivity, getString(R.string.password_should_atleast_eight_character))
         } else if (confirmPassword.isEmpty()) {
             Utility.alertErrorMessage(this@SignUpActivity, getString(R.string.enter_your_confirm_password))
-        } else if (password != confirmPassword) {
+        } else if (confirmPassword.length <8) {
+            Utility.alertErrorMessage(this@SignUpActivity, getString(R.string.password_should_atleast_eight_character))
+        }else if (password != confirmPassword) {
             Utility.alertErrorMessage(this@SignUpActivity,getString(R.string.password_not_match))
         } else {
             // hit Signup api here....

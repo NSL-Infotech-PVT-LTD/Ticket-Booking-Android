@@ -23,9 +23,9 @@ class SplashGetStartedActivity : AppCompatActivity() {
         R.drawable.slider3
     )
     private val textSlide = arrayOf(
-        R.string.title_text_1,
-        R.string.title_text_2,
-        R.string.title_text_3
+        R.string.BIRTHDAY_SURPRISE,
+        R.string.DJ_PERFORMERSDj,
+        R.string.DIGITAL_PERFORMANCE
     )
     private val imagesArray = ArrayList<Int>()
     private var textArray = ArrayList<String>()
@@ -35,9 +35,9 @@ class SplashGetStartedActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_get_started)
 
-        textArray.add(getString(R.string.title_text_1))
-        textArray.add(getString(R.string.title_text_2))
-        textArray.add(getString(R.string.title_text_3))
+        textArray.add(getString(R.string.BIRTHDAY_SURPRISE))
+        textArray.add(getString(R.string.DJ_PERFORMERSDj))
+        textArray.add(getString(R.string.DIGITAL_PERFORMANCE))
 
         // Adding Walk Through screen images here in array list...
         for(element in imageSlide){

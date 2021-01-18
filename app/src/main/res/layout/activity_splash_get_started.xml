@@ -30,7 +30,7 @@
         android:layout_height="@dimen/_50sdp"
         android:layout_marginHorizontal="@dimen/_20sdp"
         android:layout_marginBottom="@dimen/_20sdp"
-        android:text="@string/get_started"
+        android:text="@string/GET_STARTED"
         android:textAllCaps="false"
         android:textSize="@dimen/_12sdp"
         app:cornerRadius="20dp"
