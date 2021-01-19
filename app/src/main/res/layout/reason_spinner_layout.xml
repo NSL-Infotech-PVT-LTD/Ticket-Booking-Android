@@ -9,6 +9,7 @@
     android:paddingBottom="@dimen/_10sdp"
     android:paddingStart="@dimen/_10sdp"
     android:textSize="@dimen/_12sdp"
+
     android:inputType="textCapSentences"
     android:gravity="center"
     xmlns:android="http://schemas.android.com/apk/res/android" />

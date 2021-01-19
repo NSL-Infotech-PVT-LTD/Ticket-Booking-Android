@@ -80,15 +80,16 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
     private var mAddress = ""
     private var additionalDetails: String? = null
     private var landmark: String? = null
+    private var isEditUpdatedLocation = false
 
 
     // variables for hit api....
     private var name = ""
     private var streetAddress = ""
-    private var city = ""
-    private var state = ""
-    private var zip = ""
-    private var country = ""
+    private var city = "city"
+    private var state = "n/a"
+    private var zip = "zip"
+    private var country = "n/a"
     private var latitude = 0.0
     private var longitude = 0.0
 
@@ -134,47 +135,50 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
             init()
         }
 
-        if (shared.getString(Constants.ADDITIONAL_DETAILS) != "") {
-            binding.flatEdt.setText(shared.getString(Constants.ADDITIONAL_DETAILS))
-        }
-        if (shared.getString(Constants.LANDMARK) != "") {
-            binding.landmarkEdt.setText(shared.getString(Constants.LANDMARK))
-        }
         tbackpress = view.findViewById(R.id.backpress)
         tbackpress.setOnClickListener(this)
 
 
-        if (Constants.WantToAddLocation) {
+        if (!isEditUpdatedLocation) {
+            if (Constants.WantToAddLocation) {
+                latitude = arguments?.getDouble("lat")!!
+                longitude = arguments?.getDouble("lng")!!
+                locationName = arguments?.getString("locationName")!!
+                streetAddress = arguments?.getString("address")!!
+                binding.mapAddressTxt.text = streetAddress
+
+            } else if (Constants.WantToUpdateAddress) {
+
+                latitude = arguments?.getDouble("lat")!!
+                longitude = arguments?.getDouble("lng")!!
+                locationName = arguments?.getString("locationName")!!
+                streetAddress = arguments?.getString("address")!!
+
+                binding.mapAddressTxt.text = streetAddress
+            }
+        } else {
             latitude = arguments?.getDouble("lat")!!
             longitude = arguments?.getDouble("lng")!!
             locationName = arguments?.getString("locationName")!!
-            mAddress = arguments?.getString("address")!!
-            binding.mapAddressTxt.text = mAddress
-
-        } else if (Constants.WantToUpdateAddress) {
-
-            latitude = arguments?.getDouble("lat")!!
-            longitude = arguments?.getDouble("lng")!!
-            locationName = arguments?.getString("locationName")!!
-            mAddress = arguments?.getString("address")!!
-            binding.mapAddressTxt.text = mAddress
+            streetAddress = arguments?.getString("address")!!
+            binding.mapAddressTxt.text = streetAddress
         }
         displayAddressType(locationName)
 
-        binding.otherTypeEdt.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                name = binding.otherTypeEdt.text.toString().trim()
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-
-            }
-
-        })
+//        binding.otherTypeEdt.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+//
+//            }
+//
+//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+//                name = binding.otherTypeEdt.text.toString().trim()
+//            }
+//
+//            override fun afterTextChanged(s: Editable?) {
+//
+//            }
+//
+//        })
 
         // save text while write addition details....
         binding.flatEdt.addTextChangedListener(object : TextWatcher {
@@ -188,7 +192,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
 
             override fun afterTextChanged(s: Editable?) {
                 additionalDetails = binding.flatEdt.text.toString().trim()
-                shared.setString(Constants.ADDITIONAL_DETAILS, additionalDetails)
 
             }
 
@@ -205,7 +208,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
 
             override fun afterTextChanged(s: Editable?) {
                 landmark = binding.landmarkEdt.text.toString().trim()
-                shared.setString(Constants.LANDMARK, landmark)
 
             }
 
@@ -220,7 +222,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
     private fun displayAddressType(locationName: String) {
         when (locationName) {
             Constants.HOME_ADDRESS -> {
-                name = "Home"
+                name = Constants.HOME_ADDRESS
                 binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.colorPrimary))
                 binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
                 binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
@@ -228,7 +230,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                 binding.closeIcon.visibility = View.GONE
             }
             Constants.WORK_ADDRESS -> {
-                name = "Work"
+                name = Constants.WORK_ADDRESS
                 binding.homeBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
                 binding.workBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.colorPrimary))
                 binding.otherBtn.setBackgroundColor(ContextCompat.getColor(ctx, R.color.grey_color))
@@ -387,10 +389,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
             try {
                 addresses = geocoder.getFromLocation(centerLatlng.latitude, centerLatlng.longitude, 1)
                 val address = (addresses as MutableList<Address>?)?.get(0)
-                var locality = ""
-                var checkLocality = ""
-                if (address != null) {
 
+                if (address != null) {
                     var thoroughFare = address.thoroughfare + "," + address.featureName
                         var postalCode = address.postalCode
                         var locality = address.locality
@@ -410,11 +410,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                     locality = thoroughFare + ", " + postalCode  + ", " + locality + "," + countryname
 
                     binding.mapAddressTxt.text = locality
-                    streetAddress = locality
-                    city = address.locality
-                    state = address.adminArea.toString()
-                    zip = address.postalCode.toString()
-                    country = address.countryName.toString()
                     latitude = address.latitude
                     longitude = address.longitude
 
@@ -424,8 +419,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                     } else {
                         binding.editAddressIcon.visibility = View.VISIBLE
                     }
-
-
                     mMap.clear()
 
                 } else {
@@ -503,8 +496,14 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
             }
             R.id.saveAddressBtn -> {
 
+                if (!additionalDetails.isNullOrEmpty())
+                    state = additionalDetails!!
+                if (!landmark.isNullOrEmpty()) {
+                    country = landmark!!
+                }
+
                     if (isOtherAddress) {
-                        name = binding.otherTypeEdt.text.toString()
+                        name = otherTypeEdt.text.toString().trim()
                         if (name.isEmpty())
                         Utility.alertErrorMessage(ctx, ctx.resources.getString(R.string.please_enter_other_address))
                         else{
@@ -551,11 +550,28 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                     data?.let {
                         val place = Autocomplete.getPlaceFromIntent(data)
                         latlng = place.latLng
+                        streetAddress = place.address.toString()
                         Constants.LATLNG = latlng
                         Constants.WantToAddLocation = false
                         Constants.WantToUpdateAddress = true
                         lat = latlng?.latitude!!
                         lng = latlng?.longitude!!
+                        isEditUpdatedLocation = true
+
+//                        val geocoder: Geocoder?
+//                        val addresses: List<Address>?
+//                        geocoder = Geocoder(ctx, Locale.getDefault())
+//                        try {
+//                            addresses = geocoder.getFromLocation(lat, lng, 1)
+//                            val address = (addresses as MutableList<Address>?)?.get(0)
+//                            city = address?.locality!!
+//                            state = address.adminArea.toString()
+//                            zip = address.postalCode.toString()
+//                            country = address.countryName.toString()
+//                        }catch (e:Exception){
+//
+//                        }
+
 
 //                        Log.i(TAG, "Place: ${place.name}, ${place.id}")
                         val fragment = MapFragment()
@@ -563,6 +579,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                         bundle.putDouble("lat", lat)
                         bundle.putDouble("lng", lng)
                         bundle.putString("locationName", locationName)
+                        bundle.putString("address", streetAddress)
                         fragment.arguments = bundle
                         val transaction = fragmentManager?.beginTransaction()
                         transaction?.replace(R.id.frameContainer, fragment)
@@ -647,10 +664,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
     // Update Address Api....
     private fun updateAddressList() {
         binding.loaderLayout.visibility = View.VISIBLE
-        RetrofitClient.api.updateAddressApi(
-            shared.getString(Constants.DataKey.AUTH_VALUE),
-            Constants.DataKey.CONTENT_TYPE_VALUE,
-            Constants.addressID,
+        RetrofitClient.api.updateAddressApi(shared.getString(Constants.DataKey.AUTH_VALUE), Constants.DataKey.CONTENT_TYPE_VALUE, Constants.addressID,
             name,
             streetAddress,
             city,

@@ -958,8 +958,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun reportPopup() {
-        var reportSpinner: Spinner? = null
-
+        val rAdapter = ArrayAdapter<String>(this@BookingDetailFragment,android.R.layout.simple_dropdown_item_1line,reasonList)
         val layoutInflater: LayoutInflater =
             getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
@@ -978,15 +977,15 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
         reportPopupWindow.isOutsideTouchable = false
         val cancel: TextView = popUp.findViewById(R.id.cancelReportTv)
         val done: TextView = popUp.findViewById(R.id.submitTv)
-        reportSpinner = popUp.findViewById(R.id.reportSpinner)
+        val reportSpinner: Spinner? = popUp.findViewById(R.id.reportSpinner)
+
+
         descriptionTv = popUp.findViewById(R.id.descriptionTxt)
-
-
 
 //        val reasonAdapter = ReasonSpinnerAdapter(this, reasonList)
 //        val reasonAdapter = ReasonSpinnerAdapter(this@BookingDetailFragment, reasonList)
-        val rAdapter = ArrayAdapter<String>(this@BookingDetailFragment,R.layout.reason_spinner_layout,reasonList)
-        //rAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+       // rAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         reportSpinner?.adapter = rAdapter
 
         reportSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -1003,16 +1002,10 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
                 } else {
                     descriptionTv?.visibility = View.GONE
                 }
-
             }
-
             override fun onNothingSelected(parent: AdapterView<*>?) {
-
             }
-
         }
-
-
 
         cancel.setOnClickListener {
             if (descriptionTv?.visibility == View.VISIBLE) {

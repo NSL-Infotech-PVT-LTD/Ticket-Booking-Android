@@ -280,35 +280,16 @@
     <string name="please_write_reason_for_other">Please write reason for other</string>
     <string name="please_give_rating">Please give rating</string>
     <string name="please_choose_language">Please choose language</string>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <string name="status_stop"><font fgcolor='#D4145A'>Stopped</font></string> <!--gray-->
-
-    <string name="user1">Username1 SurpriseMe</string>
-    <string name="userme">user1@me@.com</string>
-    <string name="changepassword">Change Password</string>
-    <string name="Cancel">Cancel</string>
-    <string name="singer_actor">Singer,Actor</string>
     <string name="no_data_found">No Data Found</string>
-    <string name="location_dummy_address">Phase-7,Sas Nagar, Mohali</string>
+    <string name="Cancel">Cancel</string>
     <string name="bookings">Bookings</string>
-    <string name="drake">Drake</string>
     <string name="booking_detail">Booking Detail</string>
-    <string name="live_show">Live Show</string>
-    <string name="_20_999">299</string>
+
+
+
+
+
+
     <string name="digital_price">Digital Price</string>
     <string name="digital_show">Digital Show</string>
     <string name="chat_demo_text">Have a chat about your...................</string>

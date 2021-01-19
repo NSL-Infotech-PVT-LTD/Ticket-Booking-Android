@@ -81,7 +81,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 app:layout_constraintStart_toStartOf="parent"
-                android:spinnerMode="dropdown"
+                android:spinnerMode="dialog"
                 android:background="@drawable/boxcardview"
                 android:layout_marginHorizontal="@dimen/_20sdp"
                 app:layout_constraintEnd_toEndOf="parent"

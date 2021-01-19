@@ -3,6 +3,8 @@ package com.surpriseme.user.fragments.locationfragment
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.location.Address
+import android.location.Geocoder
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -38,6 +40,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.net.SocketTimeoutException
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class LocationFragment : Fragment(), View.OnClickListener,
@@ -50,15 +54,15 @@ class LocationFragment : Fragment(), View.OnClickListener,
     private lateinit var shared: PrefrenceShared
     var locationList: ArrayList<LocationDataList> = ArrayList()
     private var addressDashboard = ""
-    private var latitude:String = ""
-    private var longitude:String = ""
-    private var lat:Double = 0.0
-    private var lng:Double = 0.0
+    private var latitude: String = ""
+    private var longitude: String = ""
+    private var lat: Double = 0.0
+    private var lng: Double = 0.0
     private var address = ""
     private var locationName = ""
     private val AUTOCOMPLETE_REQUEST_CODE = 1
-    private var latlng:LatLng?=null
-    private var addAddressBtn:MaterialButton?=null
+    private var latlng: LatLng? = null
+    private var addAddressBtn: MaterialButton? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -77,7 +81,8 @@ class LocationFragment : Fragment(), View.OnClickListener,
         shared = PrefrenceShared(ctx)
 
         requireActivity().getWindow()?.setSoftInputMode(
-            WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+            WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+        )
 
         tbackpress = view.findViewById(R.id.backpress) // Toolbar back arrow click listner....
         tbackpress.setOnClickListener(this) //  Initializing the Toolbar
@@ -96,7 +101,7 @@ class LocationFragment : Fragment(), View.OnClickListener,
     private fun init(view: View) {
 
         val loadingText = view.findViewById<TextView>(R.id.loadingtext)
-        loadingText.text  = Utility.randomString(ctx)
+        loadingText.text = Utility.randomString(ctx)
 
         ((ctx as MainActivity)).hideBottomNavigation() // Hide bottom navigation on Location Fragment....
         initializeLocationRecycler()    // Initializing Location Recycler View....
@@ -131,9 +136,7 @@ class LocationFragment : Fragment(), View.OnClickListener,
                     .build(ctx)
                 startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
             }
-            R.id.refresh -> {
-                locationListApi()
-            }
+
             R.id.addAddressBtnLayout -> {
                 Constants.WantToUpdateAddress = false
                 val fields = listOf(
@@ -162,232 +165,253 @@ class LocationFragment : Fragment(), View.OnClickListener,
                         address = place.address.toString()
                         lat = latlng?.latitude!!
                         lng = latlng?.longitude!!
-//                        Log.i(TAG, "Place: ${place.name}, ${place.id}")
                         Constants.WantToAddLocation = true
-                        val fragment = MapFragment()
-                        val bundle = Bundle()
-                        bundle.putDouble("lat", lat)
-                        bundle.putDouble("lng", lng)
-                        bundle.putString("locationName",locationName)
-                        bundle.putString("address",address)
-                        fragment.arguments = bundle
-                        val transaction = fragmentManager?.beginTransaction()
-                        transaction?.replace(R.id.frameContainer, fragment)
-                        transaction?.addToBackStack("locationFragment")
-                        transaction?.commit()
 
+                            val fragment = MapFragment()
+                            val bundle = Bundle()
+                            bundle.putDouble("lat", lat)
+                            bundle.putDouble("lng", lng)
+                            bundle.putString("locationName", locationName)
+                            bundle.putString("address", address)
+                            fragment.arguments = bundle
+                            val transaction = fragmentManager?.beginTransaction()
+                            transaction?.replace(R.id.frameContainer, fragment)
+                            transaction?.addToBackStack("locationFragment")
+                            transaction?.commit()
+
+                        }
                     }
-                }
-                AutocompleteActivity.RESULT_ERROR -> {
+                    AutocompleteActivity.RESULT_ERROR -> {
 
-                    data?.let {
-                        val status = Autocomplete.getStatusFromIntent(data)
+                        data?.let {
+                            val status = Autocomplete.getStatusFromIntent(data)
 //                        Log.i(TAG, status.statusMessage)
-                        Toast.makeText(ctx, "" + status.statusMessage.toString(), Toast.LENGTH_SHORT).show()
-                    }
-                }
-                Activity.RESULT_CANCELED -> {
-                    // The user canceled the operation.
-                }
-            }
-            return
-        }
-
-        super.onActivityResult(requestCode, resultCode, data)
-
-    }
-
-    private fun replaceFragment(fragment: Fragment) {
-
-        val transaction = fragmentManager?.beginTransaction()
-        transaction?.replace(R.id.frameContainer, fragment)
-        transaction?.addToBackStack("LocationManager")
-        transaction?.commit()
-    }
-
-    fun locationListApi() {
-
-        binding.loaderLayout.visibility = View.VISIBLE
-
-        RetrofitClient.api.addressListApi(shared.getString(Constants.DataKey.AUTH_VALUE))
-            .enqueue(object : Callback<LocationListModel> {
-                override fun onResponse(
-                    call: Call<LocationListModel>,
-                    response: Response<LocationListModel>
-                ) {
-                    binding.loaderLayout.visibility = View.GONE
-                    if (response.body() != null) {
-                        if (response.isSuccessful) {
-
-                            locationList.clear()
-                            locationList = response.body()?.data!!
-                            if (locationList.isNotEmpty()) {
-
-                                addAddressBtn?.visibility = View.VISIBLE
-
-                                // When location list will not empty then display location list to Location recycler view....
-
-                                val locationListAdapter =
-                                    LocationListAdapter(shared,
-                                        ctx,
-                                        locationList,
-                                        this@LocationFragment,
-                                        this@LocationFragment,
-                                        this@LocationFragment
-                                    )
-                                binding.locationRecycler.adapter = locationListAdapter
-                                binding.locationErrorContainer.visibility = View.GONE
-                            } else {
-                                // When location list will empty then display No data found and refresh button will display
-                                binding.locationErrorContainer.visibility = View.VISIBLE
-                                addAddressBtn?.visibility = View.GONE
-                            }
-                        }
-                    } else {
-                        // When Api will not successfull then error to display in json
-                        val jsonObject: JSONObject
-                        if (response.errorBody() != null) {
-                            try {
-                                jsonObject = JSONObject(response.errorBody()?.string()!!)
-                                val errorMessage = jsonObject.getString(Constants.ERROR)
-                                Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT).show()
-                            } catch (e: JSONException) {
-                                Toast.makeText(ctx, "" + e.message.toString(), Toast.LENGTH_SHORT)
-                                    .show()
-                            }
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<LocationListModel>, t: Throwable) {
-                    binding.loaderLayout.visibility = View.GONE
-                    if (t is SocketTimeoutException)
-                        Toast.makeText(ctx, "" + Constants.TIME_OUT, Toast.LENGTH_SHORT).show()
-                    else
-                        Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
-                }
-            })
-    }   // End of location list api....
-
-    override fun dispAddressDashboard(address: String, lat: String, lng: String, name: String) {
-
-        Handler().postDelayed({
-            Constants.SAVED_LOCATION = true
-            addressDashboard = address
-            latitude = lat
-            longitude = lng
-            shared.setString(Constants.ADDRESS, addressDashboard)
-            shared.setString(Constants.LATITUDE, latitude)
-            shared.setString(Constants.LONGITUDE, longitude)
-            shared.setString(Constants.NAME, name)
-            val fragment = HomeFragment()
-            val transaction = fragmentManager?.beginTransaction()
-            transaction?.replace(R.id.frameContainer, fragment)
-            transaction?.commit()
-        }, 500)
-
-    }
-
-    // Delete address api....
-    private fun deleteAddressApi(id: String) {
-        binding.loaderLayout.visibility = View.VISIBLE
-        RetrofitClient.api.addressDeleteApi(
-            shared.getString(Constants.DataKey.AUTH_VALUE),
-            Constants.DataKey.CONTENT_TYPE_VALUE, id
-        )
-            .enqueue(object : Callback<DeleteAddressModel> {
-                override fun onResponse(
-                    call: Call<DeleteAddressModel>,
-                    response: Response<DeleteAddressModel>
-                ) {
-                    binding.loaderLayout.visibility = View.GONE
-                    if (response.body() != null) {
-                        if (response.isSuccessful) {
                             Toast.makeText(
                                 ctx,
-                                "" + response.body()?.data?.message.toString(),
+                                "" + status.statusMessage.toString(),
                                 Toast.LENGTH_SHORT
                             ).show()
-                            locationListApi()
                         }
-                    } else {
-                        // When Api will not successfull then error to display in json
-                        val jsonObject: JSONObject
-                        if (response.errorBody() != null) {
-                            try {
-                                jsonObject = JSONObject(response.errorBody()?.string()!!)
-                                val errorMessage = jsonObject.getString(Constants.ERROR)
-                                Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT).show()
-                            } catch (e: JSONException) {
-                                Toast.makeText(ctx, "" + e.message.toString(), Toast.LENGTH_SHORT)
-                                    .show()
+                    }
+                    Activity.RESULT_CANCELED -> {
+                        // The user canceled the operation.
+                    }
+                }
+                return
+            }
+
+            super.onActivityResult(requestCode, resultCode, data)
+
+        }
+
+        private fun replaceFragment(fragment: Fragment) {
+
+            val transaction = fragmentManager?.beginTransaction()
+            transaction?.replace(R.id.frameContainer, fragment)
+            transaction?.addToBackStack("LocationManager")
+            transaction?.commit()
+        }
+
+        fun locationListApi() {
+
+            binding.loaderLayout.visibility = View.VISIBLE
+
+            RetrofitClient.api.addressListApi(shared.getString(Constants.DataKey.AUTH_VALUE))
+                .enqueue(object : Callback<LocationListModel> {
+                    override fun onResponse(
+                        call: Call<LocationListModel>,
+                        response: Response<LocationListModel>
+                    ) {
+                        binding.loaderLayout.visibility = View.GONE
+                        if (response.body() != null) {
+                            if (response.isSuccessful) {
+
+                                locationList.clear()
+                                locationList = response.body()?.data!!
+                                if (locationList.isNotEmpty()) {
+
+                                    addAddressBtn?.visibility = View.VISIBLE
+
+                                    // When location list will not empty then display location list to Location recycler view....
+
+                                    val locationListAdapter =
+                                        LocationListAdapter(
+                                            shared,
+                                            ctx,
+                                            locationList,
+                                            this@LocationFragment,
+                                            this@LocationFragment,
+                                            this@LocationFragment
+                                        )
+                                    binding.locationRecycler.adapter = locationListAdapter
+                                    binding.locationErrorContainer.visibility = View.GONE
+                                } else {
+                                    // When location list will empty then display No data found and refresh button will display
+                                    binding.locationErrorContainer.visibility = View.VISIBLE
+                                    addAddressBtn?.visibility = View.GONE
+                                }
+                            }
+                        } else {
+                            // When Api will not successfull then error to display in json
+                            val jsonObject: JSONObject
+                            if (response.errorBody() != null) {
+                                try {
+                                    jsonObject = JSONObject(response.errorBody()?.string()!!)
+                                    val errorMessage = jsonObject.getString(Constants.ERROR)
+                                    Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT)
+                                        .show()
+                                } catch (e: JSONException) {
+                                    Toast.makeText(
+                                        ctx,
+                                        "" + e.message.toString(),
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
+                                }
                             }
                         }
                     }
-                }
 
-                override fun onFailure(call: Call<DeleteAddressModel>, t: Throwable) {
-                    Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
-                }
-            })
-    }
-    // Override function from Location Adapter to delete address....
-    override fun deleteAdd(id: String) {
+                    override fun onFailure(call: Call<LocationListModel>, t: Throwable) {
+                        binding.loaderLayout.visibility = View.GONE
+                        if (t is SocketTimeoutException)
+                            Toast.makeText(ctx, "" + Constants.TIME_OUT, Toast.LENGTH_SHORT).show()
+                        else
+                            Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT)
+                                .show()
+                    }
+                })
+        }   // End of location list api....
 
-        alertPopUp(id)
-    }
-    // Display Alert pop when user will delete address...
-    private fun alertPopUp(id: String) {
+        override fun dispAddressDashboard(address: String, lat: String, lng: String, name: String) {
 
-        val layoutInflater: LayoutInflater =
-            ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            Handler().postDelayed({
+                Constants.SAVED_LOCATION = true
+                addressDashboard = address
+                latitude = lat
+                longitude = lng
+                shared.setString(Constants.ADDRESS, addressDashboard)
+                shared.setString(Constants.LATITUDE, latitude)
+                shared.setString(Constants.LONGITUDE, longitude)
+                shared.setString(Constants.NAME, name)
+                val fragment = HomeFragment()
+                val transaction = fragmentManager?.beginTransaction()
+                transaction?.replace(R.id.frameContainer, fragment)
+                transaction?.commit()
+            }, 500)
 
-        val popUp: View = layoutInflater.inflate(R.layout.logout_popup, null)
-        val popUpWindow = PopupWindow(
-            popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
-            ConstraintLayout.LayoutParams.MATCH_PARENT, true
-        )
-        popUpWindow.showAtLocation(popUp, Gravity.CENTER, 0, 0)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            popUpWindow.elevation = 10f
         }
-        popUpWindow.isTouchable = false
-        popUpWindow.isOutsideTouchable = false
 
-        val ok: MaterialTextView = popUp.findViewById(R.id.yes)
-        val cancelTv: MaterialTextView = popUp.findViewById(R.id.cancel)
+        // Delete address api....
+        private fun deleteAddressApi(id: String) {
+            binding.loaderLayout.visibility = View.VISIBLE
+            RetrofitClient.api.addressDeleteApi(
+                shared.getString(Constants.DataKey.AUTH_VALUE),
+                Constants.DataKey.CONTENT_TYPE_VALUE, id
+            )
+                .enqueue(object : Callback<DeleteAddressModel> {
+                    override fun onResponse(
+                        call: Call<DeleteAddressModel>,
+                        response: Response<DeleteAddressModel>
+                    ) {
+                        binding.loaderLayout.visibility = View.GONE
+                        if (response.body() != null) {
+                            if (response.isSuccessful) {
+                                Toast.makeText(
+                                    ctx,
+                                    "" + response.body()?.data?.message.toString(),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                locationListApi()
+                            }
+                        } else {
+                            // When Api will not successfull then error to display in json
+                            val jsonObject: JSONObject
+                            if (response.errorBody() != null) {
+                                try {
+                                    jsonObject = JSONObject(response.errorBody()?.string()!!)
+                                    val errorMessage = jsonObject.getString(Constants.ERROR)
+                                    Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT)
+                                        .show()
+                                } catch (e: JSONException) {
+                                    Toast.makeText(
+                                        ctx,
+                                        "" + e.message.toString(),
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
+                                }
+                            }
+                        }
+                    }
 
-        ok.setOnClickListener {
-            deleteAddressApi(id)
-            popUpWindow.dismiss()
+                    override fun onFailure(call: Call<DeleteAddressModel>, t: Throwable) {
+                        Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
+                    }
+                })
         }
-        cancelTv.setOnClickListener {
-            popUpWindow.dismiss()
+
+        // Override function from Location Adapter to delete address....
+        override fun deleteAdd(id: String) {
+
+            alertPopUp(id)
         }
-    }   // End of Alert popup window....
 
-    override fun updateAddress(locationDataList: LocationDataList) {
+        // Display Alert pop when user will delete address...
+        private fun alertPopUp(id: String) {
 
-        Constants.LATLNG = LatLng(locationDataList.latitude.toDouble(), locationDataList.longitude.toDouble())
-        Constants.addressID = locationDataList.id.toString()
-        locationName = locationDataList.name
-        Constants.WantToAddLocation = false
-        Constants.WantToUpdateAddress = true
-        latitude = locationDataList.latitude
-        longitude = locationDataList.longitude
-        val fragment = MapFragment()
-        val bundle = Bundle()
-        bundle.putDouble("lat", latitude.toDouble())
-        bundle.putDouble("lng", longitude.toDouble())
-        bundle.putString("locationName",locationName)
-        fragment.arguments = bundle
-        val transaction = fragmentManager?.beginTransaction()
-        transaction?.replace(R.id.frameContainer, fragment)
-        transaction?.addToBackStack("locationFragment")
-        transaction?.commit()
+            val layoutInflater: LayoutInflater =
+                ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+            val popUp: View = layoutInflater.inflate(R.layout.logout_popup, null)
+            val popUpWindow = PopupWindow(
+                popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
+                ConstraintLayout.LayoutParams.MATCH_PARENT, true
+            )
+            popUpWindow.showAtLocation(popUp, Gravity.CENTER, 0, 0)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+                popUpWindow.elevation = 10f
+            }
+            popUpWindow.isTouchable = false
+            popUpWindow.isOutsideTouchable = false
+
+            val ok: MaterialTextView = popUp.findViewById(R.id.yes)
+            val cancelTv: MaterialTextView = popUp.findViewById(R.id.cancel)
+
+            ok.setOnClickListener {
+                deleteAddressApi(id)
+                popUpWindow.dismiss()
+            }
+            cancelTv.setOnClickListener {
+                popUpWindow.dismiss()
+            }
+        }   // End of Alert popup window....
+
+        override fun updateAddress(locationDataList: LocationDataList) {
+
+            Constants.LATLNG =
+                LatLng(locationDataList.latitude.toDouble(), locationDataList.longitude.toDouble())
+            Constants.addressID = locationDataList.id.toString()
+            locationName = locationDataList.name
+            address = locationDataList.street_address
+            Constants.WantToAddLocation = false
+            Constants.WantToUpdateAddress = true
+            latitude = locationDataList.latitude
+            longitude = locationDataList.longitude
+            val fragment = MapFragment()
+            val bundle = Bundle()
+            bundle.putDouble("lat", latitude.toDouble())
+            bundle.putDouble("lng", longitude.toDouble())
+            bundle.putString("locationName", locationName)
+            bundle.putString("address", address)
+            fragment.arguments = bundle
+            val transaction = fragmentManager?.beginTransaction()
+            transaction?.replace(R.id.frameContainer, fragment)
+            transaction?.addToBackStack("locationFragment")
+            transaction?.commit()
+
+        }
 
     }
-
-}

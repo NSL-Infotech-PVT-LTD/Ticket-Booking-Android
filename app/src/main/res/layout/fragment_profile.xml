@@ -218,7 +218,7 @@
                         android:layout_width="0dp"
                         android:layout_height="50dp"
                         android:gravity="center_vertical"
-                        android:text="@string/changepassword"
+                        android:text="@string/change_pass"
                         android:textColor="#66667e"
                         android:fontFamily="@font/quicksand_medium"
                         android:textSize="@dimen/_12sdp"

@@ -94,17 +94,12 @@ class BookingFragment : Fragment(), View.OnClickListener, BookingListAdapter.See
         loadingText?.text  = Utility.randomString(ctx)
         ((ctx as MainActivity)).showBottomNavigation()
         // Initializing onclick listener to views....
-        binding.refresh.setOnClickListener(this)
 
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.refresh -> {
-                binding.noDataFound.visibility = View.GONE
-                binding.refresh.visibility = View.GONE
-                bookingListApi()
-            }
+
         }
     }
 

@@ -71,7 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@color/colorPrimary"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/toolbarCard"
             app:layout_constraintBottom_toBottomOf="parent">
 

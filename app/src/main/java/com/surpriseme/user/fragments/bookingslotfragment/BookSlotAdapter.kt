@@ -104,7 +104,11 @@ class BookSlotAdapter(
 
                     }
                 } else if (list[position].isBooked) {
+                    holder.itemView.background =
+                        ContextCompat.getDrawable(context, R.drawable.slot_bg)
+                    list[position].isBooked = false
                     addToList.clear()
+                    selectDate.date(addToList)
                     if (slotPosition != null && position in position..slotPosition!! && list[position].date.isNotEmpty() && list[position].booked == "0") {
                         for (i in position until slotPosition!! + 1) {
                             list[i].isBooked = false
