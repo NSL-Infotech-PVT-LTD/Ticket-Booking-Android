@@ -210,7 +210,7 @@
     <string name="enter_description">Write description here....</string>
     <string name="submit">Submit</string>
     <string name="password_should_atleast_eight_character">Password should be atleast 8 character</string>
-    <string name="profie">Profile</string>
+    <string name="PROFILE">Profile</string>
     <string name="please_choose_type_of_booking">Please choose the type of booking</string>
     <string name="do_you_want_to_save_your_profile">Do you want to save your profile?</string>
     <string name="location">Location</string>
@@ -284,40 +284,23 @@
     <string name="Cancel">Cancel</string>
     <string name="bookings">Bookings</string>
     <string name="booking_detail">Booking Detail</string>
-
-
-
-
-
-
-    <string name="digital_price">Digital Price</string>
-    <string name="digital_show">Digital Show</string>
-    <string name="chat_demo_text">Have a chat about your...................</string>
-    <string name="live_show_booking">Live Show Booking</string>
-    <string name="digital_show_booking">Digital Show Booking</string>
-
-    <!--
-    This string is used for square devices and overridden by hello_world in
-    values-round/strings.xml for round devices.
-    -->
     <string name="channel_name">channel-1</string>
     <string name="channel_description">Notification</string>
     <string name="your_otp">Your OTP is: 1191 Share your otp with your artist</string>
-    <string name="do_yout_want_to_logout">Do you want to logout?</string>
-    <string name="profile">Profile</string>
-    <string name="review">Review</string>
-    <string name="live">live</string>
+    <string name="please_wait">Please wait</string>
+
+
+
+
+
+
+
+
     <string name="Live">Live</string>
     <string name="Reason">Reason: </string>
-    <string name="price_demo">299</string>
     <string name="cvv_demo">Ex- 234</string>
     <string name="card_number_demo">**** - **** - **** - 1452</string>
-    <string name="please_wait">Please wait</string>
-    <string name="fifty_kilometer">50km</string>
-    <string name="hundered_kilometer">100km</string>
-    <string name="two_hundered_km">200km</string>
-    <string name="digital">digital</string>
-    <string name="payment_failed">payment_failed</string>
+
     <string name="completed_review">completed_review</string>
     <string name="fblogin">Signup with facebook</string>
     <string name="hurray_you_can_get_ready_for_show">Hurray! you can get ready for show</string>

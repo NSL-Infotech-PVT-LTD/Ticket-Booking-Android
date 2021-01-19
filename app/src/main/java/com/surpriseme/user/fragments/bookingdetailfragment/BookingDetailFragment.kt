@@ -650,7 +650,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
                     }
 
                 } else if (bookingModel.status == Constants.PAYMENT_FAILED) {
-                    binding.statusTv.text = resources.getString(R.string.payment_failed)
+                    binding.statusTv.text = "payment_failed"
                     binding.paymentTv.text =
                         resources.getString(R.string.paid) + " " + bookingModel.customer_currency + " " + bookingModel.price
                     binding.actionBtn.visibility = View.VISIBLE
