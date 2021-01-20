@@ -92,7 +92,6 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
     private var endseek:MaterialTextView?=null
     private var textseek:MaterialTextView?=null
 
-
     // var for category bottom sheet....
     private lateinit var bottomSheetBehaviorCategory: BottomSheetBehavior<View>
     private lateinit var bottomSheetCategory: View
@@ -204,11 +203,7 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 if (showType == "digital") {
                     artistListApiWithoutLatlng(search)
                 } else {
-                    artistListApi(
-                        shared?.getString(Constants.LATITUDE)!!,
-                        shared?.getString(Constants.LONGITUDE)!!,
-                        search
-                    )
+                    artistListApi(shared?.getString(Constants.LATITUDE)!!,shared?.getString(Constants.LONGITUDE)!!,search)
                 }
             }
 
@@ -361,7 +356,6 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 categoryIdList.clear()
                 latitude = shared?.getString(Constants.LATITUDE)!!
                 longitude = shared?.getString(Constants.LONGITUDE)!!
-//                artistListApi(latitude, longitude, search)
                 //do here your stuff f
                 true
             } else false
@@ -428,7 +422,6 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 } else {
                     latitude = shared?.getString(Constants.LATITUDE)!!
                     longitude = shared?.getString(Constants.LONGITUDE)!!
-
                     artistListApi(latitude, longitude, search)
                 }
             }

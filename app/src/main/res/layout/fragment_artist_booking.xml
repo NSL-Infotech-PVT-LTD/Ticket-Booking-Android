@@ -530,6 +530,7 @@
                                 android:layout_width="50dp"
                                 android:layout_height="70dp"
                                 android:layout_marginStart="@dimen/_20sdp"
+
                                 android:src="@drawable/user_pholder_updated"
                                 android:visibility="gone"
                                 app:layout_constraintStart_toEndOf="@+id/img2"
@@ -796,15 +797,15 @@
                 <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:visibility="gone"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/profile_pholder" />
+                    android:src="@drawable/drake" />
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/pager"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_200sdp"
+                    android:layout_height="wrap_content"
                     android:layout_centerInParent="true">
 
                 </androidx.viewpager.widget.ViewPager>
@@ -813,7 +814,9 @@
                     android:id="@+id/indicator"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
-                    android:layout_below="@id/pager"
+                    android:layout_centerInParent="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="@dimen/_20sdp"
                     app:ci_drawable="@drawable/selected_dot" />
 
                 <ImageView

@@ -54,8 +54,8 @@
 
             <ImageView
                 android:id="@+id/pinDropIcon"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_50sdp"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
                 android:adjustViewBounds="true"
                 android:src="@drawable/pin_drop_icon"
                 app:layout_constraintBottom_toBottomOf="@id/mapLayout"
@@ -75,11 +75,18 @@
                     android:layout_height="wrap_content">
 
                     <TextView
+                        android:id="@+id/locationTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:text="@string/location"
+                        app:layout_constraintStart_toStartOf="@+id/mapAddressTxt"
+                        app:layout_constraintTop_toTopOf="parent" />
+                    <TextView
                         android:id="@+id/mapAddressTxt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginHorizontal="@dimen/_20sdp"
-                        android:layout_marginTop="@dimen/_20sdp"
                         android:background="@drawable/boxcardview"
                         android:fontFamily="@font/montserrat_semibold"
                         android:gravity="center_vertical"
@@ -92,13 +99,14 @@
                         android:textSize="@dimen/_10sdp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@id/locationTxt" />
 
                     <ImageView
                         android:id="@+id/editAddressIcon"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:src="@drawable/ic_edit_24"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/pencil"
+                        android:padding="14dp"
                         app:layout_constraintBottom_toBottomOf="@id/mapAddressTxt"
                         app:layout_constraintEnd_toEndOf="@id/mapAddressTxt"
                         app:layout_constraintTop_toTopOf="@id/mapAddressTxt" />
@@ -108,7 +116,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:text="@string/additional_details"
+                        android:text="@string/full_address"
                         app:layout_constraintStart_toStartOf="@+id/mapAddressTxt"
                         app:layout_constraintTop_toBottomOf="@+id/mapAddressTxt" />
 

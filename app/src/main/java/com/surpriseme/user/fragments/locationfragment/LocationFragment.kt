@@ -63,6 +63,8 @@ class LocationFragment : Fragment(), View.OnClickListener,
     private val AUTOCOMPLETE_REQUEST_CODE = 1
     private var latlng: LatLng? = null
     private var addAddressBtn: MaterialButton? = null
+    private var fullAddress = ""
+    private var landmark = ""
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -391,8 +393,7 @@ class LocationFragment : Fragment(), View.OnClickListener,
 
         override fun updateAddress(locationDataList: LocationDataList) {
 
-            Constants.LATLNG =
-                LatLng(locationDataList.latitude.toDouble(), locationDataList.longitude.toDouble())
+            Constants.LATLNG = LatLng(locationDataList.latitude.toDouble(), locationDataList.longitude.toDouble())
             Constants.addressID = locationDataList.id.toString()
             locationName = locationDataList.name
             address = locationDataList.street_address
@@ -400,12 +401,17 @@ class LocationFragment : Fragment(), View.OnClickListener,
             Constants.WantToUpdateAddress = true
             latitude = locationDataList.latitude
             longitude = locationDataList.longitude
+            fullAddress = locationDataList.state
+            landmark = locationDataList.country
+
             val fragment = MapFragment()
             val bundle = Bundle()
             bundle.putDouble("lat", latitude.toDouble())
             bundle.putDouble("lng", longitude.toDouble())
             bundle.putString("locationName", locationName)
             bundle.putString("address", address)
+            bundle.putString("fullAddress", fullAddress)
+            bundle.putString("landmark", landmark)
             fragment.arguments = bundle
             val transaction = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.frameContainer, fragment)

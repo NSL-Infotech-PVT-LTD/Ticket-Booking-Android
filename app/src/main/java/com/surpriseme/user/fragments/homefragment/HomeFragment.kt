@@ -101,6 +101,9 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
     private var popUpWindowCurrency: PopupWindow? = null
     private var invalidAuth: InvalidAuth? = null
     private var prefManager:PrefManger?=null
+    private var defaultHomeAddress = ""
+    private var defaultLatitude = ""
+    private var defaultLongitude = ""
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -152,7 +155,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 if (Constants.SHOW_TYPE == "digital") {
                     artistListApiWithoutLatlng(search)
                 } else
-                    artistListApi(latitude.toString(), longitude.toString(), search)
+                    artistListApi(shared.getString(Constants.LATITUDE),shared.getString(Constants.LONGITUDE),search)
             }
             override fun isLastPage(): Boolean {
                 return isLastPage
@@ -195,7 +198,6 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
             R.id.inPersonTv -> {
 
                 Constants.IS_SWITCH_TO_VIRTUAL = false
-
                 artistListAdapter?.clear()
                 binding.artistNotFoundLayout.visibility = View.GONE
                 Constants.SHOW_TYPE = "live"
@@ -204,9 +206,10 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 binding.inPersonTv.background =
                     ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_pink)
                 binding.addressLayout.visibility = View.VISIBLE
+                binding.yourLocationInfo.text = shared.getString(Constants.ADDRESS)
 
                 if (locationList.isNotEmpty()) {
-                    artistListApi(locationList[0].latitude, locationList[0].longitude, search)
+                    artistListApi(shared.getString(Constants.LATITUDE),shared.getString(Constants.LONGITUDE),search)
                 } else {
                     val fragment = LocationFragment()
                     val transaction = fragmentManager?.beginTransaction()
@@ -269,19 +272,16 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                         }
                     }
                 }
-
                 override fun onFailure(call: Call<ViewProfileModel>, t: Throwable) {
                     binding.loaderLayout.visibility = View.GONE
                     ((ctx as MainActivity)).showBottomNavigation()
                     Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
                 }
             })
-
     }
 
     // location list api....
     private fun locationListApi() {
-
         binding.loaderLayout.visibility = View.VISIBLE
         RetrofitClient.api.addressListApi(shared.getString(Constants.DataKey.AUTH_VALUE))
             .enqueue(object : Callback<LocationListModel> {
@@ -297,14 +297,13 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
 
                             locationList.clear()
                             locationList = response.body()?.data!!
-                            if (locationList.isNotEmpty()) {
 
-                                if (Constants.SAVED_LOCATION) {
-                                    binding.yourLocationInfo.text = shared.getString(Constants.ADDRESS)
-                                } else {
-                                    binding.yourLocationInfo.text = locationList[0].street_address
-                                }
+                            if (Constants.SHOW_TYPE == "digital") {
+                                binding.addressLayout.visibility = View.GONE
+                            }else {
+                                binding.addressLayout.visibility = View.VISIBLE
                             }
+
                             if (Constants.SHOW_TYPE == "") {
                                 binding.virtualTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
                                 binding.inPersonTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
@@ -319,11 +318,13 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                                 currentPage=1
                                 artistListApiWithoutLatlng(search)
                             } else {
+                                binding.virtualTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+                                binding.inPersonTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_pink)
                                 if (locationList.size > 0) {
-                                    binding.addressLayout.visibility = View.VISIBLE
-                                    binding.virtualTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
-                                    binding.inPersonTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_pink)
-                                    artistListApi(locationList[0].latitude, locationList[0].longitude, search)
+                                    binding.yourLocationInfo.text = shared.getString(Constants.ADDRESS)
+                                    shared.setString(Constants.DEFAULT_LATITUDE,shared.getString(Constants.LATITUDE))
+                                    shared.setString(Constants.DEFAULT_LONGITUDE,shared.getString(Constants.LONGITUDE))
+                                    artistListApi(shared.getString(Constants.LATITUDE),shared.getString(Constants.LONGITUDE),search)
                                 } else {
                                     binding.addressLayout.visibility = View.GONE
                                     binding.virtualTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_blue)
@@ -333,10 +334,9 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                                     currentPage=1
                                     Constants.SHOW_TYPE = "digital"
                                     artistListApiWithoutLatlng(search)
-
+                                    Toast.makeText(ctx,"" + ctx.resources.getString(R.string.no_address_right_now_switching_to_virtual),Toast.LENGTH_SHORT).show()
                                 }
                             }
-
                         }
                     } else {
                         // When Api will not successfull then error to display in json
@@ -587,9 +587,13 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 Constants.SHOW_TYPE = "live"
                 binding.inPersonTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_pink)
                 binding.virtualTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
-                if (locationList.size > 0) {
-                    artistListApi(locationList[0].latitude, locationList[0].longitude, search)
-                    binding.addressLayout.visibility = View.VISIBLE
+                binding.addressLayout.visibility = View.VISIBLE
+                binding.yourLocationInfo.text = shared.getString(Constants.ADDRESS)
+                if (locationList.isNotEmpty()) {
+
+                    binding.virtualTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+                    binding.inPersonTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_pink)
+                    artistListApi(shared.getString(Constants.LATITUDE),shared.getString(Constants.LONGITUDE),search)
                 } else {
                     val fragment = LocationFragment()
                     val transaction = fragmentManager?.beginTransaction()

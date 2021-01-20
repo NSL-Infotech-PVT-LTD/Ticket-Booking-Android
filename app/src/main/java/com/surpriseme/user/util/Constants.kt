@@ -87,7 +87,7 @@ object Constants {
     const val ARTIST_NOT_PICKING_CALL =  "Artist not picking call"
     const val ASENDING ="asc"
     const val DESENDING ="desc"
-    const val PRICE_LOW_TO_HIGH = "Price Low To High  "
+    const val PRICE_LOW_TO_HIGH = "Price Low to High"
     var FROM_TIME = ""
     var TO_TIME = ""
     var REPORT = "report"
@@ -116,6 +116,9 @@ object Constants {
     var IS_BOOKING_DONE = false
     var IS_SEARCH_ACTIVITY = false
     var IS_COMING_FROM_BOOKING_DETAIL = false
+    var DEFAULT_HOME_ADDRESS = ""
+    var DEFAULT_LATITUDE = "DEFAULT_LATITUDE"
+    var DEFAULT_LONGITUDE = "DEFAULT_LONGITUDE"
 
 
 

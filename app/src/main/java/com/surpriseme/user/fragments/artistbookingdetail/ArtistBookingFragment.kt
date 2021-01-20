@@ -430,6 +430,7 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                         binding.img2.visibility = View.VISIBLE
                                         Picasso.get()
                                             .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.shows_image_2)
+
                                             .placeholder(R.drawable.profile_pholder)
                                             .into(binding.img2)
                                         binding.img2.setOnClickListener{
@@ -447,6 +448,7 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                         binding.img3.visibility = View.VISIBLE
                                         Picasso.get()
                                             .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.shows_image_3)
+
                                             .placeholder(R.drawable.profile_pholder)
                                             .into(binding.img3)
 
@@ -466,6 +468,7 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                         binding.img4.visibility = View.VISIBLE
                                         Picasso.get()
                                             .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.shows_image_4)
+
                                             .placeholder(R.drawable.profile_pholder)
                                             .into(binding.img4)
 

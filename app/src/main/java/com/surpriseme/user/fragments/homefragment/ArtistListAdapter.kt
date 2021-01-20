@@ -134,6 +134,7 @@ class ArtistListAdapter(
         val categories = itemView.findViewById<TextView>(R.id.categoryTxt)
         val price = itemView.findViewById<TextView>(R.id.priceTv)
         val brandNewArtistTv = itemView.findViewById<MaterialTextView>(R.id.brandNewArtistTv)
+        val milesTxt = itemView.findViewById<TextView>(R.id.milesTxt)
 
         override fun clear() {}
 
@@ -150,6 +151,14 @@ class ArtistListAdapter(
                 .into(image)
 
             name.text = artistModel.name
+            if (Constants.IS_SEARCH_ACTIVITY) {
+                if (Constants.SHOW_TYPE == "live") {
+                    milesTxt.visibility = View.VISIBLE
+                    milesTxt.text = context.resources.getString(R.string.miles) + " : " +  DecimalFormat("#.##").format(artistModel.distance)
+                } else {
+                    milesTxt.visibility = View.GONE
+                }
+            }
             description.text = artistModel.description
 
             if (artistModel.rating == 0.0) {
@@ -160,8 +169,6 @@ class ArtistListAdapter(
                 ratingbar.rating = artistModel.rating.toFloat()
                 brandNewArtistTv.visibility = View.GONE
             }
-
-
 
             categoryList.clear()
             if (artistModel.category_id_details != null) {

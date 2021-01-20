@@ -85,7 +85,6 @@
     <string name="card_holder_name">Card Holder Name</string>
     <string name="expiry_date_of_card">Expiry Date of Card</string>
     <string name="addcardd">Add Card</string>
-    <string name="additional_details">Additional Details</string>
     <string name="landmark">Landmark</string>
     <string name="save_address">Save Address</string>
     <string name="home">Home</string>
@@ -288,23 +287,7 @@
     <string name="channel_description">Notification</string>
     <string name="your_otp">Your OTP is: 1191 Share your otp with your artist</string>
     <string name="please_wait">Please wait</string>
-
-
-
-
-
-
-
-
-    <string name="Live">Live</string>
-    <string name="Reason">Reason: </string>
-    <string name="cvv_demo">Ex- 234</string>
-    <string name="card_number_demo">**** - **** - **** - 1452</string>
-
-    <string name="completed_review">completed_review</string>
-    <string name="fblogin">Signup with facebook</string>
     <string name="hurray_you_can_get_ready_for_show">Hurray! you can get ready for show</string>
-    <string name="miles">miles</string>
     <string name="please_choose_currency">Please choose currency</string>
     <string name="to_date_should_greater_than_from_date">To Date should greater than From date</string>
     <string name="from_date_should_not_greater_than_to_date">From date should not greater than To date</string>
@@ -312,6 +295,19 @@
     <string name="SEETING_UP">We are curating the list of artists for you. Please hang on...</string>
     <string name="SEETING_UP_DETAIL_VIRTUAL">Artists perfrom virtually using Skype, Zoom, Hangouts, etc.</string>
     <string name="SEETING_UP_DETAIL_IN_PERSON">Artists visit location of your choice</string>
+    <string name="miles">miles</string>
+    <string name="fblogin">Signup with facebook</string>
+
+
+
+
+
+    <string name="Reason">Reason: </string>
+    <string name="cvv_demo">Ex- 234</string>
+    <string name="card_number_demo">**** - **** - **** - 1452</string>
+
+    <string name="completed_review">completed_review</string>
+    <string name="full_address">Full Address</string>
 
 
 </resources>

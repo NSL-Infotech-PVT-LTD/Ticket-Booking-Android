@@ -108,8 +108,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
 
     // var to get intent while update address....
     private lateinit var locationDataList: LocationDataList
-    private var addressID = ""
-    private var location = ""
+
 
 
     override fun onAttach(context: Context) {
@@ -139,6 +138,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
         tbackpress.setOnClickListener(this)
 
 
+
         if (!isEditUpdatedLocation) {
             if (Constants.WantToAddLocation) {
                 latitude = arguments?.getDouble("lat")!!
@@ -147,14 +147,27 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                 streetAddress = arguments?.getString("address")!!
                 binding.mapAddressTxt.text = streetAddress
 
+
             } else if (Constants.WantToUpdateAddress) {
 
                 latitude = arguments?.getDouble("lat")!!
                 longitude = arguments?.getDouble("lng")!!
                 locationName = arguments?.getString("locationName")!!
                 streetAddress = arguments?.getString("address")!!
-
+                additionalDetails = arguments?.getString("fullAddress")
+                landmark = arguments?.getString("landmark")
                 binding.mapAddressTxt.text = streetAddress
+                if (additionalDetails == "n/a") {
+                    binding.flatEdt.setText("")
+                } else {
+                    binding.flatEdt.setText(additionalDetails)
+                }
+                if (landmark == "n/a") {
+                    binding.landmarkEdt.setText("")
+                } else {
+                    binding.landmarkEdt.setText(landmark)
+                }
+
             }
         } else {
             latitude = arguments?.getDouble("lat")!!
@@ -164,21 +177,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
             binding.mapAddressTxt.text = streetAddress
         }
         displayAddressType(locationName)
-
-//        binding.otherTypeEdt.addTextChangedListener(object : TextWatcher {
-//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-//
-//            }
-//
-//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//                name = binding.otherTypeEdt.text.toString().trim()
-//            }
-//
-//            override fun afterTextChanged(s: Editable?) {
-//
-//            }
-//
-//        })
 
         // save text while write addition details....
         binding.flatEdt.addTextChangedListener(object : TextWatcher {
@@ -215,6 +213,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
 
         val loadingText = view.findViewById<TextView>(R.id.loadingtext)
         loadingText.text  = Utility.randomString(ctx)
+
+
 
         return view
     }
@@ -339,13 +339,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
 //                }
 //
 //                locality = thoroughFare + ", " + postalCode  + ", " + locality + "," + countryname
-//
-//                binding.mapAddressTxt.text = locality
-//                if (binding.mapAddressTxt.text.length == 0) {
-//                    binding.editAddressIcon.visibility = View.GONE
-//                } else {
-//                    binding.editAddressIcon.visibility = View.VISIBLE
-//                }
                 mMap.setOnCameraChangeListener(null)
 //
 //            }
@@ -355,16 +348,14 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
 //            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_drop_icon))
 //            mCurrLocationMarker = mMap.addMarker(markerOptions)
 
-//            //move map camera
-//            mMap.moveCamera(CameraUpdateFactory.newLatLng(Constants.LATLNG))
-//            mMap.animateCamera(CameraUpdateFactory.zoomTo(12f))
-//            mMap.setOnCameraChangeListener(null)
+            //move map camera
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(Constants.LATLNG))
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(18f))
+            mMap.setOnCameraChangeListener(null)
 
 
-            val latLngBounds = LatLngBounds.Builder()
-                .include(Constants.LATLNG)
-                .build()
-            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 5))
+//            val latLngBounds = LatLngBounds.Builder().include(Constants.LATLNG).build()
+//            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 30))
 
 
         } catch (e: java.lang.Exception) {
@@ -413,12 +404,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                     latitude = address.latitude
                     longitude = address.longitude
 
-
-                    if (binding.mapAddressTxt.text.length == 0) {
-                        binding.editAddressIcon.visibility = View.GONE
-                    } else {
-                        binding.editAddressIcon.visibility = View.VISIBLE
-                    }
                     mMap.clear()
 
                 } else {
@@ -537,7 +522,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                 val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
                     .build(ctx)
                 startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
-                binding.editAddressIcon.visibility = View.GONE
             }
 
         }
@@ -558,20 +542,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                         lng = latlng?.longitude!!
                         isEditUpdatedLocation = true
 
-//                        val geocoder: Geocoder?
-//                        val addresses: List<Address>?
-//                        geocoder = Geocoder(ctx, Locale.getDefault())
-//                        try {
-//                            addresses = geocoder.getFromLocation(lat, lng, 1)
-//                            val address = (addresses as MutableList<Address>?)?.get(0)
-//                            city = address?.locality!!
-//                            state = address.adminArea.toString()
-//                            zip = address.postalCode.toString()
-//                            country = address.countryName.toString()
-//                        }catch (e:Exception){
-//
-//                        }
-
 
 //                        Log.i(TAG, "Place: ${place.name}, ${place.id}")
                         val fragment = MapFragment()
@@ -580,6 +550,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                         bundle.putDouble("lng", lng)
                         bundle.putString("locationName", locationName)
                         bundle.putString("address", streetAddress)
+                        bundle.putString("fullAddress", additionalDetails)
+                        bundle.putString("landmark", landmark)
                         fragment.arguments = bundle
                         val transaction = fragmentManager?.beginTransaction()
                         transaction?.replace(R.id.frameContainer, fragment)

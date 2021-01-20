@@ -102,8 +102,8 @@ dependencies {
     //youtube api implemented
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //Facebook api implemented
-    implementation 'com.facebook.android:facebook-android-sdk:5.+'
-    implementation 'com.facebook.android:facebook-login:[8.1)'
+    implementation 'com.facebook.android:facebook-android-sdk:9.0.0'
+    implementation 'com.facebook.android:facebook-login:9.0.0'
 
 //    // use this library for zoom function on image.
 //    implementation 'com.github.chrisbanes:PhotoView:2.1.3'//zoom
