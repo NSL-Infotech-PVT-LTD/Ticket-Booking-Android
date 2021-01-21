@@ -14,13 +14,19 @@ import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
 import java.util.logging.Handler
 
-class LocationListAdapter(private var shared:PrefrenceShared ,private val context: Context, private val locationList: ArrayList<LocationDataList>,private val dispAddToDashboard: DisplayAddToDashboard,
-private val deleteAddress: DeleteAddress,private val editLocation: EditAddress) :RecyclerView.Adapter<LocationListAdapter.LocationViewHolder>() {
+class LocationListAdapter(
+    private var shared: PrefrenceShared,
+    private val context: Context,
+    private val locationList: ArrayList<LocationDataList>,
+    private val dispAddToDashboard: DisplayAddToDashboard,
+    private val deleteAddress: DeleteAddress,
+    private val editLocation: EditAddress
+) : RecyclerView.Adapter<LocationListAdapter.LocationViewHolder>() {
 
     private var adpPosition = shared.getInt("myValue")
 
 
-    inner class LocationViewHolder(itemView:View) : RecyclerView.ViewHolder(itemView) {
+    inner class LocationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val addressIcon = itemView.findViewById<ImageView>(R.id.addressIcon)!!
         val addressTypeTxt = itemView.findViewById<MaterialTextView>(R.id.addressTypeTxt)!!
@@ -34,30 +40,50 @@ private val deleteAddress: DeleteAddress,private val editLocation: EditAddress) 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationViewHolder {
 
-        val view = LayoutInflater.from(context).inflate(R.layout.location_list_layout,parent,false)
+        val view =
+            LayoutInflater.from(context).inflate(R.layout.location_list_layout, parent, false)
         return LocationViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: LocationViewHolder, position: Int) {
 
         val model = locationList[position]
-        if (model !=null) {
+        if (model != null) {
             when (model.name) {
                 Constants.HOME_ADDRESS -> {
-                    holder.addressIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.home_icon_updated))
+                    holder.addressIcon.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            context,
+                            R.drawable.home_icon_updated
+                        )
+                    )
                     holder.addressTypeTxt.text = model.name
                 }
                 Constants.WORK_ADDRESS -> {
-                    holder.addressIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.work_icon))
+                    holder.addressIcon.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            context,
+                            R.drawable.work_icon
+                        )
+                    )
                     holder.addressTypeTxt.text = model.name
                 }
                 else -> {
-                holder.addressIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.other_icon))
-                holder.addressTypeTxt.text = model.name
+                    holder.addressIcon.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            context,
+                            R.drawable.other_icon
+                        )
+                    )
+                    holder.addressTypeTxt.text = model.name
+                }
             }
-            }
-            if (adpPosition == holder.adapterPosition) {
-                holder.radioButton.isChecked = true
+            if (shared.getString(Constants.ADDRESS).isEmpty()) {
+                adpPosition = -1
+            } else {
+                if (adpPosition == holder.adapterPosition) {
+                    holder.radioButton.isChecked = true
+                }
             }
 
             holder.address.text = model.street_address
@@ -69,17 +95,24 @@ private val deleteAddress: DeleteAddress,private val editLocation: EditAddress) 
                 deleteAddress.deleteAdd(model.id.toString())
             }
 
-            holder.radioButton.isChecked = adpPosition ==position
+            holder.radioButton.isChecked = adpPosition == position
             holder.itemView.setOnClickListener {
                 // Item view click to send address to dashboard, Click implemented on LocationFragment....
                 holder.radioButton.isChecked = true
 
 //                Constants.adpPosition = holder.adapterPosition
                 adpPosition = holder.adapterPosition
-                shared.setInt("myValue",adpPosition)
+                shared.setInt("myValue", adpPosition)
+                Constants.ADDRESS_ID = locationList[position].id.toString()
+
                 notifyDataSetChanged()
-                if (model.street_address!=null)
-                dispAddToDashboard.dispAddressDashboard(model.street_address, model.latitude,model.longitude, model.name)
+                if (model.street_address != null)
+                    dispAddToDashboard.dispAddressDashboard(
+                        model.street_address,
+                        model.latitude,
+                        model.longitude,
+                        model.name
+                    )
             }
             holder.radioButton.setOnClickListener {
                 // Item view click to send address to dashboard, Click implemented on LocationFragment....
@@ -87,10 +120,15 @@ private val deleteAddress: DeleteAddress,private val editLocation: EditAddress) 
 
 //                Constants.adpPosition = holder.adapterPosition
                 adpPosition = holder.adapterPosition
-                shared.setInt("myValue",adpPosition)
+                shared.setInt("myValue", adpPosition)
                 notifyDataSetChanged()
-                if (model.street_address!=null)
-                    dispAddToDashboard.dispAddressDashboard(model.street_address, model.latitude,model.longitude, model.name)
+                if (model.street_address != null)
+                    dispAddToDashboard.dispAddressDashboard(
+                        model.street_address,
+                        model.latitude,
+                        model.longitude,
+                        model.name
+                    )
             }
         }
     }
@@ -99,12 +137,14 @@ private val deleteAddress: DeleteAddress,private val editLocation: EditAddress) 
         return locationList.size
     }
 
-    interface DisplayAddToDashboard{
-        fun dispAddressDashboard(address:String, lat:String,lng:String, name:String)
+    interface DisplayAddToDashboard {
+        fun dispAddressDashboard(address: String, lat: String, lng: String, name: String)
     }
+
     interface DeleteAddress {
-        fun deleteAdd(id:String)
+        fun deleteAdd(id: String)
     }
+
     interface EditAddress {
         fun updateAddress(locationDataList: LocationDataList)
     }

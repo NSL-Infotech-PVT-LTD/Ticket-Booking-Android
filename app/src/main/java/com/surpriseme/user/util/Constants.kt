@@ -2,6 +2,7 @@ package com.surpriseme.user.util
 
 import com.google.android.gms.maps.model.LatLng
 import com.surpriseme.user.fragments.bookingfragment.BookingArtistDetailModel
+import com.surpriseme.user.fragments.locationfragment.LocationDataList
 
 object Constants {
     const val LOGIN = "customer/login"
@@ -43,15 +44,10 @@ object Constants {
     const val TERMS_AND_CONDITIONS = "config/terms_and_conditions"
 
 
-
     const val ISREMEMBER = "ISREMEMBER"
-    const val PLEASE_CLICK_BACK_AGAIN_To_EXIT = "Please click BACK again to exit"
     const val TIME_OUT = "Time Out"
     const val HOME_ADDRESS = "Home"
-    const val HOME = "Home"
     const val WORK_ADDRESS = "Work"
-    const val WORK = "Work"
-    const val OTHER_ADDRESS = "other address"
     const val OTHER = "other"
     var ADDRESS = "ADDRESS"
     var LATITUDE = "LATITUDE"
@@ -59,11 +55,6 @@ object Constants {
     var NAME = ""
     var WantToUpdateAddress = false
     var WantToAddLocation = false
-    const val RECOVERY_REQUEST = 1
-    const val LIVE_SHOW_BOOKING = "Live Show Booking"
-    const val DIGITAL_SHOW_BOOKING = "Digital Show Booking"
-    const val LIVE = "live"
-    const val DIGITAL = "digital"
     var BOOKING_TYPE = ""
     var SAVED_LOCATION = false
     const val COMPLETE_REVIEW = "completed_review"
@@ -73,9 +64,6 @@ object Constants {
     var BOOKING = false
     const val TARGET_MODEL_MESSAGE = "Message"
     const val TARGET_MODEL_BOOKING = "Booking"
-    const val ACCEPTED = "accepted"
-    const val PENDING = "pending"
-    const val REJECTED = "rejected"
     const val CONFIRMED = "confirmed"
     const val PROCESSING = "processing"
     const val CANCEL = "cancel"
@@ -88,8 +76,6 @@ object Constants {
     const val ASENDING ="asc"
     const val DESENDING ="desc"
     const val PRICE_LOW_TO_HIGH = "Price Low to High"
-    var FROM_TIME = ""
-    var TO_TIME = ""
     var REPORT = "report"
     var COMING_FROM_DETAIL = false
     var SAVE_BOOKING_LIST:ArrayList<BookingArtistDetailModel> = ArrayList()
@@ -99,16 +85,12 @@ object Constants {
     var LATLNG:LatLng?=null
     var addressID = "addressID"
     var PROFILE_FRAGMENT = false  // Used to handle backpress, while user on profile fragment then popup will display
-    var IS_CURRENCY_SELECTED = false
     // by main activity backpress....
 
     var FB_ID = ""
     var FB_NAME = ""
     var FB_EMAIL = ""
     var FB_IMAGE = ""
-    var ADDITIONAL_DETAILS = "ADDITIONAL_DETAILS"
-    var LANDMARK = "LANDMARK"
-    var CURRENCY = ""
     var FB_TOKEN = "FBTOKEN"
     var PAYMENT_FAILED = "payment_failed"
     var COMPLETED = "completed"
@@ -116,9 +98,10 @@ object Constants {
     var IS_BOOKING_DONE = false
     var IS_SEARCH_ACTIVITY = false
     var IS_COMING_FROM_BOOKING_DETAIL = false
-    var DEFAULT_HOME_ADDRESS = ""
     var DEFAULT_LATITUDE = "DEFAULT_LATITUDE"
     var DEFAULT_LONGITUDE = "DEFAULT_LONGITUDE"
+    var ADDRESS_ID = "ADDRESS_ID"
+    var locationList: ArrayList<LocationDataList> = ArrayList()
 
 
 
@@ -183,7 +166,6 @@ object Constants {
         var USER_ID = "USER_ID"
         var OLD_PASS_VALUE = "OLD_PASS_VALUE"
         var CURRENCY = "CURRENCY"
-        var BY_RATING = 0
 
     }
 

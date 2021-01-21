@@ -222,7 +222,7 @@
     <string name="Rejected">Rejected</string>
     <string name="confirmed">confirmed</string>
     <string name="Confirmed">Confirmed</string>
-    <string name="paid">Paid: </string>
+    <string name="paid">Paid: %s %s$</string>
     <string name="processing">processing</string>
     <string name="Processing">Processing</string>
     <string name="complete">complete</string>
@@ -297,6 +297,7 @@
     <string name="SEETING_UP_DETAIL_IN_PERSON">Artists visit location of your choice</string>
     <string name="miles">miles</string>
     <string name="fblogin">Signup with facebook</string>
+    <string name="SELECT_ADDRESS_ERROR">Please select address</string>
 
 
 
@@ -308,6 +309,7 @@
 
     <string name="completed_review">completed_review</string>
     <string name="full_address">Full Address</string>
+
 
 
 </resources>

@@ -81,6 +81,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
     private var additionalDetails: String? = null
     private var landmark: String? = null
     private var isEditUpdatedLocation = false
+    private var addressID = ""
 
 
     // variables for hit api....
@@ -156,6 +157,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                 streetAddress = arguments?.getString("address")!!
                 additionalDetails = arguments?.getString("fullAddress")
                 landmark = arguments?.getString("landmark")
+                addressID = arguments?.getString("addressID")!!
                 binding.mapAddressTxt.text = streetAddress
                 if (additionalDetails == "n/a") {
                     binding.flatEdt.setText("")
@@ -490,14 +492,13 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                     if (isOtherAddress) {
                         name = otherTypeEdt.text.toString().trim()
                         if (name.isEmpty())
-                        Utility.alertErrorMessage(ctx, ctx.resources.getString(R.string.please_enter_other_address))
-                        else{
+                        name = "Other"
                             if (Constants.WantToAddLocation) {
                                 createAddressApi()
                             } else {
                                 updateAddressList()
                             }
-                        }
+
 
                 } else {
 
@@ -552,6 +553,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                         bundle.putString("address", streetAddress)
                         bundle.putString("fullAddress", additionalDetails)
                         bundle.putString("landmark", landmark)
+                        bundle.putString("addressID", addressID)
                         fragment.arguments = bundle
                         val transaction = fragmentManager?.beginTransaction()
                         transaction?.replace(R.id.frameContainer, fragment)
@@ -636,7 +638,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
     // Update Address Api....
     private fun updateAddressList() {
         binding.loaderLayout.visibility = View.VISIBLE
-        RetrofitClient.api.updateAddressApi(shared.getString(Constants.DataKey.AUTH_VALUE), Constants.DataKey.CONTENT_TYPE_VALUE, Constants.addressID,
+        RetrofitClient.api.updateAddressApi(shared.getString(Constants.DataKey.AUTH_VALUE), Constants.DataKey.CONTENT_TYPE_VALUE, addressID,
             name,
             streetAddress,
             city,
@@ -655,11 +657,13 @@ class MapFragment : Fragment(), OnMapReadyCallback, View.OnClickListener
                     if (response.body() != null) {
                         if (response.isSuccessful) {
 
-                            Toast.makeText(
-                                ctx,
-                                "" + response.body()?.data?.Message.toString(),
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Toast.makeText(ctx, "" + response.body()?.data?.Message.toString(), Toast.LENGTH_SHORT).show()
+                            if (Constants.ADDRESS_ID == addressID) {
+                                shared.setString(Constants.ADDRESS, streetAddress)
+                                shared.setString(Constants.LATITUDE, latitude.toString())
+                                shared.setString(Constants.LONGITUDE, longitude.toString())
+
+                            }
                             val fragment = LocationFragment()
                             val transaction = fragmentManager?.beginTransaction()
                             transaction?.replace(R.id.frameContainer, fragment)

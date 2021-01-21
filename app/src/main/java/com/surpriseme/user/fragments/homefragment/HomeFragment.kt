@@ -1,43 +1,25 @@
 package com.surpriseme.user.fragments.homefragment
 
-import android.Manifest
-import android.Manifest.permission.ACCESS_FINE_LOCATION
-import android.app.Activity.RESULT_OK
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
-import android.content.IntentSender
-import android.content.pm.PackageManager
-import android.location.Address
-import android.location.Geocoder
-import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.common.api.PendingResult
-import com.google.android.gms.common.api.Status
-import com.google.android.gms.location.*
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
-import com.google.gson.JsonObject
 import com.squareup.picasso.Picasso
 import com.surpriseme.user.R
 import com.surpriseme.user.activity.login.LoginActivity
@@ -48,40 +30,30 @@ import com.surpriseme.user.databinding.FragmentHomeBinding
 import com.surpriseme.user.fragments.artistbookingdetail.ArtistBookingFragment
 import com.surpriseme.user.fragments.locationfragment.LocationDataList
 import com.surpriseme.user.fragments.locationfragment.LocationFragment
-import com.surpriseme.user.fragments.locationfragment.LocationListAdapter
 import com.surpriseme.user.fragments.locationfragment.LocationListModel
 import com.surpriseme.user.fragments.notificationfragment.NotificationFragment
 import com.surpriseme.user.fragments.selectdateofbookingfragment.SelectDateFragment
 import com.surpriseme.user.fragments.viewprofile.ProfileFragment
 import com.surpriseme.user.fragments.viewprofile.UserViewProfile
 import com.surpriseme.user.fragments.viewprofile.ViewProfileModel
-import com.surpriseme.user.fragments.wayofbookingfragment.WayOfBookingFragment
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.*
-import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.fragment_profile.*
-import okhttp3.MediaType
-import okhttp3.RequestBody
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.IOException
 import java.net.SocketTimeoutException
-import java.util.*
 import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistListFace,
     ArtistListAdapter.BookBtnClick {
 
-    var currencyvalue = ""
+    private var currencyvalue = ""
     private lateinit var binding: FragmentHomeBinding
     private lateinit var ctx: Context
     private lateinit var shared: PrefrenceShared
     private var artistList: ArrayList<DataUserArtistList> = ArrayList()
-    private var latitude = 0.0
-    private var longitude = 0.0
     private var search = ""
     private var isInvalidAuth = false
     private var artistListAdapter: ArtistListAdapter? = null
@@ -101,9 +73,6 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
     private var popUpWindowCurrency: PopupWindow? = null
     private var invalidAuth: InvalidAuth? = null
     private var prefManager:PrefManger?=null
-    private var defaultHomeAddress = ""
-    private var defaultLatitude = ""
-    private var defaultLongitude = ""
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -209,22 +178,35 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 binding.yourLocationInfo.text = shared.getString(Constants.ADDRESS)
 
                 if (locationList.isNotEmpty()) {
-                    artistListApi(shared.getString(Constants.LATITUDE),shared.getString(Constants.LONGITUDE),search)
+                    displayAddress()
                 } else {
                     val fragment = LocationFragment()
-                    val transaction = fragmentManager?.beginTransaction()
-                    transaction?.replace(R.id.frameContainer, fragment)
-                    transaction?.commit()
+                    val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.frameContainer, fragment)
+                    transaction.commit()
                 }
+
             }
         }
     }
 
+    private fun displayAddress() {
+        if (shared.getString(Constants.ADDRESS) !="") {
+            binding.yourLocationInfo.text = shared.getString(Constants.ADDRESS)
+            shared.setString(Constants.ADDRESS, shared.getString(Constants.ADDRESS))
+            shared.setString(Constants.DEFAULT_LATITUDE,shared.getString(Constants.LATITUDE))
+            shared.setString(Constants.DEFAULT_LONGITUDE,shared.getString(Constants.LONGITUDE))
+            artistListApi(shared.getString(Constants.LATITUDE),shared.getString(Constants.LONGITUDE),search)
+        } else {
+            replaceFragment(LocationFragment())
+        }
+    }
+
     private fun replaceFragment(fragment: Fragment) {
-        val transaction = fragmentManager?.beginTransaction()
-        transaction?.replace(R.id.frameContainer, fragment)
-        transaction?.addToBackStack("fragment")
-        transaction?.commit()
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.frameContainer, fragment)
+        transaction.addToBackStack("fragment")
+        transaction.commit()
     }
     // Get Profile Api....
     private fun getProfileApi() {
@@ -318,23 +300,38 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                                 currentPage=1
                                 artistListApiWithoutLatlng(search)
                             } else {
-                                binding.virtualTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
-                                binding.inPersonTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_pink)
-                                if (locationList.size > 0) {
-                                    binding.yourLocationInfo.text = shared.getString(Constants.ADDRESS)
-                                    shared.setString(Constants.DEFAULT_LATITUDE,shared.getString(Constants.LATITUDE))
-                                    shared.setString(Constants.DEFAULT_LONGITUDE,shared.getString(Constants.LONGITUDE))
-                                    artistListApi(shared.getString(Constants.LATITUDE),shared.getString(Constants.LONGITUDE),search)
-                                } else {
+                                binding.virtualTv.background =
+                                    ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+                                binding.inPersonTv.background =
+                                    ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_pink)
+                                if (locationList.size >0){
+                                    Constants.SHOW_TYPE = "live"
+                                    binding.inPersonTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_pink)
+                                    binding.virtualTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+                                    binding.addressLayout.visibility = View.VISIBLE
+
+                                    if (locationList.isNotEmpty()) {
+                                        displayAddress()
+                                    } else {
+                                        val fragment = LocationFragment()
+                                        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                                        transaction.replace(R.id.frameContainer, fragment)
+                                        transaction.commit()
+                                }
+                            } else {
                                     binding.addressLayout.visibility = View.GONE
                                     binding.virtualTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_blue)
                                     binding.inPersonTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
-                                    isLastPage=false
-                                    isLoading=false
-                                    currentPage=1
+                                    isLastPage = false
+                                    isLoading = false
+                                    currentPage = 1
                                     Constants.SHOW_TYPE = "digital"
                                     artistListApiWithoutLatlng(search)
-                                    Toast.makeText(ctx,"" + ctx.resources.getString(R.string.no_address_right_now_switching_to_virtual),Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        ctx,
+                                        "" + ctx.resources.getString(R.string.no_address_right_now_switching_to_virtual),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                             }
                         }
@@ -483,22 +480,19 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                         }
                     } else {
 
-                        response.code() == 401
                         if (response.code() == 401) {
                             isInvalidAuth = true
+                            invalidAuthPopUp()
+                        } else {
+
                             val jsonObject: JSONObject
                             if (response.errorBody() != null) {
                                 try {
                                     jsonObject = JSONObject(response.errorBody()?.string()!!)
                                     val errorMessage = jsonObject.getString(Constants.ERRORS)
-//                                Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT).show()
-                                    invalidAuthPopUp()
+                                    Utility.alertErrorMessage(ctx,errorMessage)
                                 } catch (e: JSONException) {
-                                    Toast.makeText(
-                                        ctx,
-                                        "" + Constants.SOMETHING_WENT_WRONG,
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    Toast.makeText(ctx, "" + Constants.SOMETHING_WENT_WRONG, Toast.LENGTH_SHORT).show()
                                 }
                             }
                         }
@@ -520,20 +514,20 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         val bundle = Bundle()
         bundle.putString("artistID", artistID)
         fragment.arguments = bundle
-        val transaction = fragmentManager?.beginTransaction()
-        transaction?.replace(R.id.frameContainer, fragment)
-        transaction?.addToBackStack("homeFragment")
-        transaction?.commit()
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.frameContainer, fragment)
+        transaction.addToBackStack("homeFragment")
+        transaction.commit()
     }
 
     // Calling interface from Artist List adapter to send data from home fragment to ArtistDetail fragment with list on Book Button Click
     override fun btnClick(artistID: String) {
         shared.setString(Constants.ARTIST_ID, artistID)
         val fragment = SelectDateFragment()
-        val transaction = fragmentManager?.beginTransaction()
-        transaction?.replace(R.id.frameContainer, fragment)
-        transaction?.addToBackStack("homeFragment")
-        transaction?.commit()
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.frameContainer, fragment)
+        transaction.addToBackStack("homeFragment")
+        transaction.commit()
     }
 
     // popup will display to select show type.
@@ -542,7 +536,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         val layoutInflater: LayoutInflater =
             ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        val popUp: View = layoutInflater.inflate(R.layout.popup_show_type, null)
+        val popUp: View = layoutInflater.inflate(R.layout.popup_show_type, binding.homeContainer,false)
         val popUpWindow = PopupWindow(
             popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
             ConstraintLayout.LayoutParams.MATCH_PARENT, true
@@ -588,17 +582,14 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 binding.inPersonTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_pink)
                 binding.virtualTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
                 binding.addressLayout.visibility = View.VISIBLE
-                binding.yourLocationInfo.text = shared.getString(Constants.ADDRESS)
-                if (locationList.isNotEmpty()) {
 
-                    binding.virtualTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
-                    binding.inPersonTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_pink)
-                    artistListApi(shared.getString(Constants.LATITUDE),shared.getString(Constants.LONGITUDE),search)
+                if (locationList.isNotEmpty()) {
+                    displayAddress()
                 } else {
                     val fragment = LocationFragment()
-                    val transaction = fragmentManager?.beginTransaction()
-                    transaction?.replace(R.id.frameContainer, fragment)
-                    transaction?.commit()
+                    val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.frameContainer, fragment)
+                    transaction.commit()
                 }
             }, 3000)
 
@@ -611,7 +602,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         val layoutInflater: LayoutInflater =
             ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        val popUp: View = layoutInflater.inflate(R.layout.popup_select_currency, null)
+        val popUp: View = layoutInflater.inflate(R.layout.popup_select_currency, binding.homeContainer,false)
         popUpWindowCurrency = PopupWindow(
             popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
             ConstraintLayout.LayoutParams.MATCH_PARENT, true
@@ -710,8 +701,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                         if (response.isSuccessful) {
                             shared.setString(
                                 Constants.DataKey.USER_IMAGE,
-                                Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + response.body()?.data?.user?.image
-                            )
+                                Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + response.body()?.data?.user?.image)
                             Handler().postDelayed({
                                 locationListApi()
                             }, 1000)
@@ -748,7 +738,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         val layoutInflater: LayoutInflater =
             ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        val popUp: View = layoutInflater.inflate(R.layout.alert_popup_layout, null)
+        val popUp: View = layoutInflater.inflate(R.layout.alert_popup_layout, binding.homeContainer,false)
         val popUpWindowReport = PopupWindow(
             popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
             ConstraintLayout.LayoutParams.MATCH_PARENT, true

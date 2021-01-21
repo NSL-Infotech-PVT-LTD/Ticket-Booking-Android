@@ -21,22 +21,26 @@ import com.surpriseme.user.fragments.locationfragment.LocationFragment
 import com.surpriseme.user.fragments.selectdateofbookingfragment.SelectDateFragment
 import com.surpriseme.user.fragments.viewprofile.ProfileFragment
 import com.surpriseme.user.util.Constants
+import com.surpriseme.user.util.PrefrenceShared
+import com.surpriseme.user.util.Utility
 import kotlinx.android.synthetic.main.activity_main.*
 import net.alhazmy13.mediapicker.Image.ImagePicker
 
 
 class MainActivity : AppCompatActivity() {
 
-    val TAG_FRAGMENT = "TAG_FRAGMEN"
+//    val TAG_FRAGMENT = "TAG_FRAGMEN"
     private var doubleBackToExitPressedOnce: Boolean = false
     private var profileFragment:ProfileFragment?=null
     private lateinit var locationFragment:LocationFragment
     private lateinit var artistBookingFragment:ArtistBookingFragment
+    private lateinit var shared: PrefrenceShared
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        shared = PrefrenceShared(this@MainActivity)
        if (intent.hasExtra("chatId")) {
             val chatID = intent.getStringExtra("chatId")
             if (chatID !=null) {
@@ -127,8 +131,15 @@ class MainActivity : AppCompatActivity() {
 
         if (Constants.PROFILE_FRAGMENT) {
             profileFragment?.updateProfilePopup()
-        } else {
-            super.onBackPressed()
+        } else if (Constants.locationList.size >0) {
+            if (shared.getString(Constants.ADDRESS) == "") {
+                Utility.alertErrorMessage(this, getString(R.string.SELECT_ADDRESS_ERROR))
+            } else {
+                replaceFragment(HomeFragment())
+            }
+
+        }else {
+            replaceFragment(HomeFragment())
         }
 
 //        if (getFragmentManager().getBackStackEntryCount() > 0) {
@@ -148,6 +159,14 @@ class MainActivity : AppCompatActivity() {
         Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
 
     }
+    private fun replaceFragment(fragment: Fragment) {
+
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.frameContainer, fragment)
+        transaction.addToBackStack("LocationManager")
+        transaction.commit()
+    }
+
 
     fun hideBottomNavigation() {
         bottomNav.visibility = View.GONE
@@ -175,11 +194,11 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == ImagePicker.IMAGE_PICKER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
 
-            if (requestCode == Constants.RECOVERY_REQUEST) {
-
-//                artistBookingFragment.getYouTubePlayerProvider()
-
-            }
+//            if (requestCode == Constants.RECOVERY_REQUEST) {
+//
+////                artistBookingFragment.getYouTubePlayerProvider()
+//
+//            }
             if (data != null) {
 
                 val mPath: ArrayList<String> = data.getStringArrayListExtra(ImagePicker.EXTRA_IMAGE_PATH)!!

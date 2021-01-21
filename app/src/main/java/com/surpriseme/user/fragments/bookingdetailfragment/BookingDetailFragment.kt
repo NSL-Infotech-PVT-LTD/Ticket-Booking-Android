@@ -4,47 +4,34 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.text.InputType
 import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
 import com.squareup.picasso.Picasso
 import com.surpriseme.user.R
-import com.surpriseme.user.activity.login.LoginActivity
 import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.activity.payment.BookingCancelModel
 import com.surpriseme.user.activity.payment.PaymentActivity
 import com.surpriseme.user.databinding.FragmentBookingDetailBinding
-import com.surpriseme.user.fragments.paymentfragment.PaymentFragment
-import com.surpriseme.user.fragments.bookingfragment.BookingFragment
 import com.surpriseme.user.fragments.chatFragment.ChatFragment
-import com.surpriseme.user.fragments.notificationfragment.NotificationFragment
 import com.surpriseme.user.fragments.paymentfragment.BookingStatusModel
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
 import com.surpriseme.user.util.Utility
-import com.warkiz.widget.OnSeekChangeListener
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_booking_detail.*
-import kotlinx.android.synthetic.main.popup_select_currency.view.*
 import org.json.JSONException
 import org.json.JSONObject
-import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -87,7 +74,6 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
 
     // boolean vars to take action according to status....
     private var wantToCancelBooking = false
-    private var isArtistReach = false
     private var messageToDisplay = ""
 
     // Rate Review Custom layout views....
@@ -209,18 +195,10 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
             R.id.backpress -> {
                 if (Constants.NOTIFICATION) {
                     Constants.COMING_FROM_DETAIL = false
-//                    val fragment = NotificationFragment()
-//                    val transaction = fragmentManager?.beginTransaction()
-//                    transaction?.replace(R.id.frameContainer, fragment)
-//                    transaction?.commit()
                     finish()
                 } else {
                     Constants.COMING_FROM_DETAIL = true
                     finish()
-//                    val fragment = BookingFragment()
-//                    val transaction = fragmentManager?.beginTransaction()
-//                    transaction?.replace(R.id.frameContainer, fragment)
-//                    transaction?.commit()
                 }
                 if (Constants.IS_BOOKING_DONE) {
                     Constants.BOOKING = false
@@ -238,24 +216,6 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
                 intent.putExtra("receiverName", artistId)
                 startActivity(intent)
             }
-//            R.id.chatBtn -> {
-//                Constants.CHAT_ID = artistId
-//                val intent = Intent(this , ChatFragment::class.java)
-//                intent.putExtra("chatId",artistId)
-//                intent.putExtra("receiverImage",artistId)
-//                intent.putExtra("receiverName",artistId)
-//
-//                startActivity(intent)
-////                val bundle = Bundle()
-////                val fragment = ChatFragment()
-////                bundle.putString("chatId", artistId)
-////                fragment.arguments = bundle
-////                val transaction = fragmentManager?.beginTransaction()
-////                transaction?.replace(R.id.frameContainer, fragment)
-////                transaction?.addToBackStack("bookingDetailFragment")
-////                transaction?.commit()
-////
-//            }
             R.id.actionBtn -> {
 //                // If status button text is Pay Now then redirect to payment screen.
 
@@ -367,7 +327,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
         val layoutInflater: LayoutInflater =
             this@BookingDetailFragment.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        val popUp: View = layoutInflater.inflate(R.layout.booking_cancel_layout, null)
+        val popUp: View = layoutInflater.inflate(R.layout.booking_cancel_layout, binding.bookingDetailContainer,false)
         val windowBookingCancel = PopupWindow(
             popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
             ConstraintLayout.LayoutParams.MATCH_PARENT, true
@@ -564,19 +524,15 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
 //
 //    }
 
-    private fun displayDetail(bookingModel: BookingDataModel) {
+    private fun displayDetail(bookingModel: BookingDataModel?) {
 
         if (bookingModel != null) {
             if (!(bookingModel.id == 0 && bookingModel.address == null && bookingModel.artist_detail == null && bookingModel.date == null)) {
-
                 if (bookingModel.artist_detail != null) {
-
-
                     Picasso.get()
                         .load(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + bookingModel.artist_detail.image)
                         .placeholder(R.drawable.user_pholder)
                         .into(binding.profileImg)
-
                     binding.profileName.text = bookingModel.artist_detail.name
                 }
 
@@ -598,8 +554,8 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
 
                 } else if (bookingModel.status == Constants.CONFIRMED) {
                     binding.statusTv.text = resources.getString(R.string.Confirmed)
-                    binding.paymentTv.text =
-                        resources.getString(R.string.paid) + bookingModel.customer_currency + " " + bookingModel.price
+                    binding.paymentTv.text = getString(R.string.paid) + bookingModel.customer_currency + " " + bookingModel.price
+//                    binding.paymentTv.text = getString(R.string.paid, bookingModel.artist_currency,bookingModel.price)
                     binding.actionBtn.visibility = View.VISIBLE
                     binding.actionBtn.text =
                         resources.getString(R.string.did_artist_reach_at_yout_location)
@@ -622,7 +578,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
                         if (bookingModel.rate_detail.rate != "") {
                             binding.rateTv.text = bookingModel.rate_detail.rate
                         }
-                        if (!bookingModel.rate_detail.rate.isEmpty()) {
+                        if (bookingModel.rate_detail.rate.isNotEmpty()) {
                             try {
                                 binding.ratingbar.rating = bookingModel.rate_detail.rate.toFloat()
 
@@ -750,66 +706,6 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
             })
     }
 
-    // Booking Status Api when status cancel....
-    private fun bookingStatusApi(bookingID: String) {
-        val status = "completed_review"
-        binding.loaderLayout.visibility = View.VISIBLE
-        RetrofitClient.api.bookingStatusApi(
-            shared.getString(Constants.DataKey.AUTH_VALUE),
-            bookingID,
-            status
-        )
-            .enqueue(object : Callback<BookingStatusModel> {
-                override fun onResponse(
-                    call: Call<BookingStatusModel>,
-                    response: Response<BookingStatusModel>
-                ) {
-                    binding.loaderLayout.visibility = View.GONE
-                    if (response.body() != null) {
-                        if (response.isSuccessful) {
-                            Toast.makeText(
-                                this@BookingDetailFragment,
-                                "" + response.body()?.data?.message,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            finish()
-                        }
-                    } else {
-                        val jsonObject: JSONObject
-                        if (response.errorBody() != null) {
-                            try {
-                                jsonObject = JSONObject(response.errorBody()?.string()!!)
-                                val errorMessage = jsonObject.getString(Constants.ERROR)
-                                Toast.makeText(
-                                    this@BookingDetailFragment,
-                                    "" + errorMessage,
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } catch (e: JSONException) {
-                                Toast.makeText(
-                                    this@BookingDetailFragment,
-                                    "" + e.message.toString(),
-                                    Toast.LENGTH_SHORT
-                                )
-                                    .show()
-                            }
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<BookingStatusModel>, t: Throwable) {
-                    binding.loaderLayout.visibility = View.GONE
-                    Toast.makeText(
-                        this@BookingDetailFragment,
-                        "" + t.message.toString(),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-            })
-    }
-
-
     private fun reportStatusApi(reason: String) {
         val report = "report"
         binding.loaderLayout.visibility = View.VISIBLE
@@ -874,11 +770,9 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
 
     // when artist reach then popup will display
     private fun statusPopUp() {
-
         val layoutInflater: LayoutInflater =
             getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-
-        val popUp: View = layoutInflater.inflate(R.layout.artist_reach_popup, null)
+        val popUp: View = layoutInflater.inflate(R.layout.artist_reach_popup, binding.bookingDetailContainer,false)
         val popupWindow = PopupWindow(
             popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
             ConstraintLayout.LayoutParams.MATCH_PARENT, true
@@ -927,13 +821,11 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-
     private fun otpPopup() {
 
         val layoutInflater: LayoutInflater =
             getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-
-        val popUp: View = layoutInflater.inflate(R.layout.otp_popup_layout, null)
+        val popUp: View = layoutInflater.inflate(R.layout.otp_popup_layout, binding.bookingDetailContainer,false)
         val otpWindow = PopupWindow(
             popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
             ConstraintLayout.LayoutParams.MATCH_PARENT, true
@@ -948,8 +840,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
         otpWindow.isOutsideTouchable = false
         val messageDispTxt: MaterialTextView = popUp.findViewById(R.id.messageDispTxt)
         val cross: ImageView = popUp.findViewById(R.id.crossIcon)
-        messageDispTxt.text =
-            resources.getString(R.string.your_otp_is) + " " + Constants.OTP + " " + getString(
+        messageDispTxt.text = resources.getString(R.string.your_otp_is) + " " + Constants.OTP + " " + getString(
                 R.string.share_yout_opt_with
             )
         cross.setOnClickListener {
@@ -962,7 +853,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
         val layoutInflater: LayoutInflater =
             getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        val popUp: View = layoutInflater.inflate(R.layout.report_popup_layout, null)
+        val popUp: View = layoutInflater.inflate(R.layout.report_popup_layout, binding.bookingDetailContainer,false)
         val reportPopupWindow = PopupWindow(
             popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
             ConstraintLayout.LayoutParams.MATCH_PARENT, true
@@ -1037,35 +928,14 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-//    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-//        spinnerValue = parent?.getItemAtPosition(position).toString()
-//        if (spinnerValue == Constants.OTHER) {
-//            descriptionTv?.visibility = View.VISIBLE
-//        } else {
-//            descriptionTv?.visibility = View.GONE
-//        }
-//    }
-//
-//    override fun onNothingSelected(parent: AdapterView<*>?) {
-//
-//    }
-
     override fun onBackPressed() {
 
         if (Constants.NOTIFICATION) {
             Constants.COMING_FROM_DETAIL = false
-//                    val fragment = NotificationFragment()
-//                    val transaction = fragmentManager?.beginTransaction()
-//                    transaction?.replace(R.id.frameContainer, fragment)
-//                    transaction?.commit()
             finish()
         } else {
             Constants.COMING_FROM_DETAIL = true
             finish()
-//                    val fragment = BookingFragment()
-//                    val transaction = fragmentManager?.beginTransaction()
-//                    transaction?.replace(R.id.frameContainer, fragment)
-//                    transaction?.commit()
         }
         if (Constants.IS_BOOKING_DONE) {
             val intent = Intent(this@BookingDetailFragment, MainActivity::class.java)

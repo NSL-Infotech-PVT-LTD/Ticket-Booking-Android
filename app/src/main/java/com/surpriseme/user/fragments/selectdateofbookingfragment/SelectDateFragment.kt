@@ -168,7 +168,7 @@ class SelectDateFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.backpress -> {
-                fragmentManager?.popBackStack()
+                if (Constants.IS_SEARCH_ACTIVITY) requireActivity().finish() else requireActivity().supportFragmentManager.popBackStack()
             }
 
         }

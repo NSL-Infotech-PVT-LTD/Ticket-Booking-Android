@@ -15,10 +15,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.textview.MaterialTextView
-import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.iid.InstanceIdResult
 import com.squareup.picasso.Picasso
 import com.surpriseme.user.R
 import com.surpriseme.user.activity.settings.SettingsActivity
@@ -51,12 +48,11 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
     private lateinit var shared: PrefrenceShared
     private lateinit var ctx: Context
     private var username = ""
-    lateinit var thumbnail: Bitmap
+    private lateinit var thumbnail: Bitmap
     private lateinit var file: File
     private var userImage: MultipartBody.Part? = null
     private var toolProfileTxt: MaterialTextView? = null
     private var toolBackpress: MaterialTextView? = null
-    private var isTryToUpdateProfile = false
 
 
     override fun onAttach(context: Context) {
@@ -69,17 +65,15 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         // Inflate the layout for this fragment
-
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
-
         val view = binding.root
         shared = PrefrenceShared(ctx)
         val loadingText = view.findViewById<TextView>(R.id.loadingtext)
         loadingText.text = Utility.randomString(ctx)
-
+        // Hide Bottom Navigation
         ((ctx as MainActivity)).hideBottomNavigation()
-
         inIt(view)
 
         return view
@@ -108,8 +102,7 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
         // display value to the views ....
         if (shared.getString(Constants.DataKey.USER_IMAGE) != "") {
             Picasso.get().load(shared.getString(Constants.DataKey.USER_IMAGE))
-                .placeholder(R.drawable.profile_pholder)
-                .into(binding.profileImage)
+                .placeholder(R.drawable.profile_pholder).into(binding.profileImage)
         }
         if (shared.getString(Constants.DataKey.USER_NAME) != "") {
             binding.usernameEdt.setText(shared.getString(Constants.DataKey.USER_NAME))
@@ -117,24 +110,20 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
         if (shared.getString(Constants.DataKey.USER_EMAIL) != "") {
             binding.emailEdt.setText(shared.getString(Constants.DataKey.USER_EMAIL))
         }
-
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
 
             R.id.backpress -> {
-
                 if (Constants.PROFILE_FRAGMENT) {
                     updateProfilePopup()
                 } else {
-                    fragmentManager?.popBackStack()
+                    requireActivity().supportFragmentManager.popBackStack()
                     Constants.PROFILE_FRAGMENT = false
                 }
-
             }
             R.id.logoutTxt -> {
-
                 logoutPop()
             }
             R.id.editProfileBtn -> {
@@ -149,17 +138,12 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
                 binding.passwordprofileLayout.visibility = View.GONE
                 binding.aboutprofileLayout.visibility = View.GONE
                 binding.logoutLayout.visibility = View.GONE
-
             }
             R.id.updateprofilebtn -> {
              //   isTryToUpdateProfile = false
-
                 Constants.PROFILE_FRAGMENT = false
                 username = binding.usernameEdt.text.toString()
-
                 if (username.isEmpty()) {
-//                    binding.usernameEdt.error = getString(R.string.enter_your_user_name)
-//                    binding.usernameEdt.requestFocus()
                     Utility.alertErrorMessage(ctx,ctx.resources.getString(R.string.enter_your_user_name))
                 } else {
                     // update profile api
@@ -172,9 +156,7 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
                 }, 3000)
             }
             R.id.cameraIcon -> {
-
                 Permission.checkPermissionForImageCamera(requireActivity(), this@ProfileFragment)
-
             }
             R.id.changePasswordText -> {
                 loadFragment(ChangePasswordFragment())
@@ -187,18 +169,13 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
                     binding.settingsTxt.isEnabled = true
                 }, 2000)
             }
-
         }
     }
-
-
     private fun updateProfileApi() {
-
         binding.loaderLayout.visibility = View.VISIBLE
         val requestBodyMap: HashMap<String, RequestBody> = HashMap()
         requestBodyMap[Constants.ApiKey.NAME] =
             RequestBody.create(MediaType.parse("multipart/form-data"), username)
-
         RetrofitClient.api.updateProfileApi(
             shared.getString(Constants.DataKey.AUTH_VALUE),
             requestBodyMap,
@@ -209,16 +186,12 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
                     call: Call<UpdateProfileModel>,
                     response: Response<UpdateProfileModel>
                 ) {
-
                     if (response.body() != null) {
                         if (response.isSuccessful) {
-
                             binding.loaderLayout.visibility = View.GONE
-
                             shared.setString(
                                 Constants.DataKey.USER_IMAGE,
                                 Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + response.body()?.data?.user?.image)
-
                             //isTryToUpdateProfile = false
                             binding.editProfileBtn.visibility = View.VISIBLE
                             binding.cameraIcon.visibility = View.GONE
@@ -228,12 +201,8 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
                             binding.passwordprofileLayout.visibility = View.VISIBLE
                             binding.aboutprofileLayout.visibility = View.VISIBLE
                             binding.logoutLayout.visibility = View.VISIBLE
-
                             val message = response.body()?.data?.message
-
                             popupUpdatedProfile(message!!)
-
-
                         }
                     } else {
                         val jsonObject: JSONObject
@@ -262,12 +231,10 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
     }
 
     private fun loadFragment(fragment: Fragment) {
-
-        val transaction = fragmentManager?.beginTransaction()
-        transaction?.replace(R.id.frameContainer, fragment)
-        transaction?.addToBackStack("profileFragment")
-        transaction?.commit()
-
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.frameContainer, fragment)
+        transaction.addToBackStack("profileFragment")
+        transaction.commit()
     }
 
     // popup to display want to update profile or not....
@@ -275,16 +242,13 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
 
         val layoutInflater: LayoutInflater =
             ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-
-        val popUp: View = layoutInflater.inflate(R.layout.update_profile_popup_layout, null)
+        val popUp: View = layoutInflater.inflate(R.layout.update_profile_popup_layout,binding.profileContainer,false)
         val popUpWindowReport = PopupWindow(
             popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
-            ConstraintLayout.LayoutParams.MATCH_PARENT, true
-        )
+            ConstraintLayout.LayoutParams.MATCH_PARENT, true)
         popUpWindowReport.showAtLocation(popUp, Gravity.CENTER, 0, 0)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
             popUpWindowReport.elevation = 10f
         }
         popUpWindowReport.isTouchable = false
@@ -313,39 +277,30 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
             Constants.PROFILE_FRAGMENT = false
 
         }
-
         no.setOnClickListener {
             popUpWindowReport.dismiss()
-            fragmentManager?.popBackStack()
+            requireActivity().supportFragmentManager.popBackStack()
             Constants.PROFILE_FRAGMENT = false
         }
     }
-
-
     // when profile will be updated, then success message to display, "Profile has been updated successfully"
     fun popupUpdatedProfile(message:String?) {
-
         val layoutInflater: LayoutInflater =
             ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-
-        val popUp: View = layoutInflater.inflate(R.layout.updated_profile_alert_layout, null)
+        val popUp: View = layoutInflater.inflate(R.layout.updated_profile_alert_layout, binding.profileContainer,false)
         val popUpWindowReport = PopupWindow(
             popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
             ConstraintLayout.LayoutParams.MATCH_PARENT, true
         )
         popUpWindowReport.showAtLocation(popUp, Gravity.CENTER, 0, 0)
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
             popUpWindowReport.elevation = 10f
         }
         popUpWindowReport.isTouchable = false
         popUpWindowReport.isOutsideTouchable = false
-
-        val messageToDisplay = message
         val done: MaterialTextView = popUp.findViewById(R.id.done)
         val displayMessage: TextView = popUp.findViewById(R.id.messageTxt)
-        displayMessage.text = messageToDisplay
+        displayMessage.text = message
 
         done.setOnClickListener {
             popUpWindowReport.dismiss()
@@ -357,29 +312,23 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
 
         val layoutInflater: LayoutInflater =
             ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-
-        val popUp: View = layoutInflater.inflate(R.layout.item_custom_logout, null)
+        val popUp: View = layoutInflater.inflate(R.layout.item_custom_logout, binding.profileContainer,false)
         val popUpWindowReport = PopupWindow(
             popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
             ConstraintLayout.LayoutParams.MATCH_PARENT, true
         )
         popUpWindowReport.showAtLocation(popUp, Gravity.CENTER, 0, 0)
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
             popUpWindowReport.elevation = 10f
         }
         popUpWindowReport.isTouchable = false
         popUpWindowReport.isOutsideTouchable = false
-
         val yes: TextView = popUp.findViewById(R.id.yes)
         val cancelTv: TextView = popUp.findViewById(R.id.cancel)
-
         yes.setOnClickListener {
             logout()
             popUpWindowReport.dismiss()
         }
-
         cancelTv.setOnClickListener {
             popUpWindowReport.dismiss()
         }
@@ -398,7 +347,7 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
     }
 
     override fun getImageBitmap(mPaths: List<String?>?) {
-        val imageFilePath: String = mPaths!!.get(0).toString()
+        val imageFilePath: String = mPaths!![0].toString()
         val bmOption: BitmapFactory.Options = BitmapFactory.Options()
         thumbnail = BitmapFactory.decodeFile(imageFilePath, bmOption)
         file = File(imageFilePath)
@@ -406,8 +355,7 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
         userImage = MultipartBody.Part.createFormData(
             Constants.ApiKey.IMAGE,
             file.name,
-            RequestBody.create(MediaType.parse("image/*"), file)
-        )
+            RequestBody.create(MediaType.parse("image/*"), file))
     }
 
     private fun logout() {
@@ -451,7 +399,6 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
-
                             }
                         }
                     }
