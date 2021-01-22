@@ -8,10 +8,6 @@
     <string name="google_Map_Key_latest">AIzaSyDqU3uVjJ1hn71Gi98EJNEESQxuMPnbq8E</string>
     <string name="youtube_api_key">AIzaSyAB8u2xJzND_aHiLd4Q56_1c1Op4Kda9T0</string>
     <string name="player_error">Error initializing YouTube player %s</string>
-
-
-
-
     <string name="CHOOSE_PREFFERED">Choose your preffered language</string>
     <string name="next">Next</string>
     <string name="GET_STARTED">Get started</string>
@@ -85,7 +81,7 @@
     <string name="card_holder_name">Card Holder Name</string>
     <string name="expiry_date_of_card">Expiry Date of Card</string>
     <string name="addcardd">Add Card</string>
-    <string name="landmark">Landmark</string>
+    <string name="ADDITIONAL_INFORMATION">Additional Information (Optional)</string>
     <string name="save_address">Save Address</string>
     <string name="home">Home</string>
     <string name="work">Work</string>
@@ -102,7 +98,8 @@
     <string name="by_rating">By Rating</string>
     <string name="by_distance">By Distance</string>
     <string name="close">Close</string>
-    <string name="choose_payment_method">Choose Payment Method</string>
+    <string name="CHOOSE_PAYMENT_METHOD">Choose your Payment Method</string>
+    <string name="ONLY_FOR_CUSTOMER_IN_NETHERLAND">Only for customers in Netherlands</string>
     <string name="choose_your_favourable_method_of_payment">Choose your favourable method of payment</string>
     <string name="ideal">iDeal</string>
     <string name="card">Card</string>
@@ -246,7 +243,6 @@
     <string name="yyYY">YYYY</string>
     <string name="cvv">cvv</string>
     <string name="pleaseenteraccount">Please enter account holder name</string>
-    <string name="chooseyourcard_payment_method">Choose your card method of payment</string>
     <string name="pleaseenteraccountnum">Please enter account number</string>
     <string name="pleaseentermonth">Please enter month</string>
     <string name="pleaseenteryear">Please enter year</string>
@@ -298,6 +294,9 @@
     <string name="miles">miles</string>
     <string name="fblogin">Signup with facebook</string>
     <string name="SELECT_ADDRESS_ERROR">Please select address</string>
+    <string name="CARD_METHOD">Choose the type of card for the payment</string>
+
+
 
 
 
@@ -308,7 +307,7 @@
     <string name="card_number_demo">**** - **** - **** - 1452</string>
 
     <string name="completed_review">completed_review</string>
-    <string name="full_address">Full Address</string>
+    <string name="full_address">Full Address (if different from location)</string>
 
 
 

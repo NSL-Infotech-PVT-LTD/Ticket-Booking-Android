@@ -187,6 +187,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
                             shared.setString(Constants.DataKey.OLD_PASS_VALUE, password) // To save User Password
                             prefManager?.setString1(Constants.DataKey.CURRENCY, "") // to save currency....
                             prefManager?.setInt("myCurrencyAdp",-1) // to set initial currency to 0 position....
+                            shared.setString(Constants.DataKey.USER_ID, response.body()?.data?.user?.id.toString())
 
 
 

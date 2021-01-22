@@ -24,6 +24,7 @@ import com.surpriseme.user.activity.payment.PaymentActivity
 import com.surpriseme.user.databinding.FragmentBookSlotBinding
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
+import com.surpriseme.user.util.PrefManger
 import com.surpriseme.user.util.PrefrenceShared
 import com.surpriseme.user.util.Utility
 import org.json.JSONException
@@ -42,6 +43,7 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
     private var dispDate = ""
     private var weekday = ""
     private lateinit var shared: PrefrenceShared
+    private var prefManager: PrefManger? = null
     private var mFromTime = ""
     private var mToTime = ""
     private var artistID = ""
@@ -67,6 +69,7 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_book_slot, container, false)
         val view = binding.root
         shared = PrefrenceShared(ctx)
+        prefManager = PrefManger(ctx)
 
         init(view)
 
@@ -194,6 +197,7 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
                         if (response.isSuccessful) {
                             // Display Popup Message when Api Successfully created booking....
                             bookingId = response.body()?.data?.address?.id.toString()
+
                             val intent = Intent(ctx, PaymentActivity::class.java)
                             intent.putExtra("bookingid", bookingId)
                             startActivity(intent)

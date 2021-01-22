@@ -42,76 +42,10 @@
                 android:layout_marginStart="@dimen/_20sdp"
                 android:fontFamily="@font/montserrat_bold"
                 app:layout_constraintStart_toStartOf="parent"
-                android:text="@string/choose_payment_method"
+                android:text="@string/CHOOSE_PAYMENT_METHOD"
                 android:textColor="#36396e"
                 android:textSize="@dimen/_14sdp"
                 app:layout_constraintTop_toBottomOf="@id/toolbarCard" />
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="5dp"
-                android:src="@drawable/dotted_view_line"
-                app:layout_constraintTop_toBottomOf="@id/choosePaymentMethodTxt"
-                app:layout_constraintStart_toStartOf="@id/choosePaymentMethodTxt"
-                app:layout_constraintEnd_toEndOf="@id/choosePaymentMethodTxt"/>
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/favourableMethodTxt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:fontFamily="@font/montserrat_medium"
-                android:text="@string/choose_your_favourable_method_of_payment"
-                android:textColor="#22266b"
-                android:textSize="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/choosePaymentMethodTxt" />
-
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/idealPaymentTxt"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_50sdp"
-                android:layout_marginHorizontal="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_30sdp"
-                android:fontFamily="@font/montserrat_semibold"
-                android:gravity="center_vertical"
-                android:paddingHorizontal="@dimen/_20sdp"
-                android:paddingStart="@dimen/_50sdp"
-                android:text="@string/ideal"
-                android:textColor="#36396e"
-                android:textSize="@dimen/_12sdp"
-                app:layout_constraintTop_toBottomOf="@+id/favourableMethodTxt" />
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginEnd="@dimen/_20sdp"
-                android:src="@drawable/arrow_right"
-                app:layout_constraintBottom_toBottomOf="@+id/idealPaymentTxt"
-                app:layout_constraintEnd_toEndOf="@id/idealPaymentTxt"
-                app:layout_constraintTop_toTopOf="@+id/idealPaymentTxt" />
-
-
-            <ImageView
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:src="@drawable/ideal_icon"
-                app:layout_constraintBottom_toBottomOf="@+id/idealPaymentTxt"
-                app:layout_constraintStart_toStartOf="@+id/idealPaymentTxt"
-                app:layout_constraintTop_toTopOf="@+id/idealPaymentTxt" />
-
-            <View
-                android:id="@+id/view"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#e9e9e9"
-                android:layout_marginTop="@dimen/_10sdp"
-                app:layout_constraintTop_toBottomOf="@id/idealPaymentTxt"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/cardPaymentTxt"
@@ -126,7 +60,7 @@
                 android:text="@string/card"
                 android:textColor="#36396e"
                 android:textSize="@dimen/_12sdp"
-                app:layout_constraintTop_toBottomOf="@+id/view" />
+                app:layout_constraintTop_toBottomOf="@+id/choosePaymentMethodTxt" />
 
             <ImageView
                 android:layout_width="20dp"
@@ -145,6 +79,63 @@
                 app:layout_constraintStart_toStartOf="@+id/cardPaymentTxt"
                 app:layout_constraintTop_toTopOf="@+id/cardPaymentTxt" />
 
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#e9e9e9"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintTop_toBottomOf="@id/cardPaymentTxt"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/idealPaymentTxt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/montserrat_semibold"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="@dimen/_20sdp"
+                android:paddingStart="@dimen/_50sdp"
+                android:text="@string/ideal"
+                android:textColor="#36396e"
+                android:textSize="@dimen/_12sdp"
+                app:layout_constraintTop_toBottomOf="@+id/view" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:src="@drawable/arrow_right"
+                app:layout_constraintBottom_toBottomOf="@+id/idealPaymentTxt"
+                app:layout_constraintEnd_toEndOf="@id/idealPaymentTxt"
+                app:layout_constraintTop_toTopOf="@+id/idealPaymentTxt" />
+
+
+            <ImageView
+                android:id="@+id/idealIcon"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:src="@drawable/ideal_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/idealPaymentTxt"
+                app:layout_constraintStart_toStartOf="@+id/idealPaymentTxt"
+                app:layout_constraintTop_toTopOf="@+id/idealPaymentTxt" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/ONLY_FOR_CUSTOMER_IN_NETHERLAND"
+                app:layout_constraintTop_toBottomOf="@id/idealIcon"
+                app:layout_constraintStart_toEndOf="@+id/idealIcon"
+                app:layout_constraintEnd_toEndOf="@id/idealPaymentTxt"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/montserrat_regular"
+                android:textSize="@dimen/_8sdp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

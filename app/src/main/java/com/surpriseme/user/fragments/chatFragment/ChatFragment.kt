@@ -148,6 +148,8 @@ class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceiv
 //                    onetoonelayout?.mySnack("write something..") {}
                     } else {
                         //   if(senderrole!=null || requestId!=null) {
+
+
                         ConnectionManger.sendMessage(message, shared?.getString(Constants.DataKey.USER_ID)!!, mReceiverId
                         )
                         binding?.msgEdt!!.setText("")
@@ -249,11 +251,7 @@ class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceiv
                             try {
                                 jsonObject = JSONObject(response.errorBody()?.string()!!)
                                 val errorMesssage = jsonObject.getString(Constants.ERROR)
-                                Toast.makeText(
-                                    this@ChatFragment,
-                                    "" + errorMesssage,
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                Toast.makeText(this@ChatFragment, "" + errorMesssage, Toast.LENGTH_SHORT).show()
                             } catch (e: JSONException) {
                                 Toast.makeText(
                                     this@ChatFragment,
@@ -280,17 +278,19 @@ class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceiv
             val model = ChatDataModel()
             try {
                 val messageText = JSONObject(text)
-                val myMessgae = messageText.getString("message")
-                jsonObject.put("message", myMessgae)
-                model.message = myMessgae
-                model.sender_id = messageText.getInt("sender_id")
-                model.attachment = messageText.getString("attachment")
-                model.receiver_id = messageText.getInt("receiver_id")
-                model.type = messageText.getString("type")
-                model.local_message_id = System.currentTimeMillis().toString()
+                if(messageText.getInt("sender_id") == mReceiverId.toInt() || messageText.getInt("receiver_id") == mReceiverId.toInt()) {
+                    val myMessgae = messageText.getString("message")
+                    jsonObject.put("message", myMessgae)
+                    model.message = myMessgae
+                    model.sender_id = messageText.getInt("sender_id")
+                    model.attachment = messageText.getString("attachment")
+                    model.receiver_id = messageText.getInt("receiver_id")
+                    model.type = messageText.getString("type")
+                    model.local_message_id = System.currentTimeMillis().toString()
 
-                adapter?.addItem(model)
-                binding?.startChatWithLayout?.visibility = View.GONE
+                    adapter?.addItem(model)
+                    binding?.startChatWithLayout?.visibility = View.GONE
+                }
 
 
             } catch (e: JSONException) {

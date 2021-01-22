@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
@@ -24,9 +25,6 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 class ChatListFragment : Fragment(), ChatListAdapter.GoToChat {
@@ -75,28 +73,25 @@ class ChatListFragment : Fragment(), ChatListAdapter.GoToChat {
                     call: Call<ChatListModel>,
                     response: Response<ChatListModel>
                 ) {
-                    binding?.loaderLayout?.visibility = View.GONE
+                    binding?.loaderLayout?.visibility = GONE
                     if (response.body() !=null) {
                         if (response.isSuccessful) {
                             chatList.clear()
-                            /**
-                             * @author pardeep.sharma@netscapelabs.com
-                             * @param handle the null check
-                             */
+
                             if (response.body()?.data?.list != null) {
                                 chatList = response.body()?.data?.list!!
 
 
                                 if (chatList.isNotEmpty()) {
 
-                                    binding?.artistNotFoundLayout?.visibility = View.GONE
+                                    binding?.artistNotFoundLayout?.visibility = GONE
 
                                     val chatListAdapter =
                                         ChatListAdapter(ctx!!, chatList, this@ChatListFragment)
                                     binding?.chatListRecycler?.adapter = chatListAdapter
                                     binding?.chatContainer?.visibility = View.VISIBLE
                                 } else {
-                                    binding?.chatContainer?.visibility = View.GONE
+                                    binding?.chatContainer?.visibility = GONE
                                 }
                             }else{
                                 binding?.artistNotFoundLayout?.visibility = View.VISIBLE
@@ -120,7 +115,7 @@ class ChatListFragment : Fragment(), ChatListAdapter.GoToChat {
                 }
 
                 override fun onFailure(call: Call<ChatListModel>, t: Throwable) {
-                    binding?.loaderLayout?.visibility = View.GONE
+                    binding?.loaderLayout?.visibility = GONE
                     Toast.makeText(ctx!!,"" + t.message.toString(),Toast.LENGTH_SHORT).show()
                 }
             })
@@ -150,26 +145,26 @@ class ChatListFragment : Fragment(), ChatListAdapter.GoToChat {
     }
 
     //Converting Utc Time to Local time
-    fun uTCToLocal(
-        dateFormatInPut: String?,
-        dateFomratOutPut: String?,
-        datesToConvert: String?
-    ): String? {
-        var dateToReturn = datesToConvert
-        val sdf = SimpleDateFormat(dateFormatInPut)
-        sdf.timeZone = TimeZone.getTimeZone("UTC")
-        var gmt: Date? = null
-        val sdfOutPutToSend =
-            SimpleDateFormat(dateFomratOutPut)
-        sdfOutPutToSend.timeZone = TimeZone.getDefault()
-        try {
-            gmt = sdf.parse(datesToConvert)
-            dateToReturn = sdfOutPutToSend.format(gmt)
-        } catch (e: ParseException) {
-            e.printStackTrace()
-        }
-        return dateToReturn
-    }
+//    fun uTCToLocal(
+//        dateFormatInPut: String?,
+//        dateFomratOutPut: String?,
+//        datesToConvert: String?
+//    ): String? {
+//        var dateToReturn = datesToConvert
+//        val sdf = SimpleDateFormat(dateFormatInPut)
+//        sdf.timeZone = TimeZone.getTimeZone("UTC")
+//        var gmt: Date? = null
+//        val sdfOutPutToSend =
+//            SimpleDateFormat(dateFomratOutPut)
+//        sdfOutPutToSend.timeZone = TimeZone.getDefault()
+//        try {
+//            gmt = sdf.parse(datesToConvert)
+//            dateToReturn = sdfOutPutToSend.format(gmt)
+//        } catch (e: ParseException) {
+//            e.printStackTrace()
+//        }
+//        return dateToReturn
+//    }
 
 
 }

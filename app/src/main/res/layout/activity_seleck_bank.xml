@@ -64,19 +64,7 @@
             android:textStyle="bold"
             android:textSize="@dimen/_14sdp"/>
 
-        <TextView
-            android:id="@+id/addcardbtn"
-            android:layout_width="wrap_content"
-            android:paddingTop="@dimen/_4sdp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/backpress"
-            app:layout_constraintBottom_toBottomOf="@id/backpress"
-            android:layout_marginEnd="@dimen/_20sdp"
-            android:text="@string/addcard"
-            android:fontFamily="@font/montserrat_regular"
-            android:textColor="@color/colorAccent"
-            />
+
 
 
 
@@ -92,21 +80,31 @@
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginStart="@dimen/_20sdp"
         android:text="@string/selectcard"
-        android:textSize="@dimen/_15sdp"
-        android:textColor="#36396E"
-        android:fontFamily="@font/montserrat_bold"
+        app:layout_constraintEnd_toStartOf="@+id/addcardbtn"
+        app:layout_constraintHorizontal_bias="0"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:textSize="@dimen/_12sdp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/montserrat_semibold"
         app:layout_constraintTop_toBottomOf="@id/toolbarCard"/>
 
+<!--        android:textColor="#36396E"-->
+        <TextView
+            android:id="@+id/addcardbtn"
+            android:layout_width="wrap_content"
+            android:paddingTop="@dimen/_4sdp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/selectcard"
+            app:layout_constraintBottom_toBottomOf="@id/selectcard"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:text="@string/addcard"
+            android:fontFamily="@font/montserrat_regular"
+            android:textColor="@color/colorAccent"
+            />
 
-    <ImageView
-        android:id="@+id/view1"
-        android:layout_width="0dp"
-        android:layout_height="5dp"
-        android:src="@drawable/dotted_view_line"
-        app:layout_constraintTop_toBottomOf="@id/selectcard"
-        app:layout_constraintStart_toStartOf="@id/selectcard"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="@dimen/_60sdp"/>
+
+
 
     <TextView
         android:id="@+id/choosecard"
@@ -115,25 +113,33 @@
         android:layout_marginTop="@dimen/_4sdp"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="@dimen/_20sdp"
-        android:text="@string/chooseyourcard_payment_method"
-        android:textSize="@dimen/_10sdp"
+        android:text="@string/CARD_METHOD"
+        android:textSize="@dimen/_8sdp"
         android:layout_marginEnd="@dimen/_30sdp"
-        app:layout_constraintEnd_toEndOf="@id/view1"
-        android:textColor="#22266B"
-        android:fontFamily="@font/montserrat_medium"
-        app:layout_constraintTop_toBottomOf="@id/view1"/>
+        android:textColor="@color/black"
+        android:fontFamily="@font/montserrat_regular"
+        app:layout_constraintTop_toBottomOf="@id/addcardbtn"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintTop_toBottomOf="@+id/choosecard"
+            android:layout_marginTop="@dimen/_20sdp"
+            app:layout_constraintBottom_toTopOf="@id/paynowbtn"
+            android:background="@color/greyLightColor">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cardrecycler"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/_20sdp"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginBottom="@dimen/_10sdp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/cardrecycler"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-
-        android:layout_marginTop="@dimen/_20sdp"
-        app:layout_constraintBottom_toTopOf="@id/paynowbtn"
-        android:layout_marginBottom="@dimen/_10sdp"
-        app:layout_constraintTop_toBottomOf="@id/choosecard"
-        />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/paynowbtn"

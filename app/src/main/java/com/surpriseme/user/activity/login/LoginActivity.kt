@@ -1,24 +1,16 @@
 package com.surpriseme.user.activity.login
 
 import android.content.Intent
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
-import android.util.Base64
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.facebook.FacebookSdk
-import com.facebook.appevents.AppEventsLogger
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.iid.InstanceIdResult
 import com.surpriseme.user.R
 import com.surpriseme.user.activity.chooselanguage.ChooseLanguageActivity
 import com.surpriseme.user.activity.forgotpassword.ForgotPasswordActivity
@@ -32,8 +24,6 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -50,11 +40,10 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         super.onStart()
 
         FirebaseInstanceId.getInstance().instanceId
-            .addOnSuccessListener(this,
-                OnSuccessListener<InstanceIdResult> { instanceIdResult ->
-                    fbtoken = instanceIdResult.token
+            .addOnSuccessListener(this) { instanceIdResult ->
+                fbtoken = instanceIdResult.token
 
-                })
+            }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,7 +75,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         shared()
         loaderLayout = findViewById(R.id.loaderLayout)
 
-        checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
+        checkbox.setOnCheckedChangeListener { _, isChecked ->
             prefManager!!.setBoolean1(Constants.ISREMEMBER, isChecked)
         }
 
@@ -130,18 +119,20 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         email = emailedt.text.toString().trim()
         password = passwordEdt.text.toString().trim()
 
-        if (email.isEmpty()) {
-            Utility.alertErrorMessage(this@LoginActivity, getString(R.string.enter_your_mail))
-        }
-//        else if (!checkValidEmail.isValidEmail(email)) {       // Checking for Valid Email Entered or not....
-//            Utility.alertErrorMessage(this@LoginActivity, getString(R.string.please_enter_valid_email))
-//        }
-        else if (password.isEmpty()) {
-            Utility.alertErrorMessage(this@LoginActivity, getString(R.string.enter_your_password))
-        }
-        else {
-            // Hit login api here....
-            loginApi()
+        when {
+            email.isEmpty() -> {
+                Utility.alertErrorMessage(this@LoginActivity, getString(R.string.enter_your_mail))
+            }
+            //        else if (!checkValidEmail.isValidEmail(email)) {       // Checking for Valid Email Entered or not....
+            //            Utility.alertErrorMessage(this@LoginActivity, getString(R.string.please_enter_valid_email))
+            //        }
+            password.isEmpty() -> {
+                Utility.alertErrorMessage(this@LoginActivity, getString(R.string.enter_your_password))
+            }
+            else -> {
+                // Hit login api here....
+                loginApi()
+            }
         }
     }
 
@@ -183,7 +174,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                             shared.setString(
                                 Constants.DataKey.OLD_PASS_VALUE,
                                 password
-                            )                                       // To save User Password
+                            )
+                            // To save User Password
                             if (response.body()?.data?.user?.image != null)
                                 shared.setString(
                                     Constants.DataKey.USER_IMAGE,  // To Save User Image
