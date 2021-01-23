@@ -3,13 +3,10 @@ package com.surpriseme.user.fragments.locationfragment
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.location.Address
-import android.location.Geocoder
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.*
-import android.view.inputmethod.InputMethodManager
 import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
@@ -40,7 +37,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.net.SocketTimeoutException
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -81,10 +77,8 @@ class LocationFragment : Fragment(), View.OnClickListener,
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_location, container, false)
         val view = binding.root
         shared = PrefrenceShared(ctx)
-
-        requireActivity().getWindow()?.setSoftInputMode(
-            WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
-        )
+        requireActivity().getWindow()?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+        Constants.LOCATION_FRAGMENT = true
 
         tbackpress = view.findViewById(R.id.backpress) // Toolbar back arrow click listner....
         tbackpress.setOnClickListener(this) //  Initializing the Toolbar
@@ -94,7 +88,7 @@ class LocationFragment : Fragment(), View.OnClickListener,
         binding.addAddressBtnLayout.setOnClickListener(this)
 
         Places.initialize(ctx, ctx.resources.getString(R.string.places_api_key))
-        val placesClient = Places.createClient(ctx)
+//        val placesClient = Places.createClient(ctx)
 
         init(view)
         return view
@@ -189,10 +183,10 @@ class LocationFragment : Fragment(), View.OnClickListener,
                         bundle.putString("locationName", locationName)
                         bundle.putString("address", address)
                         fragment.arguments = bundle
-                        val transaction = fragmentManager?.beginTransaction()
-                        transaction?.replace(R.id.frameContainer, fragment)
-                        transaction?.addToBackStack("locationFragment")
-                        transaction?.commit()
+                        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                        transaction.replace(R.id.frameContainer, fragment)
+                        transaction.addToBackStack("locationFragment")
+                        transaction.commit()
 
                     }
                 }
@@ -221,10 +215,10 @@ class LocationFragment : Fragment(), View.OnClickListener,
 
     private fun replaceFragment(fragment: Fragment) {
 
-        val transaction = fragmentManager?.beginTransaction()
-        transaction?.replace(R.id.frameContainer, fragment)
-        transaction?.addToBackStack("LocationManager")
-        transaction?.commit()
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.frameContainer, fragment)
+        transaction.addToBackStack("LocationManager")
+        transaction.commit()
     }
 
     fun locationListApi() {
@@ -280,14 +274,11 @@ class LocationFragment : Fragment(), View.OnClickListener,
                                 Toast.makeText(
                                     ctx,
                                     "" + e.message.toString(),
-                                    Toast.LENGTH_SHORT
-                                )
-                                    .show()
+                                    Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
                 }
-
                 override fun onFailure(call: Call<LocationListModel>, t: Throwable) {
                     binding.loaderLayout.visibility = View.GONE
                     if (t is SocketTimeoutException)
@@ -310,14 +301,14 @@ class LocationFragment : Fragment(), View.OnClickListener,
             shared.setString(Constants.LATITUDE, latitude)
             shared.setString(Constants.LONGITUDE, longitude)
             shared.setString(Constants.NAME, name)
+            Constants.LOCATION_FRAGMENT = false
             val fragment = HomeFragment()
-            val transaction = fragmentManager?.beginTransaction()
-            transaction?.replace(R.id.frameContainer, fragment)
-            transaction?.commit()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.frameContainer, fragment)
+            transaction.commit()
         }, 500)
 
     }
-
     // Delete address api....
     private fun deleteAddressApi(id: String) {
         binding.loaderLayout.visibility = View.VISIBLE
@@ -360,26 +351,22 @@ class LocationFragment : Fragment(), View.OnClickListener,
                         }
                     }
                 }
-
                 override fun onFailure(call: Call<DeleteAddressModel>, t: Throwable) {
                     Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
                 }
             })
     }
-
     // Override function from Location Adapter to delete address....
     override fun deleteAdd(id: String) {
-
         alertPopUp(id)
     }
-
     // Display Alert pop when user will delete address...
     private fun alertPopUp(id: String) {
 
         val layoutInflater: LayoutInflater =
             ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        val popUp: View = layoutInflater.inflate(R.layout.logout_popup, null)
+        val popUp: View = layoutInflater.inflate(R.layout.logout_popup, binding.locationContainerParent,false)
         val popUpWindow = PopupWindow(
             popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
             ConstraintLayout.LayoutParams.MATCH_PARENT, true
@@ -424,7 +411,6 @@ class LocationFragment : Fragment(), View.OnClickListener,
         longitude = locationDataList.longitude
         fullAddress = locationDataList.state
         landmark = locationDataList.country
-
         val fragment = MapFragment()
         val bundle = Bundle()
         bundle.putDouble("lat", latitude.toDouble())
@@ -435,10 +421,10 @@ class LocationFragment : Fragment(), View.OnClickListener,
         bundle.putString("landmark", landmark)
         bundle.putString("addressID", locationDataList.id.toString())
         fragment.arguments = bundle
-        val transaction = fragmentManager?.beginTransaction()
-        transaction?.replace(R.id.frameContainer, fragment)
-        transaction?.addToBackStack("locationFragment")
-        transaction?.commit()
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.frameContainer, fragment)
+        transaction.addToBackStack("locationFragment")
+        transaction.commit()
 
     }
 

@@ -152,14 +152,21 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
-    <include layout="@layout/payment_done_layout"
-        android:id="@+id/paymentDoneLayout"
-        android:visibility="gone"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <include
         android:id="@+id/loaderLayout"
         android:visibility="gone"
         layout="@layout/loader_layout"
         />
+
+    <include
+        android:id="@+id/pleaseWaitLayout"
+        layout="@layout/please_wait_payment_layout"
+        android:visibility="gone" />
+
+
+    <include layout="@layout/payment_done_layout"
+        android:id="@+id/paymentDoneLayout"
+        android:visibility="gone"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

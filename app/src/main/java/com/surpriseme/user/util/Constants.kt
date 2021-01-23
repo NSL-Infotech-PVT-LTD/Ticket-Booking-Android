@@ -1,8 +1,10 @@
 package com.surpriseme.user.util
 
 import com.google.android.gms.maps.model.LatLng
+import com.surpriseme.user.data.model.CardGetDetailModel
 import com.surpriseme.user.fragments.bookingfragment.BookingArtistDetailModel
 import com.surpriseme.user.fragments.locationfragment.LocationDataList
+import com.surpriseme.user.fragments.viewprofile.ProfileFragment
 
 object Constants {
     const val LOGIN = "customer/login"
@@ -55,7 +57,6 @@ object Constants {
     var NAME = ""
     var WantToUpdateAddress = false
     var WantToAddLocation = false
-    var BOOKING_TYPE = ""
     var SAVED_LOCATION = false
     const val COMPLETE_REVIEW = "completed_review"
     var ARTIST_ID = ""
@@ -83,8 +84,8 @@ object Constants {
     var IS_SWITCH_TO_VIRTUAL = true
     var IS_ADDED_TO_BACKSTACK =false
     var LATLNG:LatLng?=null
-    var addressID = "addressID"
-    var PROFILE_FRAGMENT = false  // Used to handle backpress, while user on profile fragment then popup will display
+    var IDEAL_PAYMENT = false
+
     // by main activity backpress....
 
     var FB_ID = ""
@@ -98,10 +99,18 @@ object Constants {
     var IS_BOOKING_DONE = false
     var IS_SEARCH_ACTIVITY = false
     var IS_COMING_FROM_BOOKING_DETAIL = false
+    var PROFILE_FRAGMENT = false  // Used to handle backpress, while user on profile fragment then popup will display
+    var LOCATION_FRAGMENT = false // used to handle backpress, while Location fragment will be active
+
+
     var DEFAULT_LATITUDE = "DEFAULT_LATITUDE"
     var DEFAULT_LONGITUDE = "DEFAULT_LONGITUDE"
     var ADDRESS_ID = "ADDRESS_ID"
     var locationList: ArrayList<LocationDataList> = ArrayList()
+    var IS_CARD_SELECTED = false
+    var BOOKING_ID = ""
+    var cardList: ArrayList<CardGetDetailModel> = ArrayList()
+    var IS_CARD_DELETED = false
 
 
 

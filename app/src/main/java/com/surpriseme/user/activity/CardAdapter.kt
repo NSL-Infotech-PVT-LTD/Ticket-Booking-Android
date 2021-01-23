@@ -6,15 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.R
-import com.surpriseme.user.activity.chooselanguage.ChooseLanguageAdapter
-import com.surpriseme.user.activity.chooselanguage.LanguageModel
-import com.surpriseme.user.data.model.CardGetModel
-import com.surpriseme.user.data.model.DataX
+import com.surpriseme.user.data.model.CardGetDetailModel
+import com.surpriseme.user.util.Constants
+import java.util.*
+import kotlin.collections.ArrayList
 
 class CardAdapter (val context: Context
-                   , val list:ArrayList<DataX>,
+                   , val list:ArrayList<CardGetDetailModel>,
                    val lang:ChangeLocale) : RecyclerView.Adapter<CardAdapter.ViewHolder>(){
 
     var checkposition = -1
@@ -38,13 +37,24 @@ class CardAdapter (val context: Context
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         holder.cardname.setText("****-****-****-"+list[position].last4)
-        holder.cardholder.text = list[position].name
-        holder.expirydate.text = context.getString(R.string.expiry)+list[position].exp_month.toString()+"/"+list[position].exp_year
+        holder.cardholder.text = list[position].name.capitalize(Locale.ROOT)
+        holder.expirydate.text = context.getString(R.string.expiry) + " " +list[position].exp_month.toString()+"/"+list[position].exp_year
 
         holder.checkboxcard.isChecked = checkposition == position
 
         holder.checkboxcard.setOnCheckedChangeListener { buttonView, isChecked ->
-            checkposition = position
+
+            if (isChecked) {
+                checkposition = position
+                Constants.IS_CARD_SELECTED = true
+            } else {
+                checkposition = -1
+                Constants.IS_CARD_SELECTED = false
+            }
+//            checkposition = position
+//            if (checkposition != -1) {
+//                Constants.IS_CARD_SELECTED = true
+//            }
 
             lang.language(list[position].id)
         }

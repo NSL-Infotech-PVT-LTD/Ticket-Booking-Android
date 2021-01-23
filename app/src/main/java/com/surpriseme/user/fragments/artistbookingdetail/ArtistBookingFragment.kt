@@ -3,22 +3,18 @@ package com.surpriseme.user.fragments.artistbookingdetail
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.*
+import android.view.View.GONE
 import android.widget.*
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.view.marginEnd
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.google.android.material.resources.TextAppearance
 import com.google.android.material.textview.MaterialTextView
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
@@ -28,11 +24,9 @@ import com.surpriseme.user.R
 import com.surpriseme.user.activity.VideoActivity
 import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.databinding.FragmentArtistBookingBinding
-import com.surpriseme.user.fragments.bookingdetailfragment.BookingDetailFragment
 import com.surpriseme.user.fragments.chatFragment.ChatFragment
 import com.surpriseme.user.fragments.reviewfragment.ReviewFragment
 import com.surpriseme.user.fragments.selectdateofbookingfragment.SelectDateFragment
-import com.surpriseme.user.fragments.wayofbookingfragment.WayOfBookingFragment
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
@@ -42,7 +36,6 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import uk.co.senab.photoview.PhotoViewAttacher
 import java.text.DecimalFormat
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -87,10 +80,10 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
 
         if (Constants.SHOW_TYPE == "digital") {
             binding.virtualShowLayout.visibility = View.VISIBLE
-            binding.inPersonShowLayout.visibility = View.GONE
+            binding.inPersonShowLayout.visibility = GONE
         } else {
             binding.inPersonShowLayout.visibility = View.VISIBLE
-            binding.virtualShowLayout.visibility = View.GONE
+            binding.virtualShowLayout.visibility = GONE
         }
         binding.aboutText.movementMethod=LinkMovementMethod.getInstance()
         binding.aboutText.setOnTouchListener { view, event ->
@@ -149,14 +142,11 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
             R.id.youtubePlayIcon -> {
 
                 // initializing youtube play video.....
-                binding.youtubePlayIcon.visibility = View.GONE
-                binding.thumbnail.visibility = View.GONE
+                binding.youtubePlayIcon.visibility = GONE
+                binding.thumbnail.visibility = GONE
                 val youTubePlayerFragment =
                     childFragmentManager.findFragmentById(R.id.youtubeView) as YouTubePlayerSupportFragment?
-                youTubePlayerFragment?.initialize(
-                    ctx.resources.getString(R.string.youtube_api_key),
-                    this
-                )
+                youTubePlayerFragment?.initialize(ctx.resources.getString(R.string.youtube_api_key), this)
             }
             R.id.profileImg -> {
                 // open popup window for image zoom....
@@ -168,15 +158,15 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
 //                    imageZoomPopup(imagePath!!)
                     largeImge?.visibility=View.VISIBLE
                     binding.imageView.visibility=View.VISIBLE
-                    binding.pager.visibility=View.GONE
-                    binding.indicator.visibility=View.GONE
+                    binding.pager.visibility= GONE
+                    binding.indicator.visibility= GONE
 
                     Picasso.get()
                         .load(imagePath)
                         .placeholder(R.drawable.profile_pholder)
                         .into(binding.imageView)
 
-                    binding.toolbarCard.visibility = View.GONE
+                    binding.toolbarCard.visibility = GONE
                 }   else {
                     Toast.makeText(ctx, "Image not found", Toast.LENGTH_SHORT).show()
                 }
@@ -257,7 +247,7 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                 }
             }
             R.id.close -> {
-                largeImge?.visibility=View.GONE
+                largeImge?.visibility= GONE
                 binding.toolbarCard.visibility=View.VISIBLE
 
             }
@@ -342,7 +332,7 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                     call: Call<ArtistDetailModel>,
                     response: Response<ArtistDetailModel>
                 ) {
-                    binding.loaderLayout.visibility = View.GONE
+                    binding.loaderLayout.visibility = GONE
                     if (response.body() != null) {
                         if (response.isSuccessful) {
 
@@ -374,23 +364,23 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                     val videoUrl = artistModel.shows_video
                                     binding.youtubePlayIcon.visibility = View.VISIBLE
                                     binding.thumbnail.visibility = View.VISIBLE
-                                    binding.playIcon.visibility = View.GONE
+                                    binding.playIcon.visibility = GONE
                                     extractYoutubeId(videoUrl!!)
 
-                                    binding.noVideoUploadedTxt.visibility = View.GONE
+                                    binding.noVideoUploadedTxt.visibility = GONE
                                 } else if (artistModel.shows_video !=null && artistModel.shows_video!!.contains(".mp4")) {
                                     Picasso.get().load("https://dev.netscapelabs.com/surpriseme/public/uploads/artist/videos/thumbnail/"+artistModel.shows_video_thumbnail!!)
                                         .into(binding.thumbnail)
                                     video_url ="https://dev.netscapelabs.com/surpriseme/public/uploads/artist/videos/"+artistModel.shows_video
-                                    binding.noVideoUploadedTxt.visibility = View.GONE
-                                    binding.youtubePlayIcon.visibility = View.GONE
+                                    binding.noVideoUploadedTxt.visibility = GONE
+                                    binding.youtubePlayIcon.visibility = GONE
                                     binding.playIcon.visibility = View.VISIBLE
                                    // binding.thumbnail.visibility = View.GONE
                                 } else {
                                     binding.noVideoUploadedTxt.visibility = View.VISIBLE
-                                    binding.youtubePlayIcon.visibility = View.GONE
-                                    binding.thumbnail.visibility = View.GONE
-                                    binding.playIcon.visibility = View.GONE
+                                    binding.youtubePlayIcon.visibility = GONE
+                                    binding.thumbnail.visibility = GONE
+                                    binding.playIcon.visibility = GONE
                                 }
 
 
@@ -417,10 +407,10 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                             .into(binding.img1)
                                         binding.img1.setOnClickListener{
                                             largeImge?.visibility=View.VISIBLE
-                                            binding.imageView.visibility=View.GONE
+                                            binding.imageView.visibility= GONE
                                             binding.pager.visibility=View.VISIBLE
                                             binding.indicator.visibility=View.VISIBLE
-                                            binding.toolbarCard.visibility=View.GONE
+                                            binding.toolbarCard.visibility= GONE
                                             binding.pager.currentItem = 0
 
 //                                            imageZoomPopup(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.shows_image_1)
@@ -435,10 +425,10 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                                             .into(binding.img2)
                                         binding.img2.setOnClickListener{
                                             largeImge?.visibility=View.VISIBLE
-                                            binding.imageView.visibility=View.GONE
+                                            binding.imageView.visibility= GONE
                                             binding.pager.visibility=View.VISIBLE
                                             binding.indicator.visibility=View.VISIBLE
-                                            binding.toolbarCard.visibility=View.GONE
+                                            binding.toolbarCard.visibility= GONE
                                             binding.pager.currentItem = 1
 
 //                                            imageZoomPopup(Constants.ImageUrl.BASE_URL + Constants.ImageUrl.ARTIST_IMAGE_URL + artistModel.shows_image_2)
@@ -454,10 +444,10 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
 
                                         binding.img3.setOnClickListener{
                                             largeImge?.visibility=View.VISIBLE
-                                            binding.imageView.visibility=View.GONE
+                                            binding.imageView.visibility= GONE
                                             binding.pager.visibility=View.VISIBLE
                                             binding.indicator.visibility=View.VISIBLE
-                                            binding.toolbarCard.visibility=View.GONE
+                                            binding.toolbarCard.visibility= GONE
                                             binding.pager.currentItem = 2
 
 
@@ -474,10 +464,10 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
 
                                         binding.img4.setOnClickListener{
                                             largeImge?.visibility=View.VISIBLE
-                                            binding.imageView.visibility=View.GONE
+                                            binding.imageView.visibility= GONE
                                             binding.pager.visibility=View.VISIBLE
                                             binding.indicator.visibility=View.VISIBLE
-                                            binding.toolbarCard.visibility=View.GONE
+                                            binding.toolbarCard.visibility= GONE
                                             binding.pager.currentItem = 3
 
 
@@ -488,26 +478,26 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
 
                                 if (artistModel.shows_image_1 == null && artistModel.shows_image_2 == null
                                     && artistModel.shows_image_3 == null && artistModel.shows_image_4 == null) {
-                                    binding.galleryTxt.visibility = View.GONE
-                                    binding.dottedLineImg2.visibility = View.GONE
-                                    binding.horizontalView.visibility = View.GONE
+                                    binding.galleryTxt.visibility = GONE
+                                    binding.dottedLineImg2.visibility = GONE
+                                    binding.horizontalView.visibility = GONE
                                 }
 //                                binding.mediaText.text = artistModel.social_link_youtube
 //                                binding.mediaTextInsta.text = artistModel.social_link_insta
 
                                 if ((artistModel.social_link_insta =="" || artistModel.social_link_insta ==null) &&
                                     (artistModel.social_link_youtube =="" || artistModel.social_link_youtube ==null)) {
-                                    binding.socialMediaLayout.visibility = View.GONE
+                                    binding.socialMediaLayout.visibility = GONE
                                 } else if (artistModel.social_link_insta =="" || artistModel.social_link_insta ==null) {
-                                    binding.instaLayout.visibility = View.GONE
+                                    binding.instaLayout.visibility = GONE
                                 } else if (artistModel.social_link_youtube == "" || artistModel.social_link_youtube==null) {
-                                    binding.youtubeLayout.visibility = View.GONE
+                                    binding.youtubeLayout.visibility = GONE
                                 }
                                 binding.aboutText.text = artistModel.description
 
                                 if (artistModel.rating == 0f || artistModel.rating ==null) {
-                                    binding.ratingbar.visibility = View.GONE
-                                    binding.seeReviewTxt.visibility = View.GONE
+                                    binding.ratingbar.visibility = GONE
+                                    binding.seeReviewTxt.visibility = GONE
                                     binding.brandNewArtistTv.visibility=View.VISIBLE
                                 } else {
                                     binding.ratingbar.rating = artistModel.rating
@@ -544,7 +534,7 @@ class ArtistBookingFragment : Fragment(), View.OnClickListener,
                 }
 
                 override fun onFailure(call: Call<ArtistDetailModel>, t: Throwable) {
-                    binding.loaderLayout.visibility = View.GONE
+                    binding.loaderLayout.visibility = GONE
                     Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
                 }
             })

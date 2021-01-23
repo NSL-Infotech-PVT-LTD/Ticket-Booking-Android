@@ -34,7 +34,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     lateinit var binding:ActivityIdealPaymentBinding
 
@@ -51,30 +51,21 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         binding=DataBindingUtil.setContentView(this,R.layout.activity_ideal_payment)
 
         shared= PrefrenceShared(this)
-        bookingid = intent.getStringExtra("bookingid")!!
+//        bookingid = intent.getStringExtra("bookingid")!!
 
         backpress = findViewById(R.id.backpress)
-        backpress?.setOnClickListener{
-            val intent = Intent(this@IdealPayment, PaymentActivity::class.java)
-            intent.putExtra("bookingid", bookingid)
-            startActivity(intent)
-            finish()
-
-        }
+        backpress?.setOnClickListener(this)
+        binding.paynowbtn.setOnClickListener(this)
 
         val loadingText = findViewById<TextView>(R.id.loadingtext)
         loadingText.text  = Utility.randomString(this@IdealPayment)
 
 
-
         binding.holderedt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
             }
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
-
             override fun afterTextChanged(s: Editable?) {
                 if(binding.holderedt.text.length>0){
                     binding.paynowbtn.backgroundTintList = getColorStateList(R.color.colorAccent)
@@ -84,19 +75,9 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             }
 
         })
-        binding.paynowbtn.setOnClickListener {
-            if(binding.choosebankedt.text.toString().equals(getString(R.string.selectbank))){
-                Toast.makeText(this,getString(R.string.selectbank),Toast.LENGTH_LONG).show()
-            }
-            else if(binding.holderedt.text.toString().isEmpty()){
-                Toast.makeText(this,getString(R.string.pleaseenteraccount),Toast.LENGTH_LONG).show()
-            }
-            else{
-               paynow(bookingid)
-            }
-        }
 
-        var banklist = ArrayList<String>()
+
+        val banklist = ArrayList<String>()
         banklist.add("")
         banklist.add("ABN AMRO")
         banklist.add("ASN Bank")
@@ -130,14 +111,35 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         binding.choosebankedt.hint=""
         binding.bookingSpinner.onItemSelectedListener =this
     }
+
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.backpress -> {
+                finish()
+            }
+            R.id.paynowbtn -> {
+                if(binding.choosebankedt.text.toString().equals(getString(R.string.selectbank))){
+                    Toast.makeText(this,getString(R.string.selectbank),Toast.LENGTH_LONG).show()
+                }
+                else if(binding.holderedt.text.toString().isEmpty()){
+                    Toast.makeText(this,getString(R.string.pleaseenteraccount),Toast.LENGTH_LONG).show()
+                }
+                else{
+                    paynow(Constants.BOOKING_ID)
+                }
+            }
+        }
+    }
+
     fun pay(secret:String){
 
-        var billingDetails = PaymentMethod.BillingDetails(name = binding.holderedt.text.toString())
+        val billingDetails = PaymentMethod.BillingDetails(name = binding.holderedt.text.toString())
 
         val ideal = PaymentMethodCreateParams.Ideal(bankcode)
-        var paymentMethodCreateParams = PaymentMethodCreateParams.create(ideal, billingDetails)
+        val paymentMethodCreateParams = PaymentMethodCreateParams.create(ideal, billingDetails)
 
-        var confirmParams = ConfirmPaymentIntentParams
+        val confirmParams = ConfirmPaymentIntentParams
             .createWithPaymentMethodCreateParams(
                 paymentMethodCreateParams  = paymentMethodCreateParams,
                 clientSecret = secret,
@@ -150,8 +152,7 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     }
     private fun paynow(id: String) {
-
-        binding.loaderLayout.visibility = View.VISIBLE
+        binding.pleaseWaitLayout.visibility = View.VISIBLE
         RetrofitClient.api.payintent(
             shared?.getString(Constants.DataKey.AUTH_VALUE)!!,
             id
@@ -161,7 +162,7 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                     call: Call<PaymentIntent>,
                     response: Response<PaymentIntent>
                 ) {
-                    binding.loaderLayout.visibility = View.GONE
+                    binding.pleaseWaitLayout.visibility = View.GONE
                     if (response.body() != null) {
                         if (response.isSuccessful) {
                          pay(response.body()!!.data.client_secret)
@@ -189,7 +190,7 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 }
 
                 override fun onFailure(call: Call<PaymentIntent>, t: Throwable) {
-                    binding.loaderLayout.visibility = View.GONE
+                    binding.pleaseWaitLayout.visibility = View.GONE
                     Toast.makeText(
                         this@IdealPayment,
                         "" + t.message.toString(),
@@ -210,28 +211,24 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 when (status) {
                     StripeIntent.Status.Succeeded -> {
                         // Setup succeeded
-
-                        binding.paymentDoneLayout.visibility = View.VISIBLE
                         Constants.IS_BOOKING_DONE = true
                         Constants.BOOKING = false
                         Constants.NOTIFICATION = false
-                        Handler().postDelayed({
+                        binding.paymentDoneLayout.visibility = View.VISIBLE
+                        binding.paymentDoneLayout.postDelayed({
                             Toast.makeText(this@IdealPayment,"Success",Toast.LENGTH_LONG).show()
                             val intent = Intent(this@IdealPayment,BookingDetailFragment::class.java)
-                            intent.putExtra("bookingId",bookingid)
+//                            intent.putExtra("bookingId",bookingid)
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                             startActivity(intent)
                             finish()
                             binding.paymentDoneLayout.visibility = View.GONE
-                        },2000)
-
-
-                    }
-                    else -> {
+                        },3000)
+                    } else -> {
                         Toast.makeText(this@IdealPayment,"Failure",Toast.LENGTH_LONG).show()
 
                         val intent = Intent(this@IdealPayment,BookingDetailFragment::class.java)
-                        intent.putExtra("bookingId",bookingid)
+//                        intent.putExtra("bookingId",bookingid)
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
                         finish()
@@ -245,26 +242,15 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             }
         })
     }
-
-
-
-
-
-
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-
-
         if(position>0) {
             bankname = parent?.getItemAtPosition(position).toString()
             bankcode = bankid[position]
-
             Toast.makeText(this, "" + bankcode, Toast.LENGTH_LONG).show()
-
             binding.choosebankedt.text = bankname
         }
-
     }
-
     override fun onNothingSelected(parent: AdapterView<*>?) {
     }
+
 }

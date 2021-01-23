@@ -15,12 +15,10 @@ import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.R
-import com.surpriseme.user.databinding.FragmentNotificationBinding
 import com.surpriseme.user.activity.mainactivity.MainActivity
+import com.surpriseme.user.databinding.FragmentNotificationBinding
 import com.surpriseme.user.fragments.bookingdetailfragment.BookingDetailFragment
 import com.surpriseme.user.fragments.chatFragment.ChatFragment
-import com.surpriseme.user.fragments.chatListfragment.ChatListFragment
-import com.surpriseme.user.fragments.homefragment.HomeFragment
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared

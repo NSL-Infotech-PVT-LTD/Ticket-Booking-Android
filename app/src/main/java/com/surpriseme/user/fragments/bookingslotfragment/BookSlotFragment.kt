@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.R
+import com.surpriseme.user.activity.SelectBank
 import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.activity.payment.PaymentActivity
 import com.surpriseme.user.databinding.FragmentBookSlotBinding
@@ -198,11 +199,23 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
                             // Display Popup Message when Api Successfully created booking....
                             bookingId = response.body()?.data?.address?.id.toString()
 
-                            val intent = Intent(ctx, PaymentActivity::class.java)
-                            intent.putExtra("bookingid", bookingId)
-                            startActivity(intent)
-                            requireActivity().finish()
-                            list.clear()
+                            if (prefManager?.getString1(Constants.DataKey.CURRENCY) == "EUR") {
+                                Constants.IDEAL_PAYMENT = true
+                                val intent = Intent(ctx, PaymentActivity::class.java)
+                                Constants.BOOKING_ID = bookingId
+//                                intent.putExtra("bookingid", bookingId)
+                                startActivity(intent)
+                                requireActivity().finish()
+                                list.clear()
+                            } else {
+                                val intent = Intent(ctx, SelectBank::class.java)
+                                Constants.BOOKING_ID = bookingId
+//                                intent.putExtra("bookingid", bookingId)
+                                startActivity(intent)
+                                requireActivity().finish()
+                                list.clear()
+                            }
+
                         }
                     } else {
                         val jsonObject: JSONObject

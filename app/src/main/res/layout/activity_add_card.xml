@@ -2,6 +2,7 @@
 <layout>
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/addCardContainer"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -48,7 +49,7 @@
 
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/choosePaymentMethodTxt"
+        android:id="@+id/debitCreditCard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_20sdp"
@@ -56,33 +57,12 @@
         android:layout_marginStart="@dimen/_20sdp"
         android:fontFamily="@font/montserrat_bold"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/pay_now"
+        android:text="@string/DEBIT_CREDIT_CARD"
         android:textColor="#36396e"
         android:textSize="@dimen/_14sdp"
         app:layout_constraintTop_toTopOf="parent"
         />
 
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="5dp"
-        android:src="@drawable/dotted_view_line"
-        app:layout_constraintTop_toBottomOf="@id/choosePaymentMethodTxt"
-        app:layout_constraintStart_toStartOf="@id/choosePaymentMethodTxt"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/favourableMethodTxt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_20sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:fontFamily="@font/montserrat_medium"
-        android:text="@string/choose_your_favourable_method_of_payment"
-        android:textColor="#22266b"
-        android:textSize="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/choosePaymentMethodTxt" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/cardHolderText"
@@ -91,7 +71,7 @@
         android:text="@string/card_holder_name"
         android:fontFamily="@font/helveticanowdisplay_regular"
         android:textColor="#1c1d1e"
-        app:layout_constraintTop_toBottomOf="@id/favourableMethodTxt"
+        app:layout_constraintTop_toBottomOf="@id/debitCreditCard"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="@dimen/_30sdp"
         android:layout_marginTop="@dimen/_50sdp"
@@ -105,7 +85,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="@dimen/_20sdp"
         android:drawablePadding="@dimen/_5sdp"
-        android:hint="Ravi Singla"
+        android:hint="@string/ENTER_NAME"
         android:layout_marginTop="@dimen/_10sdp"
         android:singleLine="true"
         android:paddingVertical="@dimen/_10sdp"
@@ -271,11 +251,18 @@
     </ScrollView>
 
 
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <include layout="@layout/payment_done_layout"
         android:id="@+id/paymentDoneLayout"
         android:visibility="gone"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <include
+        android:id="@+id/pleaseWaitLayout"
+        layout="@layout/please_wait_payment_layout"
+        android:visibility="gone" />
 
     <include
         android:id="@+id/loaderLayout"

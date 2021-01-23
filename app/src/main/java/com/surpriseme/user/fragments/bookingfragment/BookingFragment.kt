@@ -13,8 +13,8 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.surpriseme.user.R
-import com.surpriseme.user.databinding.FragmentBookingBinding
 import com.surpriseme.user.activity.mainactivity.MainActivity
+import com.surpriseme.user.databinding.FragmentBookingBinding
 import com.surpriseme.user.fragments.bookingdetailfragment.BookingDetailFragment
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants

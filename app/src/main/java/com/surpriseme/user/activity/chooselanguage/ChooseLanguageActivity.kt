@@ -1,10 +1,7 @@
 package com.surpriseme.user.activity.chooselanguage
 
 import android.content.Intent
-import android.content.res.Configuration
-import android.content.res.Resources
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,8 +12,6 @@ import com.surpriseme.user.R
 import com.surpriseme.user.activity.login.LoginActivity
 import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.activity.settings.UpdateLanguageModel
-import com.surpriseme.user.activity.signup.SignUpActivity
-import com.surpriseme.user.activity.splashwalkthrough.SplashGetStartedActivity
 import com.surpriseme.user.databinding.ActivityChooseLanguageBinding
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants

@@ -33,7 +33,6 @@ class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceiv
     private var linear: LinearLayoutManager?=null
     private var binding: FragmentChatBinding? = null
     private var shared: PrefrenceShared? = null
-
     //  private var ctx: Context? = null
     private var mReceiverId = ""
     private var mReceiverImage = ""
@@ -235,7 +234,8 @@ class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceiv
                                 Picasso.get().load(Constants.ImageUrl.BASE_URL+ Constants.ImageUrl.ARTIST_IMAGE_URL+response.body()!!.data.receiver_detail.image)
                                     .placeholder(R.drawable.profile_pholder)
                                     .into(binding?.chatStartImgArtist)
-                                startChatWithTv.text = getString(R.string.start_chat_with) + " " + response.body()?.data?.receiver_detail?.name
+                                startChatWithTv.text =
+                                    getString(R.string.start_chat_with) + " " + response.body()?.data?.receiver_detail?.name
                                 Picasso.get().load(shared?.getString(Constants.DataKey.USER_IMAGE))
                                     .placeholder(R.drawable.profile_pholder)
                                     .into(binding?.chatStartImgCustomer)
@@ -282,7 +282,7 @@ class ChatFragment : AppCompatActivity(), View.OnClickListener, IOnMessageReceiv
                     val myMessgae = messageText.getString("message")
                     jsonObject.put("message", myMessgae)
                     model.message = myMessgae
-                    model.sender_id = messageText.getInt("sender_id")
+                    model.sender_id = messageText.getInt("sender_id")   
                     model.attachment = messageText.getString("attachment")
                     model.receiver_id = messageText.getInt("receiver_id")
                     model.type = messageText.getString("type")

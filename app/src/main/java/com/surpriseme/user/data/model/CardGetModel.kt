@@ -2,18 +2,18 @@ package com.surpriseme.user.data.model
 
 data class CardGetModel(
     val code: Int,
-    val `data`: Data,
+    val `data`: CardGetDataModel,
     val status: Boolean
 )
 
-data class Data(
-    val `data`: ArrayList<DataX>,
+data class CardGetDataModel(
+    val `data`: ArrayList<CardGetDetailModel>,
     val has_more: Boolean,
     val `object`: String,
     val url: String
 )
 
-data class DataX(
+data class CardGetDetailModel(
     val address_city: Any,
     val address_country: Any,
     val address_line1: Any,

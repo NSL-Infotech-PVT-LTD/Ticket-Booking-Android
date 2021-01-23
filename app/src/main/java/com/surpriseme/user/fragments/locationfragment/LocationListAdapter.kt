@@ -104,15 +104,9 @@ class LocationListAdapter(
                 adpPosition = holder.adapterPosition
                 shared.setInt("myValue", adpPosition)
                 Constants.ADDRESS_ID = locationList[position].id.toString()
-
                 notifyDataSetChanged()
                 if (model.street_address != null)
-                    dispAddToDashboard.dispAddressDashboard(
-                        model.street_address,
-                        model.latitude,
-                        model.longitude,
-                        model.name
-                    )
+                    dispAddToDashboard.dispAddressDashboard(model.street_address, model.latitude, model.longitude, model.name)
             }
             holder.radioButton.setOnClickListener {
                 // Item view click to send address to dashboard, Click implemented on LocationFragment....
@@ -121,14 +115,10 @@ class LocationListAdapter(
 //                Constants.adpPosition = holder.adapterPosition
                 adpPosition = holder.adapterPosition
                 shared.setInt("myValue", adpPosition)
+                Constants.ADDRESS_ID = locationList[position].id.toString()
                 notifyDataSetChanged()
                 if (model.street_address != null)
-                    dispAddToDashboard.dispAddressDashboard(
-                        model.street_address,
-                        model.latitude,
-                        model.longitude,
-                        model.name
-                    )
+                    dispAddToDashboard.dispAddressDashboard(model.street_address, model.latitude, model.longitude, model.name)
             }
         }
     }

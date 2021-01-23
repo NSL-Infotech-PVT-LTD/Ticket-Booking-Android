@@ -165,7 +165,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
         binding.readMoreTv.setOnClickListener(this)
         binding.reasonReadMoreTv.setOnClickListener(this)
 
-        bookingId = intent.getStringExtra("bookingId")!!
+//        bookingId = intent.getStringExtra("bookingId")!!
 
         //Search bottom sheet callback....
         bottomSheetBehavior.setBottomSheetCallback(object :
@@ -230,7 +230,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
 
                 } else if (actionBtn.text == resources.getString(R.string.pay_now)) {
                     val intent = Intent(this, PaymentActivity::class.java)
-                    intent.putExtra("bookingid", bookingId)
+//                    intent.putExtra("bookingid", bookingId)
                     startActivity(intent)
                 } else if (actionBtn.text == resources.getString(R.string.did_artist_reach_at_yout_location)) {
                     // display pop up..
@@ -303,7 +303,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
                         getString(R.string.please_give_rating)
                     )
                 } else {
-                    rateReviewBookingApi(bookingId, rateForSmile, review)
+                    rateReviewBookingApi(Constants.BOOKING_ID, rateForSmile, review)
                 }
             }
             R.id.profileImg -> {
@@ -347,7 +347,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
         yes.setOnClickListener {
 
             windowBookingCancel.dismiss()
-            cancelBookingApi(bookingId)
+            cancelBookingApi(Constants.BOOKING_ID)
 
         }
 
@@ -363,7 +363,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
         val status = "cancel"
         RetrofitClient.api.bookingCancelApi(
             shared.getString(Constants.DataKey.AUTH_VALUE),
-            bookingID,
+            Constants.BOOKING_ID,
             status
         )
             .enqueue(object : Callback<BookingCancelModel> {
@@ -429,7 +429,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
         RetrofitClient.api.bookingDetailApi(
             shared.getString(Constants.DataKey.AUTH_VALUE),
             Constants.DataKey.CONTENT_TYPE_VALUE,
-            bookingId
+            Constants.BOOKING_ID
         )
             .enqueue(object : Callback<BookingDetailModel> {
                 override fun onResponse(
@@ -459,17 +459,6 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
                                     "" + Constants.SOMETHING_WENT_WRONG,
                                     BaseTransientBottomBar.LENGTH_INDEFINITE
                                 ).show()
-//                                if (Constants.NOTIFICATION) {
-//                                    val fragment = NotificationFragment()
-//                                    val transaction = fragmentManager?.beginTransaction()
-//                                    transaction?.replace(R.id.frameContainer, fragment)
-//                                    transaction?.commit()
-//                                } else {
-//                                    val fragment = BookingFragment()
-//                                    val transaction = fragmentManager?.beginTransaction()
-//                                    transaction?.replace(R.id.frameContainer, fragment)
-//                                    transaction?.commit()
-//                                }
                             }
                         }
                     } else {
@@ -651,10 +640,6 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
 
             } else {
                 Toast.makeText(this, Constants.SOMETHING_WENT_WRONG, Toast.LENGTH_SHORT).show()
-//                val fragment = NotificationFragment()
-//                val transaction = fragmentManager?.beginTransaction()
-//                transaction?.replace(R.id.frameContainer, fragment)
-//                transaction?.commit()
             }
         }
 
@@ -711,7 +696,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
         binding.loaderLayout.visibility = View.VISIBLE
         RetrofitClient.api.bookingStatusApi(
             shared.getString(Constants.DataKey.AUTH_VALUE),
-            bookingId,
+            Constants.BOOKING_ID,
             report,
             reason
         )

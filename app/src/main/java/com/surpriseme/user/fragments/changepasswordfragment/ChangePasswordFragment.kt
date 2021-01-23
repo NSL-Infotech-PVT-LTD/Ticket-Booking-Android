@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
@@ -18,14 +17,12 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.textview.MaterialTextView
 import com.surpriseme.user.R
-import com.surpriseme.user.databinding.FragmentChangePasswordBinding
 import com.surpriseme.user.activity.mainactivity.MainActivity
-import com.surpriseme.user.fragments.viewprofile.ProfileFragment
+import com.surpriseme.user.databinding.FragmentChangePasswordBinding
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared
 import com.surpriseme.user.util.Utility
-import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call

@@ -7,13 +7,10 @@ import android.text.method.PasswordTransformationMethod
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.textview.MaterialTextView
 import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.iid.InstanceIdResult
-import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.R
-import com.surpriseme.user.activity.login.LoginActivity
+import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.activity.signuptype.SignUpTypeActivity
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.*
@@ -42,11 +39,11 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
         super.onStart()
 
         FirebaseInstanceId.getInstance().instanceId
-            .addOnSuccessListener(this,
-                OnSuccessListener<InstanceIdResult> { instanceIdResult ->
-                    fbtoken = instanceIdResult.token
+            .addOnSuccessListener(this
+            ) { instanceIdResult ->
+                fbtoken = instanceIdResult.token
 
-                })
+            }
     }
 
 

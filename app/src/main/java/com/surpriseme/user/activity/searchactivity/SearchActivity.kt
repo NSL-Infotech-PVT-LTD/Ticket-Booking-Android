@@ -2,8 +2,6 @@ package com.surpriseme.user.activity.searchactivity
 
 import android.app.DatePickerDialog
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
@@ -31,7 +29,6 @@ import com.surpriseme.user.fragments.homefragment.ArtistModel
 import com.surpriseme.user.fragments.homefragment.DataUserArtistList
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.*
-import com.warkiz.widget.ColorCollector
 import com.warkiz.widget.IndicatorSeekBar
 import com.warkiz.widget.OnSeekChangeListener
 import com.warkiz.widget.SeekParams

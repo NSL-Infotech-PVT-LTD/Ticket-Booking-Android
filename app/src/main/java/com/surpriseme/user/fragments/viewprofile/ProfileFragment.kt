@@ -23,8 +23,8 @@ import com.surpriseme.user.data.model.UpdateProfileModel
 import com.surpriseme.user.databinding.FragmentProfileBinding
 import com.surpriseme.user.activity.login.LoginActivity
 import com.surpriseme.user.activity.login.Loginmodel
-import com.surpriseme.user.fragments.changepasswordfragment.ChangePasswordFragment
 import com.surpriseme.user.activity.mainactivity.MainActivity
+import com.surpriseme.user.fragments.changepasswordfragment.ChangePasswordFragment
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefrenceShared

@@ -11,9 +11,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:background="@color/white"
+            android:layout_height="match_parent"
 
-            android:layout_height="match_parent">
+            android:background="@color/white">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/toolbarCard"
@@ -27,7 +27,6 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-
 
                     <include layout="@layout/toolbar_layout" />
 
@@ -58,20 +57,20 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_250sdp"
                         android:background="#ababab"
-                        android:text="@string/no_video_uploaded"
+                        android:fontFamily="@font/montserrat_regular"
                         android:gravity="center"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
+                        android:text="@string/no_video_uploaded"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:fontFamily="@font/montserrat_regular"/>
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
                         android:id="@+id/thumbnail"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_200sdp"
                         android:scaleType="centerCrop"
-                        android:visibility="visible"
                         android:src="@drawable/user_pholder_updated"
+                        android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="@+id/youtubeView"
                         app:layout_constraintEnd_toEndOf="@+id/youtubeView"
                         app:layout_constraintStart_toStartOf="@+id/youtubeView"
@@ -104,22 +103,21 @@
                         android:id="@+id/viewHorizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:scrollbars="none"
+                        android:layout_marginTop="@dimen/_20sdp"
                         android:paddingHorizontal="@dimen/_20sdp"
+                        android:scrollbars="none"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/youtubeView"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        >
+                        app:layout_constraintTop_toBottomOf="@+id/youtubeView">
+
                         <com.google.android.material.chip.ChipGroup
                             android:id="@+id/chipGroup"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:textColor="@color/white"
-                            app:singleLine="true"
                             app:chipMinTouchTargetSize="0dp"
-                            />
+                            app:singleLine="true" />
 
                     </HorizontalScrollView>
 
@@ -127,12 +125,12 @@
                         android:id="@+id/profileImgCard"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        app:cardBackgroundColor="@color/grey_color"
                         android:layout_marginStart="@dimen/_20sdp"
                         android:layout_marginTop="@dimen/_20sdp"
-                        app:layout_constraintTop_toBottomOf="@+id/viewHorizontal"
+                        app:cardBackgroundColor="@color/grey_color"
+                        app:cardCornerRadius="2dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:cardCornerRadius="2dp">
+                        app:layout_constraintTop_toBottomOf="@+id/viewHorizontal">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
@@ -143,18 +141,14 @@
                                 android:id="@+id/profileImg"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:scaleType="centerCrop"
                                 android:background="@drawable/artist_profile_img_bg"
+                                android:scaleType="centerCrop"
                                 android:src="@drawable/profile_pholder"
 
                                 />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                     </androidx.cardview.widget.CardView>
-
-
-
-
 
 
                     <com.google.android.material.textview.MaterialTextView
@@ -178,17 +172,16 @@
                         android:id="@+id/brandNewArtistTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/brand_new_artist_bg"
+                        android:paddingHorizontal="15dp"
                         android:text="@string/brand_new_artist"
                         android:textAllCaps="true"
-                        android:paddingHorizontal="15dp"
+                        android:textColor="@color/greenColor"
                         android:textSize="12dp"
                         android:visibility="gone"
-                        android:layout_marginTop="5dp"
-                        android:textColor="@color/greenColor"
-
-                        android:background="@drawable/brand_new_artist_bg"
-                   app:layout_constraintStart_toStartOf="@id/profileName"
-                        app:layout_constraintTop_toBottomOf="@id/profileName"/>
+                        app:layout_constraintStart_toStartOf="@id/profileName"
+                        app:layout_constraintTop_toBottomOf="@id/profileName" />
 
 
                     <RatingBar
@@ -223,17 +216,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/_10sdp"
-                        android:text="@string/book"
+                        android:background="@drawable/artist_book_btn_bg"
                         android:paddingHorizontal="@dimen/_12sdp"
                         android:paddingVertical="4dp"
-                        android:background="@drawable/artist_book_btn_bg"
+                        android:text="@string/book"
+                        android:textAllCaps="true"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12sdp"
-                        android:textAllCaps="true"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:fontFamily="@font/montserrat_semibold"
-                        app:layout_constraintTop_toTopOf="@id/profileImgCard"
-                        />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/profileImgCard" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/showFieldLayout"
@@ -256,49 +248,20 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-<!--                        <com.google.android.material.textview.MaterialTextView-->
-<!--                            android:id="@+id/showTypeTxt"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="@string/virtual"-->
-<!--                            android:textAllCaps="true"-->
-<!--                            android:background="@drawable/corner_round_5_blue"-->
-<!--                            android:textColor="@color/white"-->
-<!--                            app:layout_constraintTop_toTopOf="parent"-->
-<!--                            app:layout_constraintEnd_toEndOf="parent"-->
-<!--                            android:layout_marginEnd="@dimen/_10sdp"-->
-<!--                            android:paddingHorizontal="@dimen/_3sdp"-->
-<!--                            android:paddingVertical="2dp"-->
-<!--                            android:textSize="10dp"-->
-<!--                            android:drawablePadding="5dp"-->
-<!--                            android:gravity="center"-->
-<!--                            android:drawableStart="@drawable/ic_online_prediction_24"/>-->
-
-<!--                        <ImageView-->
-<!--                            android:id="@+id/dottedLineImg"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="@dimen/_3sdp"-->
-<!--                            android:layout_marginEnd="@dimen/_20sdp"-->
-<!--                            android:background="@drawable/dotted_view_line"-->
-<!--                            app:layout_constraintTop_toBottomOf="@id/bookingPriceTxt"-->
-<!--                            android:layout_marginTop="5dp"/>-->
-
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/inPersonShowLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:layout_constraintTop_toBottomOf="@+id/bookingPriceTxt">
 
-
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
+                                android:layout_marginEnd="10dp"
                                 android:src="@drawable/inperson_icon"
-                                app:layout_constraintTop_toTopOf="@id/liveShowTxt"
                                 app:layout_constraintBottom_toBottomOf="@+id/liveShowTxt"
                                 app:layout_constraintEnd_toStartOf="@+id/liveShowTxt"
-                                android:layout_marginEnd="10dp"/>
-
+                                app:layout_constraintTop_toTopOf="@id/liveShowTxt" />
 
                             <TextView
                                 android:id="@+id/liveShowTxt"
@@ -309,9 +272,9 @@
                                 android:text="@string/in_person_show"
                                 android:textColor="#36396e"
                                 android:textSize="@dimen/_10sdp"
+                                app:layout_constraintBottom_toBottomOf="@+id/liveShowCard"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="@+id/liveShowCard"
-                                app:layout_constraintBottom_toBottomOf="@+id/liveShowCard"/>
+                                app:layout_constraintTop_toTopOf="@+id/liveShowCard" />
 
                             <!-- live show price card -->
                             <androidx.cardview.widget.CardView
@@ -319,10 +282,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="@dimen/_30sdp"
                                 android:layout_marginEnd="@dimen/_10sdp"
+                                android:minWidth="@dimen/_60sdp"
                                 android:paddingHorizontal="@dimen/_100sdp"
                                 app:cardBackgroundColor="#fff5f9"
                                 app:cardCornerRadius="@dimen/_2sdp"
-                                android:minWidth="@dimen/_60sdp"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
 
@@ -334,21 +297,21 @@
                                         android:id="@+id/liveticket"
                                         android:layout_width="18dp"
                                         android:layout_height="18dp"
-                                        android:src="@drawable/ic_ticket"
                                         android:layout_marginStart="5dp"
-                                        app:layout_constraintTop_toTopOf="parent"
+                                        android:src="@drawable/ic_ticket"
                                         app:layout_constraintBottom_toBottomOf="parent"
-                                        app:layout_constraintStart_toStartOf="parent" />
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
 
                                     <TextView
                                         android:id="@+id/perhour"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:fontFamily="@font/montserrat_semibold"
+                                        android:gravity="end"
                                         android:text="@string/per_hour"
                                         android:textColor="@color/colorPrimary"
                                         android:textSize="@dimen/_5sdp"
-                                        android:gravity="end"
                                         app:layout_constraintEnd_toEndOf="parent"
                                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -359,8 +322,8 @@
                                         android:layout_marginStart="@dimen/_5sdp"
                                         android:layout_marginEnd="@dimen/_5sdp"
                                         android:layout_marginBottom="@dimen/_5sdp"
-                                        android:singleLine="true"
                                         android:fontFamily="@font/montserrat_semibold"
+                                        android:singleLine="true"
                                         android:textColor="@color/colorPrimary"
                                         android:textSize="@dimen/_10sdp"
                                         app:layout_constraintBottom_toBottomOf="parent"
@@ -382,11 +345,11 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
+                                android:layout_marginEnd="10dp"
                                 android:src="@drawable/virtual_icon"
-                                app:layout_constraintTop_toTopOf="@id/digitalShowTxt"
                                 app:layout_constraintBottom_toBottomOf="@+id/digitalShowTxt"
                                 app:layout_constraintEnd_toStartOf="@+id/digitalShowTxt"
-                                android:layout_marginEnd="10dp"/>
+                                app:layout_constraintTop_toTopOf="@id/digitalShowTxt" />
 
                             <TextView
                                 android:id="@+id/digitalShowTxt"
@@ -397,9 +360,9 @@
                                 android:text="@string/virtual_show"
                                 android:textColor="#36396e"
                                 android:textSize="@dimen/_10sdp"
+                                app:layout_constraintBottom_toBottomOf="@+id/digitalCardShow"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="@+id/digitalCardShow"
-                                app:layout_constraintBottom_toBottomOf="@+id/digitalCardShow"/>
+                                app:layout_constraintTop_toTopOf="@+id/digitalCardShow" />
 
                             <!-- digital show price card -->
                             <androidx.cardview.widget.CardView
@@ -407,11 +370,11 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="@dimen/_30sdp"
                                 android:layout_marginEnd="@dimen/_10sdp"
+                                android:layout_marginBottom="2dp"
+                                android:minWidth="@dimen/_60sdp"
                                 android:paddingHorizontal="@dimen/_100sdp"
                                 app:cardBackgroundColor="#fff5f9"
-                                android:minWidth="@dimen/_60sdp"
                                 app:cardCornerRadius="@dimen/_2sdp"
-                                android:layout_marginBottom="2dp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
@@ -424,19 +387,19 @@
                                         android:id="@+id/digitalTicket"
                                         android:layout_width="18dp"
                                         android:layout_height="18dp"
-                                        android:src="@drawable/virtual_ticket"
                                         android:layout_marginStart="5dp"
-                                        app:layout_constraintTop_toTopOf="parent"
+                                        android:src="@drawable/virtual_ticket"
                                         app:layout_constraintBottom_toBottomOf="parent"
-                                        app:layout_constraintStart_toStartOf="parent" />
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
 
                                     <TextView
                                         android:id="@+id/perhour1"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:fontFamily="@font/montserrat_semibold"
-                                        android:text="@string/per_hour"
                                         android:gravity="end"
+                                        android:text="@string/per_hour"
                                         android:textColor="@color/colorPrimary"
                                         android:textSize="@dimen/_5sdp"
                                         app:layout_constraintEnd_toEndOf="parent"
@@ -464,11 +427,6 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-
-
-
-
                     </androidx.constraintlayout.widget.ConstraintLayout>  <!--end of show field layout -->
 
                     <com.google.android.material.textview.MaterialTextView
@@ -477,9 +435,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_20sdp"
                         android:layout_marginTop="@dimen/_20sdp"
+                        android:fontFamily="@font/montserrat_bold"
                         android:text="@string/gallery"
                         android:textColor="#36396e"
-                        android:fontFamily="@font/montserrat_bold"
                         android:textSize="@dimen/_14sdp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/showFieldLayout" />
@@ -501,17 +459,16 @@
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            >
+                            android:layout_height="match_parent">
 
                             <ImageView
                                 android:id="@+id/img1"
                                 android:layout_width="50dp"
                                 android:layout_height="70dp"
                                 android:layout_marginStart="@dimen/_20sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
                                 android:src="@drawable/user_pholder_updated"
                                 android:visibility="gone"
-                                android:layout_marginTop="@dimen/_10sdp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -530,7 +487,6 @@
                                 android:layout_width="50dp"
                                 android:layout_height="70dp"
                                 android:layout_marginStart="@dimen/_20sdp"
-
                                 android:src="@drawable/user_pholder_updated"
                                 android:visibility="gone"
                                 app:layout_constraintStart_toEndOf="@+id/img2"
@@ -562,10 +518,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_20sdp"
-                            android:text="@string/social_media_handles"
-                            android:textSize="@dimen/_14sdp"
-                            android:textColor="#36396e"
                             android:fontFamily="@font/montserrat_bold"
+                            android:text="@string/social_media_handles"
+                            android:textColor="#36396e"
+                            android:textSize="@dimen/_14sdp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -581,60 +537,61 @@
                             android:id="@+id/instaLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@+id/socialMediaTxt"
-                            >
+                            app:layout_constraintTop_toBottomOf="@+id/socialMediaTxt">
 
                             <ImageView
                                 android:id="@+id/instaImg"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/_50sdp"
                                 android:src="@drawable/insta_img"
-                                app:layout_constraintTop_toTopOf="parent"/>
+                                app:layout_constraintTop_toTopOf="parent" />
+
                             <ImageView
                                 android:id="@+id/instaIcon"
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
+                                android:layout_marginStart="10dp"
                                 android:src="@drawable/insta_icon"
-                                app:layout_constraintStart_toStartOf="@id/instaImg"
-                                app:layout_constraintTop_toTopOf="@id/instaImg"
                                 app:layout_constraintBottom_toBottomOf="@id/instaImg"
-                                android:layout_marginStart="10dp"/>
+                                app:layout_constraintStart_toStartOf="@id/instaImg"
+                                app:layout_constraintTop_toTopOf="@id/instaImg" />
+
                             <TextView
                                 android:id="@+id/instagramTxt"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:fontFamily="@font/montserrat_regular"
                                 android:text="@string/instagram_account"
-                                app:layout_constraintTop_toTopOf="@id/instaIcon"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_10sdp"
                                 app:layout_constraintBottom_toBottomOf="@id/instaIcon"
                                 app:layout_constraintStart_toEndOf="@+id/instaIcon"
-                                android:layout_marginStart="@dimen/_10sdp"
-                                android:textColor="@color/white"
-                                android:fontFamily="@font/montserrat_regular"
-                                android:textSize="@dimen/_10sdp"/>
+                                app:layout_constraintTop_toTopOf="@id/instaIcon" />
 
                             <View
                                 android:layout_width="1dp"
                                 android:layout_height="15dp"
-                                app:layout_constraintEnd_toStartOf="@+id/instaViewProfileTxt"
-                                android:background="@color/white"
                                 android:layout_marginEnd="20dp"
-                                app:layout_constraintTop_toTopOf="@id/instaImg"
-                                app:layout_constraintBottom_toBottomOf="@id/instaImg"/>
+                                android:background="@color/white"
+                                app:layout_constraintBottom_toBottomOf="@id/instaImg"
+                                app:layout_constraintEnd_toStartOf="@+id/instaViewProfileTxt"
+                                app:layout_constraintTop_toTopOf="@id/instaImg" />
 
                             <TextView
                                 android:id="@+id/instaViewProfileTxt"
                                 android:layout_width="wrap_content"
                                 android:layout_height="0dp"
-                                android:text="@string/view_profile"
-                                android:gravity="center"
                                 android:layout_marginVertical="5dp"
-                                app:layout_constraintTop_toTopOf="@id/instaImg"
+                                android:layout_marginEnd="@dimen/_20sdp"
+                                android:fontFamily="@font/montserrat_regular"
+                                android:gravity="center"
+                                android:text="@string/view_profile"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_10sdp"
                                 app:layout_constraintBottom_toBottomOf="@id/instaImg"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                android:layout_marginEnd="@dimen/_20sdp"
-                                android:textColor="@color/white"
-                                android:fontFamily="@font/montserrat_regular"
-                                android:textSize="@dimen/_10sdp"/>
+                                app:layout_constraintTop_toTopOf="@id/instaImg" />
 
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -649,61 +606,60 @@
                                 android:id="@+id/youtubeImg"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/_50sdp"
-                                app:layout_constraintTop_toTopOf="parent"
-                                android:src="@drawable/youtube_img"/>
+                                android:src="@drawable/youtube_img"
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <ImageView
                                 android:id="@+id/youtubeIcon"
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
+                                android:layout_marginStart="10dp"
                                 android:src="@drawable/youtube_icon"
-                                app:layout_constraintStart_toStartOf="@id/youtubeImg"
-                                app:layout_constraintTop_toTopOf="@id/youtubeImg"
                                 app:layout_constraintBottom_toBottomOf="@id/youtubeImg"
-                                android:layout_marginStart="10dp"/>
+                                app:layout_constraintStart_toStartOf="@id/youtubeImg"
+                                app:layout_constraintTop_toTopOf="@id/youtubeImg" />
 
                             <TextView
                                 android:id="@+id/youtubeTxt"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:fontFamily="@font/montserrat_regular"
                                 android:text="@string/youtube_account"
-                                app:layout_constraintTop_toTopOf="@id/youtubeImg"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_10sdp"
                                 app:layout_constraintBottom_toBottomOf="@id/youtubeImg"
                                 app:layout_constraintStart_toEndOf="@+id/youtubeIcon"
-                                android:layout_marginStart="@dimen/_10sdp"
-                                android:textColor="@color/white"
-                                android:fontFamily="@font/montserrat_regular"
-                                android:textSize="@dimen/_10sdp"/>
+                                app:layout_constraintTop_toTopOf="@id/youtubeImg" />
 
                             <View
                                 android:layout_width="1dp"
                                 android:layout_height="15dp"
-                                app:layout_constraintEnd_toStartOf="@+id/youtubeViewProfileTxt"
-                                android:background="@color/white"
                                 android:layout_marginEnd="20dp"
-                                app:layout_constraintTop_toTopOf="@id/youtubeImg"
-                                app:layout_constraintBottom_toBottomOf="@id/youtubeImg"/>
+                                android:background="@color/white"
+                                app:layout_constraintBottom_toBottomOf="@id/youtubeImg"
+                                app:layout_constraintEnd_toStartOf="@+id/youtubeViewProfileTxt"
+                                app:layout_constraintTop_toTopOf="@id/youtubeImg" />
 
                             <TextView
                                 android:id="@+id/youtubeViewProfileTxt"
                                 android:layout_width="wrap_content"
                                 android:layout_height="0dp"
                                 android:layout_marginVertical="5dp"
-                                android:text="@string/view_profile"
+                                android:layout_marginEnd="@dimen/_20sdp"
+                                android:fontFamily="@font/montserrat_regular"
                                 android:gravity="center"
-                                app:layout_constraintTop_toTopOf="@id/youtubeImg"
+                                android:text="@string/view_profile"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_10sdp"
                                 app:layout_constraintBottom_toBottomOf="@id/youtubeImg"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                android:layout_marginEnd="@dimen/_20sdp"
-                                android:textColor="@color/white"
-                                android:fontFamily="@font/montserrat_regular"
-                                android:textSize="@dimen/_10sdp"/>
+                                app:layout_constraintTop_toTopOf="@id/youtubeImg" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
                     <com.google.android.material.textview.MaterialTextView
@@ -712,10 +668,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_20sdp"
                         android:layout_marginTop="@dimen/_20sdp"
-                        android:text="@string/about"
                         android:fontFamily="@font/montserrat_bold"
-                        android:textSize="@dimen/_14sdp"
+                        android:text="@string/about"
                         android:textColor="#36396e"
+                        android:textSize="@dimen/_14sdp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/socialMediaLayout" />
 
@@ -733,15 +689,15 @@
                         android:layout_height="@dimen/_150sdp"
                         android:layout_marginHorizontal="@dimen/_20sdp"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:gravity="start"
-                        android:padding="10dp"
                         android:autoLink="all"
-                        android:overScrollMode="always"
-                        android:scrollbars="vertical"
-                        android:scrollbarStyle="insideInset"
                         android:background="@drawable/review_tv_bg"
-                        android:textColor="#36396e"
                         android:fontFamily="@font/montserrat_regular"
+                        android:gravity="start"
+                        android:overScrollMode="always"
+                        android:padding="10dp"
+                        android:scrollbarStyle="insideInset"
+                        android:scrollbars="vertical"
+                        android:textColor="#36396e"
                         android:textSize="@dimen/_10sdp"
                         app:layout_constraintTop_toBottomOf="@id/dottedLineImg4" />
 
@@ -749,38 +705,38 @@
                         android:id="@+id/chatAboutBookingTxt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/have_chat_about_your_booking"
-                        app:layout_constraintStart_toStartOf="@+id/aboutText"
-                        app:layout_constraintTop_toBottomOf="@+id/aboutText"
-                        app:layout_constraintEnd_toStartOf="@+id/chatStartIcon"
+                        android:layout_marginTop="@dimen/_30sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
-                        android:singleLine="true"
-                        android:textColor="#36396e"
                         android:fontFamily="@font/montserrat_bold"
+                        android:singleLine="true"
+                        android:text="@string/have_chat_about_your_booking"
+                        android:textColor="#36396e"
                         android:textSize="12dp"
-                        android:layout_marginTop="@dimen/_30sdp"/>
+                        app:layout_constraintEnd_toStartOf="@+id/chatStartIcon"
+                        app:layout_constraintStart_toStartOf="@+id/aboutText"
+                        app:layout_constraintTop_toBottomOf="@+id/aboutText" />
 
                     <ImageView
                         android:id="@+id/dottedLineImg5"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/_5sdp"
                         android:layout_marginHorizontal="@dimen/_20sdp"
-                        android:background="@drawable/dotted_view_line"
-                        app:layout_constraintTop_toBottomOf="@+id/chatAboutBookingTxt"
-                        app:layout_constraintEnd_toStartOf="@+id/chatStartIcon"
                         android:layout_marginEnd="@dimen/_10sdp"
-                        app:layout_constraintStart_toStartOf="@+id/chatAboutBookingTxt"/>
+                        android:background="@drawable/dotted_view_line"
+                        app:layout_constraintEnd_toStartOf="@+id/chatStartIcon"
+                        app:layout_constraintStart_toStartOf="@+id/chatAboutBookingTxt"
+                        app:layout_constraintTop_toBottomOf="@+id/chatAboutBookingTxt" />
 
 
                     <ImageView
                         android:id="@+id/chatStartIcon"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
-                        android:src="@drawable/ic_chat"
                         android:layout_marginEnd="20dp"
+                        android:src="@drawable/ic_chat"
+                        app:layout_constraintBottom_toBottomOf="@+id/chatAboutBookingTxt"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/chatAboutBookingTxt"
-                        app:layout_constraintBottom_toBottomOf="@+id/chatAboutBookingTxt"/>
+                        app:layout_constraintTop_toTopOf="@+id/chatAboutBookingTxt" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -798,9 +754,9 @@
                     android:id="@+id/imageView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:visibility="gone"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/drake" />
+                    android:src="@drawable/drake"
+                    android:visibility="gone" />
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/pager"
@@ -814,8 +770,8 @@
                     android:id="@+id/indicator"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
-                    android:layout_centerInParent="true"
                     android:layout_alignParentBottom="true"
+                    android:layout_centerInParent="true"
                     android:layout_marginBottom="@dimen/_20sdp"
                     app:ci_drawable="@drawable/selected_dot" />
 
@@ -832,9 +788,10 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <include layout="@layout/loader_layout"
+        <include
             android:id="@+id/loaderLayout"
-            android:visibility="gone"/>
+            layout="@layout/loader_layout"
+            android:visibility="gone" />
 
     </FrameLayout>
 </layout>
