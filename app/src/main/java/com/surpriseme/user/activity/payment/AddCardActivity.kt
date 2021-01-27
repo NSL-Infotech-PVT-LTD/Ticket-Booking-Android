@@ -241,6 +241,7 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
                             Constants.BOOKING = false
                             Constants.NOTIFICATION = false
                             binding?.paymentDoneLayout?.visibility = View.VISIBLE
+                            Constants.IS_CARD_SELECTED = false
                             binding?.paymentDoneLayout?.postDelayed({
                                 Constants.cardList.size
                                 val intent = Intent(this@AddCardActivity, BookingDetailFragment::class.java)

@@ -228,6 +228,7 @@ class SelectBank : AppCompatActivity(), CardAdapter.ChangeLocale, View.OnClickLi
                             Constants.BOOKING = false
                             Constants.NOTIFICATION = false
                             binding?.paymentDoneLayout?.visibility = View.VISIBLE
+                            Constants.IS_CARD_SELECTED = false
                             binding?.paymentDoneLayout?.postDelayed({
                                 Toast.makeText(
                                     this@SelectBank,

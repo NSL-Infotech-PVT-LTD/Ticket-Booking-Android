@@ -40,7 +40,7 @@ class CardAdapter (val context: Context
         holder.cardholder.text = list[position].name.capitalize(Locale.ROOT)
         holder.expirydate.text = context.getString(R.string.expiry) + " " +list[position].exp_month.toString()+"/"+list[position].exp_year
 
-        holder.checkboxcard.isChecked = checkposition == position
+//        holder.checkboxcard.isChecked = checkposition == position
 
         holder.checkboxcard.setOnCheckedChangeListener { buttonView, isChecked ->
 

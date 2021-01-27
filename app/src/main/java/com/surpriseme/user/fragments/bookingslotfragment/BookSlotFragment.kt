@@ -175,165 +175,6 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
         bookingSlotApi()
     }
 
-    // Booking Create Api....
-    private fun bookingCreateApi() {
-        binding.loaderLayout.visibility = View.VISIBLE
-        RetrofitClient.api.bookingCreateApi(
-            shared.getString(Constants.DataKey.AUTH_VALUE),
-            Constants.DataKey.CONTENT_TYPE_VALUE,
-            showType,
-            date,
-            mFromTime,
-            mToTime,
-            artistID,
-            shared.getString(Constants.ADDRESS)
-        )
-            .enqueue(object : Callback<BookingCreateModel> {
-                override fun onResponse(
-                    call: Call<BookingCreateModel>,
-                    response: Response<BookingCreateModel>
-                ) {
-                    binding.loaderLayout.visibility = View.GONE
-                    if (response.body() != null) {
-                        if (response.isSuccessful) {
-                            // Display Popup Message when Api Successfully created booking....
-                            bookingId = response.body()?.data?.address?.id.toString()
-
-                            if (prefManager?.getString1(Constants.DataKey.CURRENCY) == "EUR") {
-                                Constants.IDEAL_PAYMENT = true
-                                val intent = Intent(ctx, PaymentActivity::class.java)
-                                Constants.BOOKING_ID = bookingId
-//                                intent.putExtra("bookingid", bookingId)
-                                startActivity(intent)
-                                requireActivity().finish()
-                                list.clear()
-                            } else {
-                                val intent = Intent(ctx, SelectBank::class.java)
-                                Constants.BOOKING_ID = bookingId
-//                                intent.putExtra("bookingid", bookingId)
-                                startActivity(intent)
-                                requireActivity().finish()
-                                list.clear()
-                            }
-
-                        }
-                    } else {
-                        val jsonObject: JSONObject
-                        if (response.errorBody() != null) {
-                            try {
-                                jsonObject = JSONObject(response.errorBody()?.string()!!)
-                                val errorObject = jsonObject.getJSONObject(Constants.ERROR)
-                                val errorMessage = errorObject.getString("message")
-                                Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT).show()
-                            } catch (e: JSONException) {
-                                Toast.makeText(ctx, "" + e.message.toString(), Toast.LENGTH_SHORT)
-                                    .show()
-                            }
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<BookingCreateModel>, t: Throwable) {
-                    binding.loaderLayout.visibility = View.GONE
-                    Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
-                }
-            })
-    }
-
-    override fun date(slotList: ArrayList<SlotDataModel>) {
-
-        selectedSlotList = slotList
-        if (selectedSlotList.isNotEmpty()) {
-            binding.proceedToCheckoutBtn.background =
-                ContextCompat.getDrawable(ctx, R.drawable.proceed_to_check_selected)
-        } else {
-            binding.proceedToCheckoutBtn.background =
-                ContextCompat.getDrawable(ctx, R.drawable.proceed_to_check_unselected)
-        }
-
-    }
-
-    private fun popupBookingConfirm() {
-
-        val layoutInflater: LayoutInflater =
-            ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-
-        val popUp: View = layoutInflater.inflate(R.layout.booking_confirm_layout, null)
-        val windowBookingConfirm = PopupWindow(
-            popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
-            ConstraintLayout.LayoutParams.MATCH_PARENT, true
-        )
-        windowBookingConfirm.showAtLocation(popUp, Gravity.CENTER, 0, 0)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            windowBookingConfirm.elevation = 10f
-        }
-        windowBookingConfirm.isTouchable = false
-        windowBookingConfirm.isOutsideTouchable = false
-
-        val confirmTv: MaterialTextView = popUp.findViewById(R.id.confirmTv)
-        val cancelTv: MaterialTextView = popUp.findViewById(R.id.cancelTv)
-
-        confirmTv.setOnClickListener {
-            // calling Booking Create Api....
-            windowBookingConfirm.dismiss()
-            if (shared.getString(Constants.DataKey.USER_ID) == artistID) {
-
-                Toast.makeText(ctx, "" + Constants.DataKey.USER_ID, Toast.LENGTH_LONG).show()
-            } else {
-                val list: ArrayList<SlotDataModel> = ArrayList()
-
-                for (i in 0 until selectedSlotList.size) {
-
-                    if (selectedSlotList[i].isBooked) {
-                        list.add(selectedSlotList[i])
-                        list[0].hour
-
-                        val fromTime = list[0].hour
-                        val toTime = list[list.size - 1].hour
-                        val sdfParse1 = SimpleDateFormat("HH:mm")
-                        val sdf1 = SimpleDateFormat("hh:mm a")
-
-                        mFromTime = fromTime.split(" - ")[0]   // gettimg fromTime from List
-                        mToTime = toTime.split(" - ")[1]     // // gettimg toTime from List
-
-                        val date = sdf1.parse(mFromTime)
-                        val date1 = sdf1.parse(mToTime)
-                        if (date != null && date1 !=null) {
-                            mFromTime = sdfParse1.format(date)
-                            mToTime = sdfParse1.format(date1)
-                        }
-                    }
-                }
-
-                if (selectedSlotList.isEmpty()) {
-                    Utility.alertErrorMessage(ctx, ctx.resources.getString(R.string.please_select_any_slot))
-                } else {
-                    bookingCreateApi()
-                }
-
-            }
-
-        }
-
-        cancelTv.setOnClickListener {
-            windowBookingConfirm.dismiss()
-        }
-
-
-    }
-
-    override fun slotPosition(position: Int) {
-
-        list.add(position)
-        if (list.size > 1) {
-            val maxValue = list.maxBy { it }
-            val minValue = list.minBy { it }
-            adapter?.getHighestSlot(minValue!!, maxValue!!)
-        }
-    }
-
     // booking Slot Api....
     private fun bookingSlotApi() {
 
@@ -410,6 +251,167 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
             })
 
     }
+
+    override fun slotPosition(position: Int) {
+
+        list.add(position)
+        if (list.size > 1) {
+            val maxValue = list.maxBy { it }
+            val minValue = list.minBy { it }
+            adapter?.getHighestSlot(minValue!!, maxValue!!)
+        }
+    }
+
+    override fun date(slotList: ArrayList<SlotDataModel>) {
+
+        selectedSlotList = slotList
+        if (selectedSlotList.isNotEmpty()) {
+            binding.proceedToCheckoutBtn.background =
+                ContextCompat.getDrawable(ctx, R.drawable.proceed_to_check_selected)
+        } else {
+            binding.proceedToCheckoutBtn.background =
+                ContextCompat.getDrawable(ctx, R.drawable.proceed_to_check_unselected)
+        }
+
+    }
+
+    // Booking Create Api....
+    private fun bookingCreateApi() {
+        binding.loaderLayout.visibility = View.VISIBLE
+        RetrofitClient.api.bookingCreateApi(
+            shared.getString(Constants.DataKey.AUTH_VALUE),
+            Constants.DataKey.CONTENT_TYPE_VALUE,
+            showType,
+            date,
+            mFromTime,
+            mToTime,
+            artistID,
+            shared.getString(Constants.ADDRESS)
+        )
+            .enqueue(object : Callback<BookingCreateModel> {
+                override fun onResponse(
+                    call: Call<BookingCreateModel>,
+                    response: Response<BookingCreateModel>
+                ) {
+                    binding.loaderLayout.visibility = View.GONE
+                    if (response.body() != null) {
+                        if (response.isSuccessful) {
+                            // Display Popup Message when Api Successfully created booking....
+                            bookingId = response.body()?.data?.address?.id.toString()
+
+                            if (prefManager?.getString1(Constants.DataKey.CURRENCY) == "EUR") {
+                                Constants.IDEAL_PAYMENT = true
+                                val intent = Intent(ctx, PaymentActivity::class.java)
+                                Constants.BOOKING_ID = bookingId
+//                                intent.putExtra("bookingid", bookingId)
+                                startActivity(intent)
+                                requireActivity().finish()
+                                list.clear()
+                            } else {
+                                val intent = Intent(ctx, SelectBank::class.java)
+                                Constants.BOOKING_ID = bookingId
+//                                intent.putExtra("bookingid", bookingId)
+                                startActivity(intent)
+                                requireActivity().finish()
+                                list.clear()
+                            }
+
+                        }
+                    } else {
+                        val jsonObject: JSONObject
+                        if (response.errorBody() != null) {
+                            try {
+                                jsonObject = JSONObject(response.errorBody()?.string()!!)
+                                val errorObject = jsonObject.getJSONObject(Constants.ERROR)
+                                val errorMessage = errorObject.getString("message")
+                                Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT).show()
+                            } catch (e: JSONException) {
+                                Toast.makeText(ctx, "" + e.message.toString(), Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<BookingCreateModel>, t: Throwable) {
+                    binding.loaderLayout.visibility = View.GONE
+                    Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
+    private fun popupBookingConfirm() {
+
+        val layoutInflater: LayoutInflater =
+            ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+        val popUp: View = layoutInflater.inflate(R.layout.booking_confirm_layout, null)
+        val windowBookingConfirm = PopupWindow(
+            popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
+            ConstraintLayout.LayoutParams.MATCH_PARENT, true
+        )
+        windowBookingConfirm.showAtLocation(popUp, Gravity.CENTER, 0, 0)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            windowBookingConfirm.elevation = 10f
+        }
+        windowBookingConfirm.isTouchable = false
+        windowBookingConfirm.isOutsideTouchable = false
+
+        val confirmTv: MaterialTextView = popUp.findViewById(R.id.confirmTv)
+        val cancelTv: MaterialTextView = popUp.findViewById(R.id.cancelTv)
+
+        confirmTv.setOnClickListener {
+            // calling Booking Create Api....
+            windowBookingConfirm.dismiss()
+            if (shared.getString(Constants.DataKey.USER_ID) == artistID) {
+
+                Toast.makeText(ctx, "" + Constants.DataKey.USER_ID, Toast.LENGTH_LONG).show()
+            } else {
+                val list: ArrayList<SlotDataModel> = ArrayList()
+
+                for (i in 0 until selectedSlotList.size) {
+
+                    if (selectedSlotList[i].isBooked) {
+                        list.add(selectedSlotList[i])
+                        list[0].hour
+
+                        val fromTime = list[0].hour
+                        val toTime = list[list.size - 1].hour
+                        val sdfParse1 = SimpleDateFormat("HH:mm")
+                        val sdf1 = SimpleDateFormat("hh:mm a")
+
+                        mFromTime = fromTime.split(" - ")[0]   // gettimg fromTime from List
+                        mToTime = toTime.split(" - ")[1]     // // gettimg toTime from List
+
+                        val date = sdf1.parse(mFromTime)
+                        val date1 = sdf1.parse(mToTime)
+                        if (date != null && date1 !=null) {
+                            mFromTime = sdfParse1.format(date)
+                            mToTime = sdfParse1.format(date1)
+                        }
+                    }
+                }
+
+                if (selectedSlotList.isEmpty()) {
+                    Utility.alertErrorMessage(ctx, ctx.resources.getString(R.string.please_select_any_slot))
+                } else {
+                    bookingCreateApi()
+                }
+
+            }
+
+        }
+
+        cancelTv.setOnClickListener {
+            windowBookingConfirm.dismiss()
+        }
+
+
+    }
+
+
 
 
 }

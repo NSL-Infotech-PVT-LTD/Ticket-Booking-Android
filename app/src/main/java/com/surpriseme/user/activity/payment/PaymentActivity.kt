@@ -32,7 +32,6 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener {
 
     private var binding: ActivityPaymentBinding? = null
     private var shared: PrefrenceShared? = null
-    private var bookingId = ""
     private var backpress: MaterialTextView? = null
 
 
@@ -40,9 +39,6 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_payment)
         binding = DataBindingUtil.setContentView(this@PaymentActivity, R.layout.activity_payment)
-
-        // getting booking id as intent from BookSlotFragment...
-//        bookingId = intent.getStringExtra("bookingid")!!
 
         init()
 
@@ -61,14 +57,11 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.cardPaymentTxt -> {
-                
                     Constants.IS_BOOKING_DONE = true
                     Constants.BOOKING = false
                     Constants.NOTIFICATION = false
                     val intent = Intent(this@PaymentActivity, SelectBank::class.java)
                     startActivity(intent)
-              
-
             }
             R.id.idealPaymentTxt -> {
                 val intent = Intent(this@PaymentActivity, IdealPayment::class.java)
