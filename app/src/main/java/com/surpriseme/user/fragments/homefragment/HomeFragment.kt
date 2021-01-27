@@ -28,6 +28,8 @@ import com.surpriseme.user.activity.searchactivity.SearchActivity
 import com.surpriseme.user.data.model.UpdateProfileModel
 import com.surpriseme.user.databinding.FragmentHomeBinding
 import com.surpriseme.user.fragments.artistbookingdetail.ArtistBookingFragment
+import com.surpriseme.user.fragments.bookingslotfragment.PaymentConfigModel
+import com.surpriseme.user.fragments.bookingslotfragment.PaymentDataModel
 import com.surpriseme.user.fragments.locationfragment.LocationDataList
 import com.surpriseme.user.fragments.locationfragment.LocationFragment
 import com.surpriseme.user.fragments.locationfragment.LocationListModel
@@ -133,6 +135,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 return isLoading
             }
         })
+
 
         return view
     }
@@ -378,6 +381,8 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                     if (response.body() != null) {
                         if (response.isSuccessful) {
 
+                            callingGetPaymentKeyFunction()
+
                             // after api successfull do your stuff....
                             artistList.clear()
                             artistList = response.body()?.data?.data!!
@@ -442,6 +447,9 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                     binding.loaderLayout.visibility = View.GONE
                     if (response.body() != null) {
                         if (response.isSuccessful) {
+
+                            callingGetPaymentKeyFunction()
+
 
 //                            invalidAuth?.invalidAuth(requireActivity(),401,isInvalidAuth)
                             // after api successfull do your stuff....
@@ -734,7 +742,6 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
 
     // Display popup while Invalid auth will come.
     private fun invalidAuthPopUp() {
-
         val layoutInflater: LayoutInflater =
             ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
@@ -766,6 +773,45 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 popUpWindowReport.dismiss()
             }
         }
+    }
+
+    private fun getPaymentKeyApi() {
+
+        RetrofitClient.api.getPaymentKeyApi(shared.getString(Constants.DataKey.AUTH_VALUE))
+            .enqueue(object :Callback<PaymentConfigModel> {
+                override fun onResponse(
+                    call: Call<PaymentConfigModel>,
+                    response: Response<PaymentConfigModel>
+                ) {
+                    if (response.body() !=null) {
+                        if (response.isSuccessful) {
+                            Constants.PUBLIC_KEY = response.body()?.data?.public_key!!
+                            Constants.SECRET_KEY = response.body()?.data?.seceret_key!!
+                            Constants.CLIENT_ID = response.body()?.data?.client_id!!
+                        }
+                    } else {
+                        val jsonObject:JSONObject
+                        if (response.errorBody() !=null) {
+                            try {
+                                jsonObject = JSONObject(response.errorBody()?.string()!!)
+                                val errorMessage = jsonObject.getString(Constants.ERROR)
+                                Toast.makeText(ctx,"" + errorMessage,Toast.LENGTH_SHORT).show()
+                            }catch (e:JSONException) {
+                                Toast.makeText(ctx,"" + e.message,Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
+                override fun onFailure(call: Call<PaymentConfigModel>, t: Throwable) {
+                    Toast.makeText(ctx,"" + t.message.toString(),Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
+    private fun callingGetPaymentKeyFunction() {
+        Handler().postDelayed({
+            getPaymentKeyApi()
+        },3000)
     }
 
 

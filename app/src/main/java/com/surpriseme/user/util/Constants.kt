@@ -44,6 +44,11 @@ object Constants {
     const val BOOKING_CANCEL = "customer/change-booking-status"
     const val RATE_BOOKING = "customer/rate-booking"
     const val TERMS_AND_CONDITIONS = "config/terms_and_conditions"
+    const val PAYMENT_CONFIG = "payment-config"
+
+    var PUBLIC_KEY = ""
+    var SECRET_KEY = ""
+    var CLIENT_ID = ""
 
 
     const val ISREMEMBER = "ISREMEMBER"

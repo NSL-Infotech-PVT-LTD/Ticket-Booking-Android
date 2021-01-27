@@ -57,6 +57,7 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
     private var showType = ""
     private var bookingId = ""
 
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         ctx = context
@@ -136,7 +137,7 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
                     ContextCompat.getDrawable(ctx, R.drawable.proceed_to_check_unselected)
             }
             R.id.backpress -> {
-                fragmentManager?.popBackStack()
+                requireActivity().supportFragmentManager.popBackStack()
             }
         }
     }
@@ -345,7 +346,7 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
         val layoutInflater: LayoutInflater =
             ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        val popUp: View = layoutInflater.inflate(R.layout.booking_confirm_layout, null)
+        val popUp: View = layoutInflater.inflate(R.layout.booking_confirm_layout, binding.bookSlotContainer,false)
         val windowBookingConfirm = PopupWindow(
             popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
             ConstraintLayout.LayoutParams.MATCH_PARENT, true
@@ -393,25 +394,16 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
                         }
                     }
                 }
-
                 if (selectedSlotList.isEmpty()) {
                     Utility.alertErrorMessage(ctx, ctx.resources.getString(R.string.please_select_any_slot))
                 } else {
                     bookingCreateApi()
                 }
-
             }
-
         }
-
         cancelTv.setOnClickListener {
             windowBookingConfirm.dismiss()
         }
-
-
     }
-
-
-
 
 }

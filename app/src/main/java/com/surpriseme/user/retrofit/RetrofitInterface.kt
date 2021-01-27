@@ -25,6 +25,8 @@ import com.surpriseme.user.activity.settings.UpdateLanguageModel
 import com.surpriseme.user.activity.signuptype.RegisterWithFbModel
 import com.surpriseme.user.data.model.*
 import com.surpriseme.user.fragments.bookingdetailfragment.RateReviewModel
+import com.surpriseme.user.fragments.bookingslotfragment.PaymentConfigModel
+import com.surpriseme.user.fragments.bookingslotfragment.PaymentDataModel
 import com.surpriseme.user.fragments.bookingslotfragment.SlotModel
 import com.surpriseme.user.fragments.chatFragment.ChatByIdModel
 import com.surpriseme.user.fragments.chatListfragment.ChatListModel
@@ -381,6 +383,9 @@ interface RetrofitInterface {
     @POST(Constants.UPDATE_LANGUAGE)
     fun updateLanguageApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String,
     @Query(Constants.ApiKey.LANG) lang: String) :Call<UpdateLanguageModel>
+
+    @GET(Constants.PAYMENT_CONFIG)
+    fun getPaymentKeyApi(@Header(Constants.ApiKey.AUTHORIZATION) authorization: String) : Call<PaymentConfigModel>
 
 
 }

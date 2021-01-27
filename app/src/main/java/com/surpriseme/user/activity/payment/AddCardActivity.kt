@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Gravity
@@ -52,10 +51,8 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_add_card)
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_card)
         shared = PrefrenceShared(this)
-
         init()
 
     }
@@ -66,9 +63,8 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
         binding?.payNowBtn?.setOnClickListener(this)
         val loadingText = findViewById<TextView>(R.id.loadingtext)
         loadingText.text  = Utility.randomString(this@AddCardActivity)
-
         // Check is Card list.size > 0, then Add card will display on button else Pay now will display...
-        if (!Constants.cardList.isEmpty()) {
+        if (Constants.cardList.isNotEmpty()) {
             binding?.payNowBtn?.text = getString(R.string.addcardd)
         }
         //validations....
@@ -77,7 +73,6 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
     private fun validations() {
         binding?.accountNumberEdt?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 accountNumber = s.toString()
@@ -98,7 +93,6 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
             override fun afterTextChanged(s: Editable?) {
             }
         })
-
         binding?.yearEdt?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -111,7 +105,6 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
             override fun afterTextChanged(s: Editable?) {
             }
         })
-
         binding?.cvvEdt?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
@@ -121,9 +114,7 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
                 cvv = s.toString()
             }
         })
-
     }
-
     private fun validatecard() {
         if (binding!!.cardHolderEdt.text.toString().isEmpty()) {
             Utility.alertErrorMessage(this@AddCardActivity, getString(R.string.pleaseenteraccount))
@@ -147,12 +138,12 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
             createToken(card)
         }
     }
-
+    // api to add card...
     private fun createToken(card: CardParams) {
         binding!!.loaderLayout.visibility = View.VISIBLE
         val stripe = Stripe(
             applicationContext,
-            "pk_test_51HcYaaDVPC7KpoaUBqxarUUagXrI14GRCicyaZt8NztibJ4G9Y7KMtunrcWTg5PDm3PzcuBe1zkFFJiJRt1mXs8s009njabz8l")
+            Constants.PUBLIC_KEY)
         stripe.createCardToken(card, null, null, object : ApiResultCallback<Token> {
             override fun onError(e: Exception) {
                 binding!!.loaderLayout.visibility = View.GONE
@@ -224,7 +215,6 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
                 }
             })
     }
-
     private fun paynow(id: String) {
          binding!!.pleaseWaitLayout.visibility = View.VISIBLE
         RetrofitClient.api.paynow(shared?.getString(Constants.DataKey.AUTH_VALUE)!!, id, Constants.BOOKING_ID, "confirmed", "card")
@@ -264,14 +254,12 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
                         }
                     }
                 }
-
                 override fun onFailure(call: Call<PaymentModel>, t: Throwable) {
                     binding!!.pleaseWaitLayout.visibility = View.GONE
                     Toast.makeText(this@AddCardActivity, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
                 }
             })
     }
-
     // Displaying The Popup while cancel the booking.....
     private fun popupBookingCancel() {
         val layoutInflater: LayoutInflater = this@AddCardActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -292,13 +280,11 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
         yes.setOnClickListener {
             windowBookingCancel.dismiss()
             cancelBookingApi(Constants.BOOKING_ID)
-
         }
         no.setOnClickListener {
             windowBookingCancel.dismiss()
         }
     }
-
     // api to cancel booking....
     private fun cancelBookingApi(bookingID: String) {
         binding?.loaderLayout?.visibility = View.VISIBLE
@@ -337,11 +323,6 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
                 }
             })
     }
-
-
-
-
-
 
 }
 
