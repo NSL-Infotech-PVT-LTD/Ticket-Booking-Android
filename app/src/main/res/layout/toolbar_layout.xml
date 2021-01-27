@@ -90,7 +90,7 @@
             android:layout_height="@dimen/_25sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             android:background="@drawable/corner_round_5_blue"
-            android:text="@string/inperson"
+            android:text="@string/in_person"
             android:gravity="center"
             android:singleLine="true"
             android:textSize="@dimen/_10sdp"

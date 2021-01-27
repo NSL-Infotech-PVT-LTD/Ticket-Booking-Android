@@ -52,7 +52,7 @@
                     android:hint="@string/search_for_artist_singer"
                     android:imeOptions="actionDone"
                     android:maxLength="50"
-                    android:paddingHorizontal="@dimen/_20sdp"
+                    android:paddingHorizontal="@dimen/_10sdp"
                     android:paddingVertical="@dimen/_10sdp"
                     android:singleLine="true"
                     android:textSize="@dimen/_10sdp"

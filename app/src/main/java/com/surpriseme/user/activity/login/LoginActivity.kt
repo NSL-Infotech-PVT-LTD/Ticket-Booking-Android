@@ -208,11 +208,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                             try {
                                 jsonObject = JSONObject(response.errorBody()!!.string())
                                 val errorMessage = jsonObject.getString(Constants.ERROR)
-                                Snackbar.make(
-                                    loginContainer,
-                                    "" + errorMessage,
-                                    BaseTransientBottomBar.LENGTH_SHORT
-                                ).show()
+                                Utility.alertErrorMessage(this@LoginActivity, errorMessage)
                             } catch (e: JSONException) {
                                 Snackbar.make(
                                     loginContainer,
@@ -239,33 +235,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         super.onBackPressed()
         finishAffinity()
     }
-
-//    private fun getHashCode() {
-//        try {
-//            val info: PackageInfo = this@LoginActivity.getPackageManager().getPackageInfo(
-//                "com.surpriseme.user",
-//                PackageManager.GET_SIGNATURES
-//            )
-//            for (signature in info.signatures) {
-//                val md: MessageDigest = MessageDigest.getInstance("SHA")
-//                md.update(signature.toByteArray())
-//                Log.d(
-//                    "KeyHash", "KeyHash:" + Base64.encodeToString(
-//                        md.digest(),
-//                        Base64.DEFAULT
-//                    )
-//                )
-//                Toast.makeText(
-//                    getApplicationContext(), Base64.encodeToString(
-//                        md.digest(),
-//                        Base64.DEFAULT
-//                    ), Toast.LENGTH_LONG
-//                ).show()
-//            }
-//        } catch (e: PackageManager.NameNotFoundException) {
-//        } catch (e: NoSuchAlgorithmException) {
-//        }
-//    }
 
 
 }

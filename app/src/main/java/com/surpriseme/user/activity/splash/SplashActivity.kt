@@ -9,6 +9,7 @@ import com.surpriseme.user.R
 import com.surpriseme.user.activity.chooselanguage.ChooseLanguageActivity
 import com.surpriseme.user.activity.login.LoginActivity
 import com.surpriseme.user.activity.mainactivity.MainActivity
+import com.surpriseme.user.activity.splashwalkthrough.SplashGetStartedActivity
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefManger
 import com.surpriseme.user.util.PrefrenceShared
@@ -44,30 +45,11 @@ class SplashActivity : AppCompatActivity() {
         Handler().postDelayed({
             startActivity(intent)
             finish()
-
-                if (shared.getString(Constants.DataKey.AUTH_VALUE).isNotEmpty()) {
-
-                    val intent = Intent(this@SplashActivity, MainActivity ::class.java)
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    startActivity(intent)
-                    finishAffinity()
-
-                }else if (prefManager.getString1("language")?.isEmpty()!!) {
-                    val intent = Intent(this@SplashActivity,ChooseLanguageActivity ::class.java)
-                    intent.putExtra("splash","splash")
-                    startActivity(intent)
-                    finishAffinity()
-
-                } else {
-                    val intent = Intent(applicationContext, LoginActivity ::class.java)
-
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    startActivity(intent)
-                    finishAffinity()
-                }
-
+            val intent = Intent(applicationContext, SplashGetStartedActivity ::class.java)
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
+            finishAffinity()
             },splashTime)
 
     }

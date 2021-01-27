@@ -28,8 +28,6 @@ import com.surpriseme.user.activity.searchactivity.SearchActivity
 import com.surpriseme.user.data.model.UpdateProfileModel
 import com.surpriseme.user.databinding.FragmentHomeBinding
 import com.surpriseme.user.fragments.artistbookingdetail.ArtistBookingFragment
-import com.surpriseme.user.fragments.bookingslotfragment.PaymentConfigModel
-import com.surpriseme.user.fragments.bookingslotfragment.PaymentDataModel
 import com.surpriseme.user.fragments.locationfragment.LocationDataList
 import com.surpriseme.user.fragments.locationfragment.LocationFragment
 import com.surpriseme.user.fragments.locationfragment.LocationListModel
@@ -775,6 +773,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         }
     }
 
+    // Api to get Payment (Published key)....
     private fun getPaymentKeyApi() {
 
         RetrofitClient.api.getPaymentKeyApi(shared.getString(Constants.DataKey.AUTH_VALUE))

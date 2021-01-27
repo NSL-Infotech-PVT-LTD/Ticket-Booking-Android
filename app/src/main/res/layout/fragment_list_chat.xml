@@ -133,21 +133,21 @@
             android:fontFamily="@font/montserrat_bold"/>
 
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/unableToFindBookingText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/unable_to_find_chat"
-            android:textColor="#99FFFFFF"
-            android:textSize="@dimen/_12sdp"
-            android:gravity="center"
-            android:visibility="visible"
-            android:layout_marginHorizontal="@dimen/_30sdp"
-            app:layout_constraintTop_toBottomOf="@id/noArtistText"
-            android:layout_marginTop="@dimen/_20sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:fontFamily="@font/montserrat_semibold"/>
+<!--        <com.google.android.material.textview.MaterialTextView-->
+<!--            android:id="@+id/unableToFindBookingText"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/unable_to_find_chat"-->
+<!--            android:textColor="#99FFFFFF"-->
+<!--            android:textSize="@dimen/_12sdp"-->
+<!--            android:gravity="center"-->
+<!--            android:visibility="visible"-->
+<!--            android:layout_marginHorizontal="@dimen/_30sdp"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/noArtistText"-->
+<!--            android:layout_marginTop="@dimen/_20sdp"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            android:fontFamily="@font/montserrat_semibold"/>-->
 
         <ImageView
             android:layout_width="match_parent"

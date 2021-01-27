@@ -86,20 +86,22 @@ class ChangePasswordFragment : Fragment(), View.OnClickListener {
 
                 when {
                     oldPassword.isEmpty() -> {
-                        binding.oldPassEdt.error = getString(R.string.please_fill_require_field)
+                        Utility.alertErrorMessage(ctx, getString(R.string.ENTER_OLD_PASSWRD))
+                        binding.oldPassEdt.requestFocus()
                     }
                     newPassword.isEmpty() -> {
-                        binding.newPasswordEdt.error = getString(R.string.please_fill_require_field)
+                        Utility.alertErrorMessage(ctx, getString(R.string.ENTER_YOUR_PASSWRD))
+                        binding.newPasswordEdt.requestFocus()
                     }
                     confirmPassword.isEmpty() -> {
-                        binding.confirmPassEdt.error = getString(R.string.please_fill_require_field)
+                        Utility.alertErrorMessage(ctx, getString(R.string.ENTER_YOUR_CONFIRM_PASSWRD))
+                        binding.confirmPassEdt.requestFocus()
                     }
-                    newPassword != confirmPassword -> {
-                        binding.newPasswordEdt.error = getString(R.string.password_not_match)
-                    }
-                    oldPassword != oldPassValue -> {
-                        binding.oldPassEdt.error = getString(R.string.please_use_valid_old_password)
-                    }
+//                    newPassword != confirmPassword -> {
+////                        Utility.alertErrorMessage(ctx, getString(R.string.ENTER_YOUR_CONFIRM_PASSWRD))
+//                    }
+//                    oldPassword != oldPassValue -> {
+//                    }
                     else -> {
                         // hit Change password api....
                         changePasswordApi()
@@ -171,9 +173,9 @@ class ChangePasswordFragment : Fragment(), View.OnClickListener {
                         if (response.errorBody() !=null) {
                             try {
                                 jsonObject = JSONObject(response.errorBody()?.string()!!)
-                                val errorMessage = jsonObject.getString(Constants.ERRORS)
+                                val errorMessage = jsonObject.getString(Constants.ERROR)
 //                                alertPopUp(errorMessage)
-                                Toast.makeText(ctx,"" + errorMessage,Toast.LENGTH_SHORT).show()
+                                Utility.alertErrorMessage(ctx, errorMessage)
                             }catch (e:JSONException) {
                                 Toast.makeText(ctx,"" + e.message.toString(),Toast.LENGTH_SHORT).show()
                             }

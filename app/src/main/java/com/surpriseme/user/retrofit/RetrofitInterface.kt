@@ -1,7 +1,6 @@
 package com.surpriseme.user.retrofit
 
 
-import android.widget.ImageView
 import com.surpriseme.user.activity.login.Loginmodel
 import com.surpriseme.user.activity.signup.RegisterModel
 import com.surpriseme.user.activity.forgotpassword.ResetPasswordModel
@@ -25,8 +24,7 @@ import com.surpriseme.user.activity.settings.UpdateLanguageModel
 import com.surpriseme.user.activity.signuptype.RegisterWithFbModel
 import com.surpriseme.user.data.model.*
 import com.surpriseme.user.fragments.bookingdetailfragment.RateReviewModel
-import com.surpriseme.user.fragments.bookingslotfragment.PaymentConfigModel
-import com.surpriseme.user.fragments.bookingslotfragment.PaymentDataModel
+import com.surpriseme.user.fragments.homefragment.PaymentConfigModel
 import com.surpriseme.user.fragments.bookingslotfragment.SlotModel
 import com.surpriseme.user.fragments.chatFragment.ChatByIdModel
 import com.surpriseme.user.fragments.chatListfragment.ChatListModel

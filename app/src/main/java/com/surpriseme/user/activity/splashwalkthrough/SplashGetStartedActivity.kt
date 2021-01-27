@@ -6,7 +6,12 @@ import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.surpriseme.user.R
+import com.surpriseme.user.activity.chooselanguage.ChooseLanguageActivity
 import com.surpriseme.user.activity.login.LoginActivity
+import com.surpriseme.user.activity.mainactivity.MainActivity
+import com.surpriseme.user.util.Constants
+import com.surpriseme.user.util.PrefManger
+import com.surpriseme.user.util.PrefrenceShared
 import kotlinx.android.synthetic.main.activity_splash_get_started.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -22,11 +27,9 @@ class SplashGetStartedActivity : AppCompatActivity() {
         R.drawable.slider2,
         R.drawable.slider3
     )
-    private val textSlide = arrayOf(
-        R.string.BIRTHDAY_SURPRISE,
-        R.string.DJ_PERFORMERSDj,
-        R.string.DIGITAL_PERFORMANCE
-    )
+
+    private lateinit var shared: PrefrenceShared
+    private lateinit var prefManager: PrefManger
     private val imagesArray = ArrayList<Int>()
     private var textArray = ArrayList<String>()
 
@@ -34,6 +37,9 @@ class SplashGetStartedActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_get_started)
+
+        shared = PrefrenceShared(this@SplashGetStartedActivity)
+        prefManager = PrefManger(this@SplashGetStartedActivity)
 
         textArray.add(getString(R.string.BIRTHDAY_SURPRISE))
         textArray.add(getString(R.string.DJ_PERFORMERSDj))
@@ -65,7 +71,29 @@ class SplashGetStartedActivity : AppCompatActivity() {
         // making Slider auto....
 //        autoPlay()
         getStarted.setOnClickListener {
-            startActivity(Intent(this@SplashGetStartedActivity, LoginActivity::class.java))
+
+            if (shared.getString(Constants.DataKey.AUTH_VALUE).isNotEmpty()) {
+
+                val intent = Intent(this@SplashGetStartedActivity, MainActivity ::class.java)
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                startActivity(intent)
+                finishAffinity()
+
+            }else if (prefManager.getString1("language")?.isEmpty()!!) {
+                val intent = Intent(this@SplashGetStartedActivity, ChooseLanguageActivity ::class.java)
+                intent.putExtra("splash","splash")
+                startActivity(intent)
+                finishAffinity()
+
+            } else {
+                val intent = Intent(applicationContext, LoginActivity ::class.java)
+
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                startActivity(intent)
+                finishAffinity()
+            }
 
         }
 

@@ -1,4 +1,4 @@
-package com.surpriseme.user.fragments.bookingslotfragment
+package com.surpriseme.user.fragments.homefragment
 
 data class PaymentConfigModel(
     val code: Int,

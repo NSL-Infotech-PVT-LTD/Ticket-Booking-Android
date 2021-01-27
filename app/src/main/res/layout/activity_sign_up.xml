@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/details"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/register_title"
+        android:text="@string/register_title_Color"
         android:fontFamily="@font/quicksand_medium"
         android:textSize="12dp"
         android:layout_marginStart="@dimen/_30sdp"
