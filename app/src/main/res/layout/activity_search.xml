@@ -122,7 +122,7 @@
                         android:id="@+id/unableToFindArtistTv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/unable_to_find_artist"
+                        android:text="@string/UNABLE_TO_FIND"
                         android:textColor="#99FFFFFF"
                         android:textSize="@dimen/_12sdp"
                         android:gravity="center"

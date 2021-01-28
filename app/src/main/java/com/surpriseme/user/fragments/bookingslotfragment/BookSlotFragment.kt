@@ -223,6 +223,8 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
 
                                 binding.slotDetailLayout.visibility = View.VISIBLE
                                 binding.noArtistFound.visibility = View.GONE
+                                // Calling Slot Welcome popup...
+                                popupWelcomeSlot()
                             } else {
                                 binding.slotDetailLayout.visibility = View.GONE
                                 binding.noArtistFound.visibility = View.VISIBLE
@@ -298,24 +300,10 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
                     if (response.body() != null) {
                         if (response.isSuccessful) {
                             // Display Popup Message when Api Successfully created booking....
-                            bookingId = response.body()?.data?.address?.id.toString()
 
-                            if (prefManager?.getString1(Constants.DataKey.CURRENCY) == "EUR") {
-                                Constants.IDEAL_PAYMENT = true
-                                val intent = Intent(ctx, PaymentActivity::class.java)
-                                Constants.BOOKING_ID = bookingId
-//                                intent.putExtra("bookingid", bookingId)
-                                startActivity(intent)
-                                requireActivity().finish()
-                                list.clear()
-                            } else {
-                                val intent = Intent(ctx, SelectBank::class.java)
-                                Constants.BOOKING_ID = bookingId
-//                                intent.putExtra("bookingid", bookingId)
-                                startActivity(intent)
-                                requireActivity().finish()
-                                list.clear()
-                            }
+                            popupBookingConfirmed()
+                            bookingId = response.body()?.data?.address?.id.toString()
+                            Constants.BOOKING_ID = bookingId
 
                         }
                     } else {
@@ -341,6 +329,7 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
             })
     }
 
+    // Popup will display when booking want to confirm....
     private fun popupBookingConfirm() {
 
         val layoutInflater: LayoutInflater =
@@ -405,5 +394,80 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
             windowBookingConfirm.dismiss()
         }
     }
+
+    // Popup will display when slot api will hit...
+    private fun popupWelcomeSlot() {
+
+        val layoutInflater: LayoutInflater =
+            ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+        val popUp: View = layoutInflater.inflate(R.layout.slot_welcome_popup_layout, binding.bookSlotContainer,false)
+        val windowWelcomeSlot = PopupWindow(
+            popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
+            ConstraintLayout.LayoutParams.MATCH_PARENT, true
+        )
+        windowWelcomeSlot.showAtLocation(popUp, Gravity.CENTER, 0, 0)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            windowWelcomeSlot.elevation = 10f
+        }
+        windowWelcomeSlot.isTouchable = false
+        windowWelcomeSlot.isOutsideTouchable = false
+
+        val okTv: MaterialTextView = popUp.findViewById(R.id.okTv)
+
+        okTv.setOnClickListener {
+            windowWelcomeSlot.dismiss()
+        }
+
+    }
+
+    // Popup will display when booking will be done...
+    private fun popupBookingConfirmed() {
+
+        val layoutInflater: LayoutInflater =
+            ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+        val popUp: View = layoutInflater.inflate(R.layout.popup_booking_confirm_layout, binding.bookSlotContainer,false)
+        val windowWelcomeSlot = PopupWindow(
+            popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
+            ConstraintLayout.LayoutParams.MATCH_PARENT, true
+        )
+        windowWelcomeSlot.showAtLocation(popUp, Gravity.CENTER, 0, 0)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            windowWelcomeSlot.elevation = 10f
+        }
+        windowWelcomeSlot.isTouchable = false
+        windowWelcomeSlot.isOutsideTouchable = false
+
+        val okTv: MaterialTextView = popUp.findViewById(R.id.okTv)
+
+        okTv.setOnClickListener {
+            windowWelcomeSlot.dismiss()
+
+            if (prefManager?.getString1(Constants.DataKey.CURRENCY) == "EUR") {
+                Constants.IDEAL_PAYMENT = true
+                val intent = Intent(ctx, PaymentActivity::class.java)
+
+//                                intent.putExtra("bookingid", bookingId)
+                startActivity(intent)
+                requireActivity().finish()
+                list.clear()
+            } else {
+                val intent = Intent(ctx, SelectBank::class.java)
+                Constants.BOOKING_ID = bookingId
+//                                intent.putExtra("bookingid", bookingId)
+                startActivity(intent)
+                requireActivity().finish()
+                list.clear()
+            }
+        }
+
+    }
+
+
 
 }

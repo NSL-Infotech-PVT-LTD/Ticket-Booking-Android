@@ -112,7 +112,7 @@
     <string name="select_other_location">Select Other Location</string>
     <string name="enter_atleast_three_character">Search Artist(Enter Atleast 3 Chars.)</string>
     <string name="no_artist_right_now">No Artist Right Now</string>
-    <string name="unable_to_find_artist">Unable to find artist on this page. Please search for another one</string>
+    <string name="UNABLE_TO_FIND">Unable to find artist on this page.Please search for another.</string>
     <string name="virtual_show">Virtual Show</string>
     <string name="in_person_show">In-Person Show</string>
     <string name="select">Select</string>
@@ -287,7 +287,7 @@
     <string name="to_date_should_greater_than_from_date">To Date should greater than From date</string>
     <string name="from_date_should_not_greater_than_to_date">From date should not greater than To date</string>
     <string name="CHOOSE_SHOW">Choose the preferred medium of performance</string>
-    <string name="SEETING_UP">We are curating the list of artists for you. Please hang on...</string>
+    <string name="SEETING_UP">Awesome ! we are curating artists for you. Hold on a second</string>
     <string name="SEETING_UP_DETAIL_VIRTUAL">Artists perfrom virtually using Skype, Zoom, Hangouts, etc.</string>
     <string name="SEETING_UP_DETAIL_IN_PERSON">Artists visit location of your choice</string>
     <string name="miles">miles</string>
@@ -306,8 +306,6 @@
 
 
 
-
-
     <string name="Reason">Reason: </string>
     <string name="cvv_demo">Ex- 1234</string>
     <string name="card_number_demo">**** - **** - **** - 1452</string>
@@ -315,7 +313,9 @@
 
 
     <string name="completed_review">completed_review</string>
-
+    <string name="PLEASE_SELECT_TIME">Please select the time</string>
+    <string name="BOOKING_CONFIRMATION_TITLE">Don\'t worry. You can customize it by chatting with the artist 🙂</string>
+    <string name="BOOKING_CRNF_SUCCESS">Hurray ! your booking is confirmed 🙂</string>
 
 
 </resources>
