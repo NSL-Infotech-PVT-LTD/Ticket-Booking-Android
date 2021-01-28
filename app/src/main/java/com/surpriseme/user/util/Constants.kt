@@ -44,6 +44,8 @@ object Constants {
     const val BOOKING_CANCEL = "customer/change-booking-status"
     const val RATE_BOOKING = "customer/rate-booking"
     const val TERMS_AND_CONDITIONS = "config/terms_and_conditions"
+    const val PRIVACY_POLICY = "config/privacy_policy"
+    const val ABOUT_US = "config/about_us"
     const val PAYMENT_CONFIG = "payment-config"
 
     var PUBLIC_KEY = ""
@@ -116,7 +118,9 @@ object Constants {
     var BOOKING_ID = ""
     var cardList: ArrayList<CardGetDetailModel> = ArrayList()
     var IS_CARD_DELETED = false
-
+    var IS_TERM_AND_CONDITION = false
+    var IS_PRIVACY_POLICY = false
+    var IS_ABOUT_US = false
 
 
 

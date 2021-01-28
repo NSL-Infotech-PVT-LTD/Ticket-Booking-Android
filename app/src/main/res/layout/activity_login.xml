@@ -31,9 +31,10 @@
 
         <ImageView
             android:id="@+id/img_sign"
-            android:layout_width="@dimen/_140sdp"
-            android:layout_height="@dimen/_140sdp"
-            android:src="@drawable/splash_log"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/login_2"
+            android:layout_marginTop="@dimen/_20sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -110,7 +111,7 @@
                 android:text="@string/EMAIL_ADDRESS"
                 android:textColor="#66667e"
                 android:fontFamily="@font/montserrat_medium"
-                android:textSize="@dimen/_10sdp"
+                android:textSize="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_1sdp"
                 app:layout_constraintStart_toEndOf="@id/mailicon"
                 app:layout_constraintTop_toTopOf="@+id/mailicon" />
@@ -118,7 +119,7 @@
             <EditText
                 android:id="@+id/emailedt"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/_40sdp"
+                android:layout_height="@dimen/_30sdp"
                 android:background="@null"
                 android:hint="@string/TYPE_HERE"
                 android:textSize="@dimen/_12sdp"

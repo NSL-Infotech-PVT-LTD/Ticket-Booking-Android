@@ -711,7 +711,7 @@
                         android:singleLine="true"
                         android:text="@string/have_chat_about_your_booking"
                         android:textColor="#36396e"
-                        android:textSize="12dp"
+                        android:textSize="@dimen/_12sdp"
                         app:layout_constraintEnd_toStartOf="@+id/chatStartIcon"
                         app:layout_constraintStart_toStartOf="@+id/aboutText"
                         app:layout_constraintTop_toBottomOf="@+id/aboutText" />
@@ -730,8 +730,8 @@
 
                     <ImageView
                         android:id="@+id/chatStartIcon"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:layout_marginEnd="20dp"
                         android:src="@drawable/ic_chat"
                         app:layout_constraintBottom_toBottomOf="@+id/chatAboutBookingTxt"
@@ -755,7 +755,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/drake"
                     android:visibility="gone" />
 
                 <androidx.viewpager.widget.ViewPager
@@ -779,7 +778,9 @@
                     android:id="@+id/close"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
                     android:padding="@dimen/_10sdp"
                     android:src="@drawable/ic_close_48" />
 

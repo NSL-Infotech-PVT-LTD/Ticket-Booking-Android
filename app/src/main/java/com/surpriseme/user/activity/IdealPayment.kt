@@ -4,7 +4,6 @@ package com.surpriseme.user.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -16,13 +15,9 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.material.textview.MaterialTextView
 import com.stripe.android.*
 import com.stripe.android.model.*
-import com.stripe.android.view.PaymentMethodsActivity
 import com.surpriseme.user.R
-import com.surpriseme.user.activity.payment.PaymentActivity
 import com.surpriseme.user.data.model.PaymentIntent
-import com.surpriseme.user.data.model.PaymentModel
 import com.surpriseme.user.databinding.ActivityIdealPaymentBinding
-import com.surpriseme.user.databinding.ActivityPaymentBinding
 import com.surpriseme.user.fragments.bookingdetailfragment.BookingDetailFragment
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
@@ -67,7 +62,7 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener, Vi
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
             override fun afterTextChanged(s: Editable?) {
-                if(binding.holderedt.text.length>0){
+                if(binding.holderedt.text.isNotEmpty()){
                     binding.paynowbtn.backgroundTintList = getColorStateList(R.color.colorAccent)
                 }else{
                     binding.paynowbtn.backgroundTintList = getColorStateList(R.color.btnback)
@@ -106,7 +101,7 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener, Vi
         bankid.add("triodos_bank")
         bankid.add("van_lanschot")
 
-        val bankadapter = ArrayAdapter<String>(this,android.R.layout.simple_expandable_list_item_1,banklist)
+        val bankadapter = ArrayAdapter(this,android.R.layout.simple_expandable_list_item_1,banklist)
         binding.bookingSpinner.adapter = bankadapter
         binding.choosebankedt.hint=""
         binding.bookingSpinner.onItemSelectedListener =this
@@ -120,10 +115,10 @@ class IdealPayment : AppCompatActivity(), AdapterView.OnItemSelectedListener, Vi
             }
             R.id.paynowbtn -> {
                 if(binding.choosebankedt.text.toString().equals(getString(R.string.selectbank))){
-                    Toast.makeText(this,getString(R.string.selectbank),Toast.LENGTH_LONG).show()
+                    Utility.alertErrorMessage(this@IdealPayment, getString(R.string.selectbank))
                 }
                 else if(binding.holderedt.text.toString().isEmpty()){
-                    Toast.makeText(this,getString(R.string.pleaseenteraccount),Toast.LENGTH_LONG).show()
+                    Utility.alertErrorMessage(this@IdealPayment, getString(R.string.ENTER_ACCOUNT_HOLDER_NAME))
                 }
                 else{
                     paynow(Constants.BOOKING_ID)

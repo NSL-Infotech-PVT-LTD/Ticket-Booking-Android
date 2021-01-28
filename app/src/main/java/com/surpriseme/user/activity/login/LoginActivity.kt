@@ -129,6 +129,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             password.isEmpty() -> {
                 Utility.alertErrorMessage(this@LoginActivity, getString(R.string.enter_your_password))
             }
+
             else -> {
                 // Hit login api here....
                 loginApi()

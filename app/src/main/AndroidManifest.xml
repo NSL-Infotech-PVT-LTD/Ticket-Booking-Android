@@ -18,23 +18,32 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.VideoActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.mainactivity.MainActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.SelectBank"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.IdealPayment"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.payment.AddCardActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.payment.PaymentActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.chooselanguage.ChooseLanguageActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.settings.SettingsActivity"
-            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.termprivacyhelp.TermPrivacyHelpActivity"></activity>
+        <activity
+            android:name=".activity.VideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.mainactivity.MainActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.SelectBank"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.IdealPayment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.payment.AddCardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.payment.PaymentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.chooselanguage.ChooseLanguageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.settings.SettingsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.searchactivity.SearchActivity"
             android:screenOrientation="portrait" /> <!-- testing.netscapelabs@gmail.com -->
@@ -58,6 +67,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
@@ -99,8 +109,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!-- testing.netscape@gmail.com account is used for firebase -->
+        </activity> <!-- testing.netscape@gmail.com account is used for firebase -->
         <service
             android:name=".util.MyFirebaseMessagingService"
             android:enabled="true"

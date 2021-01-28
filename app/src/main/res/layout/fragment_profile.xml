@@ -170,7 +170,7 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginEnd="@dimen/_10sdp"
-                        android:text="@string/EMAIL_ADDRESS"
+                        android:text="@string/e_mail"
                         android:textColor="#66667e"
                         android:singleLine="true"
                         android:fontFamily="@font/quicksand_medium"

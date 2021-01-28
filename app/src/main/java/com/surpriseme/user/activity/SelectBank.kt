@@ -128,7 +128,7 @@ class SelectBank : AppCompatActivity(), CardAdapter.ChangeLocale, View.OnClickLi
                                 binding?.cardRecyclerLayout?.visibility = View.GONE
                                 if (Constants.IS_CARD_DELETED){
                                     binding?.noCardAvailableTxt?.visibility = View.VISIBLE
-                                    binding?.paynowbtn?.text = getString(R.string.addcardd)
+                                    binding?.paynowbtn?.text = getString(R.string.ADD_CARD_TITLE)
                                 }else {
                                     val intent = Intent(this@SelectBank, AddCardActivity::class.java)
                                     startActivity(intent)

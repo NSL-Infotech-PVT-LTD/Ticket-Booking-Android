@@ -89,12 +89,22 @@ class ChangePasswordFragment : Fragment(), View.OnClickListener {
                         Utility.alertErrorMessage(ctx, getString(R.string.ENTER_OLD_PASSWRD))
                         binding.oldPassEdt.requestFocus()
                     }
+
                     newPassword.isEmpty() -> {
                         Utility.alertErrorMessage(ctx, getString(R.string.ENTER_YOUR_PASSWRD))
                         binding.newPasswordEdt.requestFocus()
                     }
+                    newPassword.length <8 -> {
+                        Utility.alertErrorMessage(ctx, getString(R.string.password_should_atleast_eight_character))
+                        binding.newPasswordEdt.requestFocus()
+                    }
                     confirmPassword.isEmpty() -> {
                         Utility.alertErrorMessage(ctx, getString(R.string.ENTER_YOUR_CONFIRM_PASSWRD))
+                        binding.confirmPassEdt.requestFocus()
+                    }
+
+                    confirmPassword.length <8 -> {
+                        Utility.alertErrorMessage(ctx, getString(R.string.password_should_atleast_eight_character))
                         binding.confirmPassEdt.requestFocus()
                     }
 //                    newPassword != confirmPassword -> {

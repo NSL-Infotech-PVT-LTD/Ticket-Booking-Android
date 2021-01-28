@@ -79,7 +79,7 @@
     <string name="selectbank">Select Bank</string>
     <string name="card_holder_name">Card Holder Name</string>
     <string name="expiry_date_of_card">Expiry Date of Card</string>
-    <string name="addcardd">Add Card</string>
+    <string name="ADD_CARD_TITLE">Add Card</string>
     <string name="ADDITIONAL_INFORMATION">Additional Information (Optional)</string>
     <string name="save_address">Save Address</string>
     <string name="home">Home</string>
@@ -133,7 +133,7 @@
     <string name="virtual">Virtual</string>
     <string name="gallery">Gallery</string>
     <string name="social_media_handles">Social Media Handles</string>
-    <string name="have_chat_about_your_booking">have a chat about your booking</string>
+    <string name="have_chat_about_your_booking">Have a chat about your booking</string>
     <string name="about">About</string>
     <string name="youtube_account">Youtube Account</string>
     <string name="instagram_account">Instagram Account</string>
@@ -183,7 +183,7 @@
     <string name="no_artists_found">No Artists Found</string>
     <string name="default_notification_channel_id">channel-1</string>
     <string name="settings">Settings</string>
-    <string name="terms_condition">Terms and Conditions</string>
+    <string name="terms_condition">Terms And Conditions</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="type_your_message">Type your message</string>
     <string name="are_you_sure_want_to_logout">Are you sure you want to logout</string>
@@ -236,15 +236,15 @@
     <string name="no_video_uploaded">No Video Uploaded yet</string>
     <string name="OTHER_ADD">Please enter other address</string>
     <string name="save">Save</string>
-    <string name="account_number">Account Number</string>
+    <string name="CARD_NUMBER">Card Number</string>
     <string name="MM">MM</string>
     <string name="yyYY">YYYY</string>
     <string name="cvv">CVV</string>
-    <string name="pleaseenteraccount">Please enter account holder name</string>
-    <string name="pleaseenteraccountnum">Please enter account number</string>
-    <string name="pleaseentermonth">Please enter month</string>
-    <string name="pleaseenteryear">Please enter year</string>
-    <string name="pleaseentercvv">Please enter cvv</string>
+    <string name="ENTER_ACCOUNT_HOLDER_NAME">Enter account holder name</string>
+    <string name="ENTER_CARD_NUMBER">Enter Card Number</string>
+    <string name="ENTER_CARD_EXPIRY_MONTH">Enter Card Expire Month</string>
+    <string name="ENTER_EXPIRY_YEAR">Enter Expire Year</string>
+    <string name="ENTER_CVV">Enter CVV Number</string>
     <string name="hourly">Hourly</string>
     <string name="hr">hr</string>
     <string name="no_address_right_now_switching_to_virtual">There is no address found. Switching to the list of Virtual Artist</string>
@@ -304,8 +304,6 @@
     <string name="chat_with_artist">Chat with Artist</string>
 
 
-
-
     <string name="Reason">Reason: </string>
     <string name="cvv_demo">Ex- 1234</string>
     <string name="card_number_demo">**** - **** - **** - 1452</string>
@@ -316,7 +314,6 @@
     <string name="PLEASE_SELECT_TIME">Please select the time</string>
     <string name="BOOKING_CONFIRMATION_TITLE">Don\'t worry. You can customize it by chatting with the artist 🙂</string>
     <string name="BOOKING_CRNF_SUCCESS">Hurray ! your booking is confirmed 🙂</string>
-
 
 
 </resources>

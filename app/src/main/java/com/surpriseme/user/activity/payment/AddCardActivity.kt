@@ -65,7 +65,7 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
         loadingText.text  = Utility.randomString(this@AddCardActivity)
         // Check is Card list.size > 0, then Add card will display on button else Pay now will display...
         if (Constants.cardList.isNotEmpty()) {
-            binding?.payNowBtn?.text = getString(R.string.addcardd)
+            binding?.payNowBtn?.text = getString(R.string.ADD_CARD_TITLE)
         }
         //validations....
         validations()
@@ -117,18 +117,16 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
     }
     private fun validatecard() {
         if (binding!!.cardHolderEdt.text.toString().isEmpty()) {
-            Utility.alertErrorMessage(this@AddCardActivity, getString(R.string.pleaseenteraccount))
+            Utility.alertErrorMessage(this@AddCardActivity, getString(R.string.ENTER_ACCOUNT_HOLDER_NAME))
         } else if (binding!!.accountNumberEdt.text.toString().isEmpty()) {
-            Utility.alertErrorMessage(this@AddCardActivity, getString(R.string.pleaseenteraccountnum))
+            Utility.alertErrorMessage(this@AddCardActivity, getString(R.string.ENTER_CARD_NUMBER))
         } else if (binding!!.expiryEdt.text.toString().isEmpty()) {
-            Toast.makeText(this, getString(R.string.pleaseentermonth), Toast.LENGTH_SHORT).show()
-            Utility.alertErrorMessage(this@AddCardActivity, getString(R.string.pleaseentermonth))
-        } else if (binding!!.cvvEdt.text.toString().isEmpty()) {
-            Utility.alertErrorMessage(this@AddCardActivity, getString(R.string.pleaseentercvv))
+            Utility.alertErrorMessage(this@AddCardActivity, getString(R.string.ENTER_CARD_EXPIRY_MONTH))
         } else if (binding!!.yearEdt.text.toString().isEmpty()) {
-            Toast.makeText(this, getString(R.string.pleaseenteryear), Toast.LENGTH_SHORT).show()
-            Utility.alertErrorMessage(this@AddCardActivity, getString(R.string.pleaseenteryear))
-        } else {
+            Utility.alertErrorMessage(this@AddCardActivity, getString(R.string.ENTER_EXPIRY_YEAR))
+        }else if (binding!!.cvvEdt.text.toString().isEmpty()) {
+            Utility.alertErrorMessage(this@AddCardActivity, getString(R.string.ENTER_CVV))
+        }  else {
             val expiryedt = binding!!.expiryEdt.text.toString()
             val yearedt = binding!!.yearEdt.text.toString()
 
@@ -161,9 +159,11 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
                 if (!Constants.IDEAL_PAYMENT) {
                     if (Constants.cardList.isEmpty()) {
                         popupBookingCancel()
+                    } else {
+                        finish()
                     }
                 } else {
-                    finish()
+                    popupBookingCancel()
                 }
             }
             R.id.payNowBtn -> {
@@ -172,7 +172,6 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
 
         }
     }
-
 
     private fun cardget(id: String) {
          binding!!.loaderLayout.visibility = View.VISIBLE
@@ -322,6 +321,16 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
                     Toast.makeText(this@AddCardActivity, "" + t.message.toString(),Toast.LENGTH_SHORT).show()
                 }
             })
+    }
+
+    override fun onBackPressed() {
+        if (!Constants.IDEAL_PAYMENT) {
+            if (Constants.cardList.isEmpty()) {
+                popupBookingCancel()
+            }
+        } else {
+            popupBookingCancel()
+        }
     }
 
 }

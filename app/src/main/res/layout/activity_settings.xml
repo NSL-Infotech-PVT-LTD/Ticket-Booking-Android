@@ -199,11 +199,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <include layout="@layout/settings_layout"
-            android:id="@+id/settingLayout"
-            android:visibility="gone"/>
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include layout="@layout/loader_layout"
