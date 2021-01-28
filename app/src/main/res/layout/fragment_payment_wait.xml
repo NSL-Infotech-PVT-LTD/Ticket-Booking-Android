@@ -62,7 +62,7 @@
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/do_not_press_or_go_back"
+        android:text="@string/DO_NOT_PRESS"
         android:textColor="@color/black"
         android:textSize="@dimen/_12sdp"
         app:layout_constraintBottom_toBottomOf="parent"

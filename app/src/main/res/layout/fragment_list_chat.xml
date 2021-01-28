@@ -38,9 +38,11 @@
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             android:textSize="@dimen/_20sdp"
+            app:layout_constraintVertical_bias="0.3"
             android:fontFamily="@font/helveticanowdisplay_bold"
             android:layout_marginBottom="@dimen/_5sdp"
-            app:layout_constraintBottom_toTopOf="@+id/dottedView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="@dimen/_20sdp"/>
 
         <ImageView
@@ -51,28 +53,19 @@
             app:layout_constraintBottom_toBottomOf="@+id/messageTxt"
             android:layout_marginEnd="@dimen/_20sdp"/>
 
-        <ImageView
-            android:id="@+id/dottedView"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:background="@drawable/dotted_view_line_white"
-            app:layout_constraintBottom_toTopOf="@+id/messageDemoTxt"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/messageTxt"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/messageDemoTxt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/you_may_edit_booking"
+            android:text="@string/chat_with_artist"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:textSize="@dimen/_12sdp"
-            android:fontFamily="@font/montserrat_semibold"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textSize="@dimen/_10sdp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/messageTxt"
+            android:fontFamily="@font/montserrat_regular"
             android:layout_marginBottom="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_30sdp"
             android:layout_marginStart="@dimen/_20sdp"/>

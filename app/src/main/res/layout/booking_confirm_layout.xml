@@ -34,7 +34,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:fontFamily="@font/montserrat_semibold"
                 android:gravity="center"
-                android:text="@string/booking_confirm_text"
+                android:text="@string/POPUP_CONFIRM"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp"
                 app:layout_constraintBottom_toTopOf="@+id/view"

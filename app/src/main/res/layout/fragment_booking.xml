@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_20sdp"
-                android:text="@string/you_may_edit_booking"
+                android:text="@string/manage_your_bookings_here"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp"
                 android:fontFamily="@font/montserrat_semibold"

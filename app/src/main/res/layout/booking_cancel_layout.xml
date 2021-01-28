@@ -31,7 +31,7 @@
                 android:paddingStart="@dimen/_20sdp"
                 android:paddingEnd="@dimen/_20sdp"
                 android:padding="@dimen/_10sdp"
-                android:text="@string/booking_cancel_message"
+                android:text="@string/CANCEL_SLOT"
                 android:textColor="@color/black"
                 android:fontFamily="@font/montserrat_semibold"
                 android:textSize="@dimen/_14sdp"

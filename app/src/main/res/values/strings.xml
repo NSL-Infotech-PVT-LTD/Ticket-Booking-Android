@@ -44,7 +44,6 @@
     <string name="your_location">Your Location</string>
     <string name="search_for_artist_singer">Search for your favourite Artists, Singers etc.</string>
     <string name="book_artist_you_listen">Book Artists from 30+ countries</string>
-    <string name="see_artist_profile">Check Artist Profile</string>
     <string name="book">Book</string>
     <string name="proceed">Proceed</string>
     <string name="book_now">Book Now</string>
@@ -58,7 +57,7 @@
     <string name="artist_not_available_on_this_date">Sorry, the Artist is not available on this date . Please choose another date</string>
     <string name="clear_all">Clear All</string>
     <string name="proceed_to_checkout">Proceed to checkout</string>
-    <string name="booking_confirm_text">Once the booking is confirmed, it will be on hold till the payment is received, or click cancel to check slots again !</string>
+    <string name="POPUP_CONFIRM">Once the booking is confirmed, it will be on hold till the payment is received, or click cancel to check slots again !</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">cancel</string>
     <string name="please_select_any_slot">Please select any Slot</string>
@@ -68,7 +67,7 @@
     <string name="selectcard">Please select any card</string>
     <string name="addcard">"+ Add Card"</string>
     <string name="expiry">Expires</string>
-    <string name="booking_cancel_message">If you click yes, your booking will be canceled from on-hold and will be available for other customers to book.</string>
+    <string name="CANCEL_SLOT">If you click yes, your booking will be canceled from on-hold and will be available for other customers to book.</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="alert">Alert</string>
@@ -162,7 +161,7 @@
     <string name="do_you_want_to_logout">Do you want to logout?</string>
     <string name="refresh">Refresh</string>
     <string name="saved_location">Saved Location</string>
-    <string name="you_may_edit_booking">You may edit the booking slot, before payment process.</string>
+    <string name="Booking_Edit">You may edit the booking slots for your performances.</string>
     <string name="see_profile">See Profile</string>
     <string name="please_select_address_type">Please select address type</string>
     <string name="artist_available">Artist Available</string>
@@ -199,7 +198,7 @@
     <string name="other_payment_methods">Other Payment Methods</string>
     <string name="checkout">Checkout</string>
     <string name="updating_your_profile">Updating Your Profile</string>
-    <string name="do_not_press_or_go_back">Do not Press or Go Back.</string>
+    <string name="DO_NOT_PRESS">Do not Press or Go Back.</string>
     <string name="are_yout_sure">Are you sure?</string>
     <string name="report_artist">Report Artist</string>
     <string name="enter_description">Write description here....</string>
@@ -235,12 +234,12 @@
     <string name="no_chat_right_now">No Chat Right Now</string>
     <string name="unable_to_find_chat">Unable to find chat on this page. \nPlease make bookings first.</string>
     <string name="no_video_uploaded">No Video Uploaded yet</string>
-    <string name="please_enter_other_address">Please enter other address</string>
+    <string name="OTHER_ADD">Please enter other address</string>
     <string name="save">Save</string>
     <string name="account_number">Account Number</string>
     <string name="MM">MM</string>
     <string name="yyYY">YYYY</string>
-    <string name="cvv">cvv</string>
+    <string name="cvv">CVV</string>
     <string name="pleaseenteraccount">Please enter account holder name</string>
     <string name="pleaseenteraccountnum">Please enter account number</string>
     <string name="pleaseentermonth">Please enter month</string>
@@ -298,10 +297,11 @@
     <string name="CARD_REMOVE">Do you want to delete this card?</string>
     <string name="NO_DATA">No Card Available</string>
     <string name="full_address">Full Address (if different from location)</string>
-    <string name="PLEASE_SELECT_ANY_CARD">Please select any card</string>
+    <string name="PLEASE_SELECT_ANY_CARD">`Please select any ca`rd</string>
     <string name="ENTER_OLD_PASSWRD">Enter your old password</string>
     <string name="ENTER_YOUR_PASSWRD">Enter your password</string>
     <string name="ENTER_YOUR_CONFIRM_PASSWRD">Enter your confirm password</string>
+    <string name="chat_with_artist">Chat with Artist</string>
 
 
 
@@ -316,6 +316,7 @@
     <string name="PLEASE_SELECT_TIME">Please select the time</string>
     <string name="BOOKING_CONFIRMATION_TITLE">Don\'t worry. You can customize it by chatting with the artist 🙂</string>
     <string name="BOOKING_CRNF_SUCCESS">Hurray ! your booking is confirmed 🙂</string>
+
 
 
 </resources>
