@@ -11,7 +11,6 @@ import com.google.android.material.textview.MaterialTextView
 import com.squareup.picasso.Picasso
 import com.surpriseme.user.R
 import com.surpriseme.user.util.Constants
-import kotlinx.android.synthetic.main.fragment_payment_wait.view.*
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -20,13 +19,11 @@ import kotlin.collections.ArrayList
 class ReviewAdapter(val context: Context, val reviewList:ArrayList<ReviewDataModel>) : RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>() {
 
     class ReviewViewHolder(itemView:View) :RecyclerView.ViewHolder(itemView) {
-
         val artistImage = itemView.findViewById<ImageView>(R.id.reviewImage)
         val artistName = itemView.findViewById<MaterialTextView>(R.id.reviewNameTxt)
         val rating = itemView.findViewById<RatingBar>(R.id.ratingbar)
         val reviewDesc = itemView.findViewById<MaterialTextView>(R.id.reviewDescTxt)
         val reviewDate = itemView.findViewById<MaterialTextView>(R.id.reviewDateTxt)
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewViewHolder {

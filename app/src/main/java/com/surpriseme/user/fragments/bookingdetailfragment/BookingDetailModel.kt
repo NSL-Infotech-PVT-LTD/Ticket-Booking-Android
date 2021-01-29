@@ -51,7 +51,7 @@ data class PaymentParams(
 
 data class RateDetail(
     val artist_id: Int,
-    val avg_rate: Int,
+    val avg_rate: Double,
     val created_at: String,
     val created_by: Int,
     val id: Int,

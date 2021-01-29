@@ -222,12 +222,11 @@ class BookSlotFragment : Fragment(), View.OnClickListener, BookSlotAdapter.Selec
                                 binding.timeSlotRecycler.adapter = adapter
 
                                 binding.slotDetailLayout.visibility = View.VISIBLE
-                                binding.noArtistFound.visibility = View.GONE
                                 // Calling Slot Welcome popup...
                                 popupWelcomeSlot()
                             } else {
                                 binding.slotDetailLayout.visibility = View.GONE
-                                binding.noArtistFound.visibility = View.VISIBLE
+//                                binding.noArtistFound.visibility = View.VISIBLE
 
 
                             }

@@ -141,10 +141,12 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
             Utility.alertErrorMessage(this@SignUpActivity,getString(R.string.enter_your_user_name))
         } else if (email.isEmpty()) {
             Utility.alertErrorMessage(this@SignUpActivity, getString(R.string.enter_your_mail))
-        } else if (!checkValidEmail.isValidEmail(email)) {
-            Utility.alertErrorMessage(this@SignUpActivity,getString(R.string.please_enter_valid_email))
-        } else if (password.isEmpty()) {
-            Utility.alertErrorMessage(this@SignUpActivity, getString(R.string.enter_your_password))
+        }
+//        else if (!checkValidEmail.isValidEmail(email)) {
+//            Utility.alertErrorMessage(this@SignUpActivity,getString(R.string.please_enter_valid_email))
+//        }
+        else if (password.isEmpty()) {
+            Utility.alertErrorMessage(this@SignUpActivity, getString(R.string.ENTER_YOUR_PASSWRD))
         } else if (password.length <8) {
             Utility.alertErrorMessage(this@SignUpActivity, getString(R.string.password_should_atleast_eight_character))
         } else if (confirmPassword.isEmpty()) {

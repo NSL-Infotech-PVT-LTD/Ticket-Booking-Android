@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.surpriseme.user.R
 import com.surpriseme.user.fragments.artistbookingdetail.ArtistBookingFragment
+import com.surpriseme.user.fragments.bookingdetailfragment.BookingDetailFragment
 import com.surpriseme.user.fragments.bookingfragment.BookingFragment
 import com.surpriseme.user.fragments.chatFragment.ChatFragment
 import com.surpriseme.user.fragments.chatListfragment.ChatListFragment
@@ -46,7 +47,6 @@ class MainActivity : AppCompatActivity() {
             if (chatID !=null) {
                 val intent = Intent(this, ChatFragment::class.java)
                 intent.putExtra("chatId", chatID)
-
                 startActivity(intent)
             }
 
@@ -64,7 +64,11 @@ class MainActivity : AppCompatActivity() {
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.frameContainer, fragment)
             transaction.commit()
-        } else {
+        } else if (intent.hasExtra("bookingId")){
+           Constants.BOOKING_ID = intent.getStringExtra("bookingId")!!
+           val intent = Intent(this@MainActivity, BookingDetailFragment::class.java)
+           startActivity(intent)
+       } else {
             loadFragment(HomeFragment())
         }
         bottomNav.setOnNavigationItemSelectedListener {

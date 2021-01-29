@@ -141,7 +141,7 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
         binding!!.loaderLayout.visibility = View.VISIBLE
         val stripe = Stripe(
             applicationContext,
-            Constants.PUBLIC_KEY)
+                "pk_test_51HcYaaDVPC7KpoaUBqxarUUagXrI14GRCicyaZt8NztibJ4G9Y7KMtunrcWTg5PDm3PzcuBe1zkFFJiJRt1mXs8s009njabz8l")
         stripe.createCardToken(card, null, null, object : ApiResultCallback<Token> {
             override fun onError(e: Exception) {
                 binding!!.loaderLayout.visibility = View.GONE
@@ -197,10 +197,10 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
                         if (response.errorBody() != null) {
                             try {
                                 jsonObject = JSONObject(response.errorBody()!!.string())
-                                val errorMessage = jsonObject.getString(Constants.ERRORS)
+                                val errorMessage = jsonObject.getString(Constants.ERROR)
                                 Toast.makeText(this@AddCardActivity, "" + errorMessage, Toast.LENGTH_SHORT).show()
                             } catch (e: JSONException) {
-                                Toast.makeText(this@AddCardActivity, "" + Constants.SOMETHING_WENT_WRONG, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@AddCardActivity, "" + e.message.toString(), Toast.LENGTH_SHORT).show()
                             }
                         }
                     }

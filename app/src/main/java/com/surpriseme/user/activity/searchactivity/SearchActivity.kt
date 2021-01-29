@@ -166,12 +166,14 @@ class SearchActivity : AppCompatActivity(), ArtistListAdapter.ArtistListFace,
                 artistList.clear()
                 artistListAdapter?.clear()
                 artistListAdapter?.notifyDataSetChanged()
+                binding?.noDataFoundLayout?.visibility = View.GONE
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 artistList.clear()
                 artistListAdapter?.clear()
                 artistListAdapter?.notifyDataSetChanged()
+                binding?.noDataFoundLayout?.visibility = View.GONE
             }
 
             override fun afterTextChanged(s: Editable?) {

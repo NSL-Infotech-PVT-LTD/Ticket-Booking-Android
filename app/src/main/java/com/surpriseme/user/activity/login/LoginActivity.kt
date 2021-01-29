@@ -127,7 +127,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             //            Utility.alertErrorMessage(this@LoginActivity, getString(R.string.please_enter_valid_email))
             //        }
             password.isEmpty() -> {
-                Utility.alertErrorMessage(this@LoginActivity, getString(R.string.enter_your_password))
+                Utility.alertErrorMessage(this@LoginActivity, getString(R.string.ENTER_YOUR_PASSWRD))
             }
 
             else -> {

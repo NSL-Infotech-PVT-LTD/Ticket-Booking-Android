@@ -169,7 +169,7 @@
             android:id="@+id/progressBar"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
-            app:indicatorName="LineScalePulseOutIndicator"
+            app:indicatorName="BallClipRotateMultipleIndicator"
             style="@style/AVLoadingIndicatorView"
             android:layout_gravity="center_horizontal|center_vertical"
             app:layout_constraintStart_toStartOf="parent"

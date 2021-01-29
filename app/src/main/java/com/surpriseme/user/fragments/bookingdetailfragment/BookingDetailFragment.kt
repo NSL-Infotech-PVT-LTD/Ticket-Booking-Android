@@ -80,7 +80,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
     private var ratingbarForSmile: RatingBar? = null
     private var smileIcon: ImageView? = null
     private var laterTv: TextView? = null
-    private var rateForSmile = "1.0"
+    private var rateForSmile = "1"
     private var review = ""
     private var rateReviewEdt: EditText? = null
 
@@ -129,7 +129,6 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
         reasonList.add(Constants.OTHER)
 
 
-
         // get rating to change smile while give rate your experience...
 
 
@@ -142,16 +141,22 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
                 ) {
                     rateForSmile = rating.toString()
 
-                    if (rateForSmile == "1.0")
+                    if (rateForSmile == "1.0") {
                         smileIcon?.setImageResource(R.drawable.smile_one)
-                    else if (rateForSmile == "2.0")
+                        rateForSmile = "1"
+                    } else if (rateForSmile == "2.0") {
                         smileIcon?.setImageResource(R.drawable.smile_two)
-                    else if (rateForSmile == "3.0")
+                        rateForSmile = "2"
+                    } else if (rateForSmile == "3.0") {
                         smileIcon?.setImageResource(R.drawable.smile_three)
-                    else if (rateForSmile == "4.0")
+                        rateForSmile = "3"
+                    } else if (rateForSmile == "4.0") {
                         smileIcon?.setImageResource(R.drawable.smile_fourth)
-                    else if (rateForSmile == "5.0")
+                        rateForSmile = "4"
+                    } else if (rateForSmile == "5.0") {
                         smileIcon?.setImageResource(R.drawable.smile_fourth)
+                        rateForSmile = "5"
+                    }
                 }
 
             }
@@ -240,7 +245,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
                     statusPopUp()
                 } else if (actionBtn.text == resources.getString(R.string.go_to_Home)) {
                     Constants.COMING_FROM_DETAIL = true
-                   val intent = Intent(this,MainActivity::class.java)
+                    val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     finishAffinity()
                 } else if (actionBtn.text == resources.getString(R.string.rate_your_artist)) {
@@ -263,7 +268,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
                     if (bookingModel?.rate_detail?.review != null) {
                         reviewTv?.text = bookingModel?.rate_detail?.review
                     }
-                    if (bookingModel?.rate_detail?.rate != null) {
+                    if (bookingModel?.rate_detail?.rate != "") {
                         rateReviewRatingbar?.rating = bookingModel?.rate_detail?.rate?.toFloat()!!
                     }
                 }
@@ -293,16 +298,17 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
             R.id.laterTv -> {
                 binding.rateReviewCustomLayout.visibility = View.GONE
             }
-            R.id.submitReviewBtn -> {
+                R.id.submitReviewBtn -> {
 
                 review = rateReviewEdt?.text.toString()
-                binding.rateReviewCustomLayout.visibility = View.GONE
-                if (rateForSmile != "" && review != "") {
+
+                if (review == "") {
                     Utility.alertErrorMessage(
                         this@BookingDetailFragment,
                         getString(R.string.please_give_rating)
                     )
                 } else {
+
                     rateReviewBookingApi(Constants.BOOKING_ID, rateForSmile, review)
                 }
             }
@@ -327,7 +333,11 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
         val layoutInflater: LayoutInflater =
             this@BookingDetailFragment.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        val popUp: View = layoutInflater.inflate(R.layout.booking_cancel_layout, binding.bookingDetailContainer,false)
+        val popUp: View = layoutInflater.inflate(
+            R.layout.booking_cancel_layout,
+            binding.bookingDetailContainer,
+            false
+        )
         val windowBookingCancel = PopupWindow(
             popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
             ConstraintLayout.LayoutParams.MATCH_PARENT, true
@@ -543,7 +553,8 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
 
                 } else if (bookingModel.status == Constants.CONFIRMED) {
                     binding.statusTv.text = resources.getString(R.string.Confirmed)
-                    binding.paymentTv.text = getString(R.string.paid) + bookingModel.customer_currency + " " + bookingModel.price
+                    binding.paymentTv.text =
+                        getString(R.string.paid) + bookingModel.customer_currency + " " + bookingModel.price
 //                    binding.paymentTv.text = getString(R.string.paid, bookingModel.artist_currency,bookingModel.price)
                     binding.actionBtn.visibility = View.VISIBLE
                     binding.actionBtn.text =
@@ -560,24 +571,24 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
 
                 } else if (bookingModel.status == Constants.COMPLETE_REVIEW) {
                     binding.statusTv.text = resources.getString(R.string.completed_review)
-                    binding.paymentTv.text =
-                        getString(R.string.paid) + bookingModel.customer_currency + " " + bookingModel.price
+                    binding.paymentTv.text = getString(R.string.paid) + bookingModel.customer_currency + " " + bookingModel.price
+
                     binding.rateReviewLayout.visibility = View.VISIBLE
                     if (bookingModel.rate_detail != null) {
                         if (bookingModel.rate_detail.rate != "") {
                             binding.rateTv.text = bookingModel.rate_detail.rate
                         }
+                        if (bookingModel.rate_detail.review != "") {
+                            binding.reviewTv.text = bookingModel.rate_detail.review
+                        }
                         if (bookingModel.rate_detail.rate.isNotEmpty()) {
                             try {
                                 binding.ratingbar.rating = bookingModel.rate_detail.rate.toFloat()
-
                             } catch (e: NumberFormatException) {
                                 e.printStackTrace()
                             }
-                        } else {
-                            binding.rateReviewLayout.visibility = View.GONE
                         }
-                        binding.reviewTv.text = bookingModel.rate_detail.review
+
                     }
                 } else if (bookingModel.status == Constants.REPORT) {
                     binding.statusTv.text = resources.getString(R.string.report)
@@ -668,6 +679,8 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
                                 "" + response.body()?.data?.message.toString(),
                                 Toast.LENGTH_SHORT
                             ).show()
+                            binding.rateReviewCustomLayout.visibility = View.GONE
+                            finish()
 
                         }
                     } else {
@@ -757,7 +770,11 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
     private fun statusPopUp() {
         val layoutInflater: LayoutInflater =
             getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val popUp: View = layoutInflater.inflate(R.layout.artist_reach_popup, binding.bookingDetailContainer,false)
+        val popUp: View = layoutInflater.inflate(
+            R.layout.artist_reach_popup,
+            binding.bookingDetailContainer,
+            false
+        )
         val popupWindow = PopupWindow(
             popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
             ConstraintLayout.LayoutParams.MATCH_PARENT, true
@@ -810,7 +827,8 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
 
         val layoutInflater: LayoutInflater =
             getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val popUp: View = layoutInflater.inflate(R.layout.otp_popup_layout, binding.bookingDetailContainer,false)
+        val popUp: View =
+            layoutInflater.inflate(R.layout.otp_popup_layout, binding.bookingDetailContainer, false)
         val otpWindow = PopupWindow(
             popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
             ConstraintLayout.LayoutParams.MATCH_PARENT, true
@@ -825,7 +843,8 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
         otpWindow.isOutsideTouchable = false
         val messageDispTxt: MaterialTextView = popUp.findViewById(R.id.messageDispTxt)
         val cross: ImageView = popUp.findViewById(R.id.crossIcon)
-        messageDispTxt.text = resources.getString(R.string.your_otp_is) + " " + Constants.OTP + " " + getString(
+        messageDispTxt.text =
+            resources.getString(R.string.your_otp_is) + " " + Constants.OTP + " " + getString(
                 R.string.share_yout_opt_with
             )
         cross.setOnClickListener {
@@ -834,11 +853,19 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun reportPopup() {
-        val rAdapter = ArrayAdapter<String>(this@BookingDetailFragment,android.R.layout.simple_dropdown_item_1line,reasonList)
+        val rAdapter = ArrayAdapter<String>(
+            this@BookingDetailFragment,
+            android.R.layout.simple_dropdown_item_1line,
+            reasonList
+        )
         val layoutInflater: LayoutInflater =
             getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        val popUp: View = layoutInflater.inflate(R.layout.report_popup_layout, binding.bookingDetailContainer,false)
+        val popUp: View = layoutInflater.inflate(
+            R.layout.report_popup_layout,
+            binding.bookingDetailContainer,
+            false
+        )
         val reportPopupWindow = PopupWindow(
             popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
             ConstraintLayout.LayoutParams.MATCH_PARENT, true
@@ -861,7 +888,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
 //        val reasonAdapter = ReasonSpinnerAdapter(this, reasonList)
 //        val reasonAdapter = ReasonSpinnerAdapter(this@BookingDetailFragment, reasonList)
 
-       // rAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        // rAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         reportSpinner?.adapter = rAdapter
 
         reportSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -879,6 +906,7 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
                     descriptionTv?.visibility = View.GONE
                 }
             }
+
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
         }
@@ -898,10 +926,16 @@ class BookingDetailFragment : AppCompatActivity(), View.OnClickListener {
 
 
             if (spinnerValue == Constants.SELECT_REASON) {
-                Utility.alertErrorMessage(this@BookingDetailFragment, getString(R.string.please_choose_reason))
+                Utility.alertErrorMessage(
+                    this@BookingDetailFragment,
+                    getString(R.string.please_choose_reason)
+                )
             } else if (spinnerValue == Constants.OTHER) {
                 if (description.isEmpty()) {
-                    Utility.alertErrorMessage(this@BookingDetailFragment, getString(R.string.please_write_reason_for_other))
+                    Utility.alertErrorMessage(
+                        this@BookingDetailFragment,
+                        getString(R.string.please_write_reason_for_other)
+                    )
                 } else {
                     reportPopupWindow.dismiss()
                     reportStatusApi(description)

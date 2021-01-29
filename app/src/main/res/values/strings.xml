@@ -7,7 +7,6 @@
     <string name="google_Map_Key">AIzaSyAkWmuRRj9I9d5fyr4RqM61QDuIwOAZzvA</string>
     <string name="google_Map_Key_latest">AIzaSyDqU3uVjJ1hn71Gi98EJNEESQxuMPnbq8E</string>
     <string name="youtube_api_key">AIzaSyAB8u2xJzND_aHiLd4Q56_1c1Op4Kda9T0</string>
-    <string name="player_error">Error initializing YouTube player %s</string>
     <string name="CHOOSE_PREFFERED">Choose your preffered language</string>
     <string name="next">Next</string>
     <string name="GET_STARTED">Get started</string>
@@ -54,7 +53,6 @@
     <string name="in_person">In-Person</string>
     <string name="select_time_of_booking">Select time of booking</string>
     <string name="you_may_select_multiple_slot">you may select multiple slot in a row.</string>
-    <string name="artist_not_available_on_this_date">Sorry, the Artist is not available on this date . Please choose another date</string>
     <string name="clear_all">Clear All</string>
     <string name="proceed_to_checkout">Proceed to checkout</string>
     <string name="POPUP_CONFIRM">Once the booking is confirmed, it will be on hold till the payment is received, or click cancel to check slots again !</string>
@@ -107,8 +105,6 @@
     <string name="unable_to_find_saved_addresses">Unable to find saved address.  \nPlease add address.</string>
     <string name="do_you_want_to_delete">Do you want to delete?</string>
     <string name="ok">OK</string>
-    <string name="current_location">Current Location</string>
-    <string name="select_other_location">Select Other Location</string>
     <string name="enter_atleast_three_character">Search Artist(Enter Atleast 3 Chars.)</string>
     <string name="no_artist_right_now">No Artist Right Now</string>
     <string name="UNABLE_TO_FIND">Unable to find artist on this page.Please search for another.</string>
@@ -141,17 +137,13 @@
     <string name="share_yout_opt_with">Share your OTP with \n your Artist</string>
     <string name="read_more">Read More</string>
     <string name="reason">Reason</string>
+    <string name="Reason">Reason: </string>
     <string name="booking_date">Booking Date</string>
     <string name="booking_time">Booking Time</string>
     <string name="status">Status:- </string>
     <string name="payment">Payment</string>
-    <string name="seek_to">Jump To</string>
-    <string name="seek_to_hint">Seconds</string>
-    <string name="please_fill_require_field">Please fill the require field</string>
     <string name="password_not_match">password doesn\'t match</string>
-    <string name="please_enter_valid_email">Enter valid email</string>
     <string name="chat">Chat</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="e_mail">Email</string>
     <string name="change_pass">Change Password</string>
@@ -159,15 +151,10 @@
     <string name="update_profile">Update Profile</string>
     <string name="logout">Logout</string>
     <string name="do_you_want_to_logout">Do you want to logout?</string>
-    <string name="refresh">Refresh</string>
     <string name="saved_location">Saved Location</string>
     <string name="Booking_Edit">You may edit the booking slots for your performances.</string>
-    <string name="see_profile">See Profile</string>
-    <string name="please_select_address_type">Please select address type</string>
-    <string name="artist_available">Artist Available</string>
     <string name="per_hour">Per Hour</string>
-    <string name="media">Media</string>
-    <string name="select_way_of_booking">Select Way Of Booking</string>
+
     <string name="booking_successfull">Booking Successfull</string>
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
@@ -197,11 +184,9 @@
     <string name="add_another_card">Add Another Card</string>
     <string name="other_payment_methods">Other Payment Methods</string>
     <string name="checkout">Checkout</string>
-    <string name="updating_your_profile">Updating Your Profile</string>
     <string name="DO_NOT_PRESS">Do not Press or Go Back.</string>
     <string name="are_yout_sure">Are you sure?</string>
     <string name="report_artist">Report Artist</string>
-    <string name="enter_description">Write description here....</string>
     <string name="submit">Submit</string>
     <string name="password_should_atleast_eight_character">Password should be atleast 8 character</string>
     <string name="PROFILE">Profile</string>
@@ -217,7 +202,7 @@
     <string name="Rejected">Rejected</string>
     <string name="confirmed">confirmed</string>
     <string name="Confirmed">Confirmed</string>
-    <string name="paid">Paid: %s %s$</string>
+    <string name="paid">Paid:</string>
     <string name="processing">processing</string>
     <string name="Processing">Processing</string>
     <string name="complete">complete</string>
@@ -245,7 +230,6 @@
     <string name="ENTER_CARD_EXPIRY_MONTH">Enter Card Expire Month</string>
     <string name="ENTER_EXPIRY_YEAR">Enter Expire Year</string>
     <string name="ENTER_CVV">Enter CVV Number</string>
-    <string name="hourly">Hourly</string>
     <string name="hr">hr</string>
     <string name="no_address_right_now_switching_to_virtual">There is no address found. Switching to the list of Virtual Artist</string>
     <string name="failed">failed</string>
@@ -258,7 +242,7 @@
     <string name="yes_reached">Yes, Reached</string>
     <string name="no_want_to_report">No, Want to Report</string>
     <string name="later">Later</string>
-    <string name="please_rate_your_artist">"Please rate \n your experience "</string>
+    <string name="please_rate_your_artist">"Please rate \nyour experience "</string>
     <string name="do_let_us_know_your_experience">Do let us know your feedback</string>
     <string name="change_Language">Change Language</string>
     <string name="brand_new_artist">New Artist (No rating yet)</string>
@@ -266,7 +250,6 @@
     <string name="profile_has_been_updated_successfully">Profile has been updated successfully</string>
     <string name="enter_your_user_name">Enter your user name</string>
     <string name="enter_your_mail">Enter your email</string>
-    <string name="enter_your_password">Enter your password</string>
     <string name="enter_your_confirm_password">Enter your confirm password</string>
     <string name="start_chat_with">Start chat with</string>
     <string name="please_choose_reason">Please choose reason</string>
@@ -297,23 +280,27 @@
     <string name="CARD_REMOVE">Do you want to delete this card?</string>
     <string name="NO_DATA">No Card Available</string>
     <string name="full_address">Full Address (if different from location)</string>
-    <string name="PLEASE_SELECT_ANY_CARD">`Please select any ca`rd</string>
+    <string name="PLEASE_SELECT_ANY_CARD">Please select any card</string>
     <string name="ENTER_OLD_PASSWRD">Enter your old password</string>
     <string name="ENTER_YOUR_PASSWRD">Enter your password</string>
     <string name="ENTER_YOUR_CONFIRM_PASSWRD">Enter your confirm password</string>
     <string name="chat_with_artist">Chat with Artist</string>
+    <string name="BOOKING_CONFIRMATION_TITLE">Don\'t worry. You can customize it by chatting with the artist 🙂</string>
+    <string name="BOOKING_CRNF_SUCCESS">Hurray ! your booking is confirmed 🙂</string>
+    <string name="PAYMENT_PROCESSING">Payment Processing</string>
+    <string name="WRITE_YOUR_REASON">Write your reason...</string>
+    <string name="PLEASE_SELECT_TIME">Please select the time</string>
 
 
-    <string name="Reason">Reason: </string>
+
     <string name="cvv_demo">Ex- 1234</string>
     <string name="card_number_demo">**** - **** - **** - 1452</string>
     <string name="DEBIT_CREDIT_CARD">Debit/Credit Card</string>
 
 
     <string name="completed_review">completed_review</string>
-    <string name="PLEASE_SELECT_TIME">Please select the time</string>
-    <string name="BOOKING_CONFIRMATION_TITLE">Don\'t worry. You can customize it by chatting with the artist 🙂</string>
-    <string name="BOOKING_CRNF_SUCCESS">Hurray ! your booking is confirmed 🙂</string>
+
+
 
 
 </resources>

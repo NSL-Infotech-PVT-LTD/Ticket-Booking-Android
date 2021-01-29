@@ -70,9 +70,10 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
     private var currencyList: ArrayList<CurrencyList> = ArrayList()
     private var currencyAdapter: CurrencyAdapter? = null
     private var currencyRecycler: RecyclerView? = null
-    private var popUpWindowCurrency: PopupWindow? = null
     private var invalidAuth: InvalidAuth? = null
     private var prefManager:PrefManger?=null
+    private var popUpWindowCurrency: PopupWindow? = null
+    private var popUpShowTypeWindow:PopupWindow?=null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -81,6 +82,8 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
 
     override fun onStart() {
         super.onStart()
+        popUpShowTypeWindow?.dismiss()
+        popUpWindowCurrency?.dismiss()
         getProfileApi()
     }
 
@@ -107,7 +110,6 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         binding.notiIcon.setOnClickListener(this)
         binding.virtualTv.setOnClickListener(this)
         binding.inPersonTv.setOnClickListener(this)
-        ((ctx as MainActivity)).showBottomNavigation()
 
         layoutManager = LinearLayoutManager(ctx)
         binding.artistRecycler.layoutManager = layoutManager
@@ -223,8 +225,6 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                     if (response.body() != null) {
                         if (response.isSuccessful) {
 
-                            ((ctx as MainActivity)).showBottomNavigation()
-
                             userModel = response.body()?.data?.user
                             if (userModel != null) {
                                 userImage = Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + userModel?.image
@@ -276,7 +276,9 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                     if (response.body() != null) {
                         if (response.isSuccessful) {
 
-                            binding.viewProfile.visibility = View.VISIBLE
+                            binding.homeContainer.visibility = View.VISIBLE
+                            ((ctx as MainActivity)).showBottomNavigation()
+//                            binding.viewProfile.visibility = View.VISIBLE
 
                             locationList.clear()
                             locationList = response.body()?.data!!
@@ -543,18 +545,18 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
             ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
         val popUp: View = layoutInflater.inflate(R.layout.popup_show_type, binding.homeContainer,false)
-        val popUpWindow = PopupWindow(
+        popUpShowTypeWindow = PopupWindow(
             popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
             ConstraintLayout.LayoutParams.MATCH_PARENT, true
         )
-        popUpWindow.showAtLocation(popUp, Gravity.CENTER, 0, 0)
+        popUpShowTypeWindow?.showAtLocation(popUp, Gravity.CENTER, 0, 0)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-            popUpWindow.elevation = 10f
+            popUpShowTypeWindow?.elevation = 10f
         }
-        popUpWindow.isTouchable = false
-        popUpWindow.isOutsideTouchable = false
+        popUpShowTypeWindow?.isTouchable = false
+        popUpShowTypeWindow?.isOutsideTouchable = false
 
         val virtual: TextView = popUp.findViewById(R.id.virtualSelectBtn)
         val live: TextView = popUp.findViewById(R.id.inPersonSelectBtn)
@@ -568,7 +570,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
             liveLayout.visibility = View.GONE
 
             Handler().postDelayed({
-                popUpWindow.dismiss()
+                popUpShowTypeWindow?.dismiss()
                 artistListApiWithoutLatlng(search)
                 Constants.SHOW_TYPE = "digital"
                 binding.virtualTv.background =
@@ -583,7 +585,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
             showTypeLayout.visibility = View.GONE
             virtualLayout.visibility = View.GONE
             Handler().postDelayed({
-                popUpWindow.dismiss()
+                popUpShowTypeWindow?.dismiss()
                 Constants.SHOW_TYPE = "live"
                 binding.inPersonTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_pink)
                 binding.virtualTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)

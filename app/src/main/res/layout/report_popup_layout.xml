@@ -98,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="@dimen/_100sdp"
                 android:textSize="@dimen/_10sdp"
-                android:hint="@string/enter_description"
+                android:hint="@string/WRITE_YOUR_REASON"
                 android:padding="@dimen/_5sdp"
                 android:visibility="gone"
                 android:gravity="top"
