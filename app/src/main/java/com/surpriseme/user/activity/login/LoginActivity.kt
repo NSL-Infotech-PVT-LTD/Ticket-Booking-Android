@@ -1,13 +1,21 @@
 package com.surpriseme.user.activity.login
 
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.view.Window
+import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
@@ -34,6 +42,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     private var fbtoken: String = ""
     private var loaderLayout: ConstraintLayout? = null
     private var prefManager: PrefManger? = null
+    private var languageWindow:PopupWindow?=null
 
 
     override fun onStart() {
@@ -44,6 +53,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 fbtoken = instanceIdResult.token
 
             }
+
+        languageWindow?.dismiss()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,6 +106,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 startActivity(intent)
             }
             R.id.changetext -> {
+//                popupLanguageDisable()
                 val intent = Intent(this@LoginActivity, ChooseLanguageActivity::class.java)
                 intent.putExtra("login","login")
                 startActivity(intent)
@@ -230,6 +242,35 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                     ).show()
                 }
             })
+    }
+
+    // popup will display to select currency.
+    private fun popupLanguageDisable() {
+
+        val layoutInflater: LayoutInflater =
+            getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+        val popUp: View = layoutInflater.inflate(R.layout.popup_language_coming_soon_layout, loginContainer,false)
+        languageWindow = PopupWindow(
+            popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
+            ConstraintLayout.LayoutParams.MATCH_PARENT, true
+        )
+        languageWindow?.showAtLocation(popUp, Gravity.CENTER, 0, 0)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            languageWindow?.elevation = 10f
+        }
+        languageWindow?.isTouchable = false
+        languageWindow?.isOutsideTouchable = false
+        val goBackTxt = popUp.findViewById<TextView>(R.id.goBackTxt)
+        goBackTxt.setOnClickListener {
+            languageWindow?.dismiss()
+        }
+
+
+
+
     }
 
     override fun onBackPressed() {

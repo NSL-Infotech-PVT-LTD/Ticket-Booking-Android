@@ -211,7 +211,8 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
             fbID!!,
             Constants.DataKey.DEVICE_TYPE_VALUE,
             fbtoken,
-            prefManager?.getString1("language")!!,
+            "en",
+//            prefManager?.getString1("language")!!,
             fbImage
         )
             .enqueue(object : Callback<RegisterWithFbModel> {

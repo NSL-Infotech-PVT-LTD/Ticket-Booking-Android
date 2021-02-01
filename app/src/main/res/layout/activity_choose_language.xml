@@ -88,6 +88,7 @@
             android:layout_marginTop="@dimen/_30sdp"
             android:layout_marginHorizontal="@dimen/_30sdp"
             android:text="@string/next"
+            android:enabled="false"
             android:textAllCaps="false"
             android:fontFamily="@font/montserrat_bold"
             android:textColor="@color/white"
@@ -103,6 +104,76 @@
     <include layout="@layout/loader_layout"
         android:id="@+id/loaderLayout"
         android:visibility="gone"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#60000000"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/top_corner_round_10"
+        >
+
+        <ImageView
+            android:id="@+id/languageDisabled"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_80sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/_20sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/language_disabled"/>
+
+        <TextView
+            android:id="@+id/featureReleaseSoonTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/THIS_FEATURE_WILL_BE_RELEASED_SOON"
+            app:layout_constraintTop_toBottomOf="@+id/languageDisabled"
+            android:layout_marginTop="@dimen/_20sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center"
+            android:textSize="@dimen/_12sdp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat_semibold"/>
+
+
+        <TextView
+            android:id="@+id/accessInNextUpdateTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ACCESS_OPTION_IN_NEXT_UPDATE"
+            app:layout_constraintTop_toBottomOf="@+id/featureReleaseSoonTxt"
+            android:layout_marginTop="@dimen/_20sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center"
+            android:textSize="@dimen/_10sdp"
+            android:textColor="@color/grey_Dark_color"
+            android:fontFamily="@font/montserrat_semibold"/>
+
+        <TextView
+            android:id="@+id/goBackTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue_signup"
+            app:layout_constraintStart_toStartOf="@id/languageDisabled"
+            app:layout_constraintEnd_toEndOf="@id/languageDisabled"
+            app:layout_constraintTop_toBottomOf="@+id/accessInNextUpdateTxt"
+            android:textSize="@dimen/_20sdp"
+            android:text="@string/GO_BACK"
+            android:fontFamily="@font/montserrat_semibold"
+            android:layout_marginTop="@dimen/_20sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="@dimen/_30sdp"/>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

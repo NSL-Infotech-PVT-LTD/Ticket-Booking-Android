@@ -170,7 +170,8 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
             password,
             Constants.DataKey.DEVICE_TYPE_VALUE,
            fbtoken,
-            prefManager?.getString1("language")!!
+            "en"
+//            prefManager?.getString1("language")!!
         )
             .enqueue(object : Callback<RegisterModel> {
                 override fun onResponse(

@@ -105,10 +105,12 @@ class BookingFragment : Fragment(), View.OnClickListener, BookingListAdapter.See
 
     private fun bookingListApi() {
 
-        binding.loaderLayout.visibility = View.VISIBLE
+        if (currentPage == 1)
+            binding.loaderLayout.visibility = View.VISIBLE
+
         RetrofitClient.api.customerBookingListApi(
             shared.getString(Constants.DataKey.AUTH_VALUE),
-            Constants.DataKey.CONTENT_TYPE_VALUE, "", currentPage.toString()
+            Constants.DataKey.CONTENT_TYPE_VALUE, "20", currentPage.toString()
         )
             .enqueue(object : Callback<CustomerBookingListModel> {
                 override fun onResponse(
@@ -118,9 +120,7 @@ class BookingFragment : Fragment(), View.OnClickListener, BookingListAdapter.See
                     binding.loaderLayout.visibility = View.GONE
                     if (response.body() != null) {
                         if (response.isSuccessful) {
-
                             bookingList.clear()
-                            adapter?.clear()
                             bookingList = response.body()?.data?.data!!
                             totalPage = response.body()?.data?.last_page!!
                             if (bookingList.size > 0) {

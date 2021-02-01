@@ -141,7 +141,8 @@ class AddCardActivity : AppCompatActivity(), View.OnClickListener {
         binding!!.loaderLayout.visibility = View.VISIBLE
         val stripe = Stripe(
             applicationContext,
-                "pk_test_51HcYaaDVPC7KpoaUBqxarUUagXrI14GRCicyaZt8NztibJ4G9Y7KMtunrcWTg5PDm3PzcuBe1zkFFJiJRt1mXs8s009njabz8l")
+                Constants.PUBLIC_KEY)
+//        pk_test_51HcYaaDVPC7KpoaUBqxarUUagXrI14GRCicyaZt8NztibJ4G9Y7KMtunrcWTg5PDm3PzcuBe1zkFFJiJRt1mXs8s009njabz8l
         stripe.createCardToken(card, null, null, object : ApiResultCallback<Token> {
             override fun onError(e: Exception) {
                 binding!!.loaderLayout.visibility = View.GONE

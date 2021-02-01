@@ -290,17 +290,13 @@
     <string name="PAYMENT_PROCESSING">Payment Processing</string>
     <string name="WRITE_YOUR_REASON">Write your reason...</string>
     <string name="PLEASE_SELECT_TIME">Please select the time</string>
-
-
+    <string name="DEBIT_CREDIT_CARD">Debit/Credit Card</string>
+    <string name="THIS_FEATURE_WILL_BE_RELEASED_SOON">This Feature Will Be Release Soon.</string>
+    <string name="ACCESS_OPTION_IN_NEXT_UPDATE">You Will To Access This Option In Next Update</string>
+    <string name="GO_BACK">GO BACK</string>
 
     <string name="cvv_demo">Ex- 1234</string>
     <string name="card_number_demo">**** - **** - **** - 1452</string>
-    <string name="DEBIT_CREDIT_CARD">Debit/Credit Card</string>
-
-
     <string name="completed_review">completed_review</string>
-
-
-
 
 </resources>

@@ -1,10 +1,18 @@
 package com.surpriseme.user.activity.chooselanguage
 
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.PopupWindow
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +26,7 @@ import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefManger
 import com.surpriseme.user.util.PrefrenceShared
 import com.surpriseme.user.util.Utility
+import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -35,6 +44,7 @@ class ChooseLanguageActivity : AppCompatActivity(), View.OnClickListener, Choose
     private var languageList:ArrayList<LanguageModel> = ArrayList()
     private var prefManager:PrefManger?=null
     private var language=""
+    private var languageWindow:PopupWindow?=null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,6 +75,8 @@ class ChooseLanguageActivity : AppCompatActivity(), View.OnClickListener, Choose
         layoutManager = LinearLayoutManager(this@ChooseLanguageActivity)
         binding?.languageRecycler?.layoutManager = layoutManager
         binding?.languageRecycler?.setHasFixedSize(true)
+        binding?.goBackTxt?.setOnClickListener { finish() }
+
 
         binding?.saveButton!!.setOnClickListener {
 
@@ -104,26 +116,30 @@ class ChooseLanguageActivity : AppCompatActivity(), View.OnClickListener, Choose
 //                finishAffinity()
 //            }
         }
+            displayLanguage()
 
-        displayLanguage()
     }
     override fun onClick(v: View?) {
 
         when(v?.id) {
 
+            R.id.goBackTxt -> {
+                finish()
+            }
         }
     }
 
     private fun displayLanguage() {
-
         languageList.add(LanguageModel("English", "en"))
-//        languageList.add(LanguageModel("Dutch", "nl"))
-//        languageList.add(LanguageModel("German", "de"))
-//        languageList.add(LanguageModel("Spanish", "es"))
+        languageList.add(LanguageModel("Dutch", "nl"))
+        languageList.add(LanguageModel("German", "de"))
+        languageList.add(LanguageModel("Spanish", "es"))
 
         val adapter = ChooseLanguageAdapter(prefManager!!,this@ChooseLanguageActivity, languageList,this)
         binding?.languageRecycler?.adapter = adapter
         binding?.languageRecycler?.setHasFixedSize(true)
+
+
     }
 
     fun setLocale(lang: String?) {
@@ -185,6 +201,34 @@ class ChooseLanguageActivity : AppCompatActivity(), View.OnClickListener, Choose
                 }
             })
     }
+
+    // popup will display to select currency.
+    private fun popupLanguageDisable() {
+
+        val layoutInflater: LayoutInflater =
+            getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+        val popUp: View = layoutInflater.inflate(R.layout.popup_language_coming_soon_layout, loginContainer,false)
+        languageWindow = PopupWindow(
+            popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
+            ConstraintLayout.LayoutParams.MATCH_PARENT, true
+        )
+        languageWindow?.showAtLocation(popUp, Gravity.CENTER, 0, 0)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            languageWindow?.elevation = 10f
+        }
+        languageWindow?.isTouchable = false
+        languageWindow?.isOutsideTouchable = false
+        val goBackTxt = popUp.findViewById<TextView>(R.id.goBackTxt)
+        goBackTxt.setOnClickListener {
+            languageWindow?.dismiss()
+            finish()
+        }
+
+    }
+
 
 
 }

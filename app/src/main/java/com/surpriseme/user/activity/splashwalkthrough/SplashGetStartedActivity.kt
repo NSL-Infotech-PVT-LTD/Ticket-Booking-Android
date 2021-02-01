@@ -80,13 +80,15 @@ class SplashGetStartedActivity : AppCompatActivity() {
                 startActivity(intent)
                 finishAffinity()
 
-            }else if (prefManager.getString1("language")?.isEmpty()!!) {
+            }
+            else if (prefManager.getString1("language")?.isEmpty()!!) {
                 val intent = Intent(this@SplashGetStartedActivity, ChooseLanguageActivity ::class.java)
                 intent.putExtra("splash","splash")
                 startActivity(intent)
                 finishAffinity()
 
-            } else {
+            }
+            else {
                 val intent = Intent(applicationContext, LoginActivity ::class.java)
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
