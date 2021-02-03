@@ -19,18 +19,17 @@
                 android:id="@+id/splashBg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/spalsh_bg1"
+                android:src="@drawable/spalsh_bg1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
             <ImageView
                 android:id="@+id/splashImg"
                 android:layout_width="@dimen/_200sdp"
                 android:layout_height="@dimen/_200sdp"
-                android:src="@drawable/login_2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

@@ -14,7 +14,9 @@ import com.facebook.login.LoginResult
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.iid.InstanceIdResult
+import com.squareup.picasso.Picasso
 import com.surpriseme.user.R
+import com.surpriseme.user.activity.login.LoginActivity
 import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.activity.signup.SignUpActivity
 import com.surpriseme.user.databinding.ActivitySignUpTypeBinding
@@ -23,7 +25,9 @@ import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefManger
 import com.surpriseme.user.util.PrefrenceShared
 import com.surpriseme.user.util.Utility
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_sign_up_type.*
+import kotlinx.android.synthetic.main.activity_sign_up_type.img_sign
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -71,6 +75,12 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun inIt() {
+
+        Picasso.get().load(R.drawable.login_logo)
+            .resize(500,500)
+            .onlyScaleDown()
+            .into(img_sign)
+
         val loadingText = findViewById<TextView>(R.id.loadingtext)
         loadingText.text  = Utility.randomString(this@SignUpTypeActivity)
 
@@ -193,6 +203,8 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
                 startActivity(intent)
             }
             R.id.backToLoginBtn -> {
+                val intent = Intent(this@SignUpTypeActivity, LoginActivity::class.java)
+                startActivity(intent)
                 finish()
             }
             R.id.fbLogin -> {

@@ -84,8 +84,6 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.backpress -> {
-                val intent = Intent(this@SignUpActivity, SignUpTypeActivity::class.java)
-                startActivity(intent)
                 finish()
             }
             R.id.signupBtn -> {

@@ -188,7 +188,8 @@ object Constants {
     }
 
     object ImageUrl {
-        const val BASE_URL = "https://dev.netscapelabs.com/surpriseme/public/"
+        const val BASE_URL = "https://surprise-me.co/"
+        const val BASE_URL_LIVE = "https://dev.netscapelabs.com/surpriseme/public/"
         const val ARTIST_IMAGE_URL = "uploads/users/artist/"
         const val USER_IMAGE_URL = "uploads/users/customer/"
 

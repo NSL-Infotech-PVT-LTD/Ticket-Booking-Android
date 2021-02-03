@@ -10,7 +10,8 @@ object RetrofitClient {
         .readTimeout(120, TimeUnit.SECONDS)
         .connectTimeout(120, TimeUnit.SECONDS)
         .build()
-    const val BASE_URL = "https://dev.netscapelabs.com/surpriseme/public/api/"
+    const val BASE_URL = "https://surprise-me.co/api/"
+    const val BASE_URL_LIVE = "https://dev.netscapelabs.com/surpriseme/public/api/"
 
 
 

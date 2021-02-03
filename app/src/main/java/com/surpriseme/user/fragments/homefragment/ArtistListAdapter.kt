@@ -62,7 +62,10 @@ class ArtistListAdapter(
             return VIEW_TYPE_NORMAL
         }
         return if (isLoaderVisible) {
-            if (position == artistList.size - 1) VIEW_TYPE_LOADING else VIEW_TYPE_NORMAL
+            if (position == artistList.size - 1)
+                VIEW_TYPE_LOADING
+            else
+                VIEW_TYPE_NORMAL
         } else {
             VIEW_TYPE_NORMAL
         }

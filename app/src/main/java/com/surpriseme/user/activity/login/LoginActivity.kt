@@ -19,6 +19,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
+import com.squareup.picasso.Picasso
 import com.surpriseme.user.R
 import com.surpriseme.user.activity.chooselanguage.ChooseLanguageActivity
 import com.surpriseme.user.activity.forgotpassword.ForgotPasswordActivity
@@ -27,6 +28,7 @@ import com.surpriseme.user.activity.signuptype.SignUpTypeActivity
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.*
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_splash.*
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -69,6 +71,11 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun inIt() {
 
+        Picasso.get().load(R.drawable.login_2)
+            .resize(500,500)
+            .onlyScaleDown()
+            .into(img_sign)
+
 
 //        signUpTxtAtLogin.setOnClickListener(this)
         loginButton.setOnClickListener(this)
@@ -77,6 +84,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         changetext.setOnClickListener(this)
         eye_disable.setOnClickListener(this)
         eye_enable.setOnClickListener(this)
+        translate_icon.setOnClickListener(this)
 
         val loadingText = findViewById<TextView>(R.id.loadingtext)
         loadingText.text  = Utility.randomString(this@LoginActivity)
@@ -107,6 +115,11 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.changetext -> {
 //                popupLanguageDisable()
+                val intent = Intent(this@LoginActivity, ChooseLanguageActivity::class.java)
+                intent.putExtra("login","login")
+                startActivity(intent)
+            }
+            R.id.translate_icon -> {
                 val intent = Intent(this@LoginActivity, ChooseLanguageActivity::class.java)
                 intent.putExtra("login","login")
                 startActivity(intent)

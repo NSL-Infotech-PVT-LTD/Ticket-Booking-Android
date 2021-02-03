@@ -99,7 +99,6 @@ class BookingFragment : Fragment(), View.OnClickListener, BookingListAdapter.See
 
     override fun onClick(v: View?) {
         when (v?.id) {
-
         }
     }
 

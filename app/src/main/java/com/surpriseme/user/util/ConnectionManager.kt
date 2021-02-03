@@ -17,7 +17,7 @@ object ConnectionManger : WebSocketListener() {
     var shared: PrefrenceShared? = null
     var context: Context? = null
     // val client = OkHttpClient()
-    val request = Request.Builder().url("ws://23.20.179.178:8080").build()
+    val request = Request.Builder().url("ws://167.71.9.146:8080").build()
     val client = OkHttpClient.Builder()
         .connectTimeout(180, TimeUnit.SECONDS)
         .writeTimeout(15, TimeUnit.SECONDS)

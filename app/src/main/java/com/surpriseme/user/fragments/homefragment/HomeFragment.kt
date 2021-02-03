@@ -156,16 +156,37 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 replaceFragment(NotificationFragment())
             }
             R.id.virtualTv -> {
-                artistListAdapter?.clear()
+
+
+//                binding.artistNotFoundLayout.visibility = View.GONE
+//
+//
+//                    Constants.SHOW_TYPE = "digital"
+//                    binding.virtualTv.background =
+//                        ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_blue)
+//                    binding.inPersonTv.background =
+//                        ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+//                    binding.addressLayout.visibility = View.GONE
+//                    artistListAdapter?.clear()
+//
+//                    artistListApiWithoutLatlng(search)
+
+
                 binding.artistNotFoundLayout.visibility = View.GONE
 
+            Handler().postDelayed({
                 Constants.SHOW_TYPE = "digital"
                 binding.virtualTv.background =
                     ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_blue)
                 binding.inPersonTv.background =
                     ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
                 binding.addressLayout.visibility = View.GONE
+                currentPage = 1
+                isLoading = false
+                isLastPage = false
+                artistListAdapter?.clear()
                 artistListApiWithoutLatlng(search)
+            }, 3000)
             }
             R.id.inPersonTv -> {
 

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.WindowManager
+import com.squareup.picasso.Picasso
 import com.surpriseme.user.R
 import com.surpriseme.user.activity.chooselanguage.ChooseLanguageActivity
 import com.surpriseme.user.activity.login.LoginActivity
@@ -13,6 +14,7 @@ import com.surpriseme.user.activity.splashwalkthrough.SplashGetStartedActivity
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefManger
 import com.surpriseme.user.util.PrefrenceShared
+import kotlinx.android.synthetic.main.activity_splash.*
 import java.util.*
 
 class SplashActivity : AppCompatActivity() {
@@ -41,6 +43,17 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun init() {
+
+//        Picasso.get().load(R.drawable.spalsh_bg1)
+//            .resize(500,1500)
+//            .onlyScaleDown()
+//            .into(splashBg)
+
+        Picasso.get().load(R.drawable.login_2)
+            .resize(500,500)
+            .onlyScaleDown()
+            .into(splashImg)
+
 
         Handler().postDelayed({
             startActivity(intent)

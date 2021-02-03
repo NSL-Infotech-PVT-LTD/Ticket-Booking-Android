@@ -59,7 +59,10 @@ class BookingListAdapter(
             return VIEW_TYPE_NORMAL
         }
         return if (isLoaderVisible) {
-            if (position == bookingList.size - 1) VIEW_TYPE_LOADING else VIEW_TYPE_NORMAL
+            if (position == bookingList.size - 1)
+                VIEW_TYPE_LOADING
+            else
+                VIEW_TYPE_NORMAL
         } else {
             VIEW_TYPE_NORMAL
         }
@@ -71,6 +74,9 @@ class BookingListAdapter(
 
     fun addItems(postItems: ArrayList<BookingArtistDetailModel>?) {
         bookingList.addAll(postItems!!)
+        val myList = bookingList.distinctBy { it.id } as ArrayList
+        bookingList.clear()
+        bookingList.addAll(myList)
         notifyDataSetChanged()
     }
 
