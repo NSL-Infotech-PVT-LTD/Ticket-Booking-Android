@@ -6,6 +6,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
+import android.util.Base64
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -41,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        hashFromSHA1("8F:FB:39:D7:01:58:17:BE:F8:CD:C7:72:83:64:64:50:BE:D6:35:6B")
         shared = PrefrenceShared(this@MainActivity)
        if (intent.hasExtra("chatId")) {
             val chatID = intent.getStringExtra("chatId")
@@ -49,7 +52,6 @@ class MainActivity : AppCompatActivity() {
                 intent.putExtra("chatId", chatID)
                 startActivity(intent)
             }
-
         } else if (intent.hasExtra("artistID")) {
             val artistID = intent.getStringExtra("artistID")
             val fragment = ArtistBookingFragment()
@@ -77,62 +79,38 @@ class MainActivity : AppCompatActivity() {
                 R.id.navHome -> {
                     Constants.SAVED_LOCATION = false
                     loadFragment(HomeFragment())
-//                    bottomNav.menu.findItem(R.id.navHome).setTitle("")
-//                    bottomNav.menu.findItem(R.id.navHome).icon = ContextCompat.getDrawable(this@MainActivity,R.drawable.home_icon)
-//
-//                    bottomNav.menu.findItem(R.id.navBooking).setTitle(R.string.booking)
-//                    bottomNav.menu.findItem(R.id.navBooking).icon = null
-//
-//                    bottomNav.menu.findItem(R.id.navChat).setTitle(R.string.chat)
-//                    bottomNav.menu.findItem(R.id.navChat).icon = null
-
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.navBooking -> {
                     Constants.SAVE_BOOKING_LIST.clear()
                     Constants.COMING_FROM_DETAIL = false
                     loadFragment(BookingFragment())
-//                    bottomNav.menu.findItem(R.id.navBooking).setTitle("")
-//                    bottomNav.menu.findItem(R.id.navBooking).icon = ContextCompat.getDrawable(this@MainActivity, R.drawable.calender_icon)
-//
-//                    bottomNav.menu.findItem(R.id.navHome).setTitle(R.string.home)
-//                    bottomNav.menu.findItem(R.id.navHome).icon = null
-//
-//                    bottomNav.menu.findItem(R.id.navChat).setTitle(R.string.chat)
-//                    bottomNav.menu.findItem(R.id.navChat).icon = null
-
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.navChat -> {
                     loadFragment(ChatListFragment())
-//                    bottomNav.menu.findItem(R.id.navChat).setTitle("")
-//                    bottomNav.menu.findItem(R.id.navChat).icon = ContextCompat.getDrawable(this@MainActivity,R.drawable.chat_icon)
-//
-//                    bottomNav.menu.findItem(R.id.navHome).setTitle(R.string.home)
-//                    bottomNav.menu.findItem(R.id.navHome).icon = null
-//
-//                    bottomNav.menu.findItem(R.id.navBooking).setTitle(R.string.booking)
-//                    bottomNav.menu.findItem(R.id.navBooking).icon = null
                     return@setOnNavigationItemSelectedListener true
                 }
                 else -> false
             }
 
         }
-
-
-
+    }
+    fun hashFromSHA1(sha1: String) {
+        val arr = sha1.split(":").toTypedArray()
+        val byteArr = ByteArray(arr.size)
+        for (i in arr.indices) {
+            byteArr[i] = Integer.decode("0x" + arr[i]).toByte()
+        }
+        Log.e("hash : ", Base64.encodeToString(byteArr, Base64.NO_WRAP))
     }
 
     private fun loadFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.frameContainer, fragment)
         transaction.commit()
-
     }
-
     override fun onBackPressed() {
-
         if (Constants.PROFILE_FRAGMENT) {
             profileFragment?.updateProfilePopup()
         } else if (Constants.locationList.size >0) {
@@ -141,27 +119,10 @@ class MainActivity : AppCompatActivity() {
             } else {
                 replaceFragment(HomeFragment())
             }
-
         }else {
             replaceFragment(HomeFragment())
         }
-
-//        if (getFragmentManager().getBackStackEntryCount() > 0) {
-//            if (Constants.PROFILE_FRAGMENT) {
-//                profileFragment.updateProfilePopup()
-//            } else {
-//                getFragmentManager().popBackStack()
-//            }
-//        } else {
-//            Toast.makeText(this@MainActivity,"Backpress pressed",Toast.LENGTH_SHORT).show()
-//            super.onBackPressed();
-//        }
-//        if (doubleBackToExitPressedOnce)
-//            super.onBackPressed()
-//        doubleBackToExitPressedOnce = true
-
         Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
-
     }
     private fun replaceFragment(fragment: Fragment) {
 
@@ -170,16 +131,12 @@ class MainActivity : AppCompatActivity() {
         transaction.addToBackStack("LocationManager")
         transaction.commit()
     }
-
-
     fun hideBottomNavigation() {
         bottomNav.visibility = View.GONE
     }
-
     fun showBottomNavigation() {
         bottomNav.visibility = View.VISIBLE
     }
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -197,27 +154,14 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == ImagePicker.IMAGE_PICKER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-
-//            if (requestCode == Constants.RECOVERY_REQUEST) {
-//
-////                artistBookingFragment.getYouTubePlayerProvider()
-//
-//            }
             if (data != null) {
-
                 val mPath: ArrayList<String> = data.getStringArrayListExtra(ImagePicker.EXTRA_IMAGE_PATH)!!
-
                 profileFragment?.getImageBitmap(mPath)
-
             } else {
-
                 Toast.makeText(applicationContext, "Unable to get image", Toast.LENGTH_SHORT).show()
             }
         }
     }
-
-
-
     // Craate context for Profile Fragment ....
     fun profileFragmentContext(fragment: ProfileFragment) {
         this.profileFragment = fragment
@@ -228,12 +172,8 @@ class MainActivity : AppCompatActivity() {
     fun locationFragmentContext(fragment: LocationFragment){
         this.locationFragment = fragment
     }
-
-
     interface SendImageBitmap {
         fun getImageBitmap(mPaths: List<String?>?)
     }
-
-
 
 }

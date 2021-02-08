@@ -71,9 +71,9 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
     private var currencyAdapter: CurrencyAdapter? = null
     private var currencyRecycler: RecyclerView? = null
     private var invalidAuth: InvalidAuth? = null
-    private var prefManager:PrefManger?=null
+    private var prefManager: PrefManger? = null
     private var popUpWindowCurrency: PopupWindow? = null
-    private var popUpShowTypeWindow:PopupWindow?=null
+    private var popUpShowTypeWindow: PopupWindow? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -101,7 +101,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         ((ctx as MainActivity)).hideBottomNavigation()
 
         val loadingText = view.findViewById<TextView>(R.id.loadingtext)
-        loadingText.text  = Utility.randomString(ctx)
+        loadingText.text = Utility.randomString(ctx)
         invalidAuth = InvalidAuth()
 
         binding.viewProfile.setOnClickListener(this)
@@ -126,11 +126,17 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 if (Constants.SHOW_TYPE == "digital") {
                     artistListApiWithoutLatlng(search)
                 } else
-                    artistListApi(shared.getString(Constants.LATITUDE),shared.getString(Constants.LONGITUDE),search)
+                    artistListApi(
+                        shared.getString(Constants.LATITUDE),
+                        shared.getString(Constants.LONGITUDE),
+                        search
+                    )
             }
+
             override fun isLastPage(): Boolean {
                 return isLastPage
             }
+
             override fun isLoading(): Boolean {
                 return isLoading
             }
@@ -156,25 +162,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 replaceFragment(NotificationFragment())
             }
             R.id.virtualTv -> {
-
-
-//                binding.artistNotFoundLayout.visibility = View.GONE
-//
-//
-//                    Constants.SHOW_TYPE = "digital"
-//                    binding.virtualTv.background =
-//                        ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_blue)
-//                    binding.inPersonTv.background =
-//                        ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
-//                    binding.addressLayout.visibility = View.GONE
-//                    artistListAdapter?.clear()
-//
-//                    artistListApiWithoutLatlng(search)
-
-
-                binding.artistNotFoundLayout.visibility = View.GONE
-
-            Handler().postDelayed({
+                binding.virtualTv.isEnabled = false
                 Constants.SHOW_TYPE = "digital"
                 binding.virtualTv.background =
                     ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_blue)
@@ -186,10 +174,14 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                 isLastPage = false
                 artistListAdapter?.clear()
                 artistListApiWithoutLatlng(search)
-            }, 3000)
+                binding.artistNotFoundLayout.visibility = View.GONE
+                binding.virtualTv.postDelayed({
+                    binding.virtualTv.isEnabled = true
+                },2000)
             }
             R.id.inPersonTv -> {
 
+                binding.inPersonTv.isEnabled = false
                 Constants.IS_SWITCH_TO_VIRTUAL = false
                 artistListAdapter?.clear()
                 binding.artistNotFoundLayout.visibility = View.GONE
@@ -210,17 +202,27 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                     transaction.commit()
                 }
 
+                binding.inPersonTv.postDelayed({
+                    binding.inPersonTv.isEnabled = true
+                },2000)
+
+
+
             }
         }
     }
 
     private fun displayAddress() {
-        if (shared.getString(Constants.ADDRESS) !="") {
+        if (shared.getString(Constants.ADDRESS) != "") {
             binding.yourLocationInfo.text = shared.getString(Constants.ADDRESS)
             shared.setString(Constants.ADDRESS, shared.getString(Constants.ADDRESS))
-            shared.setString(Constants.DEFAULT_LATITUDE,shared.getString(Constants.LATITUDE))
-            shared.setString(Constants.DEFAULT_LONGITUDE,shared.getString(Constants.LONGITUDE))
-            artistListApi(shared.getString(Constants.LATITUDE),shared.getString(Constants.LONGITUDE),search)
+            shared.setString(Constants.DEFAULT_LATITUDE, shared.getString(Constants.LATITUDE))
+            shared.setString(Constants.DEFAULT_LONGITUDE, shared.getString(Constants.LONGITUDE))
+            artistListApi(
+                shared.getString(Constants.LATITUDE),
+                shared.getString(Constants.LONGITUDE),
+                search
+            )
         } else {
             replaceFragment(LocationFragment())
         }
@@ -232,6 +234,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         transaction.addToBackStack("fragment")
         transaction.commit()
     }
+
     // Get Profile Api....
     private fun getProfileApi() {
         binding.loaderLayout.visibility = View.VISIBLE
@@ -248,14 +251,26 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
 
                             userModel = response.body()?.data?.user
                             if (userModel != null) {
-                                userImage = Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + userModel?.image
+                                userImage =
+                                    Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + userModel?.image
                                 userName = userModel?.name.toString()
                                 userEmail = userModel?.email.toString()
-                                Picasso.get().load(userImage).placeholder(R.drawable.profile_pholder).into(binding.dashUserImg)
-                                shared.setString(Constants.DataKey.USER_IMAGE, Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL
-                                        + userModel?.image) // is  used to store user image.
-                                shared.setString(Constants.DataKey.USER_NAME, userModel?.name) // is used to store user name.
-                                shared.setString(Constants.DataKey.USER_EMAIL, userModel?.email) // is used to store user email.
+                                Picasso.get().load(userImage)
+                                    .placeholder(R.drawable.profile_pholder)
+                                    .into(binding.dashUserImg)
+                                shared.setString(
+                                    Constants.DataKey.USER_IMAGE,
+                                    Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL
+                                            + userModel?.image
+                                ) // is  used to store user image.
+                                shared.setString(
+                                    Constants.DataKey.USER_NAME,
+                                    userModel?.name
+                                ) // is used to store user name.
+                                shared.setString(
+                                    Constants.DataKey.USER_EMAIL,
+                                    userModel?.email
+                                ) // is used to store user email.
                                 if (prefManager?.getString1(Constants.DataKey.CURRENCY) == "") {
                                     popupSelectCurrency()
                                 } else {
@@ -271,11 +286,16 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                                 val errorMessage = jsonObject.getString(Constants.ERROR)
                                 Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT).show()
                             } catch (e: JSONException) {
-                                Toast.makeText(ctx, "" + Constants.SOMETHING_WENT_WRONG, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    ctx,
+                                    "" + Constants.SOMETHING_WENT_WRONG,
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         }
                     }
                 }
+
                 override fun onFailure(call: Call<ViewProfileModel>, t: Throwable) {
                     binding.loaderLayout.visibility = View.GONE
                     ((ctx as MainActivity)).showBottomNavigation()
@@ -306,46 +326,63 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
 
                             if (Constants.SHOW_TYPE == "digital") {
                                 binding.addressLayout.visibility = View.GONE
-                            }else {
+                            } else {
                                 binding.addressLayout.visibility = View.VISIBLE
                             }
 
                             if (Constants.SHOW_TYPE == "") {
-                                binding.virtualTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
-                                binding.inPersonTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+                                binding.virtualTv.background =
+                                    ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+                                binding.inPersonTv.background =
+                                    ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
                                 popupShowType()
 
                             } else if (Constants.SHOW_TYPE == "digital") {
-                                binding.virtualTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_blue)
-                                binding.inPersonTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+                                binding.virtualTv.background =
+                                    ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_blue)
+                                binding.inPersonTv.background =
+                                    ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
                                 binding.addressLayout.visibility = View.GONE
-                                isLastPage=false
-                                isLoading=false
-                                currentPage=1
+                                isLastPage = false
+                                isLoading = false
+                                currentPage = 1
                                 artistListApiWithoutLatlng(search)
                             } else {
                                 binding.virtualTv.background =
                                     ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
                                 binding.inPersonTv.background =
                                     ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_pink)
-                                if (locationList.size >0){
+                                if (locationList.size > 0) {
                                     Constants.SHOW_TYPE = "live"
-                                    binding.inPersonTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_pink)
-                                    binding.virtualTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+                                    binding.inPersonTv.background = ContextCompat.getDrawable(
+                                        ctx,
+                                        R.drawable.corner_round_5_pink
+                                    )
+                                    binding.virtualTv.background = ContextCompat.getDrawable(
+                                        ctx,
+                                        R.drawable.corner_round_5_grey
+                                    )
                                     binding.addressLayout.visibility = View.VISIBLE
 
                                     if (locationList.isNotEmpty()) {
                                         displayAddress()
                                     } else {
                                         val fragment = LocationFragment()
-                                        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                                        val transaction =
+                                            requireActivity().supportFragmentManager.beginTransaction()
                                         transaction.replace(R.id.frameContainer, fragment)
                                         transaction.commit()
-                                }
-                            } else {
+                                    }
+                                } else {
                                     binding.addressLayout.visibility = View.GONE
-                                    binding.virtualTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_blue)
-                                    binding.inPersonTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+                                    binding.virtualTv.background = ContextCompat.getDrawable(
+                                        ctx,
+                                        R.drawable.corner_round_5_blue
+                                    )
+                                    binding.inPersonTv.background = ContextCompat.getDrawable(
+                                        ctx,
+                                        R.drawable.corner_round_5_grey
+                                    )
                                     isLastPage = false
                                     isLoading = false
                                     currentPage = 1
@@ -519,9 +556,13 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                                 try {
                                     jsonObject = JSONObject(response.errorBody()?.string()!!)
                                     val errorMessage = jsonObject.getString(Constants.ERRORS)
-                                    Utility.alertErrorMessage(ctx,errorMessage)
+                                    Utility.alertErrorMessage(ctx, errorMessage)
                                 } catch (e: JSONException) {
-                                    Toast.makeText(ctx, "" + Constants.SOMETHING_WENT_WRONG, Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        ctx,
+                                        "" + Constants.SOMETHING_WENT_WRONG,
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                             }
                         }
@@ -565,7 +606,8 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         val layoutInflater: LayoutInflater =
             ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        val popUp: View = layoutInflater.inflate(R.layout.popup_show_type, binding.homeContainer,false)
+        val popUp: View =
+            layoutInflater.inflate(R.layout.popup_show_type, binding.homeContainer, false)
         popUpShowTypeWindow = PopupWindow(
             popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
             ConstraintLayout.LayoutParams.MATCH_PARENT, true
@@ -608,8 +650,10 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
             Handler().postDelayed({
                 popUpShowTypeWindow?.dismiss()
                 Constants.SHOW_TYPE = "live"
-                binding.inPersonTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_pink)
-                binding.virtualTv.background = ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
+                binding.inPersonTv.background =
+                    ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_pink)
+                binding.virtualTv.background =
+                    ContextCompat.getDrawable(ctx, R.drawable.corner_round_5_grey)
                 binding.addressLayout.visibility = View.VISIBLE
 
                 if (locationList.isNotEmpty()) {
@@ -631,7 +675,8 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         val layoutInflater: LayoutInflater =
             ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        val popUp: View = layoutInflater.inflate(R.layout.popup_select_currency, binding.homeContainer,false)
+        val popUp: View =
+            layoutInflater.inflate(R.layout.popup_select_currency, binding.homeContainer, false)
         popUpWindowCurrency = PopupWindow(
             popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
             ConstraintLayout.LayoutParams.MATCH_PARENT, true
@@ -656,7 +701,10 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         proceedBtn.setOnClickListener {
 
             if (prefManager?.getInt("myCurrencyAdp") == -1) {
-                Utility.alertErrorMessage(ctx, ctx.resources.getString(R.string.please_choose_currency))
+                Utility.alertErrorMessage(
+                    ctx,
+                    ctx.resources.getString(R.string.please_choose_currency)
+                )
             } else {
                 popUpWindowCurrency?.dismiss()
                 // hit Update profile api to save currency ....
@@ -680,7 +728,8 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                             currencyList = response.body()?.data?.list!!
                             if (currencyList.isNotEmpty()) {
 
-                                currencyAdapter = CurrencyAdapter(prefManager!!, ctx, currencyList, this)
+                                currencyAdapter =
+                                    CurrencyAdapter(prefManager!!, ctx, currencyList, this)
                                 currencyRecycler?.adapter = currencyAdapter
                                 currencyRecycler?.setHasFixedSize(true)
                             }
@@ -730,7 +779,8 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
                         if (response.isSuccessful) {
                             shared.setString(
                                 Constants.DataKey.USER_IMAGE,
-                                Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + response.body()?.data?.user?.image)
+                                Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + response.body()?.data?.user?.image
+                            )
                             Handler().postDelayed({
                                 locationListApi()
                             }, 1000)
@@ -766,7 +816,8 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
         val layoutInflater: LayoutInflater =
             ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        val popUp: View = layoutInflater.inflate(R.layout.alert_popup_layout, binding.homeContainer,false)
+        val popUp: View =
+            layoutInflater.inflate(R.layout.alert_popup_layout, binding.homeContainer, false)
         val popUpWindowReport = PopupWindow(
             popUp, ConstraintLayout.LayoutParams.MATCH_PARENT,
             ConstraintLayout.LayoutParams.MATCH_PARENT, true
@@ -800,32 +851,33 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
     private fun getPaymentKeyApi() {
 
         RetrofitClient.api.getPaymentKeyApi(shared.getString(Constants.DataKey.AUTH_VALUE))
-            .enqueue(object :Callback<PaymentConfigModel> {
+            .enqueue(object : Callback<PaymentConfigModel> {
                 override fun onResponse(
                     call: Call<PaymentConfigModel>,
                     response: Response<PaymentConfigModel>
                 ) {
-                    if (response.body() !=null) {
+                    if (response.body() != null) {
                         if (response.isSuccessful) {
                             Constants.PUBLIC_KEY = response.body()?.data?.public_key!!
                             Constants.SECRET_KEY = response.body()?.data?.seceret_key!!
                             Constants.CLIENT_ID = response.body()?.data?.client_id!!
                         }
                     } else {
-                        val jsonObject:JSONObject
-                        if (response.errorBody() !=null) {
+                        val jsonObject: JSONObject
+                        if (response.errorBody() != null) {
                             try {
                                 jsonObject = JSONObject(response.errorBody()?.string()!!)
                                 val errorMessage = jsonObject.getString(Constants.ERROR)
-                                Toast.makeText(ctx,"" + errorMessage,Toast.LENGTH_SHORT).show()
-                            }catch (e:JSONException) {
-                                Toast.makeText(ctx,"" + e.message,Toast.LENGTH_SHORT).show()
+                                Toast.makeText(ctx, "" + errorMessage, Toast.LENGTH_SHORT).show()
+                            } catch (e: JSONException) {
+                                Toast.makeText(ctx, "" + e.message, Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
                 }
+
                 override fun onFailure(call: Call<PaymentConfigModel>, t: Throwable) {
-                    Toast.makeText(ctx,"" + t.message.toString(),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(ctx, "" + t.message.toString(), Toast.LENGTH_SHORT).show()
                 }
             })
     }
@@ -833,7 +885,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ArtistListAdapter.ArtistL
     private fun callingGetPaymentKeyFunction() {
         Handler().postDelayed({
             getPaymentKeyApi()
-        },3000)
+        }, 3000)
     }
 
 

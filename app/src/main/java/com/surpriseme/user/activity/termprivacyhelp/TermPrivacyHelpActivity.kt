@@ -2,6 +2,7 @@ package com.surpriseme.user.activity.termprivacyhelp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.view.View
 import android.widget.Toast
@@ -79,7 +80,7 @@ class TermPrivacyHelpActivity : AppCompatActivity(), View.OnClickListener {
                     binding?.loaderLayout?.visibility = View.GONE
                     if (response.body() !=null) {
                         if (response.isSuccessful) {
-                            binding?.dataDisplayTxt?.text = response.body()?.data?.config
+                            binding?.dataDisplayTxt?.text = Html.fromHtml(response.body()?.data?.config)
                         }
                     } else {
                         val jsonObject:JSONObject
@@ -117,7 +118,7 @@ class TermPrivacyHelpActivity : AppCompatActivity(), View.OnClickListener {
                     binding?.loaderLayout?.visibility = View.GONE
                     if (response.body() !=null) {
                         if (response.isSuccessful) {
-                            binding?.dataDisplayTxt?.text = response.body()?.data?.config
+                            binding?.dataDisplayTxt?.text = Html.fromHtml(response.body()?.data?.config)
                         }
                     } else {
                         val jsonObject:JSONObject
@@ -153,7 +154,7 @@ class TermPrivacyHelpActivity : AppCompatActivity(), View.OnClickListener {
                     binding?.loaderLayout?.visibility = View.GONE
                     if (response.body() !=null) {
                         if (response.isSuccessful) {
-                            binding?.dataDisplayTxt?.text = response.body()?.data?.config
+                            binding?.dataDisplayTxt?.text = Html.fromHtml(response.body()?.data?.config)
                         }
                     } else {
                         val jsonObject:JSONObject

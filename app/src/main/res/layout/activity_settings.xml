@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -11,199 +12,198 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/toolbarCard"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_50sdp"
-            app:cardElevation="@dimen/_10sdp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.cardview.widget.CardView
+                android:id="@+id/toolbarCard"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="@dimen/_50sdp"
+                app:cardElevation="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/appbarLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_50sdp"
-                    android:minHeight="?attr/actionBarSize"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:layout_height="match_parent">
 
-                    <include layout="@layout/toolbar_layout" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/appbarLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_50sdp"
+                        android:minHeight="?attr/actionBarSize"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <include layout="@layout/toolbar_layout" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/forget_bg" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/termConditionLayout"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginHorizontal="@dimen/_40sdp"
+                android:background="@drawable/boxcardview"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbarCard"
+                app:layout_constraintVertical_bias="0.1">
+
+                <ImageView
+                    android:id="@+id/passwordIcon"
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="5dp"
+                    android:src="@drawable/term_condition_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/termConditionTxt"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:fontFamily="@font/quicksand_medium"
+                    android:gravity="center_vertical"
+                    android:text="@string/terms_condition"
+                    android:textColor="#66667e"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/passwordIcon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/forget_bg"/>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/termConditionLayout"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginHorizontal="@dimen/_40sdp"
-            android:background="@drawable/boxcardview"
-            app:layout_constraintVertical_bias="0.1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbarCard"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <ImageView
-                android:id="@+id/passwordIcon"
-                android:layout_width="30dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="5dp"
-                android:src="@drawable/term_condition_icon"
-                app:layout_constraintBottom_toBottomOf="parent"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/privacyPolicyLayout"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginHorizontal="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:background="@drawable/boxcardview"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/termConditionLayout"
+                app:layout_constraintVertical_bias="0.2">
 
-            <TextView
-                android:id="@+id/termConditionTxt"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:text="@string/terms_condition"
-                android:textColor="#66667e"
-                android:fontFamily="@font/quicksand_medium"
-                android:textSize="14sp"
-                android:gravity="center_vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/passwordIcon"
-                app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/passwordIcon1"
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="5dp"
+                    android:src="@drawable/privacy_policy_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/privacyPolicyTxt"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:fontFamily="@font/quicksand_medium"
+                    android:gravity="center_vertical"
+                    android:text="@string/privacy_policy"
+                    android:textColor="#66667e"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/passwordIcon1"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/privacyPolicyLayout"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginHorizontal="@dimen/_40sdp"
-            android:background="@drawable/boxcardview"
-            app:layout_constraintVertical_bias="0.2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/termConditionLayout"
-            android:layout_marginTop="@dimen/_20sdp">
-
-            <ImageView
-                android:id="@+id/passwordIcon1"
-                android:layout_width="30dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="5dp"
-                android:src="@drawable/privacy_policy_icon"
-                app:layout_constraintBottom_toBottomOf="parent"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/aboutUsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginHorizontal="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:background="@drawable/boxcardview"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/privacyPolicyLayout"
+                app:layout_constraintVertical_bias="0.2">
 
-            <TextView
-                android:id="@+id/privacyPolicyTxt"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:gravity="center_vertical"
-                android:text="@string/privacy_policy"
-                android:textColor="#66667e"
-                android:fontFamily="@font/quicksand_medium"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/passwordIcon1"
-                app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/passwordIcon2"
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="5dp"
+                    android:src="@drawable/about_us_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/aboutUsTxt"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:fontFamily="@font/quicksand_medium"
+                    android:gravity="center_vertical"
+                    android:text="@string/about_us"
+                    android:textColor="#66667e"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/passwordIcon2"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/aboutUsLayout"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginHorizontal="@dimen/_40sdp"
-            android:background="@drawable/boxcardview"
-            app:layout_constraintVertical_bias="0.2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/privacyPolicyLayout"
-            android:layout_marginTop="@dimen/_20sdp">
-
-            <ImageView
-                android:id="@+id/passwordIcon2"
-                android:layout_width="30dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="5dp"
-                android:src="@drawable/about_us_icon"
-                app:layout_constraintBottom_toBottomOf="parent"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/changeLangLayout"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginHorizontal="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:background="@drawable/boxcardview"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/aboutUsLayout"
+                app:layout_constraintVertical_bias="0.2">
 
-            <TextView
-                android:id="@+id/aboutUsTxt"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:text="@string/about_us"
-                android:textColor="#66667e"
-                android:fontFamily="@font/quicksand_medium"
-                android:textSize="14sp"
-                android:gravity="center_vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/passwordIcon2"
-                app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/langIcon"
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="5dp"
+                    android:padding="2dp"
+                    android:src="@drawable/change_language_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/languageTxt"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:fontFamily="@font/quicksand_medium"
+                    android:gravity="center_vertical"
+                    android:text="@string/change_Language"
+                    android:textColor="#66667e"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/langIcon"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/changeLangLayout"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginHorizontal="@dimen/_40sdp"
-            android:background="@drawable/boxcardview"
-            app:layout_constraintVertical_bias="0.2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/aboutUsLayout"
-            android:layout_marginTop="@dimen/_20sdp">
-
-            <ImageView
-                android:id="@+id/langIcon"
-                android:layout_width="30dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="5dp"
-                android:src="@drawable/change_language_icon"
-                android:padding="2dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/languageTxt"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:text="@string/change_Language"
-                android:textColor="#66667e"
-                android:fontFamily="@font/quicksand_medium"
-                android:textSize="14sp"
-                android:gravity="center_vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/langIcon"
-                app:layout_constraintTop_toTopOf="parent" />
-
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <include layout="@layout/loader_layout"
+        <include
             android:id="@+id/loaderLayout"
-            android:visibility="gone"/>
+            layout="@layout/loader_layout"
+            android:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

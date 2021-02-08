@@ -19,15 +19,14 @@ import com.surpriseme.user.R
 import com.surpriseme.user.activity.login.LoginActivity
 import com.surpriseme.user.activity.mainactivity.MainActivity
 import com.surpriseme.user.activity.signup.SignUpActivity
+import com.surpriseme.user.activity.termprivacyhelp.TermPrivacyHelpActivity
 import com.surpriseme.user.databinding.ActivitySignUpTypeBinding
 import com.surpriseme.user.retrofit.RetrofitClient
 import com.surpriseme.user.util.Constants
 import com.surpriseme.user.util.PrefManger
 import com.surpriseme.user.util.PrefrenceShared
 import com.surpriseme.user.util.Utility
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_sign_up_type.*
-import kotlinx.android.synthetic.main.activity_sign_up_type.img_sign
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -68,7 +67,10 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_sign_up_type)
 
-        binding = DataBindingUtil.setContentView(this@SignUpTypeActivity, R.layout.activity_sign_up_type)
+        binding = DataBindingUtil.setContentView(
+            this@SignUpTypeActivity,
+            R.layout.activity_sign_up_type
+        )
         shared = PrefrenceShared(this@SignUpTypeActivity)
         prefManager = PrefManger(this@SignUpTypeActivity)
         inIt()
@@ -77,7 +79,7 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
     private fun inIt() {
 
         Picasso.get().load(R.drawable.login_logo)
-            .resize(500,500)
+            .resize(500, 500)
             .onlyScaleDown()
             .into(img_sign)
 
@@ -87,6 +89,7 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
         signUpEmailBtn.setOnClickListener(this)
         binding.fbLogin.setOnClickListener(this)
         backToLoginBtn.setOnClickListener(this)
+        binding.bySignUpAgreeTxt.setOnClickListener(this)
         initSecond()
     }
 
@@ -124,17 +127,29 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
 //                    val accessToken = loginResult.accessToken
 //                    val isLoggedIn = accessToken != null && !accessToken.isExpired
                 }
+//
+//                override fun onError(e: FacebookException?) {
+//                    if (e is FacebookAuthorizationException) {
+//                        if (AccessToken.getCurrentAccessToken() != null) {
+//                            LoginManager.getInstance().logOut()
+//                        }
+//                    }
+//                }
 
                 override fun onCancel() {
-                    Toast.makeText(this@SignUpTypeActivity,"Cancel",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@SignUpTypeActivity, "Cancel", Toast.LENGTH_SHORT).show()
+
                 }
 
                 override fun onError(error: FacebookException) {
-                    Toast.makeText(
-                        this@SignUpTypeActivity,
-                        "" + error.message.toString(),
-                        Toast.LENGTH_SHORT
-                    ).show()
+//                    LoginManager.getInstance().logOut()
+//
+//                    if (error is FacebookAuthorizationException) {
+//                        if (AccessToken.getCurrentAccessToken() !=null){
+//                            LoginManager.getInstance().logOut()
+//                        }
+//                    }
+
                 }
             })
     }
@@ -199,16 +214,43 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
         when (v?.id) {
             R.id.signUpEmailBtn -> {
                 // sign up with email...
+                binding.signUpEmailBtn.isEnabled = false
                 val intent = Intent(this@SignUpTypeActivity, SignUpActivity::class.java)
                 startActivity(intent)
+                binding.signUpEmailBtn.postDelayed({
+                    binding.signUpEmailBtn.isEnabled = true
+                }, 2000)
+
             }
             R.id.backToLoginBtn -> {
+
+                binding.backToLoginBtn.isEnabled = false
                 val intent = Intent(this@SignUpTypeActivity, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
+                binding.backToLoginBtn.postDelayed({
+                    binding.backToLoginBtn.isEnabled = true
+                }, 2000)
             }
             R.id.fbLogin -> {
+                binding.fbLogin.isEnabled = false
                 onClickHandle()
+                binding.fbLogin.postDelayed({
+                    binding.fbLogin.isEnabled = true
+                }, 2000)
+            }
+            R.id.bySignUpAgreeTxt -> {
+
+                binding.bySignUpAgreeTxt.isEnabled = false
+                val intent = Intent(this@SignUpTypeActivity, TermPrivacyHelpActivity::class.java)
+                Constants.IS_TERM_AND_CONDITION = true
+                Constants.IS_PRIVACY_POLICY = false
+                Constants.IS_ABOUT_US = false
+                startActivity(intent)
+                binding.bySignUpAgreeTxt.postDelayed({
+                    binding.bySignUpAgreeTxt.isEnabled = true
+                }, 2000)
+
             }
         }
     }
@@ -246,8 +288,10 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
                                 response.body()?.data?.user?.id.toString()
                             )    // To Save User ID
 //                            shared.setString(Constants.DataKey.OLD_PASS_VALUE, password)                                       // To save User Password
-                            shared?.setString(Constants.DataKey.USER_IMAGE,  // To Save User Image
-                                Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + response.body()?.data?.user?.image)
+                            shared?.setString(
+                                Constants.DataKey.USER_IMAGE,  // To Save User Image
+                                Constants.ImageUrl.BASE_URL + Constants.ImageUrl.USER_IMAGE_URL + response.body()?.data?.user?.image
+                            )
 
                             currency = fbDataModel?.user?.currency!!
                             if (currency.isEmpty()) {
@@ -255,7 +299,10 @@ class SignUpTypeActivity : AppCompatActivity(), View.OnClickListener {
                             } else {
                                 prefManager?.setString1(Constants.DataKey.CURRENCY, currency)
                             }
-                            prefManager?.setInt("myCurrencyAdp",-1) // to set initial currency to 0 position....
+                            prefManager?.setInt(
+                                "myCurrencyAdp",
+                                -1
+                            ) // to set initial currency to 0 position....
 
 //                            isFbRegistered = true
                             val mainActIntent =

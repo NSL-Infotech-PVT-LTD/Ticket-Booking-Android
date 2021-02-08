@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
+import com.facebook.login.LoginManager
 import com.google.android.material.textview.MaterialTextView
 import com.squareup.picasso.Picasso
 import com.surpriseme.user.R
@@ -328,6 +329,7 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
         yes.setOnClickListener {
             logout()
             popUpWindowReport.dismiss()
+
         }
         cancelTv.setOnClickListener {
             popUpWindowReport.dismiss()
@@ -379,6 +381,7 @@ class ProfileFragment : Fragment(), View.OnClickListener, Permission.GalleryCame
                                     Toast.LENGTH_LONG
                                 ).show()
                                 shared.clearShared()
+                                LoginManager.getInstance().logOut()
                                 Constants.SHOW_TYPE = ""
                                 val intent = Intent(ctx, LoginActivity::class.java)
                                 ctx.startActivity(intent)

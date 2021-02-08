@@ -55,16 +55,34 @@
                     android:layout_marginStart="@dimen/_10sdp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/dataDisplayTxt"
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:textColor="@color/black"
-                android:autoLink="all"
-                android:textSize="@dimen/_10sdp"
-                app:layout_constraintTop_toBottomOf="@+id/headerLayout"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:padding="@dimen/_20sdp"/>
+                android:fillViewport="true"
+                 app:layout_constraintTop_toBottomOf="@+id/headerLayout"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    >
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/dataDisplayTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/black"
+                        android:autoLink="all"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textSize="@dimen/_11sdp"
+                        android:padding="@dimen/_20sdp"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+            </ScrollView>
+
+
+
 
 
 

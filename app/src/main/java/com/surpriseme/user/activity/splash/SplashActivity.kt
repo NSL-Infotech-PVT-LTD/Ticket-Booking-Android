@@ -19,7 +19,7 @@ import java.util.*
 
 class SplashActivity : AppCompatActivity() {
 
-     private val splashTime: Long = 3000
+    private val splashTime: Long = 3000
     private lateinit var shared:PrefrenceShared
     private lateinit var prefManager:PrefManger
 
